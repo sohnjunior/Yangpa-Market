@@ -8,5 +8,6 @@
 팀원 : 손정현
 
 ## 개발 담당
-Frontend: 손정현 <br>
-Backend: 박민춘 손정현
+Frontend(Vue.js): 손정현 <br>
+UX/UI: 박민춘 <br>
+Backend(Node.js): 박민춘 손정현
