@@ -7,7 +7,7 @@
 팀장 : 박민춘 <br>
 팀원 : 손정현
 
-## 개발 담당
+## 팀 역할 분담
 Frontend(Vue.js): 손정현 <br>
 UX/UI: 박민춘 <br>
-Backend(Node.js): 박민춘 손정현
+Backend(Node.js & MySQL): 박민춘 손정현
