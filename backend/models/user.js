@@ -1,3 +1,4 @@
+// 유저 Scheme
 module.exports = (sequelize, Datatypes) => {
   return sequelize.define('user', {
     email: {

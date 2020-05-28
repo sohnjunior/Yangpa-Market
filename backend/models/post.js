@@ -1,3 +1,4 @@
+// 상품 판매글 Scheme
 module.exports = (sequelize, Datatypes) => {
   return sequelize.define('post', {
     title: {
