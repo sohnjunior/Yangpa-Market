@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.post("/", tokenLimiter, async (req, res) => {
   try {
-    const id = "testid";
+    const id = "testid";//test data
 
     const token = jwt.sign(
       {
