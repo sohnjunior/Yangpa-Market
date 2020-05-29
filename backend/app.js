@@ -6,6 +6,8 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+const tokenRouter = require("./routes/token");
+const apiRouter = require("./routes/api");
 
 const { sequelize } = require('./models');
 
@@ -24,6 +26,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use("/token", tokenRouter);
+app.use("/api", apiRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -41,4 +45,11 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+//To Avoid CORS
+app.use(function(req,res,next){
+  res.setHeader('Access-Control-Allow-Origin','*');
+  res.setHeader("Access-Control-Allow-Methods", 'GET,POST');
+  res.setHeader("Access-Control-Allow-Headers", 'X-Requested-With, content-type, Authorization');
+  next();
+})
 module.exports = app;
