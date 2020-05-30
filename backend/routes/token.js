@@ -14,11 +14,7 @@ router.post("/", tokenLimiter, async (req, res) => {
       {
         id,
       },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: "1m",
-        issuer: "토큰제공자",
-      }
+      process.env.JWT_SECRET
     );
 
     return res.json({
