@@ -6,7 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-const tokenRouter = require("./routes/test/token");// Test router about token
+const tokenRouter = require("./routes/token");// Test router about token
 const apiRouter = require("./routes/test/api"); // Test router about API for token
 
 const { sequelize } = require('./models');
