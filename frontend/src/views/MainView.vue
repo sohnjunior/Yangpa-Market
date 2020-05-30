@@ -7,13 +7,37 @@
         </h1>
       </v-col>
 
+      <button @click="buttonClicked">token 요청</button>
+
     </v-row>
   </v-container>
 </template>
 
 <script>
-export default {
+import { testJWT, testJWTVerify } from '../api/index.js';
 
+export default {
+  methods: {
+    async buttonClicked() {
+      try {
+        const { data } = await testJWT();
+        console.log(data.token);
+
+        this.$store.commit('setToken', data.token);
+
+      } catch(err) {
+        console.log(err);
+      }
+
+      try {
+        const result = await testJWTVerify();
+        console.log(result);
+      } catch(err) {
+        console.log(err);
+      }
+
+    }
+  }
 }
 </script>
 
