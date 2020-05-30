@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import MainView from '../views/MainView.vue';
 import PageNotFound from '../views/PageNotFound.vue';
 import DashBoardView from '../views/DashBoardView.vue';
+import ProductCreateView from '../views/ProductCreateView.vue';
 
 // sub component for Dashboard
 import DashBoard from '../components/DashBoard.vue';
@@ -66,8 +67,9 @@ export const router = new VueRouter({
              path: "/signup",
            },
            {
-             // 상품 게시글 조회 페이지
-             path: "/product",
+             // 상품 게시글 생성 페이지
+             path: "/product/new",
+             component: ProductCreateView,
            },
            {
              // 전체 검색 결과

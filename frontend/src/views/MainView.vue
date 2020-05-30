@@ -8,6 +8,7 @@
       </v-col>
 
       <button @click="buttonClicked">token 요청</button>
+      <v-btn to="/product/new">상품 등록하기</v-btn>
 
     </v-row>
   </v-container>
@@ -36,7 +37,7 @@ export default {
         console.log(err);
       }
 
-    }
+    },
   }
 }
 </script>
