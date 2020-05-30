@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { verifyToken, apiLimiter } = require("./middlewares");
+const { verifyToken, apiLimiter } = require("../middlewares");
 
 //통신 확인을 위한 가상의 USER
 router.get("/", apiLimiter, verifyToken, (req, res) => {
