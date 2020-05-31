@@ -1,6 +1,36 @@
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
 const jwt = require("jsonwebtoken");
 const Ratelimit = require("express-rate-limit");
 
+
+/* 
+    라우터에 필요한 커스텀 미들웨어를 정의합니다.
+*/
+
+// public/images/product 폴더가 없을 경우 생성
+fs.readdir('public/images/product', (err) => {
+  if(err) {
+    console.error('public/images/product 디렉토리가 없어서 생성합니다.');
+    fs.mkdirSync('public/images/product');
+  }
+});
+
+// 상품 이미지 업로드용 미들웨어
+exports.productUpload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, cb) {
+      cb(null, 'public/images/product/');
+    },
+    filename(req, file, cb) {
+      const ext = path.extname(file.originalname);
+      cb(null, path.basename(file.originalname, ext) + "-" + Date.now() + ext);
+    }
+  })
+});
+
+// JWT 토큰 검증 미들웨어
 exports.verifyToken = (req, res, next) => {
   try {
     req.decoded = jwt.verify(req.headers.authorization, process.env.JWT_SECRET);

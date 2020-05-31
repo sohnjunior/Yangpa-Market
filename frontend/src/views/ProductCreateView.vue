@@ -2,6 +2,8 @@
   <div>
     상품 등록하기
 
+    <v-file-input label="File input" @change="selectFile"></v-file-input>
+
     <v-btn @click="submit">서버에 전송하기</v-btn>
   </div>
 </template>
@@ -13,7 +15,7 @@ export default {
   data() {
     return {
       title: 'test title',
-      image: 'test image',
+      image: '',
       category: 'test category',
       body: 'test body',
     }
@@ -21,10 +23,24 @@ export default {
 
   methods: {
     async submit() {
-      const newProduct = { title: this.title, image: this.image, category: this.category, body: this.body };
-      const { data } = await createNewProduct(newProduct);
-      console.log(data);
-    }
+      const formData = new FormData();
+      formData.append('title', this.title);
+      formData.append('image', this.image);
+      formData.append('category', this.category);
+      formData.append('body', this.body);
+
+      try {
+        const { data } = await createNewProduct(formData);
+        console.log(data);
+      } catch(err) {
+        console.log(err);
+      }
+    },
+
+    // 파일 변경 시 이벤트 핸들러
+    selectFile(file) {
+      this.image = file;
+    },
   }
 }
 </script>

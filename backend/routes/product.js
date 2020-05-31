@@ -1,15 +1,18 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const { productUpload } = require("./middlewares");
+
+const router = express.Router();
+
 
 // 새로운 상품 게시글 생성
-router.post('/create', (req, res, next) => {
+router.post('/create', productUpload.single('image'), (req, res, next) => {
   const createPost = {
     'title': req.body.title,
     'body': req.body.body,
-    'image': req.body.image,
+    'image': req.file.filename,
     'category': req.body.category,
   }
-
+  console.log(createPost);
   res.json(createPost);
 });
 
