@@ -1,23 +1,58 @@
 <template>
   <div>
-    상품 등록하기
+    <h1>상품 등록하기</h1>
 
-    <v-file-input label="File input" @change="selectFile"></v-file-input>
+    <v-text-field
+      label="Solo"
+      placeholder="상품 제목"
+      solo
+      v-model="title"
+      ></v-text-field>
+
+    <v-select
+      :items="items"
+      label="카테고리 선택"
+      solo
+      @change="selectCategory"
+      ></v-select>
+
+    <v-file-input 
+      label="File input" 
+      @change="selectFile"
+      ></v-file-input>
+
+    <v-text-field
+      label="Solo"
+      placeholder="상품 가격"
+      solo
+      v-model="price"
+      ></v-text-field>
+
+    <v-textarea
+      solo
+      rounded
+      v-model="body"
+      label="상품 내용입력"
+      ></v-textarea>
 
     <v-btn @click="submit">서버에 전송하기</v-btn>
   </div>
 </template>
 
 <script>
-import { createNewProduct } from '../api/index';
+import { testProduct } from '../api/index';
 
 export default {
   data() {
     return {
-      title: 'test title',
+      // 지원하고 있는 상품 카테고리
+      items: ['전공서적', '원룸', '회원권', '의류', '기타'],
+
+      title: '',
       image: '',
-      category: 'test category',
-      body: 'test body',
+      category: '',
+      price: '',
+      body: '',
     }
   },
 
@@ -28,9 +63,10 @@ export default {
       formData.append('image', this.image);
       formData.append('category', this.category);
       formData.append('body', this.body);
+      formData.append('price', this.price);
 
       try {
-        const { data } = await createNewProduct(formData);
+        const { data } = await testProduct(formData);
         console.log(data);
       } catch(err) {
         console.log(err);
@@ -41,6 +77,24 @@ export default {
     selectFile(file) {
       this.image = file;
     },
+
+    // 카테고리 선택 시 이벤트 핸들러
+    selectCategory(category) {
+      let selected = '';
+      if(category === '회원권') {
+        selected = 'tickets';
+      } else if(category === '전공서적') {
+        selected = 'books';
+      } else if(category === '원룸') {
+        selected = 'rooms';
+      } else if(category === '의류') {
+        selected = 'clothes';
+      } else {
+        selected = 'others';
+      }
+
+      this.category = selected;
+    }
   }
 }
 </script>

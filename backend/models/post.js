@@ -1,4 +1,5 @@
 // 상품 판매글 Scheme
+// title : 주문번호
 module.exports = (sequelize, Datatypes) => {
   return sequelize.define('post', {
     title: {

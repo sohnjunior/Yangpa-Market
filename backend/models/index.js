@@ -48,9 +48,9 @@ db.Comment.belongsTo(db.Post);
 db.Category.hasMany(db.Product);
 db.Product.belongsTo(db.Category);
 
-// Product와 Order의 1:1 관계
-db.Order.hasOne(db.Product);
-db.Product.belongsTo(db.Order);
+// Post와 Order의 1:1 관계
+db.Post.hasOne(db.Order);
+db.Order.belongsTo(db.Post);
 
 // Post와 Product의 1:1 관계
 db.Post.hasOne(db.Product);

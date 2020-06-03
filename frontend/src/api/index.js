@@ -38,7 +38,7 @@ function createNewProduct(payload) {
 //TODO: 상품 게시글 업데이트 요청
 
 
-// JWT & CORS 테스트용 axios 요청
+// 각종 테스트용 axios 요청
 function testJWT() {
   return instance.post("/token");
 }
@@ -47,4 +47,8 @@ function testJWTVerify() {
   return instance.get("/token/test");
 }
 
-export { createNewProduct, testJWT, testJWTVerify }
+function testProduct() {
+  return instance.get('/product/test');
+}
+
+export { createNewProduct, testJWT, testJWTVerify, testProduct }
