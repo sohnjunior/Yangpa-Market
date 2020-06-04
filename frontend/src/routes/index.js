@@ -4,6 +4,7 @@ import MainView from '../views/MainView.vue';
 import PageNotFound from '../views/PageNotFound.vue';
 import DashBoardView from '../views/DashBoardView.vue';
 import ProductCreateView from '../views/ProductCreateView.vue';
+import ReviewBoardView from '../views/ReviewBoardView.vue';
 
 // sub component for Dashboard
 import DashBoard from '../components/DashBoard.vue';
@@ -68,8 +69,9 @@ export const router = new VueRouter({
              component: ProductCreateView,
            },
            {
-             // 전체 검색 결과
-             path: "/search",
+             // 후기 게시판
+             path: "/review",
+             component: ReviewBoardView,
            },
            {
              // 404 페이지

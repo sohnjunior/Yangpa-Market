@@ -34,6 +34,10 @@
         append-icon="mdi-magnify"
       ></v-text-field>
 
+      <v-btn text to="/review">
+        <span class="mr-2">상품 후기</span>
+      </v-btn>
+
       <v-btn text @click="loginClicked">
         <span class="mr-2">로그인</span>
       </v-btn>
@@ -54,7 +58,7 @@ export default {
     LoginModal,
   },
   methods: {
-    // 로그인 버튼 클릭 시
+    // 로그인 이동
     loginClicked() {
       this.dialog = true;
     },
