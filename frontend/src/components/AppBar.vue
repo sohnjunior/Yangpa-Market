@@ -28,10 +28,10 @@
       <v-spacer></v-spacer>
 
       <v-text-field
-              placeholder="SEARCH"
-              rounded
-              filled
-              append-icon="mdi-magnify"
+        placeholder="SEARCH"
+        rounded
+        filled
+        append-icon="mdi-magnify"
       ></v-text-field>
 
       <v-btn text @click="loginClicked">

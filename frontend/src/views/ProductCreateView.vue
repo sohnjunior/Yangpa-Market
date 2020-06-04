@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { testProduct } from '../api/index';
+import { createNewProduct } from '../api/index';
 
 export default {
   data() {
@@ -66,7 +66,7 @@ export default {
       formData.append('price', this.price);
 
       try {
-        const { data } = await testProduct(formData);
+        const { data } = await createNewProduct(formData);
         console.log(data);
       } catch(err) {
         console.log(err);

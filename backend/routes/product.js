@@ -58,12 +58,25 @@ router.get('/retreive', async (req, res, next) => {
       {
         model: Product,
         attributes: ['title', 'image', 'price', 'like'],
+        include: {
+          model: Category,
+          attributes: ['title'],
+        }
       }
     ],
     order: [['createdAt', 'DESC']],
   });
 
   res.json(posts);
+});
+
+// 특정 상품 게시글 조회
+router.get('/retreive/:id', async (req, res, next) => {
+  const post = await Post.findOne({
+    where: { id: req.params.id }
+  });
+
+  res.json(post);
 });
 
 // 특정 키워드 기준 상품명 검색 결과

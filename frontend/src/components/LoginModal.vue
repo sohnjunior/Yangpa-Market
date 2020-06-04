@@ -39,6 +39,8 @@ export default {
     modalDestroy() {
       this.$emit('modalDestroy');
     }
+
+    // TODO: 로그인 api 호출
   }
 }
 </script>

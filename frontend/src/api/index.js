@@ -32,7 +32,15 @@ function createNewProduct(payload) {
 //TODO: 상품 게시글 삭제 요청 
 
 
-//TODO: 상품 게시글 조회 요청
+// 특정 상품 게시글 조회 요청
+function retreiveProduct(payload) {
+  return instance.get(`/product/retreive/${payload}`);
+}
+
+// 전체 상품 게시글 조회 요청
+function retriveAllProducts() {
+  return instance.get("/product/retreive");
+}
 
 
 //TODO: 상품 게시글 업데이트 요청
@@ -51,4 +59,5 @@ function testProduct() {
   return instance.get('/product/test');
 }
 
-export { createNewProduct, testJWT, testJWTVerify, testProduct }
+export { createNewProduct, retriveAllProducts, retreiveProduct, 
+  testJWT, testJWTVerify, testProduct }

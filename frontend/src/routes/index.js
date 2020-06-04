@@ -4,7 +4,6 @@ import MainView from '../views/MainView.vue';
 import PageNotFound from '../views/PageNotFound.vue';
 import DashBoardView from '../views/DashBoardView.vue';
 import ProductCreateView from '../views/ProductCreateView.vue';
-import LoginMoal from '../components/LoginModal.vue';
 
 // sub component for Dashboard
 import DashBoard from '../components/DashBoard.vue';
@@ -58,11 +57,6 @@ export const router = new VueRouter({
                   component: UserProfile,
                 },
              ],
-           },
-           {
-             // 로그인
-             path: "/signin",
-             component: LoginMoal,
            },
            {
              // 회원가입
