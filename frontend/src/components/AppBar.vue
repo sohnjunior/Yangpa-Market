@@ -34,18 +34,36 @@
               append-icon="mdi-magnify"
       ></v-text-field>
 
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
+      <v-btn text @click="loginClicked">
         <span class="mr-2">로그인</span>
       </v-btn>
+      <LoginModal :dialog="dialog" @modalDestroy="modalDestroy"></LoginModal>
     </v-app-bar>
 </template>
 
 <script>
-export default {}
+import LoginModal from './LoginModal.vue';
+
+export default {
+  data() {
+    return {
+       dialog: false,
+    }
+  },
+  components: {
+    LoginModal,
+  },
+  methods: {
+    // 로그인 버튼 클릭 시
+    loginClicked() {
+      this.dialog = true;
+    },
+    // 로그인하기 or 취소 버튼 클릭 시
+    modalDestroy() {
+      this.dialog = false;
+    }
+  }
+}
 </script>
 
 <style>
