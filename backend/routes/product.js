@@ -1,6 +1,8 @@
 const express = require('express');
 const { productUpload } = require("./middlewares");
 const { Product, Category, User, Post } = require('../models');
+const sequelize = require('sequelize');
+const Op = sequelize.Op;
 
 const router = express.Router();
 
@@ -37,14 +39,21 @@ router.post('/create', productUpload.single('image'), async (req, res, next) => 
   res.json({'response': 'success'});
 });
 
-// 상품 정보 수정
-router.put('/update', (req, res, next) => {
-
+//TODO: 상품 정보 수정
+router.put('/update/:id', (req, res, next) => {
+  
 });
 
 // 상품 게시글 삭제
-router.delete('/delete', (req, res, next) => {
-
+router.delete('/delete/:id', async (req, res, next) => {
+  try {
+    const post = await Post.findOne({ where: { title: req.params.id } });
+    await Product.destroy({ where: { postId: post.dataValues.id } });
+    await Post.destroy({ where: { id: post.dataValues.id } });
+  } catch(err) {
+    console.error(err);
+    next(err);
+  }
 });
 
 // 전체 상품 게시글 조회
@@ -80,8 +89,32 @@ router.get('/retreive/:id', async (req, res, next) => {
 });
 
 // 특정 키워드 기준 상품명 검색 결과
-router.get('/search', (req, res, next) => {
+router.get('/search/:keyword', async (req, res, next) => {
+  let keyword = req.params.keyword;
+  keyword = keyword.trim();  // 앞뒤 공백문자 제거
+  keyword = keyword.replace(/\s\s+/gi, ' '); // 두 개의 공백은 하나로 변경
+  keywords = keyword.split(" ");  // 띄어쓰기 기준으로 한 단어라도 들어있으면 결과 찾아서 반환
+  
+  const idLog = [];  // 중복된 상품 검색 방지
+  const resultArr = [];
+  for(let keyword of keywords) {
+    const result = await Product.findAll({
+      where: {
+        title: {
+          [Op.like]: `%${keyword}%`
+        }
+      }
+    });
+    
+    for (let product of result) {
+      if(! idLog.includes(product.dataValues.id)) {
+        idLog.push(product.dataValues.id);
+        resultArr.push(product);
+      } 
+    }
+  } 
 
+  res.json({'result': resultArr});
 });
 
 // product 관련 테스트용 라우터
@@ -108,22 +141,22 @@ router.get('/test', async (req, res, next) => {
   /*
       테스트 2 : 전체 게시글 조회 (user, product join 연산)
   */
- const posts = await Post.findAll({
-   include: [
-     {
-      model: User,
-      attributes: ['email', 'nickname'],
-    },
-    {
-      model: Product,
-      attributes: ['title', 'image', 'price', 'like'],
-    }
-  ],
-   order: [['createdAt', 'DESC']],
- });
+  //  const posts = await Post.findAll({
+  //    include: [
+  //      {
+  //       model: User,
+  //       attributes: ['email', 'nickname'],
+  //     },
+  //     {
+  //       model: Product,
+  //       attributes: ['title', 'image', 'price', 'like'],
+  //     }
+  //   ],
+  //    order: [['createdAt', 'DESC']],
+  //  });
 
- console.log(posts);
-
+  //  console.log(posts);
+  res.json({'test': 'test_success'});
 });
 
 module.exports = router;

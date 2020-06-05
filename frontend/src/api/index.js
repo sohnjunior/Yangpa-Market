@@ -29,8 +29,10 @@ function createNewProduct(payload) {
   });
 }
 
-//TODO: 상품 게시글 삭제 요청 
-
+// 상품 게시글 삭제 요청 
+function deletePost(payload) {
+  return instance.delete(`/product/delete/${payload}`);
+}
 
 // 특정 상품 게시글 조회 요청
 function retreiveProduct(payload) {
@@ -46,6 +48,12 @@ function retriveAllProducts() {
 //TODO: 상품 게시글 업데이트 요청
 
 
+// 상품 검색 요청
+function searchProduct(payload) {
+  return instance.get(`/product/search/${payload}`);
+}
+
+
 // 각종 테스트용 axios 요청
 function testJWT() {
   return instance.post("/token");
@@ -59,5 +67,6 @@ function testProduct() {
   return instance.get('/product/test');
 }
 
-export { createNewProduct, retriveAllProducts, retreiveProduct, 
+export {
+  createNewProduct, retriveAllProducts, retreiveProduct, deletePost, searchProduct,
   testJWT, testJWTVerify, testProduct }

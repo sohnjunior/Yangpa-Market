@@ -32,6 +32,8 @@
         rounded
         filled
         append-icon="mdi-magnify"
+        v-model="keyword"
+        @keyup.enter="search"
       ></v-text-field>
 
       <v-btn text to="/review">
@@ -46,12 +48,14 @@
 </template>
 
 <script>
+import { searchProduct } from '../api/index';
 import LoginModal from './LoginModal.vue';
 
 export default {
   data() {
     return {
-       dialog: false,
+      keyword: '',
+      dialog: false,
     }
   },
   components: {
@@ -65,6 +69,12 @@ export default {
     // 로그인하기 or 취소 버튼 클릭 시
     modalDestroy() {
       this.dialog = false;
+    },
+    // 검색
+    async search() {
+      const { data } = await searchProduct(this.keyword);
+      console.log(data);
+      this.keyword = '';
     }
   }
 }
