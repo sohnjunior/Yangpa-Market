@@ -28,24 +28,56 @@
       <v-spacer></v-spacer>
 
       <v-text-field
-              placeholder="SEARCH"
-              rounded
-              filled
-              append-icon="mdi-magnify"
+        placeholder="SEARCH"
+        rounded
+        filled
+        append-icon="mdi-magnify"
+        v-model="keyword"
+        @keyup.enter="search"
       ></v-text-field>
 
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
+      <v-btn text to="/review">
+        <span class="mr-2">상품 후기</span>
+      </v-btn>
+
+      <v-btn text @click="loginClicked">
         <span class="mr-2">로그인</span>
       </v-btn>
+      <LoginModal :dialog="dialog" @modalDestroy="modalDestroy"></LoginModal>
     </v-app-bar>
 </template>
 
 <script>
-export default {}
+import { searchProduct } from '../api/index';
+import LoginModal from './LoginModal.vue';
+
+export default {
+  data() {
+    return {
+      keyword: '',
+      dialog: false,
+    }
+  },
+  components: {
+    LoginModal,
+  },
+  methods: {
+    // 로그인 이동
+    loginClicked() {
+      this.dialog = true;
+    },
+    // 로그인하기 or 취소 버튼 클릭 시
+    modalDestroy() {
+      this.dialog = false;
+    },
+    // 검색
+    async search() {
+      const { data } = await searchProduct(this.keyword);
+      console.log(data);
+      this.keyword = '';
+    }
+  }
+}
 </script>
 
 <style>

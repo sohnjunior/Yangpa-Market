@@ -1,19 +1,84 @@
 <template>
   <v-container>
-    <v-row class="text-center">
-      <v-col class="mb-4">
-        <h1 class="display-2 font-weight-bold mb-3">
-          양파 마켓
-        </h1>
+    <v-container style="height: 10px;">
+      <v-row class="text-center">
+        <v-col>
+          <v-btn @click="categorySelected('전공서적')">전공서적</v-btn>
+        </v-col>
+        <v-col>
+          <v-btn @click="categorySelected('원룸')">원룸</v-btn>
+        </v-col>
+        <v-col>
+          <v-btn @click="categorySelected('회원권')">회원권</v-btn>
+        </v-col>
+        <v-col>
+          <v-btn @click="categorySelected('의류')">의류</v-btn>
+        </v-col>
+        <v-col>
+          <v-btn @click="categorySelected('기타')">기타</v-btn>
+        </v-col>
+      </v-row>
+    </v-container>
+    <v-content>
+      <v-row>
+      <v-col>
+        <h1>실시간 인기 상품</h1>
       </v-col>
-
     </v-row>
+    <ProductCard></ProductCard>
+
+    <v-row>
+      <v-col>
+        <h1>{{ category }}</h1>
+      </v-col>
+    </v-row>
+    <ProductCard></ProductCard> <br>
+    <ProductCard></ProductCard>
+    </v-content>
+    <v-fab-transition>
+      <v-btn
+        color="pink"
+        dark
+        absolute
+        bottom
+        right
+        fab
+        to="/product/new"
+      >
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
+    </v-fab-transition>
   </v-container>
 </template>
 
 <script>
-export default {
+import { retriveAllProducts } from '../api/index';
+import ProductCard from '../components/ProductCard.vue';
 
+export default {
+  data() {
+    return {
+      products: [],
+      category: '',
+    }
+  },
+  components: {
+    ProductCard,
+  },
+  methods: {
+    // TODO: 선택된 카테고리에 따라 상품 출력
+    categorySelected(category) {
+      this.category = category;
+      console.log(category);
+    }
+  },
+  // created 라이프 사이클에 카테고리 전체로 설정하고 상품 데이터 로드
+  async created() {
+    this.category = '전공서적';
+    // 전체 상품 조회 API 호출 (날짜순으로 정렬된 상태)
+    const { data } = await retriveAllProducts();
+    this.products = data;
+  }
 }
 </script>
 

@@ -26,6 +26,11 @@ module.exports = (sequelize, Datatypes) => {
       type: Datatypes.DATE,
       allowNull: true,
     },
+    admin: {
+      type: Datatypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    }
   }, {
     timestamps: true,
     paranoid: true,

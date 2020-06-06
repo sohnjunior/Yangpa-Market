@@ -10,10 +10,6 @@ module.exports = (sequelize, Datatypes) => {
       allowNull: false,
       defaultValue: 0,
     },
-    seller: {
-      type: Datatypes.STRING(100),
-      allowNull: false,
-    },
     sold: {
       type: Datatypes.BOOLEAN,
       allowNull: false,

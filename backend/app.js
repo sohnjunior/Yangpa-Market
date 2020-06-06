@@ -5,16 +5,18 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const flash = require('connect-flash');
 const passport = require('passport');
+const cors = require('cors');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
 const tokenRouter = require("./routes/token");// Test router about token
 const apiRouter = require("./routes/test/api"); // Test router about API for token
+const ProductRouter = require('./routes/product');  // 상품 관련 라우터
 
 const { sequelize } = require('./models');
 const passportConfig = require('./passport/passport');
 
-var app = express();
+const app = express();
 sequelize.sync();
 passportConfig(passport);
 
@@ -31,10 +33,14 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/',indexRouter);
+// CORS 허용
+app.use(cors());
+
+app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use("/token", tokenRouter);
 app.use("/api", apiRouter);// Test router about API for token
+app.use("/product", ProductRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -52,11 +58,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-//To Avoid CORS
-app.use(function(req,res,next){
-  res.setHeader('Access-Control-Allow-Origin','*');
-  res.setHeader("Access-Control-Allow-Methods", 'GET,POST');
-  res.setHeader("Access-Control-Allow-Headers", 'X-Requested-With, content-type, Authorization');
-  next();
-})
 module.exports = app;
