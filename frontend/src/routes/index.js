@@ -8,6 +8,7 @@ import ProductDetailView from '../views/ProductDetailView.vue';
 import ReviewBoardView from '../views/ReviewBoardView.vue';
 import SignupView from '../views/SignupView.vue';
 import SearchView from '../views/SearchView.vue';
+import AdminView from '../views/AdminView.vue';
 
 // sub component for Dashboard
 import DashBoard from '../components/DashBoard.vue';
@@ -29,6 +30,7 @@ export const router = new VueRouter({
            {
              // 관리자 페이지
              path: "/admin",
+             component: AdminView,
            },
            {
              // 유저 대시보드
