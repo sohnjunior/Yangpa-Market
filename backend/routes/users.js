@@ -41,26 +41,24 @@ router.get('/users' ,function(req,res,next){
 //Register new User. Create new User by 'createUser'
 router.post('/register',async function(req,res,next){
   //필수 값들만 임시로 넣은상태, 나머지도 추가하면됨
-  const { email, password, nickname ,admin } = req.body;
-  try {
-    const exUser = await getUser( email );
-    if(exUser){             
-      req.flash('registerError','이미 가입된 이메일');
-      return res.redirect('/register');
-    }
+  const { email, password, nickname , admin } = req.body;
+  
+  const exUser = await getUser(email);
+  if(exUser){
+    console.log('존재하는 이메일');
+    return res.redirect('/');
   }
-  catch(error){
-    console.error(error);
-    return next(error);
-  } 
-  createUser({ email, password, nickname, admin }).then((user) =>
+
+  await createUser({ email, password, nickname, admin }).then((user) =>
     res.json({ user, msg: "account created successfully" })
   );
 });
 
 //Login
 router.post('/login',tokenLimiter, async function(req,res,next){  
+  /*
   passport.authenticate('local',(authError,user,info)=>{
+    console.log('kkk');
     if(authError){
       console.error(authError);
       return next(authError);
@@ -82,8 +80,8 @@ router.post('/login',tokenLimiter, async function(req,res,next){
     });
     (req,res,next);
   });
-
-  /* without passport..
+*/
+  
   const{ email, password } = req.body;
   if(email && password){ // If request's email and password is exist...
     let user = await getUser({email}); // Get User by email
@@ -102,7 +100,7 @@ router.post('/login',tokenLimiter, async function(req,res,next){
       res.status(401).json({ msg: "Password is incorrect" });
       return res.redirect('/login'); //되돌아갈 페이지
     }
-  }*/
+  }
 });
 
 router.get("/protected", verifyToken, (req, res) => {
@@ -118,9 +116,8 @@ router.post("/update",verifyToken, async function(req,res,next){
   );  
 })
 
-router.post("/logout", destroyToken, (req, res) => {
+router.get("/logout", destroyToken, (req, res) => {
   res.json(req.decoded);
-  return res.redirect('/');
 });
 
 module.exports = router;
