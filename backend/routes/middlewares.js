@@ -50,6 +50,7 @@ exports.verifyToken = (req, res, next) => {
   }
 };
 
+//로그아웃용 토큰 삭제 미들웨어
 exports.destroyToken = (req, res, next) => {
   try {
     req.decoded = jwt.verify(req.headers.authorization, process.env.JWT_SECRET);
