@@ -10,8 +10,8 @@ require("dotenv").config();
 const { verifyToken, tokenLimiter, destroyToken } = require("./middlewares");//Limiter from middleware.js
 
 //Create new User to Table 'yangpa.user'
-const createUser = async({ email,password,nickname}) => {
-  return await User.create({ email, password, nickname});
+const createUser = async({ email, password, nickname, admin}) => {
+  return await User.create({ email, password, nickname, admin});
 };
 
 const updateUser = async ({ email, password, nickname }) => {
@@ -41,21 +41,21 @@ router.get('/users' ,function(req,res,next){
 //Register new User. Create new User by 'createUser'
 router.post('/register',async function(req,res,next){
   //필수 값들만 임시로 넣은상태, 나머지도 추가하면됨
-  const { email, password, nickname } = req.body;
+  const { email, password, nickname ,admin } = req.body;
   try {
     const exUser = await getUser( email );
     if(exUser){             
       req.flash('registerError','이미 가입된 이메일');
       return res.redirect('/register');
     }
-  createUser({ email, password, nickname }).then((user) =>
-    res.json({ user, msg: "account created successfully" })
-  );
   }
   catch(error){
     console.error(error);
     return next(error);
   } 
+  createUser({ email, password, nickname, admin }).then((user) =>
+    res.json({ user, msg: "account created successfully" })
+  );
 });
 
 //Login
