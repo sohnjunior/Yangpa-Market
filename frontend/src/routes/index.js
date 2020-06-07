@@ -4,6 +4,7 @@ import MainView from '../views/MainView.vue';
 import PageNotFound from '../views/PageNotFound.vue';
 import DashBoardView from '../views/DashBoardView.vue';
 import ProductCreateView from '../views/ProductCreateView.vue';
+import ProductDetailView from '../views/ProductDetailView.vue';
 import ReviewBoardView from '../views/ReviewBoardView.vue';
 
 // sub component for Dashboard
@@ -67,6 +68,11 @@ export const router = new VueRouter({
              // 상품 게시글 생성 페이지
              path: "/product/new",
              component: ProductCreateView,
+           },
+           {
+             // 상품 상세 글 페이지
+             path: "/product/:id",
+             component: ProductDetailView,
            },
            {
              // 후기 게시판

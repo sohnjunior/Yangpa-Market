@@ -32,8 +32,15 @@
         <h1>{{ category }}</h1>
       </v-col>
     </v-row>
-    <ProductCard></ProductCard> <br>
-    <ProductCard></ProductCard>
+    <ProductCard v-for="(product, i) in products" 
+    :title="product.product.title"
+    :image="product.product.image"
+    :body="product.body"
+    :hit="product.hit"
+    :writer="product.user.nickname"
+    :like="product.product.like"
+    :productID="product.title"
+    :key="i"/>
     </v-content>
     <v-fab-transition>
       <v-btn
@@ -59,6 +66,7 @@ export default {
   data() {
     return {
       products: [],
+      categotized: [],
       category: '',
     }
   },
@@ -69,7 +77,8 @@ export default {
     // TODO: 선택된 카테고리에 따라 상품 출력
     categorySelected(category) {
       this.category = category;
-      console.log(category);
+      
+      this.categorized = [];
     }
   },
   // created 라이프 사이클에 카테고리 전체로 설정하고 상품 데이터 로드

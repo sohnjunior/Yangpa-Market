@@ -1,6 +1,7 @@
 const express = require('express');
 const { productUpload } = require("./middlewares");
 const { Product, Category, User, Post } = require('../models');
+const fs = require('fs');
 const sequelize = require('sequelize');
 const Op = sequelize.Op;
 
@@ -76,6 +77,15 @@ router.get('/retreive', async (req, res, next) => {
     order: [['createdAt', 'DESC']],
   });
 
+  // 이미지 파일을 읽어 바이너리 형태로 전송해줌
+  posts.forEach(post => {
+      const imagePath = post.product.dataValues.image;
+      const data = fs.readFileSync('public/images/product/' + imagePath);  
+      let base64 = Buffer.from(data).toString('base64');
+      base64 = `data:image/png;base64,${base64}`;
+      post.product.dataValues.image = base64;
+    });
+
   res.json(posts);
 });
 
@@ -84,6 +94,13 @@ router.get('/retreive/:id', async (req, res, next) => {
   const post = await Post.findOne({
     where: { id: req.params.id }
   });
+
+  // 이미지 파일을 읽어 바이너리 형태로 전송해줌
+  const imagePath = post.product.dataValues.image;
+  const data = fs.readFileSync('public/images/product/' + imagePath);
+  let base64 = Buffer.from(data).toString('base64');
+  base64 = `data:image/png;base64,${base64}`;
+  post.product.dataValues.image = base64;
 
   res.json(post);
 });
@@ -113,6 +130,15 @@ router.get('/search/:keyword', async (req, res, next) => {
       } 
     }
   } 
+
+  // 이미지 파일을 읽어 바이너리 형태로 전송해줌
+  resultArr.forEach(result => {
+    const imagePath = result.dataValues.image;
+    const data = fs.readFileSync('public/images/product/' + imagePath);
+    let base64 = Buffer.from(data).toString('base64');
+    base64 = `data:image/png;base64,${base64}`;
+    result.dataValues.image = base64;
+  });
 
   res.json({'result': resultArr});
 });
