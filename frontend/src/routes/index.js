@@ -7,6 +7,7 @@ import ProductCreateView from '../views/ProductCreateView.vue';
 import ProductDetailView from '../views/ProductDetailView.vue';
 import ReviewBoardView from '../views/ReviewBoardView.vue';
 import SignupView from '../views/SignupView.vue';
+import SearchView from '../views/SearchView.vue';
 
 // sub component for Dashboard
 import DashBoard from '../components/DashBoard.vue';
@@ -75,6 +76,11 @@ export const router = new VueRouter({
              // 상품 상세 글 페이지
              path: "/product/:id",
              component: ProductDetailView,
+           },
+           {
+             // 검색 결과
+             path: "/search/:keyword",
+             component: SearchView,
            },
            {
              // 후기 게시판

@@ -51,7 +51,6 @@
 </template>
 
 <script>
-import { searchProduct } from '../api/index';
 import LoginModal from './LoginModal.vue';
 
 export default {
@@ -74,9 +73,8 @@ export default {
       this.dialog = false;
     },
     // 검색
-    async search() {
-      const { data } = await searchProduct(this.keyword);
-      console.log(data);
+    search() {
+      this.$router.push(`/search/${this.keyword}`);
       this.keyword = '';
     }
   }
