@@ -43,6 +43,9 @@
       <v-btn text @click="loginClicked">
         <span class="mr-2">로그인</span>
       </v-btn>
+      <v-btn text to="/signup">
+        <span class="mr-2">회원가입</span>
+      </v-btn>
       <LoginModal :dialog="dialog" @modalDestroy="modalDestroy"></LoginModal>
     </v-app-bar>
 </template>

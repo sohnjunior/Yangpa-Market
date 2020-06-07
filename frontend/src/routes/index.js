@@ -6,6 +6,7 @@ import DashBoardView from '../views/DashBoardView.vue';
 import ProductCreateView from '../views/ProductCreateView.vue';
 import ProductDetailView from '../views/ProductDetailView.vue';
 import ReviewBoardView from '../views/ReviewBoardView.vue';
+import SignupView from '../views/SignupView.vue';
 
 // sub component for Dashboard
 import DashBoard from '../components/DashBoard.vue';
@@ -43,26 +44,27 @@ export const router = new VueRouter({
                  path: "wishlist",
                  component: UserWishList,
                },
-                {
-                  // 장바구니
-                  path: "cart",
-                  component: UserCart,
-                },
-                {
-                  // 판매 및 구매내역
-                  path: "order",
-                  component: UserOrder,
-                },
-                {
-                  // 프로필 관리
-                  path: "profile",
-                  component: UserProfile,
-                },
+               {
+                 // 장바구니
+                 path: "cart",
+                 component: UserCart,
+               },
+               {
+                 // 판매 및 구매내역
+                 path: "order",
+                 component: UserOrder,
+               },
+               {
+                 // 프로필 관리
+                 path: "profile",
+                 component: UserProfile,
+               },
              ],
            },
            {
              // 회원가입
              path: "/signup",
+             component: SignupView,
            },
            {
              // 상품 게시글 생성 페이지
