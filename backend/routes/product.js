@@ -91,18 +91,33 @@ router.get('/retreive', async (req, res, next) => {
 
 // 특정 상품 게시글 조회
 router.get('/retreive/:id', async (req, res, next) => {
-  const post = await Post.findOne({
-    where: { id: req.params.id }
-  });
+  try {
+    const post = await Post.findOne({
+        where: { title: req.params.id },
+      include: [
+        {
+          model: User,
+          attributes: ['nickname'],
+        },
+        {
+          model: Product,
+          attributes: ['title', 'image', 'price', 'like'],
+        }
+      ],
+    });
 
-  // 이미지 파일을 읽어 바이너리 형태로 전송해줌
-  const imagePath = post.product.dataValues.image;
-  const data = fs.readFileSync('public/images/product/' + imagePath);
-  let base64 = Buffer.from(data).toString('base64');
-  base64 = `data:image/png;base64,${base64}`;
-  post.product.dataValues.image = base64;
+    // 이미지 파일을 읽어 바이너리 형태로 전송해줌
+    const imagePath = post.product.dataValues.image;
+    const data = fs.readFileSync('public/images/product/' + imagePath);
+    let base64 = Buffer.from(data).toString('base64');
+    base64 = `data:image/png;base64,${base64}`;
+    post.product.dataValues.image = base64;
 
-  res.json(post);
+    res.json(post);
+  } catch(err) {
+    console.error(err);
+    next(err);
+  }
 });
 
 // 특정 키워드 기준 상품명 검색 결과
