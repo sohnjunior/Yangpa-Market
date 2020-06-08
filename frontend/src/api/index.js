@@ -53,8 +53,15 @@ function searchProduct(payload) {
   return instance.get(`/product/search/${payload}`);
 }
 
+// 실시간 인기 상품 요청
+function realtimePopular() {
+  return instance.get("/recommend/popular");
+}
 
-// 각종 테스트용 axios 요청
+
+/*
+    각종 테스트용 axios 요청
+*/
 function testJWT() {
   return instance.post("/token");
 }
@@ -69,4 +76,5 @@ function testProduct() {
 
 export {
   createNewProduct, retriveAllProducts, retreiveProduct, deletePost, searchProduct,
+  realtimePopular,
   testJWT, testJWTVerify, testProduct }

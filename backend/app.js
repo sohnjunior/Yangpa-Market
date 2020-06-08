@@ -12,6 +12,7 @@ const usersRouter = require('./routes/users');
 const tokenRouter = require("./routes/token");// Test router about token
 const apiRouter = require("./routes/test/api"); // Test router about API for token
 const ProductRouter = require('./routes/product');  // 상품 관련 라우터
+const RecommandRouter = require('./routes/recommend');  // 상품 추천 관련 라우터
 
 const { sequelize } = require('./models');
 const passportConfig = require('./passport/passport');
@@ -41,6 +42,7 @@ app.use('/users', usersRouter);
 app.use("/token", tokenRouter);
 app.use("/api", apiRouter);// Test router about API for token
 app.use("/product", ProductRouter);
+app.use("/recommend", RecommandRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

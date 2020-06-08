@@ -25,7 +25,15 @@
         <h1>실시간 인기 상품</h1>
       </v-col>
     </v-row>
-    <ProductCard></ProductCard>
+    <ProductCard v-for="(product, i) in populars" 
+    :title="product.title"
+    :image="product.image"
+    :body="product.post.body"
+    :hit="product.post.hit"
+    :writer="`분류 : ${product.category.title}`"
+    :like="product.like"
+    :productID="product.post.title"
+    :key="i"/>
 
     <v-row>
       <v-col>
@@ -59,13 +67,14 @@
 </template>
 
 <script>
-import { retriveAllProducts } from '../api/index';
+import { retriveAllProducts, realtimePopular } from '../api/index';
 import ProductCard from '../components/ProductCard.vue';
 
 export default {
   data() {
     return {
       products: [],
+      populars: [],
       category: '',
       categoryMap: {
         "전공서적": "books",
@@ -100,9 +109,14 @@ export default {
   // created 라이프 사이클에 카테고리 전체로 설정하고 상품 데이터 로드
   async created() {
     this.category = '전공서적';
+    
     // 전체 상품 조회 API 호출 (날짜순으로 정렬된 상태)
     const { data } = await retriveAllProducts();
     this.products = data;
+    
+    // 인기 상품 조회
+    const result = await realtimePopular();
+    this.populars = result.data.result;
   }
 }
 </script>
