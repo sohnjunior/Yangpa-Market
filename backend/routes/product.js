@@ -94,17 +94,20 @@ router.get('/retreive/:id', async (req, res, next) => {
   try {
     const post = await Post.findOne({
         where: { title: req.params.id },
-      include: [
-        {
-          model: User,
-          attributes: ['nickname'],
-        },
-        {
-          model: Product,
-          attributes: ['title', 'image', 'price', 'like'],
-        }
-      ],
+        include: [
+          {
+            model: User,
+            attributes: ['nickname'],
+          },
+          {
+            model: Product,
+            attributes: ['title', 'image', 'price', 'like'],
+          }
+        ],
     });
+
+    // 조회수 증가
+    console.log(post.hit);
 
     // 이미지 파일을 읽어 바이너리 형태로 전송해줌
     const imagePath = post.product.dataValues.image;
@@ -135,6 +138,10 @@ router.get('/search/:keyword', async (req, res, next) => {
         title: {
           [Op.like]: `%${keyword}%`
         }
+      },
+      include: {
+        model: Post,
+        attributes: ['title', 'hit'],
       }
     });
     
