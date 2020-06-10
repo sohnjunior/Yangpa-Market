@@ -45,8 +45,10 @@ function retriveAllProducts() {
 }
 
 
-//TODO: 상품 게시글 업데이트 요청
-
+// 상품 게시글 업데이트 요청
+function updateProduct(id, payload) {
+  return instance.put(`/product/update/${id}`, payload);
+}
 
 // 상품 검색 요청
 function searchProduct(payload) {
@@ -75,6 +77,6 @@ function testProduct() {
 }
 
 export {
-  createNewProduct, retriveAllProducts, retreiveProduct, deletePost, searchProduct,
+  createNewProduct, retriveAllProducts, updateProduct, retreiveProduct, deletePost, searchProduct,
   realtimePopular,
   testJWT, testJWTVerify, testProduct }

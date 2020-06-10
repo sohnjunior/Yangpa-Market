@@ -5,6 +5,7 @@ import PageNotFound from '../views/PageNotFound.vue';
 import DashBoardView from '../views/DashBoardView.vue';
 import ProductCreateView from '../views/ProductCreateView.vue';
 import ProductDetailView from '../views/ProductDetailView.vue';
+import ProductUpdateView from '../views/ProductUpdateView.vue';
 import ReviewBoardView from '../views/ReviewBoardView.vue';
 import SignupView from '../views/SignupView.vue';
 import SearchView from '../views/SearchView.vue';
@@ -78,6 +79,11 @@ export const router = new VueRouter({
              // 상품 상세 글 페이지
              path: "/product/:id",
              component: ProductDetailView,
+           },
+           {
+             // 상품 게시글 수정 페이지
+             path: "/product/update/:id",
+             component: ProductUpdateView,
            },
            {
              // 검색 결과

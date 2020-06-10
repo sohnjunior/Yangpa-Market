@@ -40,9 +40,25 @@ router.post('/create', productUpload.single('image'), async (req, res, next) => 
   res.json({'response': 'success'});
 });
 
-//TODO: 상품 정보 수정
-router.put('/update/:id', (req, res, next) => {
+// 상품 정보 수정
+router.put('/update/:id', async (req, res, next) => {
+  const postTitle = req.body.productId;
+  const productData = {
+    'title': req.body.title,
+    'price': req.body.price,
+  };
+  const postData = {
+    'body': req.body.body,
+  }
   
+  // 본문 게시글 변경
+  await Post.update(postData, {where: {title: postTitle}});
+  
+  // 상품 정보 변경
+  const post = await Post.findOne({where: {title: postTitle}});
+  await Product.update(productData, { where: { postId: post.id }});
+
+  res.json({'response': 'success'});
 });
 
 // 상품 게시글 삭제

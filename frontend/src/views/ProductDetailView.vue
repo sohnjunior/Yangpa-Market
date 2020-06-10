@@ -10,7 +10,8 @@
             {{ productTitle }} <br>
             {{ productBody }} <br>
             ₩{{ productPrice }}
-            <v-btn>장바구니 담기</v-btn>  
+            <v-btn>장바구니 담기</v-btn>
+            <v-btn @click="updateInfo">상품정보 수정</v-btn>
           </v-row>
         </v-col>
       </v-row>
@@ -18,6 +19,10 @@
 
     <v-container>
       <h2>연관된 상품</h2>
+    </v-container>
+    <hr>
+    <v-container>
+      <h3>댓글</h3>
     </v-container>
   </div>
 </template>
@@ -42,6 +47,12 @@ export default {
     this.productBody = data.body;
     this.productTitle = data.product.title;
     this.productPrice = data.product.price;
+  },
+  methods: {
+    updateInfo() {
+      // 상품 정보 업데이트
+      this.$router.push(`/product/update/${this.productID}`);
+    }
   }
 }
 </script>
