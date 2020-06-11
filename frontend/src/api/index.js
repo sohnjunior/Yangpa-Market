@@ -22,11 +22,7 @@ const instance = createInstance();
 
 //유저 등록 요청
 function registerUser(payload){
-  return instance.post("/users/register",payload, {
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    }
-  });
+  return instance.post("/users/register",payload);
 }
 
 // 상품 게시글 등록 요청

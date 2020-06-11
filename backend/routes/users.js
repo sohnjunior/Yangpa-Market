@@ -22,13 +22,6 @@ const getAllUser = async()=>{
   return await User.findAll();
 }
 
-//Get User matched
-const getUser = async obj => {
-  return await User.findOne({
-    where:obj,
-  });
-};
-
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
@@ -41,15 +34,15 @@ router.get('/users' ,function(req,res,next){
 //Register new User. Create new User by 'createUser'
 router.post('/register', async function(req,res,next){
   const { email, password, nickname , phone, sex, birthday, admin } = req.body;
-  console.log(req.body);
+  console.log(req.body.email);
   console.log('====');
   console.log(email);
 
-  let exUser = await getUser(email);
+  let exUser = await User.findOne({ where: {email: email} });
   if(exUser){
-    console.log(exUser);
+    // console.log(exUser);
     console.log('존재하는 이메일');
-    return res.redirect('/');
+    return res.redirect('/');  // <-- 에러 코드 반환하는 거로 수정
   }
 
   await createUser({ email, password, nickname, phone, sex, birthday, admin }).then((user) =>
