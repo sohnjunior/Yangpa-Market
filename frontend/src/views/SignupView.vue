@@ -1,13 +1,15 @@
 <template>
-  <div>
-    회원가입
-  </div>
+  <SignupForm></SignupForm>
 </template>
 
 <script>
-export default {
+import SignupForm from '../components/SignupForm';
 
-}
+export default {
+  components: {
+    SignupForm,
+  },
+};
 </script>
 
 <style>

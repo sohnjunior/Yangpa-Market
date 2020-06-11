@@ -20,6 +20,15 @@ const instance = createInstance();
     Node.js 서버에 보낼 axios 요청 함수들 정의
 */
 
+//유저 등록 요청
+function registerUser(payload){
+  return instance.post("/users/register",payload, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
+}
+
 // 상품 게시글 등록 요청
 function createNewProduct(payload) {
   return instance.post("/product/create", payload, {
@@ -77,6 +86,6 @@ function testProduct() {
 }
 
 export {
-  createNewProduct, retriveAllProducts, updateProduct, retreiveProduct, deletePost, searchProduct,
+  registerUser,createNewProduct, retriveAllProducts, updateProduct, retreiveProduct, deletePost, searchProduct,
   realtimePopular,
   testJWT, testJWTVerify, testProduct }
