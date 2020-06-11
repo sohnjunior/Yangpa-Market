@@ -10,12 +10,12 @@ require("dotenv").config();
 const { verifyToken, tokenLimiter, destroyToken } = require("./middlewares");//Limiter from middleware.js
 
 //Create new User to Table 'yangpa.user'
-const createUser = async({ email, password, nickname, admin}) => {
-  return await User.create({ email, password, nickname, admin});
+const createUser = async ({ email, password, nickname, phone, sex, birthday, admin}) => {
+  return await User.create({ email, password, nickname, phone, sex, birthday, admin});
 };
 
-const updateUser = async ({ email, password, nickname }) => {
-  return await User.update({ password, nickname }, { where : email });
+const updateUser = async ({ email, password, nickname, phone, sex, birthday }) => {
+  return await User.update({ email, password, nickname, phone, sex, birthday }, { where : email });
 };
 //Get All user from table
 const getAllUser = async()=>{
@@ -39,49 +39,26 @@ router.get('/users' ,function(req,res,next){
 });
 
 //Register new User. Create new User by 'createUser'
-router.post('/register',async function(req,res,next){
-  //필수 값들만 임시로 넣은상태, 나머지도 추가하면됨
-  const { email, password, nickname , admin } = req.body;
-  
-  const exUser = await getUser(email);
+router.post('/register', async function(req,res,next){
+  const { email, password, nickname , phone, sex, birthday, admin } = req.body;
+  console.log(req.body);
+  console.log('====');
+  console.log(email);
+
+  let exUser = await getUser(email);
   if(exUser){
+    console.log(exUser);
     console.log('존재하는 이메일');
     return res.redirect('/');
   }
 
-  await createUser({ email, password, nickname, admin }).then((user) =>
+  await createUser({ email, password, nickname, phone, sex, birthday, admin }).then((user) =>
     res.json({ user, msg: "account created successfully" })
   );
 });
 
 //Login
 router.post('/login',tokenLimiter, async function(req,res,next){  
-  /*
-  passport.authenticate('local',(authError,user,info)=>{
-    console.log('kkk');
-    if(authError){
-      console.error(authError);
-      return next(authError);
-    }
-    if(!user){
-      req.flash('loginError',info.message);
-      return res.redirect('/');
-    }
-    return req.login(user,{ session : false }, (loginError)=>{
-      if(loginError){
-        console.error(loginError);
-        return next(loginError);
-      }
-      const body = { id : user.id, email : user.email };
-      const token = jwt.sign({ user : body }, process.env.JWT_SECRET);
-      
-      res.json({ msg: "ok", token: token });
-      return res.redirect('/');
-    });
-    (req,res,next);
-  });
-*/
-  
   const{ email, password } = req.body;
   if(email && password){ // If request's email and password is exist...
     let user = await getUser({email}); // Get User by email
