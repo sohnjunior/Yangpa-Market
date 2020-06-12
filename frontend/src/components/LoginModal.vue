@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { loginUser } from '../api/index'
+
 
 export default {
   data() {
@@ -46,18 +46,15 @@ export default {
       const userData = {
         email : this.email,
         password : this.password,
-      }
+      };
 
       try {
-        const { data } = await loginUser(userData);
-        console.log(data);
+        await this.$store.dispatch('LOGIN', userData);
+        this.modalDestroy();
       } catch (error) {
-        console.log(error);
+        console.log(error); 
       }
-
-      this.$emit('modalDestroy');
     }
-    // TODO: 로그인 api 호출
   }
 }
 </script>

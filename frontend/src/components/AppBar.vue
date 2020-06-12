@@ -40,18 +40,47 @@
         <span class="mr-2">상품 후기</span>
       </v-btn>
 
-      <v-btn text @click="loginClicked">
+      <v-btn text @click="loginClicked" v-if="!isLoggedIn">
         <span class="mr-2">로그인</span>
       </v-btn>
-      <v-btn text to="/signup">
+      <v-btn text to="/signup" v-if="!isLoggedIn">
         <span class="mr-2">회원가입</span>
       </v-btn>
+     
+        <v-menu
+          text
+          bottom
+          origin="center center"
+          transition="scale-transition"
+          v-if="isLoggedIn"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              color="primary"
+              dark
+              v-bind="attrs"
+              v-on="on"
+            >
+              화원정보
+            </v-btn>
+          </template>
+
+          <v-list>
+            <v-list-item @click="routeToDashboard">
+              <v-list-item-title>대시보드</v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="logoutClicked">
+              <v-list-item-title>로그아웃</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       <LoginModal :dialog="dialog" @modalDestroy="modalDestroy"></LoginModal>
     </v-app-bar>
 </template>
 
 <script>
 import LoginModal from './LoginModal.vue';
+import { deleteCookie } from '../utils/cookies.js';
 
 export default {
   data() {
@@ -63,10 +92,19 @@ export default {
   components: {
     LoginModal,
   },
+  computed: {
+    isLoggedIn() {
+      return this.$store.getters.isLoggedIn;
+    }
+  },
   methods: {
-    // 로그인 이동
+    // 로그인 모달 팝업
     loginClicked() {
       this.dialog = true;
+    },
+    // 로그아웃
+    logoutClicked() {
+      deleteCookie('auth_token');
     },
     // 로그인하기 or 취소 버튼 클릭 시
     modalDestroy() {
@@ -76,6 +114,10 @@ export default {
     search() {
       this.$router.push(`/search/${this.keyword}`);
       this.keyword = '';
+    },
+    // 대시보드로 이동
+    routeToDashboard() {
+      this.$router.push('/dashboard');
     }
   }
 }

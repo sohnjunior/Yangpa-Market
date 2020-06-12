@@ -7,7 +7,7 @@ const { User } = require('../models');
 
 require("dotenv").config();
 
-const { verifyToken, tokenLimiter, destroyToken } = require("./middlewares");//Limiter from middleware.js
+const { verifyToken, tokenLimiter } = require("./middlewares");//Limiter from middleware.js
 
 //Create new User to Table 'yangpa.user'
 const createUser = async ({ email, password, nickname, phone, sex, birthday, admin}) => {
@@ -22,12 +22,6 @@ const getAllUser = async()=>{
   return await User.findAll();
 }
 
-const getUser = async obj => {
-  return await User.findOne({
-    where: obj,
-  });
-};
-
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
@@ -40,14 +34,12 @@ router.get('/users' ,function(req,res,next){
 //Register new User. Create new User by 'createUser'
 router.post('/register', async function(req,res,next){
   const { email, password, nickname , phone, sex, birthday, admin } = req.body;
-  console.log(req.body.email);
   console.log('====');
   console.log(email);
 
   let exUser = await User.findOne({ where: {email: email} });
   if(exUser){
-    console.log('존재하는 이메일');
-    return res.redirect('/');  // <-- 에러 코드 반환하는 거로 수정
+    res.status(401).json({ msg: "Email already Exist" });
   }
 
   await createUser({ email, password, nickname, phone, sex, birthday, admin }).then((user) =>
@@ -58,22 +50,19 @@ router.post('/register', async function(req,res,next){
 //Login
 router.post('/login',tokenLimiter, async function(req,res,next){  
   const{ email, password } = req.body;
-  if(email && password){ // If request's email and password is exist...
-    let user = await getUser({email}); // Get User by email
-    if(!user){
-      res.status(401).json({msg : "No User found", user});
-      return res.redirect('/login'); //되돌아갈 페이지
+  if(email && password) { // If request's email and password is exist...
+    let user = await User.findOne({ where: { email: email } }); // Get User by email
+    if(!user) {
+      res.status(401).json({ msg : "No User found" });
     }
 
-    if(user.password === password){ // If request's email and password is correct...
+    if(user.password === password) { // If request's email and password is correct...
       let payload = { id : user.id };
       let token = jwt.sign(payload,process.env.JWT_SECRET);
       
       res.json({msg:'ok',token : token});
-    }
-    else{
-      res.status(401).json({ msg: "Password is incorrect" });
-      return res.redirect('/login'); //되돌아갈 페이지
+    } else {
+      res.json({ msg: "Password is incorrect" });
     }
   }
 });
@@ -91,8 +80,5 @@ router.post("/update",verifyToken, async function(req,res,next){
   );  
 })
 
-router.get("/logout", destroyToken, (req, res) => {
-  res.json(req.decoded);
-});
 
 module.exports = router;

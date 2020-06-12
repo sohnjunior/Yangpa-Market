@@ -87,6 +87,7 @@ function testProduct() {
 }
 
 export {
-  registerUser, loginUser, createNewProduct, retriveAllProducts, updateProduct, retreiveProduct, deletePost, searchProduct,
+  registerUser, loginUser, 
+  createNewProduct, retriveAllProducts, updateProduct, retreiveProduct, deletePost, searchProduct,
   realtimePopular,
   testJWT, testJWTVerify, testProduct }
