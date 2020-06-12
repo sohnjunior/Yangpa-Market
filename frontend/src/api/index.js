@@ -25,6 +25,11 @@ function registerUser(payload){
   return instance.post("/users/register",payload);
 }
 
+//유저 로그인 요펑
+function loginUser(payload) {
+  return instance.post("/users/login", payload);
+}
+
 // 상품 게시글 등록 요청
 function createNewProduct(payload) {
   return instance.post("/product/create", payload, {
@@ -82,6 +87,6 @@ function testProduct() {
 }
 
 export {
-  registerUser,createNewProduct, retriveAllProducts, updateProduct, retreiveProduct, deletePost, searchProduct,
+  registerUser, loginUser, createNewProduct, retriveAllProducts, updateProduct, retreiveProduct, deletePost, searchProduct,
   realtimePopular,
   testJWT, testJWTVerify, testProduct }
