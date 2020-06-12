@@ -1,10 +1,14 @@
 <template>
   <v-form>
       <h1>New User</h1>
-      <div>
-          <label for="email">E-mail</label>
-          <input id = "email" type="text" v-model="email"/>
-      </div>
+      
+      <v-text-field
+        v-model="email"
+        :rules="emailRules"
+        label = "Email"
+        required
+        ></v-text-field> 
+      
       <div>
           <label for="password">비밀번호</label>
           <input id = "password" type="password" v-model="password"/>
@@ -41,6 +45,7 @@
           <label for="admin">예</label>
       </div>
       <v-btn @click="submitForm">가입하기</v-btn>
+      
   </v-form>
 </template>
 
@@ -58,7 +63,10 @@ export default {
             sex : '',
             birthday : '',
             admin:'',
-        }
+            emailRules : [
+            v => !!v || 'Email is required',
+        ],
+        }    
     },
     methods: {
         async submitForm() {
