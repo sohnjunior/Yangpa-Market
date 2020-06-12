@@ -1,32 +1,32 @@
 <template>
   <div class="text-center">
     <v-dialog
-      v-model="dialog"
+      :value="show"
       width="500"
+      @click:outside="closeDialog"
     >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          color="red lighten-2"
-          dark
-          v-bind="attrs"
-          v-on="on"
-        >
-          Click Me
-        </v-btn>
-      </template>
-
       <v-card>
         <v-card-title
           class="headline grey lighten-2"
           primary-title
         >
-          Privacy Policy
+          {{ title }}
         </v-card-title>
 
-        <v-card-text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </v-card-text>
+        <v-img
+          width="250"
+          height="200"
+          :src="image"
+        ></v-img>
 
+        <div class="my-4 subtitle-1">
+          작성자 : {{ writer }}
+        </div>
+
+        <v-card-text>
+          <v-rating :value="rating" background-color="amber lighten-3" color="amber" dense half-increments readonly size="25"></v-rating>
+          {{ body }}
+        </v-card-text>
         <v-divider></v-divider>
 
         <v-card-actions>
@@ -34,9 +34,9 @@
           <v-btn
             color="primary"
             text
-            @click="dialog = false"
+            @click="closeDialog"
           >
-            I accept
+            확인
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -46,14 +46,15 @@
 
 <script>
 export default {
-  data () {
-      return {
-        dialog: false,
-      }
-    },
+  props: ['show', 'title', 'writer', 'image', 'body', 'rating', 'like'],
+  methods: {
+    // 확인 버튼 클릭 시 이벤트 핸들러
+    closeDialog() {
+      this.$emit('closeDialog');
+    }
+  }
 }
 </script>
 
 <style>
-
 </style>
