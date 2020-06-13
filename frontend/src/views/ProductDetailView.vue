@@ -10,7 +10,7 @@
             {{ productTitle }} <br>
             {{ productBody }} <br>
             ₩{{ productPrice }}
-            <v-btn>장바구니 담기</v-btn>
+            <v-btn @click="addCart">장바구니 담기</v-btn>
             <v-btn @click="updateInfo">상품정보 수정</v-btn>
           </v-row>
         </v-col>
@@ -28,7 +28,8 @@
 </template>
 
 <script>
-import { retreiveProduct } from '../api/index';
+import { retreiveProduct, createNewCartProduct } from '../api/index';
+
 // TODO: 연관된 상품 추천 API 연동
 export default {
   data() {
@@ -49,9 +50,15 @@ export default {
     this.productPrice = data.product.price;
   },
   methods: {
+    // 상품 정보 업데이트
     updateInfo() {
-      // 상품 정보 업데이트
       this.$router.push(`/product/update/${this.productID}`);
+    },
+    // 장바구니에 상품 추가
+    async addCart() {
+      const payload = { email: this.$store.getters.getEmail, productID: this.productID };
+      const { data } = await createNewCartProduct(payload);
+      console.log(data);
     }
   }
 }

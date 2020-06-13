@@ -71,6 +71,19 @@ function realtimePopular() {
 }
 
 
+// 장바구니 상품 추가 요청
+function createNewCartProduct(payload) {
+  return instance.post("/cart/new", payload);
+}
+
+// 장바구니 상품 조회 요청
+function retriveAllCartProducts() {
+  return instance.get("/cart/retrieve");
+}
+
+// TODO: 장바구니 상품 제거 요청
+
+
 /*
     각종 테스트용 axios 요청
 */
@@ -90,4 +103,5 @@ export {
   registerUser, loginUser, 
   createNewProduct, retriveAllProducts, updateProduct, retreiveProduct, deletePost, searchProduct,
   realtimePopular,
+  createNewCartProduct, retriveAllCartProducts,
   testJWT, testJWTVerify, testProduct }

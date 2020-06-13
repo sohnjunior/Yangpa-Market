@@ -104,7 +104,9 @@ export default {
     },
     // 로그아웃
     logoutClicked() {
+      deleteCookie('auth_email');
       deleteCookie('auth_token');
+      this.$router.push('/');
     },
     // 로그인하기 or 취소 버튼 클릭 시
     modalDestroy() {

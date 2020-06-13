@@ -64,6 +64,7 @@ export default {
       formData.append('category', this.category);
       formData.append('body', this.body);
       formData.append('price', this.price);
+      formData.append('email', this.$store.getters.getEmail);
 
       try {
         const { data } = await createNewProduct(formData);

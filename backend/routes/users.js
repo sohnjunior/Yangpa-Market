@@ -3,16 +3,12 @@ const jwt = require("jsonwebtoken");
 var router = express.Router();
 const passport = require('passport');
 
-const { User } = require('../models');
+const { User, Cart } = require('../models');
 
 require("dotenv").config();
 
 const { verifyToken, tokenLimiter } = require("./middlewares");//Limiter from middleware.js
 
-//Create new User to Table 'yangpa.user'
-const createUser = async ({ email, password, nickname, phone, sex, birthday, admin}) => {
-  return await User.create({ email, password, nickname, phone, sex, birthday, admin});
-};
 
 const updateUser = async ({ email, password, nickname, phone, sex, birthday }) => {
   return await User.update({ email, password, nickname, phone, sex, birthday }, { where : email });
@@ -42,9 +38,10 @@ router.post('/register', async function(req,res,next){
     res.status(401).json({ msg: "Email already Exist" });
   }
 
-  await createUser({ email, password, nickname, phone, sex, birthday, admin }).then((user) =>
-    res.json({ user, msg: "account created successfully" })
-  );
+  const user = await User.create({ email, password, nickname, phone, sex, birthday, admin })
+  await Cart.create({ title: email });
+
+  res.json({ user, msg: "account created successfully" });
 });
 
 //Login
@@ -60,7 +57,7 @@ router.post('/login',tokenLimiter, async function(req,res,next){
       let payload = { id : user.id };
       let token = jwt.sign(payload,process.env.JWT_SECRET);
       
-      res.json({msg:'ok',token : token});
+      res.json({ msg:'ok',token, email });
     } else {
       res.json({ msg: "Password is incorrect" });
     }

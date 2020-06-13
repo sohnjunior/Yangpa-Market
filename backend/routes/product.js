@@ -1,5 +1,5 @@
 const express = require('express');
-const { productUpload } = require("./middlewares");
+const { productUpload, verifyToken } = require("./middlewares");
 const { Product, Category, User, Post } = require('../models');
 const fs = require('fs');
 const sequelize = require('sequelize');
@@ -9,10 +9,10 @@ const router = express.Router();
 
 
 // 새로운 상품 게시글 생성
-router.post('/create', productUpload.single('image'), async (req, res, next) => {
+router.post('/create', verifyToken, productUpload.single('image'), async (req, res, next) => {
   try {
-    // user, category 찾기 TODO: 현재는 직접 유저 찾지만 로그인 미들웨어 완성되면 req.user.id 로 바꾸기
-    const user = await User.findOne({ where: { email: 'test@test.com' } });
+    // user, category 찾기 
+    const user = await User.findOne({ where: { email: req.body.email } });
     const category = await Category.findOne({ where: { title: req.body.category } });
 
     // post 생성 (주문번호를 현재 시간을 통해 생성한다)
@@ -41,29 +41,38 @@ router.post('/create', productUpload.single('image'), async (req, res, next) => 
 });
 
 // 상품 정보 수정
-router.put('/update/:id', async (req, res, next) => {
-  const postTitle = req.body.productId;
-  const productData = {
-    'title': req.body.title,
-    'price': req.body.price,
-  };
-  const postData = {
-    'body': req.body.body,
+router.put('/update/:id', verifyToken, async (req, res, next) => {
+  try {
+    // TODO: email 정보로 현재 유저가 글 작성자와 동일한지 확인
+
+    const postTitle = req.body.productId;
+    const productData = {
+      'title': req.body.title,
+      'price': req.body.price,
+    };
+    const postData = {
+      'body': req.body.body,
+    }
+    
+    // 본문 게시글 변경
+    await Post.update(postData, {where: {title: postTitle}});
+    
+    // 상품 정보 변경
+    const post = await Post.findOne({where: {title: postTitle}});
+    await Product.update(productData, { where: { postId: post.id }});
+  } catch(err) {
+    console.error(err);
+    next(err);
   }
-  
-  // 본문 게시글 변경
-  await Post.update(postData, {where: {title: postTitle}});
-  
-  // 상품 정보 변경
-  const post = await Post.findOne({where: {title: postTitle}});
-  await Product.update(productData, { where: { postId: post.id }});
 
   res.json({'response': 'success'});
 });
 
 // 상품 게시글 삭제
-router.delete('/delete/:id', async (req, res, next) => {
+router.delete('/delete/:id', verifyToken, async (req, res, next) => {
   try {
+    // TODO: email 정보로 현재 유저가 글 작성자와 동일한지 확인
+
     const post = await Post.findOne({ where: { title: req.params.id } });
     await Product.destroy({ where: { postId: post.dataValues.id } });
     await Post.destroy({ where: { id: post.dataValues.id } });
