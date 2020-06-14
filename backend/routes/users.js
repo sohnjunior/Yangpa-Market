@@ -39,7 +39,7 @@ router.post('/register', async function(req,res,next){
   }
 
   const user = await User.create({ email, password, nickname, phone, sex, birthday, admin })
-  await Cart.create({ title: email });
+  await Cart.create({ title: email, userId: user.id });
 
   res.json({ user, msg: "account created successfully" });
 });
