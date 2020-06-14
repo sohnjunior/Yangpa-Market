@@ -17,6 +17,7 @@
     ></v-img>
 
     <v-card-text>
+      {{ price }} 원 <br>
       {{ body }}
     </v-card-text>
 
@@ -45,7 +46,7 @@
 
 <script>
 export default {
-  props: ['title', 'image', 'body', 'hit', 'writer', 'like', 'productID']
+  props: ['title', 'image', 'body', 'hit', 'writer', 'like', 'price', 'productID']
 }
 </script>
 

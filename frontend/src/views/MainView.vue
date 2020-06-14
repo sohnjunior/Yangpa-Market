@@ -39,8 +39,18 @@
       <v-col>
         <h1>{{ category }}</h1>
       </v-col>
+
+      <v-col class="d-flex" cols="12" sm="6">
+        <v-select
+          :items="items"
+          label="정렬기준"
+          outlined
+          v-model="pivot"
+        ></v-select>
+      </v-col>
+
     </v-row>
-    <ProductCard v-for="(product, i) in categotized" 
+    <ProductCard v-for="product in sorted" 
     :title="product.product.title"
     :image="product.product.image"
     :body="product.body"
@@ -48,7 +58,8 @@
     :writer="product.user.nickname"
     :like="product.product.like"
     :productID="product.title"
-    :key="i"/>
+    :price="product.product.price"
+    :key="product.id"/>
     </v-content>
     <v-fab-transition>
       <v-btn
@@ -73,6 +84,8 @@ import ProductCard from '../components/ProductCard.vue';
 export default {
   data() {
     return {
+      items: ['등록일순', '조회순', '가격순'],
+      pivot: '',
       products: [],
       populars: [],
       category: '',
@@ -86,7 +99,7 @@ export default {
     }
   },
   computed: {
-    categotized() {
+    categorized() {
       const categorized = [];
       for(let i=0; i < this.products.length; i++) {
         if(this.products[i].product.category.title === this.categoryMap[this.category]) {
@@ -96,6 +109,15 @@ export default {
 
       return categorized;
     },
+    sorted() {
+      if(this.pivot === '등록일순') {
+        return this.categorized.slice().sort((a, b) => {return b.createdAt - a.createdAt});
+      } else if(this.pivot === '조회순') {
+        return this.categorized.slice().sort((a, b) => {return b.hit - a.hit});
+      } else {
+        return this.categorized.slice().sort((a, b) => {return a.price - b.price});
+      }
+    }
   },
   components: {
     ProductCard,
@@ -104,11 +126,12 @@ export default {
     // 선택된 카테고리에 따라 상품 출력
     categorySelected(category) {
       this.category = category;
-    }
+    },
   },
   // created 라이프 사이클에 카테고리 전체로 설정하고 상품 데이터 로드
   async created() {
     this.category = '전공서적';
+    this.pivot = '등록일순';
     
     // 전체 상품 조회 API 호출 (날짜순으로 정렬된 상태)
     const { data } = await retriveAllProducts();
