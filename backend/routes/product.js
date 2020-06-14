@@ -1,7 +1,6 @@
 const express = require('express');
-const { productUpload, verifyToken } = require("./middlewares");
+const { productUpload } = require("./middlewares");
 const { Product, Category, User, Post } = require('../models');
-const fs = require('fs');
 const sequelize = require('sequelize');
 const Op = sequelize.Op;
 
@@ -9,10 +8,10 @@ const router = express.Router();
 
 
 // 새로운 상품 게시글 생성
-router.post('/create', verifyToken, productUpload.single('image'), async (req, res, next) => {
+router.post('/create', productUpload.single('image'), async (req, res, next) => {
   try {
-    // user, category 찾기 
-    const user = await User.findOne({ where: { email: req.body.email } });
+    // user, category 찾기 TODO: 현재는 직접 유저 찾지만 로그인 미들웨어 완성되면 req.user.id 로 바꾸기
+    const user = await User.findOne({ where: { email: 'test@test.com' } });
     const category = await Category.findOne({ where: { title: req.body.category } });
 
     // post 생성 (주문번호를 현재 시간을 통해 생성한다)
@@ -40,39 +39,14 @@ router.post('/create', verifyToken, productUpload.single('image'), async (req, r
   res.json({'response': 'success'});
 });
 
-// 상품 정보 수정
-router.put('/update/:id', verifyToken, async (req, res, next) => {
-  try {
-    // TODO: email 정보로 현재 유저가 글 작성자와 동일한지 확인
-
-    const postTitle = req.body.productId;
-    const productData = {
-      'title': req.body.title,
-      'price': req.body.price,
-    };
-    const postData = {
-      'body': req.body.body,
-    }
-    
-    // 본문 게시글 변경
-    await Post.update(postData, {where: {title: postTitle}});
-    
-    // 상품 정보 변경
-    const post = await Post.findOne({where: {title: postTitle}});
-    await Product.update(productData, { where: { postId: post.id }});
-  } catch(err) {
-    console.error(err);
-    next(err);
-  }
-
-  res.json({'response': 'success'});
+//TODO: 상품 정보 수정
+router.put('/update/:id', (req, res, next) => {
+  
 });
 
 // 상품 게시글 삭제
-router.delete('/delete/:id', verifyToken, async (req, res, next) => {
+router.delete('/delete/:id', async (req, res, next) => {
   try {
-    // TODO: email 정보로 현재 유저가 글 작성자와 동일한지 확인
-
     const post = await Post.findOne({ where: { title: req.params.id } });
     await Product.destroy({ where: { postId: post.dataValues.id } });
     await Post.destroy({ where: { id: post.dataValues.id } });
@@ -102,52 +76,16 @@ router.get('/retreive', async (req, res, next) => {
     order: [['createdAt', 'DESC']],
   });
 
-  // 이미지 파일을 읽어 바이너리 형태로 전송해줌
-  posts.forEach(post => {
-      const imagePath = post.product.dataValues.image;
-      const data = fs.readFileSync('public/images/product/' + imagePath);  
-      let base64 = Buffer.from(data).toString('base64');
-      base64 = `data:image/png;base64,${base64}`;
-      post.product.dataValues.image = base64;
-    });
-
   res.json(posts);
 });
 
 // 특정 상품 게시글 조회
 router.get('/retreive/:id', async (req, res, next) => {
-  try {
-    let post = await Post.findOne({
-        where: { title: req.params.id },
-        include: [
-          {
-            model: User,
-            attributes: ['nickname'],
-          },
-          {
-            model: Product,
-            attributes: ['title', 'image', 'price', 'like'],
-          }
-        ],
-    });
+  const post = await Post.findOne({
+    where: { id: req.params.id }
+  });
 
-    let currentHit = post.hit;
-    
-    // 이미지 파일을 읽어 바이너리 형태로 전송해줌
-    const imagePath = post.product.dataValues.image;
-    const data = fs.readFileSync('public/images/product/' + imagePath);
-    let base64 = Buffer.from(data).toString('base64');
-    base64 = `data:image/png;base64,${base64}`;
-    post.product.dataValues.image = base64;
-    post.hit = currentHit + 1;
-
-    // 조회수 증가
-    await Post.update({ hit: currentHit + 1 }, { where: { title: post.title } });
-    res.json(post);
-  } catch(err) {
-    console.error(err);
-    next(err);
-  }
+  res.json(post);
 });
 
 // 특정 키워드 기준 상품명 검색 결과
@@ -165,10 +103,6 @@ router.get('/search/:keyword', async (req, res, next) => {
         title: {
           [Op.like]: `%${keyword}%`
         }
-      },
-      include: {
-        model: Post,
-        attributes: ['title', 'hit'],
       }
     });
     
@@ -179,15 +113,6 @@ router.get('/search/:keyword', async (req, res, next) => {
       } 
     }
   } 
-
-  // 이미지 파일을 읽어 바이너리 형태로 전송해줌
-  resultArr.forEach(result => {
-    const imagePath = result.dataValues.image;
-    const data = fs.readFileSync('public/images/product/' + imagePath);
-    let base64 = Buffer.from(data).toString('base64');
-    base64 = `data:image/png;base64,${base64}`;
-    result.dataValues.image = base64;
-  });
 
   res.json({'result': resultArr});
 });
