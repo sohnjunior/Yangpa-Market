@@ -29,16 +29,15 @@ router.get('/users' ,function(req,res,next){
 
 //Register new User. Create new User by 'createUser'
 router.post('/register', async function(req,res,next){
-  const { email, password, nickname , phone, sex, birthday, admin } = req.body;
-  console.log('====');
-  console.log(email);
+  const { email, password, nickname , phone, sex, birthday} = req.body;
 
   let exUser = await User.findOne({ where: {email: email} });
   if(exUser){
     res.status(401).json({ msg: "Email already Exist" });
   }
 
-  const user = await User.create({ email, password, nickname, phone, sex, birthday, admin })
+  let admin = false;
+  const user = await User.create({ email, password, nickname, phone, sex, birthday, admin})
   await Cart.create({ title: email, userId: user.id });
 
   res.json({ user, msg: "account created successfully" });

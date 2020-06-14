@@ -1,99 +1,146 @@
 <template>
-  <v-form>
-      <h1>New User</h1>
-      
-      <v-text-field
-        v-model="email"
-        :rules="emailRules"
-        label = "Email"
-        required
-        ></v-text-field> 
-      
-      <div>
-          <label for="password">비밀번호</label>
-          <input id = "password" type="password" v-model="password"/>
-      </div>
-      <div>
-          <label for="passwordcheck">비밀번호 확인</label>
-          <input id = "passwordcheck" type="password" v-model="passwordcheck"/>
-      </div>
-      <div>
-          <label for="nickname">닉네임</label>
-          <input id = "nickname" type="text" v-model="nickname"/>
-      </div>
-      <div>
-          <label for="phone">전화번호</label>
-          <input id = "phone" type="text" v-model="phone"/>
-      </div>
-      <div>
-          <label for="sex">성별</label>
-          
-          <input id = "sex" type="radio" value="male" v-model="sex"/>
-          <label for="male">남</label>
-          
-          <input id = "sex" type="radio" value="female" v-model="sex"/>
-          <label for="female">여</label>
-      </div>
-      <div>
-          <label for="birthday">생년월일</label>
-          <input id = "birthday" type="date" v-model="birthday"/>
-      </div>
-      <div>
-          <label for="admin">관리자</label>
+  <v-container>
+    <v-form>
+      <v-row>
+        <v-col cols="12">
+          <v-card shaped title="회원 가입" class="px-5 py-3">
+            <v-subheader class="display-1 mt-3">
+              회원 가입
+            </v-subheader>
 
-          <input id = "admin" type="checkbox" v-model="admin"/>
-          <label for="admin">예</label>
-      </div>
-      <v-btn @click="submitForm">가입하기</v-btn>
-      
-  </v-form>
+            <v-form class="pt-1">
+              <v-text-field
+                label="Email"
+                v-model="email"
+                :rules="emailRules"
+                class="mx-4"
+                required
+              />
+
+              <v-text-field
+                label="Password"
+                v-model="password"
+                :rules="passwordRules"
+                type="password"
+                class="mx-4"
+                required
+              />
+
+              <v-text-field
+                label="Repeat Password"
+                v-model="confirmpassword"
+                :rules="confirmPasswordRules.concat(passwordConfirmationRule)"
+                type="password"
+                class="mx-4"
+                required
+              />
+
+              <v-text-field
+                label="Nickname"
+                v-model="nickname"
+                class="mx-4"
+                required
+              />
+
+              <v-text-field label="Phone" v-model="phone" class="mx-4" />
+
+              <v-radio-group :row="true" class="mx-4">
+                성별
+                <v-spacer></v-spacer>
+                <v-radio :label="'남'"></v-radio>
+                <v-radio :label="'여'"></v-radio>
+              </v-radio-group>
+
+              <v-col cols="mx-4">
+                <v-menu
+                  ref="menu"
+                  v-model="menu"
+                  :close-on-content-click="false"
+                  :return-value.sync="date"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="birthday"
+                      label="생년월일"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker v-model="birthday" no-title scrollable>
+                    <v-spacer></v-spacer>
+                    <v-btn text color="primary" @click="menu = false"
+                      >Cancel</v-btn
+                    >
+                    <v-btn text color="primary" @click="$refs.menu.save(date)"
+                      >OK</v-btn
+                    >
+                  </v-date-picker>
+                </v-menu>
+              </v-col>
+              <v-btn @click="submitForm" class="mx-4">가입하기</v-btn>
+            </v-form>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-form>
+  </v-container>
 </template>
 
 <script>
-import { registerUser } from '../api/index';
+import { registerUser } from "../api/index";
 
 export default {
-    data() {
-        return {
-            email: '',
-            password:'',
-            passwordcheck:'',
-            nickname:'',
-            phone:'',
-            sex : '',
-            birthday : '',
-            admin:'',
-            emailRules : [
-            v => !!v || 'Email is required',
-        ],
-        }    
+  data() {
+    return {
+      email: "",
+      password: "",
+      confirmpassword: "",
+      nickname: "",
+      phone: "",
+      sex: "",
+      birthday: "",
+      admin: "",
+      emailRules: [(v) => !!v || "Email is required"],
+      passwordRules: [(v) => !!v || "Password is required"],
+      confirmPasswordRules: [(v) => !!v || "Confirm password"],
+      date: new Date().toISOString().substr(0, 10),
+      menu: false,
+    };
+  },
+  methods: {
+    async submitForm() {
+      console.log("Hello");
+      //비밀번호 확인, 이메일, 닉네임 필히 기재 알람 필요
+
+      const userData = {
+        email: this.email,
+        password: this.password,
+        nickname: this.nickname,
+        phone: this.phone,
+        sex: this.sex,
+        birthday: this.birthday,
+        admin: this.admin,
+      };
+
+      try {
+        const { data } = await registerUser(userData);
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
     },
-    methods: {
-        async submitForm() {
-            console.log('Hello');
-            //비밀번호 확인, 이메일, 닉네임 필히 기재 알람 필요
-
-            const userData = {
-                email : this.email,
-                password : this.password,
-                nickname : this.nickname,
-                phone : this.phone,
-                sex : this.sex,
-                birthday : this.birthday,
-                admin : this.admin,
-            }
-
-            try {
-                const { data } = await registerUser(userData);
-                console.log(data);
-            } catch (error) {
-                console.log(error);
-            }
-        }
-    }
-}
+  },
+  computed: {
+    passwordConfirmationRule() {
+      return () =>
+        this.password === this.confirmpassword || "Password must match";
+    },
+  },
+};
 </script>
 
-<style>
-
-</style>
+<style></style>
