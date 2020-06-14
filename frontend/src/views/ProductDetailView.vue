@@ -23,6 +23,12 @@
     <hr>
     <v-container>
       <h3>댓글</h3>
+      <v-text-field
+        v-model="comment"
+        label = "Comment"
+        required
+        ></v-text-field> 
+      <v-btn>댓글 입력</v-btn>
     </v-container>
   </div>
 </template>
