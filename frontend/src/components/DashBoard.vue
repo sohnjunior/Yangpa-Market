@@ -1,6 +1,6 @@
 <template>
   <div>
-    대시보드 메인
+    
   </div>
 </template>
 
