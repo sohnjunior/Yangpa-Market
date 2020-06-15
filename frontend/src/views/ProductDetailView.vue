@@ -22,22 +22,19 @@
     </v-container>
     <hr>
     <v-container>
-      <h3>댓글</h3>
-      <v-text-field
-        v-model="comment"
-        label = "Comment"
-        required
-        ></v-text-field> 
-      <v-btn>댓글 입력</v-btn>
+      <CommentList></CommentList>
     </v-container>
   </div>
 </template>
 
 <script>
 import { retreiveProduct, createNewCartProduct } from '../api/index';
-
+import CommentList from '../components/Commentlist'
 // TODO: 연관된 상품 추천 API 연동
 export default {
+  components:{
+    CommentList,
+  },
   data() {
     return {
       productID: '',
@@ -65,7 +62,7 @@ export default {
       const payload = { email: this.$store.getters.getEmail, productID: this.productID };
       const { data } = await createNewCartProduct(payload);
       console.log(data);
-    }
+    },
   }
 }
 </script>
