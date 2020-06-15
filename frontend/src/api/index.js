@@ -30,6 +30,9 @@ function loginUser(payload) {
   return instance.post("/users/login", payload);
 }
 
+function getallUser(){
+  return instance.get("/users/users");
+}
 // 상품 게시글 등록 요청
 function createNewProduct(payload) {
   return instance.post("/product/create", payload, {
@@ -37,6 +40,16 @@ function createNewProduct(payload) {
       'Content-Type': 'multipart/form-data'
     }
   });
+}
+
+//댓글 등록 요청
+function registerComment(payload) {
+  return instance.post("/comment/create", payload);
+}
+
+// 특정 상품 게시글 조회 요청
+function retreiveComment(payload) {
+  return instance.get(`/comment/retreive/${payload}`);
 }
 
 // 상품 게시글 삭제 요청 
@@ -100,7 +113,7 @@ function testProduct() {
 }
 
 export {
-  registerUser, loginUser, 
+  registerUser, loginUser, getallUser, registerComment, retreiveComment,
   createNewProduct, retriveAllProducts, updateProduct, retreiveProduct, deletePost, searchProduct,
   realtimePopular,
   createNewCartProduct, retriveAllCartProducts,
