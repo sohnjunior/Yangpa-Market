@@ -90,12 +90,14 @@ function createNewCartProduct(payload) {
 }
 
 // 장바구니 상품 조회 요청
-function retriveAllCartProducts() {
-  return instance.get("/cart/retrieve");
+function retriveAllCartProducts(payload) {
+  return instance.get("/cart/retrieve", { params: { email: payload.email } });
 }
 
-// TODO: 장바구니 상품 제거 요청
-
+// 장바구니 상품 제거 요청
+function removeFromCart(payload) {
+  return instance.delete("/cart/delete", { params: { email: payload.email, productID: payload.productID } });
+}
 
 /*
     각종 테스트용 axios 요청
@@ -116,5 +118,5 @@ export {
   registerUser, loginUser, getallUser, registerComment, retreiveComment,
   createNewProduct, retriveAllProducts, updateProduct, retreiveProduct, deletePost, searchProduct,
   realtimePopular,
-  createNewCartProduct, retriveAllCartProducts,
+  createNewCartProduct, retriveAllCartProducts, removeFromCart,
   testJWT, testJWTVerify, testProduct }

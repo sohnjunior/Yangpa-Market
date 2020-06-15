@@ -35,7 +35,7 @@ router.post('/new', verifyToken, async (req, res, next) => {
 router.get('/retrieve', verifyToken, async (req, res, next) => {
     try {
         // 이메일로 유저 찾기
-        const user = await User.findOne({ where: { email: req.body.email } });
+        const user = await User.findOne({ where: { email: req.query.email } });
 
         // 유저 ID로 장바구니 찾기
         const cart = await Cart.findOne({ where: { userId: user.id } });
@@ -50,20 +50,19 @@ router.get('/retrieve', verifyToken, async (req, res, next) => {
     }
 });
 
-// TODO: 장바구니 상품 삭제
+// 장바구니 상품 삭제
 router.delete('/delete', verifyToken, async (req, res, next) => {
     try {
         // 이메일로 유저 찾기
-        const user = await User.findOne({ where: { email: req.body.email } });
+        const user = await User.findOne({ where: { email: req.query.email } });
 
         // 유저 ID로 장바구니 찾기
         const cart = await Cart.findOne({ where: { userId: user.id } });
 
         // 상품 ID로 상품 조회하기
-        const post = await Post.findOne({ where: { title: req.body.productID } });
-        const product = await Product.findOne({ where: { postId: post.id } });
-
-        // TODO: 검증 필요
+        const product = await Product.findOne({ where: { id: req.query.productID } });
+        
+        // n:m association 삭제
         cart.removeProduct(product);
         res.json({'result': 'success'});
 
