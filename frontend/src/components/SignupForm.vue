@@ -47,8 +47,8 @@
               <v-radio-group :row="true" class="mx-4">
                 성별
                 <v-spacer></v-spacer>
-                <v-radio :label="'남'"></v-radio>
-                <v-radio :label="'여'"></v-radio>
+                <v-radio :label="'남'" v-model="sex" value="male"></v-radio>
+                <v-radio :label="'여'" v-model="sex" value="female"></v-radio>
               </v-radio-group>
 
               <v-col cols="mx-4">
