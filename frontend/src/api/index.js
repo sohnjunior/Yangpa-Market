@@ -83,6 +83,9 @@ function realtimePopular() {
   return instance.get("/recommend/popular");
 }
 
+function relatedProduct(payload) {
+  return instance.get(`/recommend/related/${payload}`);
+}
 
 // 장바구니 상품 추가 요청
 function createNewCartProduct(payload) {
@@ -117,6 +120,6 @@ function testProduct() {
 export {
   registerUser, loginUser, getallUser, registerComment, retreiveComment,
   createNewProduct, retriveAllProducts, updateProduct, retreiveProduct, deletePost, searchProduct,
-  realtimePopular,
+  realtimePopular, relatedProduct,
   createNewCartProduct, retriveAllCartProducts, removeFromCart,
   testJWT, testJWTVerify, testProduct }

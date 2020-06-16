@@ -42,16 +42,48 @@ router.get('/popular', async (req, res, next) => {
 });
 
 
-// TODO: 연관 상품 추천
-router.get('/related/:id', (req, res, next) => {
+// 연관 상품 추천
+router.get('/related/:id', async (req, res, next) => {
   // id 값으로 상품 찾기
-
+  const post = await Post.findOne({ where: { title: req.params.id } });
+  const product = await Product.findOne({
+    where: { postId: post.id },
+    include: {
+        model: Category,
+        attributes: ['title'],
+    },
+  });
+  
   // 같은 카테고리 내 상품 찾기
+  const targetCategory = product.categoryId;
+  const candidates = await Product.findAll({ 
+    where: { categoryId: targetCategory },
+    include: {
+      model: Post,
+      attributes: ['title', 'body', 'hit'],
+    }
+  });
+  
+  // 이미지 파일 바이너리로 읽어오기
+  candidates.forEach(product => {
+    const imagePath = product.dataValues.image;
+    const data = fs.readFileSync('public/images/product/' + imagePath);
+    let base64 = Buffer.from(data).toString('base64');
+    base64 = `data:image/png;base64,${base64}`;
+    product.dataValues.image = base64;
+  });
 
   // 조회 및 like 를 기준으로 점수 계산
-  
-  // 점수 높은 순으로 반환
+  const temp = [];
+  candidates.forEach(e => {
+    let score = 0.6 * e.dataValues.like + 0.4 * e.dataValues.post.hit;
+    score = Math.round(score * 1e2) / 1e2;
+    temp.push([score, e]);
+  })
 
+  // 점수 높은 순으로 정렬
+  temp.sort((a, b) => { return b[0] - a[0] });
+  res.json({'result': temp});
 });
 
 module.exports = router;
