@@ -90,6 +90,7 @@ function realtimePopular() {
   return instance.get("/recommend/popular");
 }
 
+// 연관 상품 추천 요청
 function relatedProduct(payload) {
   return instance.get(`/recommend/related/${payload}`);
 }
