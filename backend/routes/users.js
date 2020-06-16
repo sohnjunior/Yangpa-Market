@@ -9,13 +9,14 @@ require("dotenv").config();
 
 const { verifyToken, tokenLimiter } = require("./middlewares");//Limiter from middleware.js
 
-
+//회원정보 수정
 const updateUser = async ({ email, password, nickname, phone, sex, birthday }) => {
   return await User.update({ email, password, nickname, phone, sex, birthday }, { where : email });
 };
-//Get All user from table
+
+//관리자를 제외한 유저 불러오기
 const getAllUser = async()=>{
-  return await User.findAll();
+  return await User.findAll({where : {admin : 0 } });
 }
 
 router.get('/', function(req, res, next) {
@@ -67,6 +68,7 @@ router.get("/protected", verifyToken, (req, res) => {
   res.json(req.decoded);
 });
 
+//회원 정보 수정
 router.post("/update",verifyToken, async function(req,res,next){
   //필수 값들만 임시로 넣은상태, 나머지도 추가하면됨
   const { email, password, nickname } = req.body;
@@ -76,5 +78,17 @@ router.post("/update",verifyToken, async function(req,res,next){
   );  
 })
 
+// 회원 정보 삭제
+router.delete('/delete', async function(req, res, next) {
+  const { email } = req.body;
+  
+  try {
+    await User.destroy({ where: { email: email } });
+    res.json({ msg: "account deleted successfully" })
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
 
 module.exports = router;

@@ -1,54 +1,62 @@
 <template>
-<v-container>
-  <v-data-table :headers="headers" :items="userlist" >
-    <template v-slot:top>
-      <v-toolbar flat color="white">
-        <v-toolbar-title>유저 목록</v-toolbar-title>
-      </v-toolbar>
-    </template>
-    <template v-slot:item.actions="{ item }">
-      <v-icon small @click="deleteUser(item)">
-        mdi-delete
-      </v-icon>
-    </template>
-  </v-data-table>
+  <v-container>
+    <v-data-table :headers="headers" :items="userlist" class="elevation-1">
+      <template v-slot:top>
+        <v-toolbar flat color="white">
+          <v-toolbar-title>유저 목록</v-toolbar-title>
+        </v-toolbar>
+      </template>
+      <template v-slot:item.actions="{ item }" >
+        <v-icon small @click="deleteUser(item)">
+          mdi-delete
+        </v-icon>
+      </template>
+    </v-data-table>
   </v-container>
 </template>
 
 <script>
-import { getallUser } from '../api/index'
+import { getallUser, deleteUser } from "../api/index";
 
 export default {
   data() {
     return {
       dialog: false,
       headers: [
-        { text: "Email", align:"start", value: "email", sortable: false },
-        { text: "닉네임", align:"start", value: "nickname", sortable: false },
-        { text: "전화번호", align:"start", value: "phone", sortable: false },
-        { text: "성별", align:"start", value: "sex", sortable: false },
-        { text: "생년월일", align:"start", value: "birthday", sortable: false },
-        { text: "Actions", align:"end", value: "actions", sortable: false },
+        { text: "Email", align: "start", value: "email", sortable: false },
+        { text: "닉네임", align: "start", value: "nickname", sortable: false },
+        { text: "전화번호", align: "start", value: "phone", sortable: false },
+        { text: "성별", align: "start", value: "sex", sortable: false },
+        { text: "생년월일", align: "start", value: "birthday", sortable: false },
+        { text: "Delete", align: "end", value: "actions", sortable: false },
       ],
-      userlist:[],
-      idx:0,
-    }
+      userlist: [],
+      idx: 0,
+      email:'',
+    };
   },
   async created() {
     const { data } = await getallUser();
     this.userlist = data;
-    console.log(this.userlist);
   },
-  method:{
-    deleteUser(item) {
+
+  methods: {
+    async deleteUser(item) {
       const index = this.userlist.indexOf(item);
-      confirm("Are you sure you want to delete this user?") &&
-        this.userlist.splice(index, 1);
+      this.email=this.userlist[index].email;
+      
+      console.log(this.email);
+      try {
+        const { data } = await deleteUser(this.email);
+        console.log('data');
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+      this.dialog = false;
     },
   }
-}
+};
 </script>
 
-<style>
-
-</style>
+<style></style>
