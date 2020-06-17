@@ -37,7 +37,7 @@ function getallUser(){
 
 //유저 삭제 요청
 function deleteUser(payload) {
-  return instance.delete(`/users/delete`,payload);
+  return instance.delete(`/users/delete`, { params: { email: payload.email } });
 }
 
 // 상품 게시글 등록 요청
@@ -57,6 +57,16 @@ function registerComment(payload) {
 // 댓글 조회 요청
 function retreiveComment(payload) {
   return instance.get(`/comment/retreive/${payload}`);
+}
+
+// 댓글 삭제 요청 
+function deleteComment(payload) {
+  return instance.delete(`/comment/delete`, { params: { id: payload.id } });
+}
+
+// 댓글 삭제 요청 
+function updateComment(payload) {
+  return instance.put(`/comment/update`, { params: { id: payload.id } });
 }
 
 // 상품 게시글 삭제 요청 
@@ -122,7 +132,8 @@ function testProduct() {
 }
 
 export {
-  registerUser, loginUser, getallUser, deleteUser, registerComment, retreiveComment,
+  registerUser, loginUser, getallUser, deleteUser,
+  registerComment, retreiveComment, deleteComment, updateComment,
   createNewProduct, retriveAllProducts, updateProduct, retreiveProduct, deletePost, searchProduct,
   realtimePopular,
   createNewCartProduct, retriveAllCartProducts, removeFromCart,

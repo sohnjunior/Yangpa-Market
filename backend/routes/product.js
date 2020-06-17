@@ -14,7 +14,7 @@ router.post('/create',verifyToken, productUpload.single('image'), async (req, re
     // user, category 찾기 
     const user = await User.findOne({ where: { email: req.body.email } });
     const category = await Category.findOne({ where: { title: req.body.category } });
-
+    
     // post 생성 (주문번호를 현재 시간을 통해 생성한다)
     const post = await Post.create({
       title: String(Date.now()),
@@ -101,7 +101,7 @@ router.get('/retreive', async (req, res, next) => {
     ],
     order: [['createdAt', 'DESC']],
   });
-
+  
   // 이미지 파일을 읽어 바이너리 형태로 전송해줌
   posts.forEach(post => {
     const imagePath = post.product.dataValues.image;

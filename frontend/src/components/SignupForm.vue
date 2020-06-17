@@ -44,11 +44,11 @@
 
               <v-text-field label="Phone" v-model="phone" class="mx-4" />
 
-              <v-radio-group :row="true" class="mx-4">
+              <v-radio-group :row="true" class="mx-4" v-model="sex">
                 성별
                 <v-spacer></v-spacer>
-                <v-radio :label="'남'" v-model="sex" value="male"></v-radio>
-                <v-radio :label="'여'" v-model="sex" value="female"></v-radio>
+                <v-radio :label="'남'" value="male"></v-radio>
+                <v-radio :label="'여'" value="female"></v-radio>
               </v-radio-group>
 
               <v-col cols="mx-4">
@@ -113,7 +113,6 @@ export default {
   },
   methods: {
     async submitForm() {
-      console.log("Hello");
       //비밀번호 확인, 이메일, 닉네임 필히 기재 알람 필요
 
       const userData = {
@@ -122,7 +121,7 @@ export default {
         nickname: this.nickname,
         phone: this.phone,
         sex: this.sex,
-        birthday: this.birthday,
+        birthday: this.date,
         admin: this.admin,
       };
 

@@ -12,6 +12,9 @@
             </v-btn>
           </template>
           <v-card>
+              <v-card-title>
+                <span class="headline">{{ formTitle }}</span>
+              </v-card-title>
             <v-card-text class="py-0" background-color="blue lighten-2" outline>
               <v-container>
                 <v-row>
@@ -36,10 +39,10 @@
       </v-toolbar>
     </template>
     <template v-slot:item.actions="{ item }">
-      <v-icon small class="mr-2" @click="editItem(item)">
+      <v-icon small class="mr-2" @click="updateItem(item)">
         mdi-pencil
       </v-icon>
-      <v-icon small @click="deleteItem(item)">
+      <v-icon small @click="checkdelete(item)">
         mdi-delete
       </v-icon>
     </template>
@@ -47,34 +50,19 @@
 </template>
 
 <script>
-import { registerComment,retreiveComment } from "../api/index";
+import { registerComment,retreiveComment,deleteComment } from "../api/index";
 
 export default {
-  props: {
-    contentId: Number,
-  },
   data() {
     return {
       dialog: false,
       headers: [
-          {
-          text: "User",
-          align: "start",
-          sortable: false,
-          value: "user",
-        },
-        {
-          text: "Content",
-          align: "start",
-          sortable: false,
-          value: "content",
-        },
+        { text: "User", align: "start", sortable: false, value: "user"},
+        { text: "내용", align: "start", sortable: false, value: "comment"},
         { text: "Actions", align:"end", value: "actions", sortable: false },
       ],
       commentslist: [],
-      Index:0 ,
-      comment:'',
-      postId:'',
+      Formflag:-1,
       secret:false,
     };
   },
@@ -82,12 +70,12 @@ export default {
   async created() {
     this.postId = this.$route.params.id;
     const { data } = await retreiveComment(this.postId);
-    this.comment = data.comments.comment;
+    this.commentlist = data;
   },
   
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "New Item" : "Edit Item";
+      return this.Formflag === -1 ? "새 댓글" : "댓글 수정";
     },
   },
 
@@ -98,35 +86,42 @@ export default {
   },
 
   methods: {
-    editItem(item) {
+    updateItem(item) {
       this.editedIndex = this.commentslist.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
 
-    deleteItem(item) {
-      const index = this.commentslist.indexOf(item);
-      confirm("Are you sure you want to delete this item?") &&
-        this.commentslist.splice(index, 1);
+    checkdelete(item){
+        confirm("해당 댓글을 삭제하시겠습니까?") &&
+            deleteComment(item);
+    },
+
+    async deleteComment(item) {
+      const index = this.commentlist.indexOf(item);
+
+      const Todelete={ id : this.commentlist[index].id };
+
+      try {
+        const { data } = await deleteComment(Todelete);
+        console.log(data);
+        this.$router.go(0);
+      } catch (error) {
+        console.log(error);
+      }
+      this.dialog = false;
     },
 
     close() {
+        this.Formflag = -1;
       this.dialog = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
+      //this.$router.go(0);
     },
 
     async save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.comments[this.editedIndex], this.editedItem);
-      } else {
-        this.commentslist.push(this.editedItem);
-      }
-      
       const Comment = {
         comment:this.content,
+        secret:this.secret,
       };
 
       try {
