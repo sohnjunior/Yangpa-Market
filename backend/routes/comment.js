@@ -18,6 +18,7 @@ router.post('/create', verifyToken, async (req, res, next) => {
             comment : comment,
             userId: user.id,
             postId: post.id,
+            secret: secret,
         });
 
     } catch (err) {
@@ -29,27 +30,35 @@ router.post('/create', verifyToken, async (req, res, next) => {
 });
 
 // 댓글 삭제
-router.delete('/delete/:id', async (req, res, next) => {
-    
+router.delete('/delete', async (req, res, next) => {
+    const { id } = req.query;
+    try {
+        await Comment.destroy({ where: { id: id } });
+        res.json({ msg: "Comment deleted successfully" });
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
 });
 
 // 댓글 수정
-router.put('/update/:id', async (req, res, next) => {
+router.put('/update', async (req, res, next) => {
+    const { comment,id } = req.body;
+
+    await Comment.update({ comment },{ where : { id : id } })
+    
+    res.json({ msg: "Comment updated successfully" })
     
 });
 
 // 특정 상품 게시글 댓글 목록 조회
 router.get('/retreive/:id', async (req, res, next) => {
     try {
-        let post = await Post.findALl({
+        let comment = await Comment.findOne({
             where: { title: req.params.id },
-            include: [
-                {
-                    model: Comment,
-                    attributes: ['comment'],
-                }
-            ],
         });
+
+        res.json(comment);
     } catch (err) {
         console.error(err);
         next(err);

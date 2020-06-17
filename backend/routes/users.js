@@ -79,12 +79,11 @@ router.post("/update",verifyToken, async function(req,res,next){
 })
 
 // 회원 정보 삭제
-router.delete('/delete', async function(req, res, next) {
-  const { email } = req.body;
-  
+router.delete('/delete', async (req, res, next) => {
+  const { email }= req.query;
   try {
     await User.destroy({ where: { email: email } });
-    res.json({ msg: "account deleted successfully" })
+    res.json({ msg: "account deleted successfully" });
   } catch (err) {
     console.error(err);
     next(err);

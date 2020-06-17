@@ -7,7 +7,7 @@
         </v-toolbar>
       </template>
       <template v-slot:item.actions="{ item }" >
-        <v-icon small @click="deleteUser(item)">
+        <v-icon small @click="check(item)">
           mdi-delete
         </v-icon>
       </template>
@@ -41,19 +41,23 @@ export default {
   },
 
   methods: {
+    check(item){
+      confirm("해당 유저를 삭제하시겠습니까") &&
+        deleteUser(item);
+    },
+
     async deleteUser(item) {
       const index = this.userlist.indexOf(item);
-      this.email=this.userlist[index].email;
-      
-      console.log(this.email);
+
+      const Todelete={ email:this.userlist[index].email };
+
       try {
-        const { data } = await deleteUser(this.email);
-        console.log('data');
+        const { data } = await deleteUser(Todelete);
         console.log(data);
+        this.$router.go(0);
       } catch (error) {
         console.log(error);
       }
-      this.dialog = false;
     },
   }
 };
