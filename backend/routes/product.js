@@ -101,7 +101,7 @@ router.get('/retreive', async (req, res, next) => {
     ],
     order: [['createdAt', 'DESC']],
   });
-  
+
   // 이미지 파일을 읽어 바이너리 형태로 전송해줌
   posts.forEach(post => {
     const imagePath = post.product.dataValues.image;

@@ -14,8 +14,10 @@ const apiRouter = require("./routes/test/api"); // Test router about API for tok
 const ProductRouter = require('./routes/product');  // 상품 관련 라우터
 const RecommandRouter = require('./routes/recommend');  // 상품 추천 관련 라우터
 const CartRouter = require('./routes/cart');  // 장바구니 관련 라우터
+const OrderRouter = require('./routes/order');  // 구매내역 관련 라우터
 const ReviewRouter = require('./routes/review');  // 후기 관련 라우터
 const CommentRouter = require('./routes/comment');  // 댓글 관련 라우터
+
 
 const { sequelize } = require('./models');
 const passportConfig = require('./passport/passport');
@@ -47,6 +49,7 @@ app.use("/api", apiRouter);// Test router about API for token
 app.use("/product", ProductRouter);
 app.use("/recommend", RecommandRouter);
 app.use("/cart", CartRouter);
+app.use("/order",OrderRouter);
 app.use("/review", ReviewRouter); 
 app.use("/comment", CommentRouter);
 
