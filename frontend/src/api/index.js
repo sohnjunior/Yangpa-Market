@@ -145,6 +145,22 @@ function getOrder(payload) {
   return instance.get("/order/retrieve", { params: { email: payload.email } });
 }
 
+
+// 전체 상품 후기 조회 요청
+function retrueveAllReview() {
+  return instance.get("/review/retrieve");
+}
+
+// 새로운 후기 생성 요청
+function createNewReview(payload) {
+  return instance.post("/review/create", payload, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
+}
+
+
 /*
     각종 테스트용 axios 요청
 */
@@ -166,4 +182,6 @@ export {
   createNewProduct, retriveAllProducts, updateProduct, retreiveProduct, deletePost, searchProduct,
   realtimePopular, relatedProduct, likeProduct,
   createNewCartProduct, retriveAllCartProducts, removeFromCart,buyFromCart, getOrder,
+  createNewReview, retrueveAllReview,
+  createNewCartProduct, retriveAllCartProducts, removeFromCart,
   testJWT, testJWTVerify, testProduct }
