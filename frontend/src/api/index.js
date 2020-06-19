@@ -21,8 +21,13 @@ const instance = createInstance();
 */
 
 //유저 등록 요청
-function registerUser(payload){
-  return instance.post("/users/register",payload);
+function updateUser(payload){
+  return instance.post("/users/update",payload);
+}
+
+//유저 업데이트 요청
+function registerUser(payload) {
+  return instance.post("/users/update", payload);
 }
 
 //유저 로그인 요청
@@ -33,6 +38,11 @@ function loginUser(payload) {
 //모든 유저 조회 요청
 function getallUser(){
   return instance.get("/users/users");
+}
+
+//유저 조회 요청
+function getUser(payload) {
+  return instance.get("/users/retrieve", { params: { email: payload.email } });
 }
 
 //유저 삭제 요청
@@ -141,7 +151,7 @@ function testProduct() {
 }
 
 export {
-  registerUser, loginUser, getallUser, deleteUser,
+  registerUser, updateUser, loginUser, getallUser, getUser, deleteUser,
   registerComment, retreiveComment, deleteComment, updateComment,
   createNewProduct, retriveAllProducts, updateProduct, retreiveProduct, deletePost, searchProduct,
   realtimePopular, relatedProduct, likeProduct,

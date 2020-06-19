@@ -33,21 +33,38 @@
       </v-col>
       <v-divider vertical></v-divider>
       <v-col cols="10">
-        <router-view></router-view>
+        <Profile/>
       </v-col>
     </v-row>
   </div>
 </template>
 
 <script>
+import Profile from '../components/Profile';
+
 export default {
+  components: {
+    Profile,
+  },
   data () {
     return {
       items: [
-        { title: '위시리스트' },
-        { title: '장바구니' },
-        { title: '구매 내역' },
-        { title: '프로필 수정' },
+        {
+          title: '위시리스트',
+          to: '/wishlist',
+        },
+        {
+          title: '장바구니',
+          to: '/cart',
+        },
+        {
+          title: '구매내역',
+          to: '/order',
+        },
+        {
+          title: '프로필 관리',
+          to: '/profile',
+        },
       ],
       color : 'primary',
     }
