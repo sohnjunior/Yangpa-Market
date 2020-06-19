@@ -13,20 +13,25 @@
           {{ title }}
         </v-card-title>
 
-        <v-img
-          width="250"
-          height="200"
-          :src="image"
-        ></v-img>
+        <v-container>
+          <v-img
+            width="250"
+            height="200"
+            :src="image"
+          ></v-img>
 
-        <div class="my-4 subtitle-1">
-          작성자 : {{ writer }}
-        </div>
+          <v-card-text>
+            작성자 : {{ writer }}
+          </v-card-text>
+          <v-card-text>
+            <v-rating :value="rating" background-color="amber lighten-3" color="amber" dense half-increments readonly size="25"></v-rating>
+          </v-card-text>
+          <v-card-text>
+            {{ body }}
+          </v-card-text>
 
-        <v-card-text>
-          <v-rating :value="rating" background-color="amber lighten-3" color="amber" dense half-increments readonly size="25"></v-rating>
-          {{ body }}
-        </v-card-text>
+        </v-container>
+  
         <v-divider></v-divider>
 
         <v-card-actions>

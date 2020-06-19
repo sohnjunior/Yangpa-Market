@@ -117,7 +117,7 @@ export default {
     },
     // 대시보드로 이동
     routeToDashboard() {
-      this.$router.push('/dashboard');
+      this.$router.push('/dashboard/cart');
     },
     // 홈으로 이동
     comeBackHome() {
