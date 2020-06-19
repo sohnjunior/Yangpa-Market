@@ -13,7 +13,6 @@ import AdminView from '../views/AdminView.vue';
 
 // sub component for Dashboard
 import DashBoard from '../components/DashBoard.vue';
-import UserWishList from '../components/WishList.vue';
 import UserCart from '../components/Cart.vue';
 import UserOrder from '../components/Order.vue';
 import UserProfile from '../components/Profile.vue';
@@ -42,11 +41,6 @@ export const router = new VueRouter({
                  // 대시보드 메인
                  path: "",
                  component: DashBoard,
-               },
-               {
-                 // 위시 리스트
-                 path: "wishlist",
-                 component: UserWishList,
                },
                {
                  // 장바구니

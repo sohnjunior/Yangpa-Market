@@ -21,6 +21,7 @@
               <v-list-item
                 v-for="item in items"
                 :key="item.title"
+                :to="`/dashboard/${item.to}`"
                 link
               >
                 <v-list-item-content>
@@ -33,37 +34,29 @@
       </v-col>
       <v-divider vertical></v-divider>
       <v-col cols="10">
-        <Profile/>
+        <router-view></router-view>
       </v-col>
     </v-row>
   </div>
 </template>
 
 <script>
-import Profile from '../components/Profile';
 
 export default {
-  components: {
-    Profile,
-  },
   data () {
     return {
       items: [
         {
-          title: '위시리스트',
-          to: '/wishlist',
-        },
-        {
           title: '장바구니',
-          to: '/cart',
+          to: 'cart',
         },
         {
           title: '구매내역',
-          to: '/order',
+          to: 'order',
         },
         {
           title: '프로필 관리',
-          to: '/profile',
+          to: 'profile',
         },
       ],
       color : 'primary',
