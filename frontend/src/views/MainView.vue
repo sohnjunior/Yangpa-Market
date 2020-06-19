@@ -70,19 +70,9 @@
         :key="product.id"/>
     </v-row>
     </v-content>
-    <v-fab-transition>
-      <v-btn
-        color="pink"
-        dark
-        absolute
-        bottom
-        right
-        fab
-        to="/product/new"
-      >
-        <v-icon>mdi-plus</v-icon>
-      </v-btn>
-    </v-fab-transition>
+    <v-btn fab dark large color="pink" fixed right bottom to="/product/new">
+      <v-icon>mdi-plus</v-icon>
+    </v-btn>
   </v-container>
 </template>
 
@@ -161,4 +151,5 @@ export default {
   margin-right: 20px;
   margin-top: 20px;
 }
+
 </style>
