@@ -5,12 +5,13 @@
     <li v-for="product in picks" :key="product.id">
       {{ product.title }}
       <v-btn @click="removeFromCart(product)"> 장바구니에서 삭제 </v-btn>
+      <v-btn @click="buyFromCart(product)"> 구매하기 </v-btn>
     </li>
   </v-container>
 </template>
 
 <script>
-import { retriveAllCartProducts, removeFromCart } from '../api/index';
+import { retriveAllCartProducts, removeFromCart, buyFromCart } from '../api/index';
 
 export default {
   data() {
@@ -29,6 +30,11 @@ export default {
     async removeFromCart(product) {
       const payload = { email: this.$store.getters.getEmail, productID: product.id };
       await removeFromCart(payload);
+    },
+
+    async buyFromCart(product) {
+      const payload = { email: this.$store.getters.getEmail, productID: product.id };
+      await buyFromCart(payload);
     }
   }
 }

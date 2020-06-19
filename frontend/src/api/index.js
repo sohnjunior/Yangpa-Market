@@ -21,13 +21,13 @@ const instance = createInstance();
 */
 
 //유저 등록 요청
-function updateUser(payload){
-  return instance.post("/users/update",payload);
+function registerUser(payload) {
+  return instance.post("/users/register", payload);
 }
 
 //유저 업데이트 요청
-function registerUser(payload) {
-  return instance.post("/users/update", payload);
+function updateUser(payload){
+  return instance.post("/users/update",payload);
 }
 
 //유저 로그인 요청
@@ -135,6 +135,10 @@ function removeFromCart(payload) {
   return instance.delete("/cart/delete", { params: { email: payload.email, productID: payload.productID } });
 }
 
+// 장바구니 상품 구매 요청
+function buyFromCart(payload) {
+  return instance.post("/cart/buy", { params: { email: payload.email, productID: payload.productID } });
+}
 /*
     각종 테스트용 axios 요청
 */
@@ -155,5 +159,5 @@ export {
   registerComment, retreiveComment, deleteComment, updateComment,
   createNewProduct, retriveAllProducts, updateProduct, retreiveProduct, deletePost, searchProduct,
   realtimePopular, relatedProduct, likeProduct,
-  createNewCartProduct, retriveAllCartProducts, removeFromCart,
+  createNewCartProduct, retriveAllCartProducts, removeFromCart,buyFromCart,
   testJWT, testJWTVerify, testProduct }
