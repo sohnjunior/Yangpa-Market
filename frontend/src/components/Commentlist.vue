@@ -1,5 +1,5 @@
 <template>
-  <v-data-table :headers="headers" :items="commentslist" class="elevation-1" hide-default-footer>
+  <v-data-table :headers="headers" :items="commentList" class="elevation-1" hide-default-footer>
     <template v-slot:top>
       <v-toolbar flat color="white">
         <v-toolbar-title>댓글 목록</v-toolbar-title>
@@ -31,37 +31,39 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-checkbox v-model="secret" label="비밀댓글" class="mx-10"></v-checkbox>
-              <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-              <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+              <v-btn color="blue darken-1" text @click="close">취소</v-btn>
+              <v-btn color="blue darken-1" text @click="save">댓글 작성하기</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
       </v-toolbar>
     </template>
-    <template v-slot:item.actions="{ item }">
+    <!-- <template v-slot:item.actions="{ item }">
       <v-icon small class="mr-2" @click="updateItem(item)">
         mdi-pencil
       </v-icon>
       <v-icon small @click="checkdelete(item)">
         mdi-delete
       </v-icon>
-    </template>
+    </template> -->
   </v-data-table>
 </template>
 
 <script>
-import { registerComment,retreiveComment,deleteComment } from "../api/index";
+import { registerComment, retreiveComment } from "../api/index";
 
 export default {
   data() {
     return {
       dialog: false,
       headers: [
-        { text: "User", align: "start", sortable: false, value: "user"},
-        { text: "내용", align: "start", sortable: false, value: "comment"},
-        { text: "Actions", align:"end", value: "actions", sortable: false },
+        { text: "작성자", align: "start", sortable: false, value: "user.nickname"},
+        { text: "댓글 내용", align: "start", sortable: false, value: "comment"},
+        // { text: "Actions", align:"end", value: "actions", sortable: false },
       ],
-      commentslist: [],
+      commentList: [],
+      postId: '',
+      comment: '',
       Formflag:-1,
       secret:false,
     };
@@ -70,7 +72,7 @@ export default {
   async created() {
     this.postId = this.$route.params.id;
     const { data } = await retreiveComment(this.postId);
-    this.commentlist = data;
+    this.commentList = data.comments;
   },
   
   computed: {
@@ -86,31 +88,30 @@ export default {
   },
 
   methods: {
-    updateItem(item) {
-      this.editedIndex = this.commentslist.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialog = true;
-    },
+    // updateItem(item) {
+    //   this.editedIndex = this.commentList.indexOf(item);
+    //   this.dialog = true;
+    // },
 
-    checkdelete(item){
-        confirm("해당 댓글을 삭제하시겠습니까?") &&
-            deleteComment(item);
-    },
+    // checkdelete(item){
+    //     confirm("해당 댓글을 삭제하시겠습니까?") &&
+    //         deleteComment(item);
+    // },
 
-    async deleteComment(item) {
-      const index = this.commentlist.indexOf(item);
+    // async deleteComment(item) {
+    //   const index = this.commentList.indexOf(item);
 
-      const Todelete={ id : this.commentlist[index].id };
+    //   const Todelete={ id : this.commentList[index].id };
 
-      try {
-        const { data } = await deleteComment(Todelete);
-        console.log(data);
-        this.$router.go(0);
-      } catch (error) {
-        console.log(error);
-      }
-      this.dialog = false;
-    },
+    //   try {
+    //     const { data } = await deleteComment(Todelete);
+    //     console.log(data);
+    //     this.$router.go(0);
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    //   this.dialog = false;
+    // },
 
     close() {
         this.Formflag = -1;
@@ -120,13 +121,15 @@ export default {
 
     async save() {
       const Comment = {
-        comment:this.content,
-        secret:this.secret,
+        email: this.$store.getters.getEmail,
+        postId: this.postId,
+        comment: this.comment,
+        secret: this.secret,
       };
 
       try {
-        const { data } = await registerComment(Comment);
-        console.log(data);
+        await registerComment(Comment);
+        this.$router.go(0);  // refresh 
       } catch (error) {
         console.log(error);
       }
