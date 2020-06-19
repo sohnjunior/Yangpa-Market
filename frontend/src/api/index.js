@@ -139,6 +139,12 @@ function removeFromCart(payload) {
 function buyFromCart(payload) {
   return instance.post("/cart/buy", { params: { email: payload.email, productID: payload.productID } });
 }
+
+//유저의 구매 및 판매 내역 조회 요청
+function getOrder(payload) {
+  return instance.get("/order/retrieve", { params: { email: payload.email } });
+}
+
 /*
     각종 테스트용 axios 요청
 */
@@ -159,5 +165,5 @@ export {
   registerComment, retreiveComment, deleteComment, updateComment,
   createNewProduct, retriveAllProducts, updateProduct, retreiveProduct, deletePost, searchProduct,
   realtimePopular, relatedProduct, likeProduct,
-  createNewCartProduct, retriveAllCartProducts, removeFromCart,buyFromCart,
+  createNewCartProduct, retriveAllCartProducts, removeFromCart,buyFromCart, getOrder,
   testJWT, testJWTVerify, testProduct }

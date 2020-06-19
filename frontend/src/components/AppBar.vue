@@ -26,7 +26,10 @@
       </div>
 
       <v-spacer></v-spacer>
-
+      <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
+      <div>
       <v-text-field
         placeholder="SEARCH"
         rounded
@@ -35,7 +38,7 @@
         v-model="keyword"
         @keyup.enter="search"
       ></v-text-field>
-
+      </div>
       <v-btn text to="/review">
         <span class="mr-2">상품 후기</span>
       </v-btn>
