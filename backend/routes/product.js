@@ -23,7 +23,7 @@ router.post('/create',verifyToken, productUpload.single('image'), async (req, re
     });
   
     // product 생성
-    const product = await Product.create({
+    await Product.create({
       title: req.body.title,
       price: Number(req.body.price),
       sold: false,
