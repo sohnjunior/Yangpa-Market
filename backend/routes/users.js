@@ -11,7 +11,7 @@ const { verifyToken, tokenLimiter } = require("./middlewares");//Limiter from mi
 
 //회원정보 수정
 const updateUser = async ({ email, password, nickname, phone, sex, birthday }) => {
-  return await User.update({ email, password, nickname, phone, sex, birthday }, { where : email });
+  return await User.update({ password, nickname, phone, sex, birthday }, { where : { email : email }});
 };
 
 //관리자를 제외한 유저 불러오기
@@ -26,6 +26,19 @@ router.get('/', function(req, res, next) {
 //Get all user
 router.get('/users' ,function(req,res,next){
   getAllUser().then(user => res.json(user));
+});
+
+//Get User
+router.get('/retrieve', verifyToken, async (req, res, next) => {
+  try {
+    const user = await User.findOne({ where: { email: req.query.email } });
+
+    res.json({ 'result': user });
+
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
 });
 
 //Register new User. Create new User by 'createUser'
@@ -70,12 +83,17 @@ router.get("/protected", verifyToken, (req, res) => {
 
 //회원 정보 수정
 router.post("/update",verifyToken, async function(req,res,next){
-  //필수 값들만 임시로 넣은상태, 나머지도 추가하면됨
-  const { email, password, nickname } = req.body;
   
-  updateUser({ email, password, nickname }).then((user) =>
-    res.json({ user, msg: "account created successfully" })
-  );  
+  const { email, password, nickname, phone, sex, birthday } = req.body;
+  
+  try {
+    const user = await updateUser({ email, password, nickname, phone, sex, birthday });
+
+    res.json({ user, msg: "account created successfully" });
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
 })
 
 // 회원 정보 삭제

@@ -61,7 +61,7 @@
               v-bind="attrs"
               v-on="on"
             >
-              화원정보
+              회원정보
             </v-btn>
           </template>
 
@@ -120,7 +120,7 @@ export default {
     // 대시보드로 이동
     routeToDashboard() {
       this.$router.push('/dashboard');
-    }
+    },
   }
 }
 </script>

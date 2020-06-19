@@ -107,7 +107,7 @@ export default {
       emailRules: [(v) => !!v || "Email is required"],
       passwordRules: [(v) => !!v || "Password is required"],
       confirmPasswordRules: [(v) => !!v || "Confirm password"],
-      date: new Date().toISOString().substr(0, 10),
+      date: this.birthday,
       menu: false,
     };
   },
@@ -121,7 +121,7 @@ export default {
         nickname: this.nickname,
         phone: this.phone,
         sex: this.sex,
-        birthday: this.date,
+        birthday: this.birthday,
         admin: this.admin,
       };
 

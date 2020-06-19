@@ -37,6 +37,7 @@ export default {
   },
   async created() {
     const { data } = await getallUser();
+    
     this.userlist = data;
   },
 
