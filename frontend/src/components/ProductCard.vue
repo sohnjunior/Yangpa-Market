@@ -29,12 +29,7 @@
       >
         확인
       </v-btn>
-      <v-btn
-        text
-        color="deep-purple accent-4"
-      >
-        장바구니 담기
-      </v-btn>
+
       <v-spacer></v-spacer>
       <v-btn icon @click="likeUpdate">
         <v-icon>mdi-heart</v-icon>

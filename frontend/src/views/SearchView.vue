@@ -1,18 +1,22 @@
 <template>
   <v-container>
-    <h1> {{ keyword }} 검색 결과 </h1>
+    <h1> 	&quot;{{ keyword }}&quot; 검색 결과 </h1>
 
-    <v-container>
-      <ProductCard v-for="(product, i) in products" 
-        :title="product.title"
-        :image="product.image"
-        :body="''"
-        :hit="product.post.hit"
-        :writer="''"
-        :like="product.like"
-        :productID="product.post.title"
-        :key="i"/>
-    </v-container>
+    <v-content>
+      <v-row>
+        <ProductCard v-for="(product, i) in products" 
+          id="product-card"
+          :title="product.title"
+          :image="product.image"
+          :price="product.price"
+          :body="''"
+          :hit="product.post.hit"
+          :writer="''"
+          :like="product.like"
+          :productID="product.post.title"
+          :key="i"/>
+      </v-row>
+    </v-content>
   </v-container>
 </template>
 
@@ -38,6 +42,9 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+#product-card {
+  margin-right: 20px;
+  margin-top: 20px;
+}
 </style>

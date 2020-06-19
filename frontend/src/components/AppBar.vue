@@ -15,14 +15,9 @@
           width="40"
         />
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
+        <span class="title-text" text @click="comeBackHome">
+          <h3 class="transition-swing">양파 마켓</h3>
+        </span>
       </div>
 
       <v-spacer></v-spacer>
@@ -124,9 +119,16 @@ export default {
     routeToDashboard() {
       this.$router.push('/dashboard');
     },
+    // 홈으로 이동
+    comeBackHome() {
+      this.$router.push('/');
+    }
   }
 }
 </script>
 
-<style>
+<style scoped>
+.title-text:hover {
+  cursor: pointer;
+}
 </style>

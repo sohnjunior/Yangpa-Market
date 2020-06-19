@@ -1,42 +1,45 @@
 <template>
-  <div>
+  <v-container>
     <h1>상품 등록하기</h1>
 
-    <v-text-field
-      label="Solo"
-      placeholder="상품 제목"
-      solo
-      v-model="title"
-      ></v-text-field>
+    <v-container>
+       <v-text-field
+        label="Solo"
+        placeholder="상품 제목"
+        solo
+        v-model="title"
+        ></v-text-field>
 
-    <v-select
-      :items="items"
-      label="카테고리 선택"
-      solo
-      @change="selectCategory"
-      ></v-select>
+      <v-select
+        :items="items"
+        label="카테고리 선택"
+        solo
+        @change="selectCategory"
+        ></v-select>
 
-    <v-file-input 
-      label="File input" 
-      @change="selectFile"
-      ></v-file-input>
+      <v-file-input 
+        label="File input" 
+        @change="selectFile"
+        ></v-file-input>
 
-    <v-text-field
-      label="Solo"
-      placeholder="상품 가격"
-      solo
-      v-model="price"
-      ></v-text-field>
+      <v-text-field
+        label="Solo"
+        placeholder="상품 가격"
+        solo
+        v-model="price"
+        ></v-text-field>
 
-    <v-textarea
-      solo
-      rounded
-      v-model="body"
-      label="상품 내용입력"
-      ></v-textarea>
+      <v-textarea
+        solo
+        rounded
+        v-model="body"
+        label="상품 내용입력"
+        ></v-textarea>
 
-    <v-btn @click="submit">서버에 전송하기</v-btn>
-  </div>
+      <v-btn @click="submit">상품 등록하기</v-btn>
+    </v-container>
+   
+  </v-container>
 </template>
 
 <script>

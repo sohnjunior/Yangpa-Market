@@ -21,19 +21,25 @@
     </v-container>
     <v-content>
       <v-row>
-      <v-col>
-        <h1>실시간 인기 상품</h1>
-      </v-col>
-    </v-row>
-    <ProductCard v-for="(product, i) in populars" 
-    :title="product.title"
-    :image="product.image"
-    :body="product.post.body"
-    :hit="product.post.hit"
-    :writer="`분류 : ${product.category.title}`"
-    :like="product.like"
-    :productID="product.post.title"
-    :key="i"/>
+        <v-col>
+          <h1>실시간 인기 상품</h1>
+        </v-col>
+      </v-row>
+      <v-row>
+        <ProductCard v-for="(product, i) in populars" 
+          id="product-card"
+          :title="product.title"
+          :image="product.image"
+          :body="product.post.body"
+          :hit="product.post.hit"
+          :price="product.price"
+          :writer="`분류 : ${product.category.title}`"
+          :like="product.like"
+          :productID="product.post.title"
+          :key="i"/>
+      </v-row>
+
+    <br><br>
 
     <v-row>
       <v-col>
@@ -50,16 +56,19 @@
       </v-col>
 
     </v-row>
-    <ProductCard v-for="product in sorted" 
-    :title="product.product.title"
-    :image="product.product.image"
-    :body="product.body"
-    :hit="product.hit"
-    :writer="product.user.nickname"
-    :like="product.product.like"
-    :productID="product.title"
-    :price="product.product.price"
-    :key="product.id"/>
+    <v-row>
+      <ProductCard v-for="product in sorted"
+        id="product-card"
+        :title="product.product.title"
+        :image="product.product.image"
+        :body="product.body"
+        :hit="product.hit"
+        :writer="product.user.nickname"
+        :like="product.product.like"
+        :productID="product.title"
+        :price="product.product.price"
+        :key="product.id"/>
+    </v-row>
     </v-content>
     <v-fab-transition>
       <v-btn
@@ -140,9 +149,16 @@ export default {
     // 인기 상품 조회
     const result = await realtimePopular();
     this.populars = result.data.result;
+    if(this.populars.length > 4) {
+      this.populars = this.populars.splice(0, 4);
+    }
   }
 }
 </script>
 
-<style>
+<style scoped>
+#product-card {
+  margin-right: 20px;
+  margin-top: 20px;
+}
 </style>

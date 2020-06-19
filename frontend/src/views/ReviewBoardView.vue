@@ -1,5 +1,5 @@
 <template>
-  <v-content>
+  <v-container>
     <h1>상품 후기</h1>
 
     <v-simple-table>
@@ -34,7 +34,7 @@
      :body="selectedBody"
      :rating="selectedRating"
      :like="selectedLike" />
-  </v-content>
+  </v-container>
 </template>
 
 <script>

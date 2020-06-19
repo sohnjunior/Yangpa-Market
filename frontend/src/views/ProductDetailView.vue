@@ -1,40 +1,48 @@
 <template>
-  <div>
-    <v-container>
+  <v-content>
+    <v-container style="height: 400px">
+      <h2> 상품정보 </h2>
       <v-row>
         <v-col>
-          <v-img :src="productIMG" class="product-image"/>
+          <v-img :src="productIMG" class="product-image" width="200" height="300"/>
         </v-col>
         <v-col>
           <v-row>
             {{ productTitle }} <br>
             {{ productBody }} <br>
-            ₩{{ productPrice }}
-            <v-btn @click="addCart">장바구니 담기</v-btn>
+            ₩{{ productPrice }} <br>
+          </v-row>
+          <v-row style="margin-top: 170px">
+            <v-btn @click="addCart" style="margin-right: 50px">장바구니 담기</v-btn>
             <v-btn @click="updateInfo">상품정보 수정</v-btn>
           </v-row>
         </v-col>
       </v-row>
     </v-container>
 
-    <v-container>
-      <h2>연관된 상품</h2>
-       <ProductCard v-for="product in related" 
-        :title="product[1].title"
-        :image="product[1].image"
-        :body="product[1].post.body"
-        :hit="product[1].post.hit"
-        :writer="''"
-        :like="product[1].like"
-        :productID="product[1].post.title"
-        :price="product[1].price"
-        :key="product[1].id"/>
+    <v-container style="height: 600px">
+      <v-content>
+        <h2>연관된 상품</h2>
+        <v-row>
+          <ProductCard v-for="product in related" 
+          id="product-card"
+          :title="product[1].title"
+          :image="product[1].image"
+          :body="product[1].post.body"
+          :hit="product[1].post.hit"
+          :writer="''"
+          :like="product[1].like"
+          :productID="product[1].post.title"
+          :price="product[1].price"
+          :key="product[1].id"/>
+        </v-row>
+      </v-content>
     </v-container>
     <hr>
     <v-container>
       <CommentList></CommentList>
     </v-container>
-  </div>
+  </v-content>
 </template>
 
 <script>
@@ -86,5 +94,9 @@ export default {
 .product-image {
   width: 30%;
   height: 50%;
+}
+#product-card {
+  margin-right: 20px;
+  margin-top: 20px;
 }
 </style>
