@@ -1,6 +1,6 @@
 const express = require('express');
 const { verifyToken } = require("./middlewares");
-const { Product, User, Cart, Post } = require('../models');
+const { Product, User, Cart, Post, Order } = require('../models');
 
 const router = express.Router();
 
@@ -72,5 +72,39 @@ router.delete('/delete', verifyToken, async (req, res, next) => {
     }
 });
 
+// 장바구니 상품 구매
+router.post('/buy', verifyToken, async (req, res, next) => {
+    try {
+        
+        const user = await User.findOne({ where: { email: req.body.email } });
+
+        const cart = await Cart.findOne({ where: { userId: user.id } });
+
+        const post = await Post.findOne({ where: { title: req.body.productID } });
+        const product = await Product.findOne({ where: { postId: post.id } });
+
+        //삭제후 구매내역에 추가..
+        cart.removeProduct(product);
+
+        try {
+            await Product.update({ sold:true }, { where: { postId: post.id } });
+
+            res.json({msg: "sold successfully" });
+        } catch (err) {
+            console.error(err);
+            next(err);
+        }
+
+        await Order.create({userId : user.id}, {postId:post.id});
+
+
+        res.json({ 'result': 'success' });
+        
+
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
+});
 
 module.exports = router;
