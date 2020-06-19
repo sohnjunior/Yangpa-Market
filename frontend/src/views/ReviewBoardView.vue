@@ -15,7 +15,7 @@
       <tbody>
         <tr v-for="item in reviews" :key="item.name">
           <td><span  @click="handleClick(item)" id="review-title">{{ item.title }}</span></td>
-          <td>{{ item.writer }}</td>
+          <td>{{ item.user.nickname }}</td>
           <td>{{ item.hit }}</td>
           <td>
             <v-btn icon>
@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import { retrueveAllReview } from '../api/index';
 import reviewModal from '../components/ReviewModal.vue';
 
 export default {
@@ -53,26 +54,7 @@ export default {
 
       // 전체 후기글 관련 데이터 호출
       showDialog: false,
-      reviews: [
-        {
-          title: '의자 후기입니다',
-          writer: '광운이',
-          hit: 1,
-          rating: 4,
-          image: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
-          body: '아주 푹신푹신하고 좋아요 잘 구매했습니다.',
-          like: 0,
-        },
-        {
-          title: '책상 후기입니다',
-          writer: '비망이',
-          hit: 15,
-          rating: 2,
-          image: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
-          body: '사진과 달랐어요.',
-          like: 0,
-        },
-      ]
+      reviews: [],
     }
   },
   methods: {
@@ -82,7 +64,7 @@ export default {
       // props 데이터 연동
       this.selectedRating = content.rating;
       this.selectedTitle = content.title;
-      this.selectedReviewer = content.writer;
+      this.selectedReviewer = content.user.nickname;
       this.selectedImage = content.image;
       this.selectedBody = content.body;
       this.selectedLike = content.like;
@@ -93,9 +75,10 @@ export default {
   },
   components: { reviewModal },
 
-  // TODO: 전체 게시글 호출해서 데이터 초기화하기 
-  created() {
-    console.log('데이터 초기화 해주세요');
+  // 전체 게시글 호출해서 데이터 초기화하기 
+  async created() {
+    const { data } = await retrueveAllReview();
+    this.reviews = data.reviews;
   }
 }
 </script>

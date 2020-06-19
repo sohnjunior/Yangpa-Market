@@ -135,6 +135,22 @@ function removeFromCart(payload) {
   return instance.delete("/cart/delete", { params: { email: payload.email, productID: payload.productID } });
 }
 
+
+// 전체 상품 후기 조회 요청
+function retrueveAllReview() {
+  return instance.get("/review/retrieve");
+}
+
+// 새로운 후기 생성 요청
+function createNewReview(payload) {
+  return instance.post("/review/create", payload, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
+}
+
+
 /*
     각종 테스트용 axios 요청
 */
@@ -155,5 +171,6 @@ export {
   registerComment, retreiveComment, deleteComment, updateComment,
   createNewProduct, retriveAllProducts, updateProduct, retreiveProduct, deletePost, searchProduct,
   realtimePopular, relatedProduct, likeProduct,
+  createNewReview, retrueveAllReview,
   createNewCartProduct, retriveAllCartProducts, removeFromCart,
   testJWT, testJWTVerify, testProduct }

@@ -17,11 +17,32 @@ fs.readdir('public/images/product', (err) => {
   }
 });
 
+// public/images/review 폴더가 없을 경우 생성
+fs.readdir('public/images/review', (err) => {
+  if (err) {
+    console.error('public/images/review 디렉토리가 없어서 생성합니다.');
+    fs.mkdirSync('public/images/review');
+  }
+});
+
 // 상품 이미지 업로드용 미들웨어
 exports.productUpload = multer({
   storage: multer.diskStorage({
     destination(req, file, cb) {
       cb(null, 'public/images/product/');
+    },
+    filename(req, file, cb) {
+      const ext = path.extname(file.originalname);
+      cb(null, path.basename(file.originalname, ext) + "-" + Date.now() + ext);
+    }
+  })
+});
+
+// 상품 후기 이미지 업로드용 미들웨어
+exports.reviewUpload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, cb) {
+      cb(null, 'public/images/review/');
     },
     filename(req, file, cb) {
       const ext = path.extname(file.originalname);
