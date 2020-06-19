@@ -149,6 +149,7 @@ router.get('/retreive/:id', async (req, res, next) => {
     next(err);
   }
 });
+
 // 특정 키워드 기준 상품명 검색 결과
 router.get('/search/:keyword', async (req, res, next) => {
   let keyword = req.params.keyword;
@@ -189,6 +190,27 @@ router.get('/search/:keyword', async (req, res, next) => {
   });
 
   res.json({'result': resultArr});
+});
+
+// 상품 좋아요 요청
+router.put('/like/:id', verifyToken, async (req, res, next) => {
+  try {
+    // 상품 찾기
+    const post = await Post.findOne({
+      where: { title: req.params.id },
+    });
+
+    const product = await Product.findOne({
+      where: { postId: post.id },
+    });
+
+    // like 증가시키기
+    await Product.update({ like: product.dataValues.like+1 }, { where: { postId: post.id } });
+    res.json({'result': 'success'});
+  } catch(err) {
+    console.error(err);
+    next(err);
+  }
 });
 
 // product 관련 테스트용 라우터

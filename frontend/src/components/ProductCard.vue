@@ -36,7 +36,7 @@
         장바구니 담기
       </v-btn>
       <v-spacer></v-spacer>
-      <v-btn icon>
+      <v-btn icon @click="likeUpdate">
         <v-icon>mdi-heart</v-icon>
         {{ like }}
       </v-btn>
@@ -45,8 +45,16 @@
 </template>
 
 <script>
+import { likeProduct } from '../api/index';
+
 export default {
-  props: ['title', 'image', 'body', 'hit', 'writer', 'like', 'price', 'productID']
+  props: ['title', 'image', 'body', 'hit', 'writer', 'like', 'price', 'productID'],
+  methods: {
+    async likeUpdate() {
+      const { data } = await likeProduct(this.productID);
+      console.log(data);
+    }
+  }
 }
 </script>
 

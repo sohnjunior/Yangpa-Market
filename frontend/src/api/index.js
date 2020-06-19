@@ -95,6 +95,11 @@ function searchProduct(payload) {
   return instance.get(`/product/search/${payload}`);
 }
 
+// 상품 좋아요 요청
+function likeProduct(id) {
+  return instance.put(`/product/like/${id}`);
+}
+
 // 실시간 인기 상품 요청
 function realtimePopular() {
   return instance.get("/recommend/popular");
@@ -139,6 +144,6 @@ export {
   registerUser, loginUser, getallUser, deleteUser,
   registerComment, retreiveComment, deleteComment, updateComment,
   createNewProduct, retriveAllProducts, updateProduct, retreiveProduct, deletePost, searchProduct,
-  realtimePopular, relatedProduct,
+  realtimePopular, relatedProduct, likeProduct,
   createNewCartProduct, retriveAllCartProducts, removeFromCart,
   testJWT, testJWTVerify, testProduct }
