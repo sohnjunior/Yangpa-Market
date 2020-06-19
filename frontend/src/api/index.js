@@ -183,5 +183,4 @@ export {
   realtimePopular, relatedProduct, likeProduct,
   createNewCartProduct, retriveAllCartProducts, removeFromCart,buyFromCart, getOrder,
   createNewReview, retrueveAllReview,
-  createNewCartProduct, retriveAllCartProducts, removeFromCart,
   testJWT, testJWTVerify, testProduct }

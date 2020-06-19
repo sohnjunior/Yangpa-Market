@@ -19,14 +19,16 @@ router.get('/retrieve', verifyToken, async (req, res, next) => {
         const soldProducts = await Product.findAll({ where: { userId: user.id }, where: { sold: 1 } });
 
         //본인이 구매한 목록
-        //const TofindOrder = await Order.findAll({ where: { userId: user.id }});
-
-        //const orderProducts = await Product.findAll({where:{ postId: TofindOrder.postId}});
+        const TofindOrder = await Order.findAll({ where: { userId: user.id }});
+        
+        if(TofindOrder != null){
+            const orderProducts = await Product.findAll({where:{ postId: TofindOrder.postId}});
+        }
 
         var JSONarray = new Array();
         JSONarray.push({ 'ToSell': TosellProducts });
         JSONarray.push({ 'Sold': soldProducts });
-        //JSONarray.push({ 'Order': orderProducts });
+        JSONarray.push({ 'Order': orderProducts });
         
         res.json(JSONarray);
 
