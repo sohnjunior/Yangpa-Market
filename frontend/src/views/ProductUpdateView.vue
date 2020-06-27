@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container>
     <h1>상품 정보수정</h1>
 
     <v-text-field
@@ -26,7 +26,7 @@
       ></v-textarea>
 
     <v-btn @click="submit">상품정보 수정하기</v-btn>
-  </div>
+  </v-container>
 </template>
 
 <script>

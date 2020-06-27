@@ -15,6 +15,7 @@
           <v-row style="margin-top: 170px">
             <v-btn @click="addCart" style="margin-right: 50px">장바구니 담기</v-btn>
             <v-btn @click="updateInfo">상품정보 수정</v-btn>
+            <v-btn @click="updateInfo">상품 구매하기</v-btn>
           </v-row>
         </v-col>
       </v-row>
