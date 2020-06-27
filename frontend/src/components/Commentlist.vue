@@ -1,8 +1,8 @@
 <template>
-  <v-data-table :headers="headers" :items="commentList" class="elevation-1" hide-default-footer>
+  <v-data-table :headers="headers" :items="commentList" class="elevation-1 ml-8 mr-8 mt-8" hide-default-footer>
     <template v-slot:top>
       <v-toolbar flat color="white">
-        <v-toolbar-title>댓글 목록</v-toolbar-title>
+        <v-toolbar-title>댓글</v-toolbar-title>
 
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">

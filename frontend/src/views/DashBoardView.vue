@@ -1,43 +1,36 @@
 <template>
-  <div>
-    <v-row>
-      <v-col>
-        <v-card
-        height="400"
-        width = "256"
-        class="overflow-hidden"
+  <v-row>
+    <v-col cols="3">
+      <v-navigation-drawer
+      absolute
+      :color = "color"
+      permanent
+      class="d-none d-md-flex text-center"
+      >
+      <v-list
+        dense
+        nav
+        class="py-0"
+      >
+        <v-list-item
+          v-for="item in items"
+          :key="item.title"
+          :to="`/dashboard/${item.to}`"
+          link
         >
-          <v-navigation-drawer
-            absolute
-            :color = "color"
-            dark
-          >
-            <v-list
-              dense
-              nav
-              class="py-0"
-            >
-  
-              <v-list-item
-                v-for="item in items"
-                :key="item.title"
-                :to="`/dashboard/${item.to}`"
-                link
-              >
-                <v-list-item-content>
-                  <v-list-item-title>{{ item.title }}</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </v-navigation-drawer>
-        </v-card>
-      </v-col>
-      <v-divider vertical></v-divider>
-      <v-col cols="10">
+          <v-list-item-content>
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+      </v-navigation-drawer>
+    </v-col>
+    <v-col>
+      <v-content class="pt-2 pr-12">
         <router-view></router-view>
-      </v-col>
-    </v-row>
-  </div>
+      </v-content>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -59,7 +52,7 @@ export default {
           to: 'profile',
         },
       ],
-      color : 'primary',
+      color : 'red lighten-5',
     }
   }
 }

@@ -35,14 +35,14 @@
           :like="product[1].like"
           :productID="product[1].post.title"
           :price="product[1].price"
-          :key="product[1].id"/>
+          :key="product[1].id"
+          />
         </v-row>
       </v-content>
     </v-container>
+    <v-spacer class="mt-11"></v-spacer>
     <hr>
-    <v-container>
-      <CommentList></CommentList>
-    </v-container>
+    <CommentList></CommentList>
   </v-content>
 </template>
 

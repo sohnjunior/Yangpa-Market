@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { validateEmail, validatePassword } from '../utils/validators';
+import { validateEmail } from '../utils/validators';
 
 export default {
   data() {
@@ -53,7 +53,7 @@ export default {
       ],
       passwordRules: [
         v => !!v || '비밀번호를 입력하세요',
-        v => validatePassword(v) || '올바른 비밀번호 형식이 아닙니다',
+        //v => validatePassword(v) || '올바른 비밀번호 형식이 아닙니다',
       ]
     }
   },
@@ -69,12 +69,14 @@ export default {
         email : this.email,
         password : this.password,
       };
-
-      try {
-        await this.$store.dispatch('LOGIN', userData);
+      
+      const success =  await this.$store.dispatch('LOGIN', userData);
+      if (success) {
+        // 토스트 메시지 출력 후 모달 종료
+        
         this.modalDestroy();
-      } catch (error) {
-        console.log(error); 
+      } else {
+        alert('이메일 혹은 비밀번호를 확인해주세요');
       }
     }
   }

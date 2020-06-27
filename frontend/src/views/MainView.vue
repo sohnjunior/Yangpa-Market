@@ -22,21 +22,45 @@
     <v-content>
       <v-row>
         <v-col>
-          <h1>실시간 인기 상품</h1>
+          <h1>실시간 TOP 10</h1>
         </v-col>
       </v-row>
       <v-row>
-        <ProductCard v-for="(product, i) in populars" 
-          id="product-card"
-          :title="product.title"
-          :image="product.image"
-          :body="product.post.body"
-          :hit="product.post.hit"
-          :price="product.price"
-          :writer="`분류 : ${product.category.title}`"
-          :like="product.like"
-          :productID="product.post.title"
-          :key="i"/>
+        <v-carousel 
+          cycle height="400" dark hide-delimiter-background show-arrows-on-hover >
+          <v-carousel-item>
+            <v-row>
+              <ProductCard v-for="(product, i) in populars.slice(0, 5)"
+                id="carousel-product"
+                class="ml-12"
+                :title="product.title"
+                :image="product.image"
+                :body="product.post.body"
+                :hit="product.post.hit"
+                :price="product.price"
+                :writer="`분류 : ${product.category.title}`"
+                :like="product.like"
+                :productID="product.post.title"
+                :key="i"/>
+            </v-row>
+          </v-carousel-item>
+          <v-carousel-item>
+            <v-row>
+              <ProductCard v-for="(product, i) in populars.slice(5)" 
+                id="carousel-product"
+                class="ml-12"
+                :title="product.title"
+                :image="product.image"
+                :body="product.post.body"
+                :hit="product.post.hit"
+                :price="product.price"
+                :writer="`분류 : ${product.category.title}`"
+                :like="product.like"
+                :productID="product.post.title"
+                :key="i"/>
+            </v-row>
+          </v-carousel-item>
+        </v-carousel>
       </v-row>
 
     <br><br>
@@ -46,7 +70,7 @@
         <h1>{{ category }}</h1>
       </v-col>
 
-      <v-col class="d-flex" cols="12" sm="6">
+      <v-col sm="2">
         <v-select
           :items="items"
           label="정렬기준"
@@ -70,9 +94,14 @@
         :key="product.id"/>
     </v-row>
     </v-content>
-    <v-btn fab dark large color="pink" fixed right bottom to="/product/new">
-      <v-icon>mdi-plus</v-icon>
-    </v-btn>
+    <v-tooltip top>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn v-bind="attrs" v-on="on" fab dark large color="pink" fixed right bottom to="/product/new">
+          <v-icon>mdi-plus</v-icon>
+        </v-btn>
+      </template>
+      <span>새로운 상품을 등록해보세요!</span>
+    </v-tooltip>
   </v-container>
 </template>
 
@@ -94,7 +123,14 @@ export default {
         "회원권": "tickets",
         "의류" : "clothes",
         "기타": "others",
-      }
+      },
+      slides: [
+          'First',
+          'Second',
+          'Third',
+          'Fourth',
+          'Fifth',
+      ],
     }
   },
   computed: {
@@ -140,7 +176,7 @@ export default {
     const result = await realtimePopular();
     this.populars = result.data.result;
     if(this.populars.length > 4) {
-      this.populars = this.populars.splice(0, 4);
+      this.populars = this.populars.slice(0, 10);
     }
   }
 }
@@ -151,5 +187,8 @@ export default {
   margin-right: 20px;
   margin-top: 20px;
 }
-
+#carousel-product {
+  width: 15%;
+  height: 10%;
+}
 </style>

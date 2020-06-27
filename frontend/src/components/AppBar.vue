@@ -10,7 +10,7 @@
           alt="Vuetify Logo"
           class="shrink mr-2"
           contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
+          src="/onion.svg"
           transition="scale-transition"
           width="40"
         />
@@ -31,18 +31,19 @@
         filled
         append-icon="mdi-magnify"
         v-model="keyword"
+        class="mt-7 mr-5"
         @keyup.enter="search"
       ></v-text-field>
       </div>
-      <v-btn text to="/review">
-        <span class="mr-2">상품 후기</span>
+      <v-btn class="mr-5" text to="/review">
+        상품 후기
       </v-btn>
 
       <v-btn text @click="loginClicked" v-if="!isLoggedIn">
-        <span class="mr-2">로그인</span>
+        <span class="mr-3">로그인</span>
       </v-btn>
       <v-btn text to="/signup" v-if="!isLoggedIn">
-        <span class="mr-2">회원가입</span>
+        <span class="mr-3">회원가입</span>
       </v-btn>
      
         <v-menu
@@ -54,10 +55,10 @@
         >
           <template v-slot:activator="{ on, attrs }">
             <v-btn
-              color="primary"
-              dark
               v-bind="attrs"
               v-on="on"
+              class="mr-4"
+              text
             >
               회원정보
             </v-btn>

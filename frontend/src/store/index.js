@@ -35,11 +35,17 @@ export default new Vuex.Store({
   },
   actions: {
     async LOGIN({ commit }, userData) {
-      const { data } = await loginUser(userData);
-      commit('setEmail', data.email);
-      commit('setToken', data.token);
-      saveAuthEmailToCookie(data.email);
-      saveAuthTokenToCookie(data.token);
+      try {
+        const { data } = await loginUser(userData);
+        commit('setEmail', data.email);
+        commit('setToken', data.token);
+        saveAuthEmailToCookie(data.email);
+        saveAuthTokenToCookie(data.token);
+        return true;
+      } catch(err) {
+        // 이메일 혹은 비밀번호 오류
+        return false;
+      }
     }
   }
 });

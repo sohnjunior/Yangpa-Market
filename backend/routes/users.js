@@ -72,7 +72,7 @@ router.post('/login',tokenLimiter, async function(req,res,next){
       
       res.json({ msg:'ok',token, email });
     } else {
-      res.json({ msg: "Password is incorrect" });
+      res.status(401).json({ msg: "Password is incorrect" });
     }
   }
 });
