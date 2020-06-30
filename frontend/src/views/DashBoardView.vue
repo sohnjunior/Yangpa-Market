@@ -44,7 +44,7 @@ export default {
           to: 'cart',
         },
         {
-          title: '구매내역',
+          title: '구매 및 판매 내역',
           to: 'order',
         },
         {

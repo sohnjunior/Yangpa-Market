@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1> 	&quot;{{ keyword }}&quot; 검색 결과 </h1>
+    <h1> 	&quot;{{ keyword }}&quot; 에 대한 검색 결과 </h1>
 
     <v-content>
       <v-row>

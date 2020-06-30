@@ -14,8 +14,7 @@
           </v-row>
           <v-row style="margin-top: 170px">
             <v-btn @click="addCart" style="margin-right: 50px">장바구니 담기</v-btn>
-            <v-btn @click="updateInfo">상품정보 수정</v-btn>
-            <v-btn @click="updateInfo">상품 구매하기</v-btn>
+            <v-btn @click="buyProduct">상품 구매하기</v-btn>
           </v-row>
         </v-col>
       </v-row>
@@ -78,15 +77,22 @@ export default {
     this.related = result.data.result;
   },
   methods: {
-    // 상품 정보 업데이트
-    updateInfo() {
-      this.$router.push(`/product/update/${this.productID}`);
-    },
     // 장바구니에 상품 추가
     async addCart() {
+      // 로그인한 유저인지 확인
+      if (!this.$store.getters.isLoggedIn) {
+        alert('로그인이 필요한 서비스입니다.');
+        return;
+      }
+
       const payload = { email: this.$store.getters.getEmail, productID: this.productID };
       await createNewCartProduct(payload);
     },
+
+    // 상품 구매하기
+    buyProduct() {
+      console.log('상품 구매 구현해주세요!');
+    }
   }
 }
 </script>

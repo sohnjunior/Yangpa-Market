@@ -43,8 +43,6 @@ router.post('/create',verifyToken, productUpload.single('image'), async (req, re
 // 상품 정보 수정
 router.put('/update/:id', verifyToken, async (req, res, next) => {
   try {
-    // TODO: email 정보로 현재 유저가 글 작성자와 동일한지 확인
-
     const postTitle = req.body.productId;
     const productData = {
       'title': req.body.title,
@@ -71,8 +69,6 @@ router.put('/update/:id', verifyToken, async (req, res, next) => {
 // 상품 게시글 삭제
 router.delete('/delete/:id',verifyToken, async (req, res, next) => {
   try {
-    // TODO: email 정보로 현재 유저가 글 작성자와 동일한지 확인
-
     const post = await Post.findOne({ where: { title: req.params.id } });
     await Product.destroy({ where: { postId: post.dataValues.id } });
     await Post.destroy({ where: { id: post.dataValues.id } });

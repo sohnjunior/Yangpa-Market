@@ -3,19 +3,44 @@
     <v-container style="height: 10px;">
       <v-row class="text-center">
         <v-col>
-          <v-btn @click="categorySelected('전공서적')">전공서적</v-btn>
+          <v-btn color="success" depressed x-large @click="categorySelected('전공서적')">
+            <v-img class="btn-image" :src="require('@/assets/study.svg')"/>
+            <span class="ml-2">
+              전공서적
+            </span>
+          </v-btn>
         </v-col>
         <v-col>
-          <v-btn @click="categorySelected('원룸')">원룸</v-btn>
+          <v-btn color="success" depressed x-large @click="categorySelected('원룸')">
+            <v-img class="btn-image" :src="require('@/assets/room.svg')"/>
+            <span class="ml-2">
+              원룸
+            </span>
+          </v-btn>
         </v-col>
         <v-col>
-          <v-btn @click="categorySelected('회원권')">회원권</v-btn>
+          <v-btn color="success" depressed x-large @click="categorySelected('회원권')">
+            <v-img class="btn-image" :src="require('@/assets/ticket.svg')"/>
+            <span class="ml-2">
+              회원권
+            </span>
+          </v-btn>
         </v-col>
         <v-col>
-          <v-btn @click="categorySelected('의류')">의류</v-btn>
+          <v-btn color="success" depressed x-large @click="categorySelected('의류')">
+            <v-img class="btn-image" :src="require('@/assets/clothes.svg')"/>
+            <span class="ml-2">
+              의류
+            </span>
+          </v-btn>
         </v-col>
         <v-col>
-          <v-btn @click="categorySelected('기타')">기타</v-btn>
+          <v-btn color="success" depressed x-large @click="categorySelected('기타')">
+            <v-img class="btn-image" :src="require('@/assets/box.svg')"/>
+            <span class="ml-2">
+              기타
+            </span>
+          </v-btn>
         </v-col>
       </v-row>
     </v-container>
@@ -190,5 +215,9 @@ export default {
 #carousel-product {
   width: 15%;
   height: 10%;
+}
+.btn-image {
+  width: 30px;
+  height: 30px;
 }
 </style>
