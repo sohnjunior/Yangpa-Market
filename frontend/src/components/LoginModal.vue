@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import EventBus from '../EventBus';
 import { validateEmail } from '../utils/validators';
 
 export default {
@@ -72,8 +73,7 @@ export default {
       
       const success =  await this.$store.dispatch('LOGIN', userData);
       if (success) {
-        // 토스트 메시지 출력 후 모달 종료
-        
+        EventBus.$emit('popUp', '로그인 되었습니다.');
         this.modalDestroy();
       } else {
         alert('이메일 혹은 비밀번호를 확인해주세요');

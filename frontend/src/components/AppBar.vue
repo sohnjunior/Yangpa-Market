@@ -78,6 +78,7 @@
 </template>
 
 <script>
+import EventBus from '../EventBus';
 import LoginModal from './LoginModal.vue';
 import { deleteCookie } from '../utils/cookies.js';
 
@@ -105,6 +106,7 @@ export default {
     logoutClicked() {
       deleteCookie('auth_email');
       deleteCookie('auth_token');
+      EventBus.$emit('popUp', '로그아웃 되었습니다.');
       this.$router.push('/');
     },
     // 로그인하기 or 취소 버튼 클릭 시

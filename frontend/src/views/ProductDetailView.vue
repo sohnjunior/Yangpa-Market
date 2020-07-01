@@ -49,6 +49,7 @@
 import { retreiveProduct, relatedProduct, createNewCartProduct } from '../api/index';
 import CommentList from '../components/Commentlist';
 import ProductCard from '../components/ProductCard.vue';
+import EventBus from '../EventBus';
 
 
 export default {
@@ -87,6 +88,7 @@ export default {
 
       const payload = { email: this.$store.getters.getEmail, productID: this.productID };
       await createNewCartProduct(payload);
+      EventBus.$emit('popUp', '장바구니에 추가되었습니다.');
     },
 
     // 상품 구매하기

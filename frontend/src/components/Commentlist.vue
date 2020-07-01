@@ -21,7 +21,7 @@
                       <v-col cols="12">
                         <v-textarea
                           v-model="comment"
-                          label="댓글 내용"
+                          label="댓글을 입력하세요"
                           class="py-5"
                         ></v-textarea>
                       </v-col>
@@ -31,8 +31,8 @@
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-checkbox v-model="secret" label="비밀댓글" class="mx-10"></v-checkbox>
-                  <v-btn color="blue darken-1" text @click="close">취소</v-btn>
                   <v-btn color="blue darken-1" text @click="save">확인</v-btn>
+                  <v-btn color="blue darken-1" text @click="close">취소</v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -53,6 +53,8 @@
 
 <script>
 import { registerComment, retreiveComment, deleteComment } from "../api/index";
+
+
 // TODO: 댓글 수정 및 비밀 댓글 기능 & 작성자에 따른 조건부 랜더링
 export default {
   data() {
@@ -79,7 +81,7 @@ export default {
   
   computed: {
     formTitle() {
-      return this.Formflag === -1 ? "새로운 댓글" : "댓글 수정";
+      return this.Formflag === -1 ? "댓글 작성하기" : "댓글 수정";
     },
   },
 
@@ -132,7 +134,7 @@ export default {
 
       try {
         await registerComment(Comment);
-        this.$router.go(0);  // refresh 
+        this.$router.go(0);  // refresh the page
       } catch (error) {
         console.log(error);
       }
