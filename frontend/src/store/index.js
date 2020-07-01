@@ -23,7 +23,7 @@ export default new Vuex.Store({
       } else {
         return true;
       }
-    }
+    },
   },
   mutations: {
     setEmail(state, email) {
@@ -31,6 +31,9 @@ export default new Vuex.Store({
     },
     setToken(state, token) {
       state.token = token;
+    },
+    setAdmin(state, admin) {
+      state.admin = admin;
     }
   },
   actions: {

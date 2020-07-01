@@ -47,8 +47,15 @@
               <v-radio-group :row="true" class="mx-4" v-model="sex">
                 성별
                 <v-spacer></v-spacer>
-                <v-radio :label="'남'" value="male"></v-radio>
-                <v-radio :label="'여'" value="female"></v-radio>
+                <v-radio label="남" value="male"></v-radio>
+                <v-radio label="여" value="female"></v-radio>
+              </v-radio-group>
+
+              <v-radio-group :row="true" class="mx-4" v-model="admin">
+                관리자 계정
+                <v-spacer></v-spacer>
+                <v-radio label="예" :value="true"></v-radio>
+                <v-radio label="아니오" :value="false"></v-radio>
               </v-radio-group>
 
               <v-col cols="mx-4">
@@ -101,12 +108,12 @@ export default {
       confirmpassword: "",
       nickname: "",
       phone: "",
-      sex: "",
+      sex: "male",
       birthday: "",
-      admin: "",
-      emailRules: [(v) => !!v || "Email is required"],
-      passwordRules: [(v) => !!v || "Password is required"],
-      confirmPasswordRules: [(v) => !!v || "Confirm password"],
+      admin: false,
+      emailRules: [(v) => !!v || "이메일을 입력하세요."],
+      passwordRules: [(v) => !!v || "비밀번호를 입력하세요."],
+      confirmPasswordRules: [(v) => !!v || "비밀번호를 확인해주세요."],
       date: this.birthday,
       menu: false,
     };
@@ -126,8 +133,8 @@ export default {
       };
 
       try {
-        const { data } = await registerUser(userData);
-        console.log(data);
+        await registerUser(userData);
+        this.$router.push('/');
       } catch (error) {
         console.log(error);
       }
@@ -136,7 +143,7 @@ export default {
   computed: {
     passwordConfirmationRule() {
       return () =>
-        this.password === this.confirmpassword || "Password must match";
+        this.password === this.confirmpassword || "비밀번호가 일치하지 않습니다.";
     },
   },
 };

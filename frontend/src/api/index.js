@@ -50,6 +50,11 @@ function deleteUser(payload) {
   return instance.delete(`/users/delete`, { params: { email: payload.email } });
 }
 
+// 관리자 권한 여부 조회
+function isAdminUser(payload) {
+  return instance.get("/users/admin", { params: { email: payload.email } });
+}
+
 // 상품 게시글 등록 요청
 function createNewProduct(payload) {
   return instance.post("/product/create", payload, {
@@ -177,7 +182,7 @@ function testProduct() {
 }
 
 export {
-  registerUser, updateUser, loginUser, getallUser, getUser, deleteUser,
+  registerUser, updateUser, loginUser, getallUser, getUser, deleteUser, isAdminUser,
   registerComment, retreiveComment, deleteComment, updateComment,
   createNewProduct, retriveAllProducts, updateProduct, retreiveProduct, deletePost, searchProduct,
   realtimePopular, relatedProduct, likeProduct,

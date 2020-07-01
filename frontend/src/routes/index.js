@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import MainView from '../views/MainView.vue';
 import PageNotFound from '../views/PageNotFound.vue';
+import PageNotAllowed from '../views/PageNotAllowed.vue';
 import DashBoardView from '../views/DashBoardView.vue';
 import ProductCreateView from '../views/ProductCreateView.vue';
 import ProductDetailView from '../views/ProductDetailView.vue';
@@ -19,6 +20,7 @@ import UserProfile from '../components/Profile.vue';
 
 // import store for navigation gurad
 import store from '../store/index';
+import { isAdminUser } from '../api/index';
 
 Vue.use(VueRouter);
 
@@ -34,6 +36,16 @@ export const router = new VueRouter({
         // 관리자 페이지
         path: "/admin",
         component: AdminView,
+        beforeEnter: async (to, from, next) => {
+          // 만약 관리자 권한을 가지고 있다면
+          const payload = { email: store.state.email };
+          const { data } = await isAdminUser(payload);
+          if (data.isAdmin) {
+            return next();
+          } 
+          
+          next('/no-permission');
+        }
       },
       {
         // 유저 대시보드
@@ -99,6 +111,11 @@ export const router = new VueRouter({
         // 후기 게시판
         path: "/review",
         component: ReviewBoardView,
+      },
+      {
+        // 403 페이지
+        path: "/no-permission",
+        component: PageNotAllowed,
       },
       {
         // 404 페이지

@@ -1,18 +1,20 @@
 <template>
-  <v-container>
-    <v-data-table :headers="headers" :items="userlist" class="elevation-1">
-      <template v-slot:top>
-        <v-toolbar flat color="white">
-          <v-toolbar-title>유저 목록</v-toolbar-title>
-        </v-toolbar>
-      </template>
-      <template v-slot:item.actions="{ item }" >
-        <v-icon small @click="check(item)">
-          mdi-delete
-        </v-icon>
-      </template>
-    </v-data-table>
-  </v-container>
+  <v-content>
+    <v-container>
+      <v-data-table :headers="headers" :items="userlist" class="elevation-1">
+        <template v-slot:top>
+          <v-toolbar flat color="white">
+            <v-toolbar-title>유저 목록</v-toolbar-title>
+          </v-toolbar>
+        </template>
+        <template v-slot:item.actions="{ item }" >
+          <v-icon small @click="check(item)">
+            mdi-delete
+          </v-icon>
+        </template>
+      </v-data-table>
+    </v-container>
+  </v-content>
 </template>
 
 <script>

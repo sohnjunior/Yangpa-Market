@@ -32,9 +32,19 @@ router.get('/users' ,function(req,res,next){
 router.get('/retrieve', verifyToken, async (req, res, next) => {
   try {
     const user = await User.findOne({ where: { email: req.query.email } });
-
     res.json({ 'result': user });
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
 
+// 관리자 여부 조회
+router.get('/admin', verifyToken, async (req, res, next) => {
+  try {
+    const user = await User.findOne({ where: { email: req.query.email } });
+    const isAdmin = user.admin;
+    res.json({ isAdmin });
   } catch (err) {
     console.error(err);
     next(err);
@@ -43,15 +53,14 @@ router.get('/retrieve', verifyToken, async (req, res, next) => {
 
 //Register new User. Create new User by 'createUser'
 router.post('/register', async function(req,res,next){
-  const { email, password, nickname , phone, sex, birthday} = req.body;
+  const { email, password, nickname , phone, sex, birthday, admin } = req.body;
 
-  let exUser = await User.findOne({ where: {email: email} });
+  let exUser = await User.findOne({ where: { email: email } });
   if(exUser){
     res.status(401).json({ msg: "Email already Exist" });
   }
 
-  let admin = false;
-  const user = await User.create({ email, password, nickname, phone, sex, birthday, admin})
+  const user = await User.create({ email, password, nickname, phone, sex, birthday, admin })
   await Cart.create({ title: email, userId: user.id });
 
   res.json({ user, msg: "account created successfully" });
@@ -70,7 +79,7 @@ router.post('/login',tokenLimiter, async function(req,res,next){
       let payload = { id : user.id };
       let token = jwt.sign(payload,process.env.JWT_SECRET);
       
-      res.json({ msg:'ok',token, email });
+      res.json({ msg:'ok', token, email });
     } else {
       res.status(401).json({ msg: "Password is incorrect" });
     }
