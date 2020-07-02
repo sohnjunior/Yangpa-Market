@@ -1,3 +1,4 @@
+const fs = require('fs');
 const express = require('express');
 const { verifyToken } = require("./middlewares");
 const { Product, User, Cart, Post, Order } = require('../models');
@@ -41,8 +42,17 @@ router.get('/retrieve', verifyToken, async (req, res, next) => {
         const cart = await Cart.findOne({ where: { userId: user.id } });
 
         // 장바구니의 상품 목록 조회해서 반환
-        const ret = await cart.getProducts();
-        res.json({ 'result': ret });
+        const products = await cart.getProducts();
+
+        // 이미지 파일을 읽어 바이너리 형태로 전송해줌
+        products.forEach(product => {
+            const imagePath = product.dataValues.image;
+            const data = fs.readFileSync('public/images/product/' + imagePath);
+            let base64 = Buffer.from(data).toString('base64');
+            base64 = `data:image/png;base64,${base64}`;
+            product.dataValues.image = base64;
+        });
+        res.json({ 'result': products });
 
     } catch(err) {
         console.error(err);
