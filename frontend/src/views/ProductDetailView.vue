@@ -47,7 +47,7 @@
 
 <script>
 import { retreiveProduct, relatedProduct, createNewCartProduct } from '../api/index';
-import CommentList from '../components/Commentlist';
+import CommentList from '../components/CommentList';
 import ProductCard from '../components/ProductCard.vue';
 import EventBus from '../EventBus';
 

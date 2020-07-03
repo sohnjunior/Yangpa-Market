@@ -16,7 +16,7 @@
           {{ name }}
         </v-row>
         <v-row class="mt-2">
-          <span :style="[status ? soldOut : onSale]">{{ statusMessage }}</span>
+          <b :style="[status ? soldOut : onSale]">{{ statusMessage }}</b>
         </v-row>
       </v-col>
       <v-col cols="3">

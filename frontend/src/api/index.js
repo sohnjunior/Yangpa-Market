@@ -79,9 +79,9 @@ function deleteComment(payload) {
   return instance.delete(`/comment/delete`, { params: { id: payload.id } });
 }
 
-// 댓글 삭제 요청 
+// 댓글 수정 요청 
 function updateComment(payload) {
-  return instance.put(`/comment/update`, { params: { id: payload.id } });
+  return instance.put(`/comment/update`, payload);
 }
 
 // 상품 게시글 삭제 요청 

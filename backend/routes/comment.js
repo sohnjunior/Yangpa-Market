@@ -15,8 +15,6 @@ router.post('/create', verifyToken, async (req, res, next) => {
         const post = await Post.findOne({ where: { title: req.body.postId } });
         const { comment, secret } = req.body;
 
-        console.log(comment, secret);
-
         await Comment.create({
             comment : comment,
             userId: user.id,
@@ -45,7 +43,7 @@ router.delete('/delete', async (req, res, next) => {
 
 // 댓글 수정
 router.put('/update', async (req, res, next) => {
-    const { comment,id } = req.body;
+    const { comment, id } = req.body;
     try {
         await Comment.update({ comment }, { where: { id: id } });
         res.json({ msg: "Comment updated successfully" });
@@ -66,7 +64,7 @@ router.get('/retreive/:id', async (req, res, next) => {
             where: { postId: post.id },
             include: {
                 model: User,
-                attributes: ['nickname'],
+                attributes: ['email', 'nickname'],
             }
         });
         res.json({'comments': comments});
