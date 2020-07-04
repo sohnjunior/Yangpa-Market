@@ -48,7 +48,7 @@
         </template>
         <template v-slot:item.comment="{ item }">
           <span style="color: grey;" 
-            v-if="item.secret && !haveAuth(item.user.email)">비밀댓글입니다.</span>
+            v-if="!admin && item.secret && !haveAuth(item.user.email)">비밀댓글입니다.</span>
           <span v-else> {{ item.comment }} </span>
         </template>
         <template v-slot:item.actions="{ item }">
@@ -65,10 +65,8 @@
 </template>
 
 <script>
-import { registerComment, retreiveComment, deleteComment, updateComment } from "../api/index";
+import { registerComment, retreiveComment, deleteComment, updateComment, isAdminUser } from "../api/index";
 
-
-// TODO: 비밀 댓글 기능 - 글 작성자 & 관리자는 열람 가능하도록 하기
 
 export default {
   data() {
@@ -86,13 +84,17 @@ export default {
       valid: false,
       editFlag: true,
       secret: false,
+      admin: false,
     };
   },
 
   async created() {
     this.postId = this.$route.params.id;
-    const { data } = await retreiveComment(this.postId);
-    this.commentList = data.comments;
+    const comments = await retreiveComment(this.postId);
+    const payload = { email: this.$store.getters.getEmail };
+    const isAdmin = await isAdminUser(payload);
+    this.admin = isAdmin.data.isAdmin;
+    this.commentList = comments.data.comments;
   },
   
   computed: {
