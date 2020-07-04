@@ -50,37 +50,31 @@
           <h1>실시간 TOP 10</h1>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row class="mt-5">
         <v-carousel 
           cycle height="400" dark hide-delimiter-background show-arrows-on-hover >
           <v-carousel-item>
             <v-row>
-              <ProductCard v-for="(product, i) in populars.slice(0, 5)"
+              <PopularProductCard v-for="(product, i) in populars.slice(0, 5)"
                 id="carousel-product"
                 class="ml-12"
                 :title="product.title"
                 :image="product.image"
-                :body="product.post.body"
                 :hit="product.post.hit"
-                :price="product.price"
-                :writer="`분류 : ${product.category.title}`"
-                :like="product.like"
+                :writer="`카테고리 : ${product.category.title}`"
                 :productID="product.post.title"
                 :key="i"/>
             </v-row>
           </v-carousel-item>
           <v-carousel-item>
             <v-row>
-              <ProductCard v-for="(product, i) in populars.slice(5)" 
+              <PopularProductCard v-for="(product, i) in populars.slice(5)" 
                 id="carousel-product"
                 class="ml-12"
                 :title="product.title"
                 :image="product.image"
-                :body="product.post.body"
                 :hit="product.post.hit"
-                :price="product.price"
-                :writer="`분류 : ${product.category.title}`"
-                :like="product.like"
+                :writer="`카테고리 : ${product.category.title}`"
                 :productID="product.post.title"
                 :key="i"/>
             </v-row>
@@ -88,7 +82,7 @@
         </v-carousel>
       </v-row>
 
-    <br><br>
+    <br>
 
     <v-row>
       <v-col>
@@ -133,6 +127,7 @@
 <script>
 import { retriveAllProducts, realtimePopular } from '../api/index';
 import ProductCard from '../components/ProductCard.vue';
+import PopularProductCard from '../components/PopularProductCard.vue';
 
 export default {
   data() {
@@ -180,7 +175,7 @@ export default {
     }
   },
   components: {
-    ProductCard,
+    ProductCard, PopularProductCard,
   },
   methods: {
     // 선택된 카테고리에 따라 상품 출력

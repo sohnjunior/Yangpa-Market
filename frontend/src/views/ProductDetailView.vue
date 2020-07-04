@@ -8,11 +8,15 @@
         </v-col>
         <v-col>
           <v-row>
-            {{ productTitle }} <br>
-            {{ productBody }} <br>
-            ₩{{ productPrice }} <br>
+            <h2>{{ productTitle }}</h2>
           </v-row>
-          <v-row style="margin-top: 170px">
+          <v-row class="mt-5">
+            <p>{{ productBody }}</p>
+          </v-row>
+          <v-row class="mt-9">
+            <div id="price">₩ {{ productPrice }}</div>
+          </v-row>
+          <v-row class="mt-12">
             <v-btn @click="addCart" style="margin-right: 50px">장바구니 담기</v-btn>
             <v-btn @click="buyProduct">상품 구매하기</v-btn>
           </v-row>
@@ -22,7 +26,7 @@
 
     <v-container style="height: 600px">
       <v-content>
-        <h2>연관된 상품</h2>
+        <h2>이 상품도 함께 봤어요</h2>
         <v-row>
           <ProductCard v-for="product in related" 
           id="product-card"
@@ -107,5 +111,9 @@ export default {
 #product-card {
   margin-right: 20px;
   margin-top: 20px;
+}
+#price {
+  font-family: monospace;
+  font-size: 1.7rem;
 }
 </style>
