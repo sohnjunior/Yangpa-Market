@@ -46,9 +46,14 @@
             </v-dialog>
           </v-toolbar>
         </template>
+        <template v-slot:item.user.nickname="{ item }">
+          <span class="font-weight-medium">{{ item.user.nickname }}</span>
+        </template>
         <template v-slot:item.comment="{ item }">
-          <span style="color: grey;" 
-            v-if="!admin && item.secret && !haveAuth(item.user.email)">비밀댓글입니다.</span>
+          <span class="grey--text" 
+            v-if="!admin && item.secret && !haveAuth(item.user.email)">
+            <v-icon small>mdi-lock</v-icon> 비밀댓글입니다.
+          </span>
           <span v-else> {{ item.comment }} </span>
         </template>
         <template v-slot:item.actions="{ item }">
@@ -91,10 +96,14 @@ export default {
   async created() {
     this.postId = this.$route.params.id;
     const comments = await retreiveComment(this.postId);
-    const payload = { email: this.$store.getters.getEmail };
-    const isAdmin = await isAdminUser(payload);
-    this.admin = isAdmin.data.isAdmin;
     this.commentList = comments.data.comments;
+    
+    // 현재 로그인한 유저라면
+    if (this.$store.getters.isLoggedIn) {
+      const payload = { email: this.$store.getters.getEmail };
+      const isAdmin = await isAdminUser(payload);
+      this.admin = isAdmin.data.isAdmin;
+    }
   },
   
   computed: {

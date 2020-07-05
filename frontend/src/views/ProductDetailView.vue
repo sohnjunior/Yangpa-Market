@@ -1,13 +1,15 @@
 <template>
   <v-content>
     <v-container style="height: 400px">
-      <h2> 상품정보 </h2>
-      <v-row>
+      <div class="mb-5">
+        <h1> 상품정보 </h1>
+      </div>
+      <v-row class="product-info">
         <v-col>
           <v-img :src="productIMG" class="product-image" width="200" height="300"/>
         </v-col>
-        <v-col>
-          <v-row>
+        <v-col cols="7">
+          <v-row class="mt-9">
             <h2>{{ productTitle }}</h2>
           </v-row>
           <v-row class="mt-5">
@@ -17,8 +19,14 @@
             <div id="price">₩ {{ productPrice }}</div>
           </v-row>
           <v-row class="mt-12">
-            <v-btn @click="addCart" style="margin-right: 50px">장바구니 담기</v-btn>
-            <v-btn @click="buyProduct">상품 구매하기</v-btn>
+            <v-btn tile outlined color="success" large depressed @click="addCart" style="margin-right: 50px">
+              <v-icon left>mdi-cart</v-icon>
+              장바구니 담기
+            </v-btn>
+            <v-btn tile outlined color="success" large depressed @click="likeUpdate">
+              <v-icon left>mdi-thumb-up</v-icon>
+              좋아요
+            </v-btn>
           </v-row>
         </v-col>
       </v-row>
@@ -28,14 +36,12 @@
       <v-content>
         <h2>이 상품도 함께 봤어요</h2>
         <v-row>
-          <ProductCard v-for="product in related" 
+          <RelatedProductCard v-for="product in related" 
           id="product-card"
           :title="product[1].title"
           :image="product[1].image"
           :body="product[1].post.body"
           :hit="product[1].post.hit"
-          :writer="''"
-          :like="product[1].like"
           :productID="product[1].post.title"
           :price="product[1].price"
           :key="product[1].id"
@@ -50,15 +56,15 @@
 </template>
 
 <script>
-import { retreiveProduct, relatedProduct, createNewCartProduct } from '../api/index';
+import { retreiveProduct, relatedProduct, createNewCartProduct, likeProduct } from '../api/index';
 import CommentList from '../components/CommentList';
-import ProductCard from '../components/ProductCard.vue';
+import RelatedProductCard from '../components/RelatedProductCard.vue';
 import EventBus from '../EventBus';
 
 
 export default {
   components: {
-    CommentList, ProductCard,
+    CommentList, RelatedProductCard,
   },
   data() {
     return {
@@ -80,6 +86,7 @@ export default {
 
     const result = await relatedProduct(this.productID);
     this.related = result.data.result;
+    window.scrollTo(0, 0);
   },
   methods: {
     // 장바구니에 상품 추가
@@ -95,18 +102,25 @@ export default {
       EventBus.$emit('popUp', '장바구니에 추가되었습니다.');
     },
 
-    // 상품 구매하기
-    buyProduct() {
-      console.log('상품 구매 구현해주세요!');
-    }
+    // 좋아요 + 1 
+    async likeUpdate() {
+      await likeProduct(this.productID);
+    },
   }
 }
 </script>
 
 <style scoped>
+.product-info {
+  width: 80%;
+  border: solid 1px;
+  border-radius: 20px;
+  border-color: gainsboro;
+}
 .product-image {
   width: 30%;
   height: 50%;
+  margin: 25px 0px 0px 25px;
 }
 #product-card {
   margin-right: 20px;
