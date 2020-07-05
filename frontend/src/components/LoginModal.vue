@@ -1,39 +1,58 @@
 <template>
-  <v-dialog v-model="dialog" persistent max-width="600px">
+  <v-dialog v-model="dialog" persistent width="450px">
     <v-card>
       <v-card-title>
-        <span class="headline">로그인</span>
+        <v-row>
+          <v-col class="ml-5">
+            <h2 class="font-weight-medium">Login</h2>
+          </v-col>
+          <v-col cols="2">
+            <v-btn icon color="grey" @click="modalDestroy">
+              <v-icon>mdi-close-circle</v-icon>
+            </v-btn>
+          </v-col>
+        </v-row>
       </v-card-title>
       <v-card-text>
         <v-container>
           <v-form v-model="valid">
             <v-row>
               <v-col cols="12">
-                <v-text-field 
-                  label="email" 
+                <v-text-field
+                  class="login-form"
+                  label="email"
+                  placeholder="E-mail Address"
                   required 
+                  rounded
+                  solo
+                  autofocus
                   v-model="email"
                   :rules="emailRules"
                   />
               </v-col>
               <v-col cols="12">
-                <v-text-field 
+                <v-text-field
+                  class="login-form"
                   label="password" 
-                  type="password" 
+                  type="password"
+                  placeholder="Password"
                   required 
+                  rounded
+                  solo
                   v-model="password"
                   :rules="passwordRules"
                   />
               </v-col>
             </v-row>
           </v-form>
+          <v-row justify="center">
+            <v-btn x-large width="375" rounded color="primary" @click="Login" :disabled="!valid">로그인하기</v-btn>
+          </v-row>
         </v-container>
+        <v-row justify="center">
+          <span class="link" @click="moveRegister">Not registerd? Create an account</span>
+        </v-row>
       </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="Login" :disabled="!valid">로그인하기</v-btn>
-        <v-btn color="blue darken-1" text @click="modalDestroy">취소</v-btn>
-      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
@@ -65,6 +84,11 @@ export default {
       this.$emit('modalDestroy');
     },
 
+    moveRegister() {
+      this.modalDestroy();
+      this.$router.push('/signup');
+    },
+
     async Login() {
       const userData = {
         email : this.email,
@@ -83,5 +107,9 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.link:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
 </style>

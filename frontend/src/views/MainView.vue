@@ -85,11 +85,11 @@
     <br>
 
     <v-row>
-      <v-col>
+      <v-col cols="2">
         <h1>{{ category }}</h1>
       </v-col>
 
-      <v-col sm="2">
+      <v-col cols="2">
         <v-select
           :items="items"
           label="정렬기준"

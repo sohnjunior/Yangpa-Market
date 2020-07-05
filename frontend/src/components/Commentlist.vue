@@ -51,7 +51,7 @@
         </template>
         <template v-slot:item.comment="{ item }">
           <span class="grey--text" 
-            v-if="!admin && item.secret && !haveAuth(item.user.email)">
+            v-if="!seller && !admin && item.secret && !haveAuth(item.user.email)">
             <v-icon small>mdi-lock</v-icon> 비밀댓글입니다.
           </span>
           <span v-else> {{ item.comment }} </span>
@@ -74,6 +74,7 @@ import { registerComment, retreiveComment, deleteComment, updateComment, isAdmin
 
 
 export default {
+  props: ['seller'],
   data() {
     return {
       dialog: false,

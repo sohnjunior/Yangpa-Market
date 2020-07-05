@@ -1,6 +1,6 @@
 <template>
   <v-content>
-    <v-container style="height: 400px">
+    <v-container style="height: 450px">
       <div class="mb-5">
         <h1> 상품정보 </h1>
       </div>
@@ -13,12 +13,15 @@
             <h2>{{ productTitle }}</h2>
           </v-row>
           <v-row class="mt-5">
+            <p>판매자 : {{ productSeller }}</p>
+          </v-row>
+          <v-row class="mt-4">
             <p>{{ productBody }}</p>
           </v-row>
-          <v-row class="mt-9">
+          <v-row class="mt-7">
             <div id="price">₩ {{ productPrice }}</div>
           </v-row>
-          <v-row class="mt-12">
+          <v-row class="mt-9">
             <v-btn tile outlined color="success" large depressed @click="addCart" style="margin-right: 50px">
               <v-icon left>mdi-cart</v-icon>
               장바구니 담기
@@ -51,7 +54,7 @@
     </v-container>
     <v-spacer class="mt-11"></v-spacer>
     <hr>
-    <CommentList></CommentList>
+    <CommentList :seller="seller"></CommentList>
   </v-content>
 </template>
 
@@ -70,10 +73,12 @@ export default {
     return {
       productID: '',
       productIMG: '',
+      productSeller: '',
       productBody: '',
       productTitle: '',
       productPrice: '',
       related: [],
+      seller: false,
     }
   },
   async created() {
@@ -81,8 +86,10 @@ export default {
     const { data } = await retreiveProduct(this.productID);
     this.productIMG = data.product.image;
     this.productBody = data.body;
+    this.productSeller = data.user.nickname;
     this.productTitle = data.product.title;
     this.productPrice = data.product.price;
+    this.seller = data.user.email === this.$store.getters.getEmail;
 
     const result = await relatedProduct(this.productID);
     this.related = result.data.result;
@@ -120,7 +127,7 @@ export default {
 .product-image {
   width: 30%;
   height: 50%;
-  margin: 25px 0px 0px 25px;
+  margin: 30px 0px 0px 30px;
 }
 #product-card {
   margin-right: 20px;

@@ -118,7 +118,7 @@ router.get('/retreive/:id', async (req, res, next) => {
       include: [
         {
           model: User,
-          attributes: ['nickname'],
+          attributes: ['email', 'nickname'],
         },
         {
           model: Product,
