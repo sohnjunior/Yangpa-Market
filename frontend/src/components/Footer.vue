@@ -1,13 +1,12 @@
 <template>
   <v-footer
-    dark
     padless
   >
     <v-card
       flat
       tile
       width="100%"
-      class="indigo lighten-1 white--text text-center"
+      class="deep-orange lighten-3 white--text text-center"
     >
       <v-card-text>
         <v-btn

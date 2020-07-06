@@ -1,8 +1,8 @@
 <template>
    <v-app-bar
       app
-      color="primary"
-      dark
+      color="white"
+      class="elevation-3"
       height="100px"
     >
       <div class="d-flex align-center">
@@ -15,35 +15,33 @@
           width="40"
         />
 
-        <span class="title-text" text @click="comeBackHome">
-          <h3 class="transition-swing">양파 마켓</h3>
+        <span class="title-text deep-orange--text text--lighten-3" text @click="comeBackHome">
+          <h2 class="transition-swing">양파 마켓</h2>
         </span>
       </div>
 
       <v-spacer></v-spacer>
-      <v-spacer></v-spacer>
-      <v-spacer></v-spacer>
-      <v-spacer></v-spacer>
+
       <div>
-      <v-text-field
-        placeholder="SEARCH"
-        rounded
-        filled
-        append-icon="mdi-magnify"
-        v-model="keyword"
-        class="mt-7 mr-5"
-        @keyup.enter="search"
-      ></v-text-field>
+        <v-text-field
+          placeholder="SEARCH"
+          rounded
+          solo
+          append-icon="mdi-magnify"
+          v-model="keyword"
+          class="mt-7 mr-5"
+          @keyup.enter="search"
+        ></v-text-field>
       </div>
-      <v-btn class="mr-5" text to="/review">
-        상품 후기
+      <v-btn class="mr-5 deep-orange--text text--lighten-3" text to="/review">
+        <h3>상품 후기</h3>
       </v-btn>
 
       <v-btn text @click="loginClicked" v-if="!isLoggedIn">
-        <span class="mr-3">로그인</span>
+        <h3 class="mr-3 deep-orange--text text--lighten-3">로그인</h3>
       </v-btn>
       <v-btn text to="/signup" v-if="!isLoggedIn">
-        <span class="mr-3">회원가입</span>
+        <h3 class="mr-3 deep-orange--text text--lighten-3">회원가입</h3>
       </v-btn>
      
         <v-menu
@@ -57,10 +55,10 @@
             <v-btn
               v-bind="attrs"
               v-on="on"
-              class="mr-4"
+              class="mr-4 deep-orange--text text--lighten-3"
               text
             >
-              회원정보
+              <h3>회원정보</h3>
             </v-btn>
           </template>
 

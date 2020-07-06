@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1>상품 후기</h1>
+    <h1>유저 리뷰</h1>
 
     <v-simple-table>
     <template v-slot:default>

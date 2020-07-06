@@ -3,7 +3,6 @@
     <v-col cols="3">
       <v-navigation-drawer
       absolute
-      :color = "color"
       permanent
       class="d-none d-md-flex text-center"
       >
@@ -12,11 +11,27 @@
         nav
         class="py-0"
       >
+        <v-subheader>내 결제</v-subheader>
         <v-list-item
-          v-for="item in items"
+          v-for="item in orders"
           :key="item.title"
           :to="`/dashboard/${item.to}`"
           link
+          color="primary"
+        >
+          <v-list-item-content>
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-divider></v-divider>
+        <v-subheader>설정</v-subheader>
+        <v-list-item
+          v-for="item in profile"
+          :key="item.title"
+          :to="`/dashboard/${item.to}`"
+          link
+          color="primary"
         >
           <v-list-item-content>
             <v-list-item-title>{{ item.title }}</v-list-item-title>
@@ -38,7 +53,7 @@
 export default {
   data () {
     return {
-      items: [
+      orders: [
         {
           title: '장바구니',
           to: 'cart',
@@ -47,12 +62,13 @@ export default {
           title: '구매 및 판매 내역',
           to: 'order',
         },
+      ],
+      profile: [
         {
-          title: '프로필 관리',
+          title: '프로필 설정',
           to: 'profile',
         },
-      ],
-      color : 'red lighten-5',
+      ]
     }
   }
 }

@@ -8,7 +8,7 @@
         <CartProductCard
           :id="product.id"
           :name="product.title"
-          :price="1500"
+          :price="product.price"
           :image="product.image"
           :status="false"
           @deleteProduct="removeFromCart"
@@ -16,9 +16,14 @@
       </li>
     </ul>
     </v-container>
-    <v-container>
-      <v-btn> 결제하기 </v-btn>
-    </v-container>
+    <v-divider width="70%"/>
+    <div>
+      <br>
+      <h3> 합계 : {{ totalPrice }} 원 </h3>
+      <br>
+
+      <v-btn x-large color="success"> 결제하기 </v-btn>
+    </div>
   </v-container>
 </template>
 
@@ -30,6 +35,16 @@ export default {
   data() {
     return {
       picks: [],
+    }
+  },
+
+  computed: {
+    totalPrice() {
+      let sum = 0;
+      for (let pick of this.picks) {
+        sum += pick.price;
+      }
+      return sum;
     }
   },
 
