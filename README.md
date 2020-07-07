@@ -8,6 +8,5 @@
 팀원 : 손정현
 
 ## 팀 역할 분담
-Frontend(Vue.js): 손정현 <br>
-UX/UI: 박민춘 <br>
+Frontend(Vue.js & Vuetify): 손정현 <br>
 Backend(Node.js & MySQL): 박민춘 손정현

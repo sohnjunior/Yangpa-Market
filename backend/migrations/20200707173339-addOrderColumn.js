@@ -5,12 +5,20 @@ module.exports = {
     /*
       Add altering commands here.
       Return a promise to correctly handle asynchronicity.
+
+      Example:
+      return queryInterface.createTable('users', { id: Sequelize.INTEGER });
     */
-    return queryInterface.addColumn('users', 'admin', { 
-      type: Sequelize.BOOLEAN,
-      allowNull: false,
-      defaultValue: false 
-    });
+    return Promise.all([ 
+      queryInterface.addColumn('orders', 'approve', {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      }),
+      queryInterface.addColumn('orders', 'phone', {
+        type: Sequelize.STRING(50),
+        allowNull: false,
+      })]);
   },
 
   down: (queryInterface, Sequelize) => {

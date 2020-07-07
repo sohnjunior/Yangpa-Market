@@ -28,4 +28,10 @@ router.get('/retrieve', verifyToken, async (req, res, next) => {
     }
 });
 
+// TODO: 특정 유저 주문 내역 조회
+
+
+// TODO: 특정 유저(판매자) 미확인 및 미승인 주문 요청 내역 조회
+
+
 module.exports = router;

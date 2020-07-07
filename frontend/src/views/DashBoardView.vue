@@ -62,6 +62,10 @@ export default {
           title: '구매 및 판매 내역',
           to: 'order',
         },
+        {
+          title: '알림',
+          to: 'alarm',
+        },
       ],
       profile: [
         {

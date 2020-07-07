@@ -2,7 +2,7 @@
   <v-container>
     <v-form>
       <v-row>
-        <v-col cols="12">
+        <v-col cols="10">
           <v-card shaped title="프로필 관리" class="px-5 py-3">
             <v-subheader class="display-1 mt-3">
               프로필 설정
@@ -81,7 +81,7 @@
                 </v-menu>
               </v-col>
               <v-spacer></v-spacer>
-              <v-btn @click="submitForm" class="mx-4">변경하기</v-btn>
+              <v-btn large color="success" @click="submitForm" class="mx-4">변경하기</v-btn>
             </v-form>
           </v-card>
         </v-col>

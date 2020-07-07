@@ -85,32 +85,23 @@ router.delete('/delete', verifyToken, async (req, res, next) => {
 // 장바구니 상품 구매
 router.post('/buy', verifyToken, async (req, res, next) => {
     try {
-        
         const user = await User.findOne({ where: { email: req.body.email } });
-
         const cart = await Cart.findOne({ where: { userId: user.id } });
+        const post = await Post.findOne({ where: { id: req.body.postID } });
+        const product = await Product.findOne({ where: { id: req.body.productID } });
 
-        const post = await Post.findOne({ where: { title: req.body.productID } });
-        const product = await Product.findOne({ where: { postId: post.id } });
-
-        //삭제후 구매내역에 추가..
+        // 장바구니에서 삭제 후 구매내역에 추가하기
         cart.removeProduct(product);
 
-        try {
-            await Product.update({ sold:true }, { where: { postId: post.id } });
-
-            res.json({msg: "sold successfully" });
-        } catch (err) {
-            console.error(err);
-            next(err);
-        }
-
-        await Order.create({userId : user.id}, {postId:post.id});
-
-
-        res.json({ 'result': 'success' });
+        await Product.update({ sold: true }, { where: { postId: post.id } });
+        await Order.create({ 
+            code: String(Date.now()),
+            phone: req.body.phone,
+            userId: user.id, 
+            postId: post.id 
+        });
         
-
+        res.json({ 'msg': 'success' });
     } catch (err) {
         console.error(err);
         next(err);

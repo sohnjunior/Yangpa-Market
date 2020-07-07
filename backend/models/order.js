@@ -5,6 +5,15 @@ module.exports = (sequelize, Datatypes) => {
       type: Datatypes.STRING(100),
       allowNull: false,
     },
+    approve: {
+      type: Datatypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
+    phone: {
+      type: Datatypes.STRING(50),
+      allowNull: false,
+    },
   }, {
     timestamps: true,
     paranoid: true,

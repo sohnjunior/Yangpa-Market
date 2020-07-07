@@ -22,14 +22,14 @@
       <h3> 합계 : {{ totalPrice }} 원 </h3>
       <br>
 
-      <v-btn x-large color="success"> 결제하기 </v-btn>
+      <v-btn large color="success" @click="buyProducts"> 결제하기 </v-btn>
     </div>
   </v-container>
 </template>
 
 <script>
 import CartProductCard from '../components/CartProductCard.vue';
-import { retriveAllCartProducts, removeFromCart, /* buyFromCart */ } from '../api/index';
+import { retriveAllCartProducts, removeFromCart, buyFromCart } from '../api/index';
 
 export default {
   data() {
@@ -62,10 +62,23 @@ export default {
       await removeFromCart(payload);
     },
 
-    // async buyFromCart(product) {
-    //   const payload = { email: this.$store.getters.getEmail, productID: product.id };
-    //   await buyFromCart(payload);
-    // }
+    async buyProducts() {
+      let phone = prompt("핀매자와 연락할 수 있는 연락처를 남겨주세요!");
+      if (phone) {
+
+        // 장바구니 모든 상품들에 대해 구매 요청 전송
+        for (let product of this.picks) {
+          const payload = { 
+            email: this.$store.getters.getEmail, 
+            postID: product.postId,
+            productID: product.id,
+            phone: phone,
+          };
+
+          await buyFromCart(payload);
+        }
+      }
+    }
   }
 }
 </script>

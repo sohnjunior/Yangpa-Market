@@ -142,7 +142,7 @@ function removeFromCart(payload) {
 
 // 장바구니 상품 구매 요청
 function buyFromCart(payload) {
-  return instance.post("/cart/buy", { params: { email: payload.email, productID: payload.productID } });
+  return instance.post("/cart/buy", payload);
 }
 
 //유저의 구매 및 판매 내역 조회 요청
