@@ -6,38 +6,43 @@
       @click:outside="closeDialog"
     >
       <v-card>
+        <v-card-title class="pt-7"> 후기 작성 </v-card-title>
 
+        <v-card-text>
+
+        <v-form v-model="valid">
         <v-text-field
-          label="Solo"
-          placeholder="글 제목"
+          placeholder="제목"
           solo
           v-model="title"
+          :rules="[v => !!v || '제목을 입력해주세요']"
           ></v-text-field>
 
-        <v-rating v-model="rating"></v-rating>
+        <v-subheader>평점</v-subheader>
+        <v-rating color="amber" background-color="orange lighten-3" v-model="rating"></v-rating>
 
+        <v-subheader>내용</v-subheader>
         <v-textarea
           solo
+          rows="7"
           rounded
+          auto-grow
+          clearable
           v-model="body"
-          label="글 내용"
+          label="생생한 후기를 남겨주세요!"
+          :rules="[v => !!v || '후기를 작성해주세요']"
           ></v-textarea>
-
+        
+        <v-subheader>사진 첨부</v-subheader>
         <v-file-input 
-          label="File input" 
+          label="사진을 첨부하세요" 
           @change="selectFile"
           ></v-file-input>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="primary"
-            text
-            @click="closeDialog"
-          >
-            후기 등록
-          </v-btn>
-        </v-card-actions>
+        </v-form>
+        <v-row justify="center">
+          <v-btn x-large width="375" rounded color="primary" @click="handleConfirm" :disabled="!valid">후기 등록</v-btn>
+        </v-row>
+        </v-card-text>
       </v-card>
     </v-dialog>
   </div>
@@ -54,19 +59,18 @@ export default {
       body: '',
       rating: 0,
       image: null,
+      valid: false,
     }
   },
   methods: {
     // 확인 버튼 클릭 시 이벤트 핸들러
-    async closeDialog() {
+    async handleConfirm() {
       const formData = new FormData();
       formData.append('title', this.title);
       formData.append('image', this.image);
       formData.append('body', this.body);
       formData.append('rating', this.rating);
       formData.append('email', this.$store.getters.getEmail);
-
-      console.log(formData['title']);
 
       const { data } = await createNewReview(formData);
       console.log(data);
@@ -77,6 +81,10 @@ export default {
     selectFile(file) {
       this.image = file;
     },
+
+    closeDialog() {
+      this.$emit('closeDialog');
+    }
   }
 }
 </script>
