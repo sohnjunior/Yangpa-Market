@@ -1,39 +1,41 @@
 <template>
   <v-container>
-    <h1>유저 리뷰</h1>
+    <h1 class="mt-6 mb-4">리뷰 모음</h1>
 
-    <v-simple-table>
-    <template v-slot:default>
-      <thead>
-        <tr>
-          <th class="text-left">제목</th>
-          <th class="text-left">작성자</th>
-          <th class="text-left">조회수</th>
-          <th class="text-left">추천수</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="item in reviews" :key="item.name">
-          <td><span  @click="handleClick(item)" id="review-title">{{ item.title }}</span></td>
-          <td>{{ item.user.nickname }}</td>
-          <td>{{ item.hit }}</td>
-          <td>
-            <v-btn icon>
-            <v-icon>mdi-heart</v-icon>
-             {{ item.like }}
-            </v-btn>
-          </td>
-        </tr>
-      </tbody>
-    </template>
-    </v-simple-table>
-    <review-modal :show="showDialog" @closeDialog="closeModal"
-     :title="selectedTitle"
-     :writer="selectedReviewer"
-     :image="selectedImage"
-     :body="selectedBody"
-     :rating="selectedRating"
-     :like="selectedLike" />
+    <v-container style="width: 90%">
+      <v-simple-table>
+      <template v-slot:default>
+        <thead>
+          <tr>
+            <th class="text-left">제목</th>
+            <th class="text-left">작성자</th>
+            <th class="text-left">조회수</th>
+            <th class="text-left">추천수</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in reviews" :key="item.name">
+            <td><span  @click="handleClick(item)" id="review-title">{{ item.title }}</span></td>
+            <td>{{ item.user.nickname }}</td>
+            <td>{{ item.hit }}</td>
+            <td>
+              <v-btn icon>
+              <v-icon>mdi-heart</v-icon>
+              {{ item.like }}
+              </v-btn>
+            </td>
+          </tr>
+        </tbody>
+      </template>
+      </v-simple-table>
+      <review-modal :show="showDialog" @closeDialog="closeModal"
+      :title="selectedTitle"
+      :writer="selectedReviewer"
+      :image="selectedImage"
+      :body="selectedBody"
+      :rating="selectedRating"
+      :like="selectedLike" />
+    </v-container>
   </v-container>
 </template>
 

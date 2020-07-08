@@ -46,7 +46,7 @@
             </v-row>
           </v-form>
           <v-row justify="center">
-            <v-btn x-large width="375" rounded color="primary" @click="Login" :disabled="!valid">로그인하기</v-btn>
+            <v-btn x-large width="375" rounded color="orange" class="white--text" @click="Login" :disabled="!valid">로그인하기</v-btn>
           </v-row>
         </v-container>
         <v-row justify="center">

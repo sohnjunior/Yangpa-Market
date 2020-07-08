@@ -6,7 +6,7 @@
       @click:outside="closeDialog"
     >
       <v-card>
-        <v-card-title class="pt-7"> 후기 작성 </v-card-title>
+        <v-card-title class="headline pt-7"> 후기 작성 </v-card-title>
 
         <v-card-text>
 

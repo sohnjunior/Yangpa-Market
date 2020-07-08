@@ -7,30 +7,30 @@
     >
       <v-card>
         <v-card-title
-          class="headline grey lighten-2"
-          primary-title
+          class="headline pt-6"
         >
           {{ title }}
         </v-card-title>
 
-        <v-container>
           <v-img
             width="250"
             height="200"
             :src="image"
+            class="ml-6 mt-5"
           ></v-img>
 
           <v-card-text>
+
+          <div class="my-4 subtitle-1">
             작성자 : {{ writer }}
-          </v-card-text>
-          <v-card-text>
+          </div>
+
             <v-rating :value="rating" background-color="amber lighten-3" color="amber" dense half-increments readonly size="25"></v-rating>
           </v-card-text>
           <v-card-text>
             {{ body }}
           </v-card-text>
 
-        </v-container>
   
         <v-divider></v-divider>
 

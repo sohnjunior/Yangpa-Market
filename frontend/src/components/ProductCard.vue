@@ -4,7 +4,7 @@
   >
       <v-card
       max-width="260"
-      max-height="450"
+      max-height="420"
       class="card"
       :elevation="hover ? 12 : 2"
       @click="move"

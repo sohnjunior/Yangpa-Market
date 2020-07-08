@@ -1,7 +1,8 @@
 <template>
   <v-container>
-    <h1>상품 정보수정</h1>
+    <h1 class="mt-6 mb-4">상품 정보수정</h1>
 
+    <v-container style="width: 70%">
     <v-text-field
       label="Solo"
       placeholder="상품 제목"
@@ -26,6 +27,8 @@
       ></v-textarea>
 
     <v-btn @click="submit">상품정보 수정하기</v-btn>
+          
+    </v-container>
   </v-container>
 </template>
 
@@ -75,5 +78,6 @@ export default {
 .product-image {
   width: 30%;
   height: 50%;
+  margin-bottom: 20px;
 }
 </style>

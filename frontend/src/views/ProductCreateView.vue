@@ -1,8 +1,8 @@
 <template>
   <v-container>
-    <h1>상품 등록하기</h1>
+    <h1 class="mt-6 mb-4">상품 등록하기</h1>
 
-    <v-container>
+    <v-container style="width: 60%">
        <v-text-field
         label="Solo"
         placeholder="상품 제목"
@@ -31,12 +31,13 @@
 
       <v-textarea
         solo
+        auto-grow
         rounded
         v-model="body"
         label="상품 내용입력"
         ></v-textarea>
 
-      <v-btn @click="submit">상품 등록하기</v-btn>
+      <v-btn large color="success" @click="submit">상품 등록하기</v-btn>
     </v-container>
    
   </v-container>

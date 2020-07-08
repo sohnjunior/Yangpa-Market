@@ -1,8 +1,8 @@
 <template>
   <v-container>
-    <h1> 	&quot;{{ keyword }}&quot; 에 대한 검색 결과 </h1>
+    <h1 class="mt-6 mb-4"> 	&quot;{{ keyword }}&quot; 에 대한 검색 결과 </h1>
 
-    <v-content>
+    <v-container>
       <v-row>
         <ProductCard v-for="(product, i) in products" 
           id="product-card"
@@ -16,7 +16,7 @@
           :productID="product.post.title"
           :key="i"/>
       </v-row>
-    </v-content>
+    </v-container>
   </v-container>
 </template>
 
