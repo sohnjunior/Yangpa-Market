@@ -15,7 +15,9 @@ import AdminView from '../views/AdminView.vue';
 // sub component for Dashboard
 import DashBoard from '../components/DashBoard.vue';
 import UserCart from '../components/Cart.vue';
-import UserOrder from '../components/Order.vue';
+import UserSelling from '../components/UserSelling.vue';
+import UserBuying from '../components/UserBuying.vue';
+import UserAlarm from '../components/UserAlarm.vue';
 import UserProfile from '../components/Profile.vue';
 
 // import store for navigation gurad
@@ -63,9 +65,19 @@ export const router = new VueRouter({
             component: UserCart,
           },
           {
-            // 판매 및 구매내역
-            path: "order",
-            component: UserOrder,
+            // 판매 관리
+            path: "selling",
+            component: UserSelling,
+          },
+          {
+            // 구매 목록
+            path: "buying",
+            component: UserBuying,
+          },
+          {
+            // 상품 구매요청 알림
+            path: "alarm",
+            component: UserAlarm,
           },
           {
             // 프로필 관리

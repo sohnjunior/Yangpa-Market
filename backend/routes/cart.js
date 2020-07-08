@@ -90,10 +90,9 @@ router.post('/buy', verifyToken, async (req, res, next) => {
         const post = await Post.findOne({ where: { id: req.body.postID } });
         const product = await Product.findOne({ where: { id: req.body.productID } });
 
-        // 장바구니에서 삭제 후 구매내역에 추가하기
+        // 장바구니에서 삭제 후 구매내역에 추가하기 (sold 상태로 바꾸지는 않음)
         cart.removeProduct(product);
 
-        await Product.update({ sold: true }, { where: { postId: post.id } });
         await Order.create({ 
             code: String(Date.now()),
             phone: req.body.phone,

@@ -33,33 +33,14 @@
       </template>
     </v-data-table>
 
-    <v-spacer class="mt-7"></v-spacer>
-
-    <v-data-table :headers="orderHeaders" :items="orderList" class="elevation-1">
-      <template v-slot:top>
-        <v-toolbar flat color="white">
-          <v-toolbar-title>구매 목록</v-toolbar-title>
-        </v-toolbar>
-      </template>
-      <v-template>
-        <v-btn @click="showReviewModal">
-          상품 후기 등록하기
-        </v-btn>
-        <ReviewCreateModal
-        :show="show"
-        @closeDialog="closeDialog"/>
-      </v-template>
-    </v-data-table>
   </v-container>
 </template>
 
 <script>
 import { getOrder, deletePost } from '../api/index';
-import ReviewCreateModal from './ReviewCreateModal';
 
 
 export default {
-  components: { ReviewCreateModal },
   data() {
     return {
       dialog: false,
@@ -73,16 +54,10 @@ export default {
       ],
       headers: [
         { text: "상품명", align: "start", value: "product.title", sortable: false },
-        { text: "가격", align: "start", value: "product.price", sortable: false },
-      ],
-      orderHeaders: [
-        { text: "상품명", align: "start", value: "product.title", sortable: false },
-        { text: "가격", align: "start", value: "product.price", sortable: false },
-        { text: "후기 작성", align: "middle", value: "actions", sortable: false },
+        { text: "판매가격", align: "start", value: "product.price", sortable: false },
       ],
       onSaleList: [],
       soldList: [],
-      orderList: [],
     };
   },
   async created() {

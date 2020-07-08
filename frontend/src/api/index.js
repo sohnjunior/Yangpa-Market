@@ -145,11 +145,30 @@ function buyFromCart(payload) {
   return instance.post("/cart/buy", payload);
 }
 
-//유저의 구매 및 판매 내역 조회 요청
+// 유저가 판매중인 상품내역 조회 요청
 function getOrder(payload) {
   return instance.get("/order/retrieve", { params: { email: payload.email } });
 }
 
+// 유저의 구매 상품 내역 조회 요청
+function getOrderBuying(payload) {
+  return instance.get("/order/retrieve/buying", { params: { email: payload.email } });
+}
+
+// 미승인 상품 구매 요청 조회
+function getNotApproved(payload) {
+  return instance.get("/order/request", { params: { email: payload.email } });
+}
+
+// 상품 구매 승인 요청
+function approveProduct(payload) {
+  return instance.put("/order/approve", payload);
+}
+
+// 상품 구매 거부 처리 요청
+function deniedProduct(payload) {
+  return instance.delete(`/order/denied/${payload}`);
+}
 
 // 전체 상품 후기 조회 요청
 function retrueveAllReview() {
@@ -186,6 +205,7 @@ export {
   registerComment, retreiveComment, deleteComment, updateComment,
   createNewProduct, retriveAllProducts, updateProduct, retreiveProduct, deletePost, searchProduct,
   realtimePopular, relatedProduct, likeProduct,
-  createNewCartProduct, retriveAllCartProducts, removeFromCart,buyFromCart, getOrder,
+  createNewCartProduct, retriveAllCartProducts, removeFromCart, buyFromCart, getOrder, getOrderBuying, getNotApproved,
   createNewReview, retrueveAllReview,
+  approveProduct, deniedProduct,
   testJWT, testJWTVerify, testProduct }

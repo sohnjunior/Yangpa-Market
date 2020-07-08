@@ -1,0 +1,64 @@
+<template>
+  <v-container>
+    <v-data-table :headers="orderHeaders" :items="orderList" class="elevation-1">
+      <template v-slot:top>
+        <v-toolbar flat color="white">
+          <v-toolbar-title>구매요청 알림</v-toolbar-title>
+        </v-toolbar>
+      </template>
+      <template v-slot:item.title="{ item }">
+        <span class="font-weight-medium">{{ productList[item.postId] }}</span>
+      </template>
+      <template v-slot:item.actions="{ item }">
+        <v-btn @click="approve(item)">
+          승인
+        </v-btn>
+        <v-btn @click="remove(item)">
+          삭제
+        </v-btn>
+      </template>
+    </v-data-table>
+  </v-container>
+</template>
+
+<script>
+import { getNotApproved, approveProduct, deniedProduct } from '../api/index';
+
+
+export default {
+  data() {
+    return {
+      dialog: false,
+      show: false,
+      orderHeaders: [
+        { text: "주문번호", align: "start", value: "code", sortable: false },
+        { text: "상품명", align: "start", value: "title", sortable: false },
+        { text: "연락처", align: "start", value: "phone", sortable: false },
+        { text: "구매자", align: "start", value: "user.nickname", sortable: false },
+        { align: "middle", value: "actions", sortable: false },
+      ],
+      productList: {},
+      orderList: [],
+    };
+  },
+  async created() {
+    const payload = { email: this.$store.getters.getEmail };
+    const { data } = await getNotApproved(payload); 
+    this.productList = data.products;
+    this.orderList = data.orders;
+  },
+  methods: {
+    async approve(item) {
+      const payload = { postId: item.postId };
+      await approveProduct(payload);
+    },
+    async remove(item) {
+      await deniedProduct(item.id);
+    }
+  }
+};
+
+</script>
+
+<style>
+</style>

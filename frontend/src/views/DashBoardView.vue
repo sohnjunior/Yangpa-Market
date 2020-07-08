@@ -59,8 +59,12 @@ export default {
           to: 'cart',
         },
         {
-          title: '구매 및 판매 내역',
-          to: 'order',
+          title: '판매 관리',
+          to: 'selling'
+        },
+        {
+          title: '구매 목록',
+          to: 'buying',
         },
         {
           title: '알림',
