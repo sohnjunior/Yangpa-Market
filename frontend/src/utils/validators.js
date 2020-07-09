@@ -16,4 +16,10 @@ function validatePassword(password) {
   return re.test(password);
 }
 
-export { validateEmail, validatePassword }
+// 전화번호를 검증합니다.
+function validatePhoneNum(phone) {
+  const re = /^[0-9]{2,3}[-]+[0-9]{4}[-]+[0-9]{4}$/;
+  return re.test(phone);
+}
+
+export { validateEmail, validatePassword, validatePhoneNum }

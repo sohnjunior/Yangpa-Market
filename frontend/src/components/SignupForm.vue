@@ -10,7 +10,7 @@
 
             <v-form class="pt-1">
               <v-text-field
-                label="Email"
+                label="이메일 계정"
                 v-model="email"
                 :rules="emailRules"
                 class="mx-4"
@@ -20,7 +20,7 @@
               />
 
               <v-text-field
-                label="Password"
+                label="비밀번호 (8~15자, 적어도 하나의 특수문자와 숫자 포함)"
                 v-model="password"
                 :rules="passwordRules"
                 type="password"
@@ -29,16 +29,16 @@
               />
 
               <v-text-field
-                label="Repeat Password"
+                label="비밀번호 확인"
                 v-model="confirmpassword"
-                :rules="confirmPasswordRules.concat(passwordConfirmationRule)"
+                :rules="confirmPasswordRules"
                 type="password"
                 class="mx-4"
                 required
               />
 
               <v-text-field
-                label="Nickname"
+                label="별명"
                 v-model="nickname"
                 class="mx-4"
                 required
@@ -47,8 +47,9 @@
               />
 
               <v-text-field 
-                label="Phone" 
+                label="전화번호" 
                 v-model="phone" 
+                :rules="phoneRules"
                 class="mx-4"
                 hint="예시: 010-1234-5678"
                 persistent-hint
@@ -109,7 +110,7 @@
 
 <script>
 import { registerUser } from "../api/index";
-import { validateEmail, validatePassword } from '../utils/validators';
+import { validateEmail, validatePassword, validatePhoneNum } from '../utils/validators';
 
 export default {
   data() {
@@ -130,7 +131,14 @@ export default {
         v => !!v || '비밀번호를 입력하세요',
         v => validatePassword(v) || '올바른 비밀번호 형식이 아닙니다',
       ],
-      confirmPasswordRules: [(v) => !!v || "비밀번호가 일치하지 않습니다"],
+      confirmPasswordRules: [
+        v => !!v || '비밀번호가 일치하지 않습니다',
+        v => this.password === v || '비밀번호가 일치하지 않습니다.',  
+      ],
+      phoneRules: [
+        v => !!v || '전화번호를 입력하세요',
+        v => validatePhoneNum(v) || '전화번호 형식을 확인해주세요',
+      ],
       date: this.birthday,
       menu: false,
       valid: false,
