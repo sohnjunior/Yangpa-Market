@@ -4,7 +4,7 @@
        <v-data-table :headers="headers" :items="commentList" class="elevation-1 ml-12" style="width: 70%" hide-default-footer>
         <template v-slot:top>
           <v-toolbar flat color="white">
-            <v-toolbar-title>댓글</v-toolbar-title>
+            <v-toolbar-title style="font-family: 'paybooc-Bold'">댓글</v-toolbar-title>
 
             <v-spacer></v-spacer>
             <v-btn color="warning" depressed @click="newButton">
@@ -79,9 +79,9 @@ export default {
     return {
       dialog: false,
       headers: [
-        { text: "작성자", align: "start", sortable: false, value: "user.nickname"},
-        { text: "댓글 내용", align: "start", sortable: false, value: "comment"},
-        { text: "비고", align:"middle", value: "actions", sortable: false },
+        { text: "작성자", align: "start", sortable: false, value: "user.nickname", class: "header"},
+        { text: "댓글 내용", align: "start", sortable: false, value: "comment", class: "header"},
+        { text: "비고", align:"middle", value: "actions", sortable: false, class: "header" },
       ],
       commentList: [],
       postId: '',

@@ -1,16 +1,16 @@
 <template>
   <v-container>
-    <h1 class="mt-6 mb-4">리뷰 모음</h1>
+    <h1 class="mt-6 mb-4 sub-title">리뷰 모음</h1>
 
     <v-container style="width: 90%">
       <v-simple-table>
       <template v-slot:default>
         <thead>
           <tr>
-            <th class="text-left">제목</th>
-            <th class="text-left">작성자</th>
-            <th class="text-left">조회수</th>
-            <th class="text-left">추천수</th>
+            <th class="text-center header">제목</th>
+            <th class="text-left header">작성자</th>
+            <th class="text-left header">조회수</th>
+            <th class="text-left header">추천수</th>
           </tr>
         </thead>
         <tbody>
@@ -19,7 +19,7 @@
             <td>{{ item.user.nickname }}</td>
             <td>{{ item.hit }}</td>
             <td>
-              <v-btn icon>
+              <v-btn color="error" icon @click="handleLike(item)">
               <v-icon>mdi-heart</v-icon>
               {{ item.like }}
               </v-btn>
@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { retrueveAllReview } from '../api/index';
+import { retrueveAllReview, increaseHitReview, increaseLikeReview } from '../api/index';
 import reviewModal from '../components/ReviewModal.vue';
 
 export default {
@@ -60,7 +60,7 @@ export default {
     }
   },
   methods: {
-    handleClick(content) {
+    async handleClick(content) {
       this.showDialog = true;
 
       // props 데이터 연동
@@ -70,6 +70,12 @@ export default {
       this.selectedImage = content.image;
       this.selectedBody = content.body;
       this.selectedLike = content.like;
+
+      // 조회수 증가
+      await increaseHitReview(content.id);
+    },
+    async handleLike(content) {
+      await increaseLikeReview(content.id);
     },
     closeModal() {
       this.showDialog = false;
@@ -90,4 +96,5 @@ export default {
 #review-title:hover {
   cursor: pointer;
 }
+
 </style>

@@ -16,7 +16,7 @@
         />
 
         <span class="title-text deep-orange--text text--lighten-3" text @click="comeBackHome">
-          <h2 class="transition-swing">양파 마켓</h2>
+          <h2 class="transition-swing app-name ml-2 mt-2">양파 마켓</h2>
         </span>
       </div>
 
@@ -118,6 +118,7 @@ export default {
     search() {
       this.$router.push(`/search/${this.keyword}`);
       this.keyword = '';
+      this.$router.go(0);
     },
     // 대시보드로 이동
     routeToDashboard() {
@@ -137,5 +138,15 @@ export default {
 }
 .search-bar {
   border: solid;
+}
+
+@font-face { 
+  font-family: 'TmonMonsori'; 
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/TmonMonsori.woff') format('woff'); 
+  font-weight: normal; font-style: normal; 
+}
+
+.app-name {
+  font-family: 'TmonMonsori'; 
 }
 </style>

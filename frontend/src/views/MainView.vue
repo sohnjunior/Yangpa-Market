@@ -5,7 +5,7 @@
         <v-col>
           <v-btn color="light-green lighten-4" depressed x-large @click="categorySelected('전공서적')">
             <v-img class="btn-image" :src="require('@/assets/study.svg')"/>
-            <span class="ml-2">
+            <span class="ml-2 category">
               전공서적
             </span>
           </v-btn>
@@ -13,7 +13,7 @@
         <v-col>
           <v-btn color="light-green lighten-4" depressed x-large @click="categorySelected('원룸')">
             <v-img class="btn-image" :src="require('@/assets/room.svg')"/>
-            <span class="ml-2">
+            <span class="ml-2 category">
               원룸
             </span>
           </v-btn>
@@ -21,7 +21,7 @@
         <v-col>
           <v-btn color="light-green lighten-4" depressed x-large @click="categorySelected('회원권')">
             <v-img class="btn-image" :src="require('@/assets/ticket.svg')"/>
-            <span class="ml-2">
+            <span class="ml-2 category">
               회원권
             </span>
           </v-btn>
@@ -29,7 +29,7 @@
         <v-col>
           <v-btn color="light-green lighten-4" depressed x-large @click="categorySelected('의류')">
             <v-img class="btn-image" :src="require('@/assets/clothes.svg')"/>
-            <span class="ml-2">
+            <span class="ml-2 category">
               의류
             </span>
           </v-btn>
@@ -37,7 +37,7 @@
         <v-col>
           <v-btn color="light-green lighten-4" depressed x-large @click="categorySelected('기타')">
             <v-img class="btn-image" :src="require('@/assets/box.svg')"/>
-            <span class="ml-2">
+            <span class="ml-2 category">
               기타
             </span>
           </v-btn>
@@ -47,17 +47,17 @@
     <v-content>
       <v-row>
         <v-col>
-          <h1>실시간 TOP 10</h1>
+          <h1 class="sub-title">실시간 TOP 10</h1>
         </v-col>
       </v-row>
-      <v-row class="mt-5">
+      <v-row class="mt-4">
         <v-carousel 
           cycle height="400" dark hide-delimiter-background show-arrows-on-hover >
           <v-carousel-item>
             <v-row>
               <PopularProductCard v-for="(product, i) in populars.slice(0, 5)"
                 id="carousel-product"
-                class="ml-12"
+                class="ml-10"
                 :title="product.title"
                 :image="product.image"
                 :hit="product.post.hit"
@@ -70,7 +70,7 @@
             <v-row>
               <PopularProductCard v-for="(product, i) in populars.slice(5)" 
                 id="carousel-product"
-                class="ml-12"
+                class="ml-10"
                 :title="product.title"
                 :image="product.image"
                 :hit="product.post.hit"
@@ -86,7 +86,7 @@
 
     <v-row>
       <v-col cols="2">
-        <h1>{{ category }}</h1>
+        <h1 class="sub-title">{{ category }}</h1>
       </v-col>
 
       <v-col cols="2">
@@ -170,7 +170,7 @@ export default {
       } else if(this.pivot === '조회순') {
         return this.categorized.slice().sort((a, b) => {return b.hit - a.hit});
       } else {
-        return this.categorized.slice().sort((a, b) => {return a.price - b.price});
+        return this.categorized.slice().sort((a, b) => {return a.product.price - b.product.price});
       }
     }
   },

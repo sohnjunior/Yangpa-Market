@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1 class="mt-6 mb-4"> 	&quot;{{ keyword }}&quot; 에 대한 검색 결과 </h1>
+    <h1 class="mt-6 mb-4 sub-title"> 	&quot;{{ keyword }}&quot; 에 대한 검색 결과 </h1>
 
     <v-container>
       <v-row>

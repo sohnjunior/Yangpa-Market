@@ -71,8 +71,8 @@ export default {
       formData.append('email', this.$store.getters.getEmail);
 
       try {
-        const { data } = await createNewProduct(formData);
-        console.log(data);
+        await createNewProduct(formData);
+        this.$router.push('/');
       } catch(err) {
         console.log(err);
       }

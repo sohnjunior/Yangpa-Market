@@ -11,7 +11,7 @@
       >
       <v-list-item>
         <v-list-item-content>
-          <v-list-item-title class="headline">{{ title }}</v-list-item-title>
+          <v-list-item-title style="font-family: 'Handon3gyeopsal300g'; font-size: 1.3rem">{{ title }}</v-list-item-title>
           <v-list-item-subtitle>{{ writer }}</v-list-item-subtitle> <br>
           <v-list-item-subtitle>조회수 : {{ hit }}</v-list-item-subtitle>
         </v-list-item-content>
@@ -49,5 +49,11 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+@font-face { 
+  font-family: 'Handon3gyeopsal300g'; 
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_seven@1.2/Handon3gyeopsal300g.woff') format('woff'); 
+  font-weight: normal; 
+  font-style: normal; 
+}
 </style>

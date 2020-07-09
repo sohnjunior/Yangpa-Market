@@ -184,6 +184,15 @@ function createNewReview(payload) {
   });
 }
 
+// 리뷰 조회수 증가
+function increaseHitReview(payload) {
+  return instance.put(`/review/hit/${payload}`);
+}
+
+// 리뷰 좋아요 증가
+function increaseLikeReview(payload) {
+  return instance.put(`/review/like/${payload}`);
+}
 
 /*
     각종 테스트용 axios 요청
@@ -206,6 +215,6 @@ export {
   createNewProduct, retriveAllProducts, updateProduct, retreiveProduct, deletePost, searchProduct,
   realtimePopular, relatedProduct, likeProduct,
   createNewCartProduct, retriveAllCartProducts, removeFromCart, buyFromCart, getOrder, getOrderBuying, getNotApproved,
-  createNewReview, retrueveAllReview,
+  createNewReview, retrueveAllReview, increaseHitReview, increaseLikeReview,
   approveProduct, deniedProduct,
   testJWT, testJWTVerify, testProduct }

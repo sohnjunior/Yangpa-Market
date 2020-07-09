@@ -13,7 +13,7 @@
       </v-col>
       <v-col cols="6">
         <v-row class="mt-2">
-          {{ name }}
+          <span class="product-name">{{ name }}</span>
         </v-row>
         <v-row class="mt-2">
           <b :style="[status ? soldOut : onSale]">{{ statusMessage }}</b>
@@ -59,5 +59,16 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+@font-face { 
+  font-family: 'Handon3gyeopsal300g'; 
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_seven@1.2/Handon3gyeopsal300g.woff') format('woff'); 
+  font-weight: normal; 
+  font-style: normal; 
+}
+
+.product-name {
+  font-family: 'Handon3gyeopsal300g'; 
+  font-size: 1.1rem;
+}
 </style>

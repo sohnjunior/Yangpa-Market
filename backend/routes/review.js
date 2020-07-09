@@ -60,4 +60,30 @@ router.post('/create', verifyToken, reviewUpload.single('image'), async (req, re
   }
 });
 
+
+// 조회수 증가
+router.put('/hit/:id', async (req, res, next) => {
+  try {
+    const review = await Review.findOne({ where: { id: req.params.id } });
+    await Review.update({ hit: review.dataValues.hit + 1 }, { where: { id: review.dataValues.id } });
+    res.json({'msg': 'success'});
+  } catch(err) {
+    console.error(err);
+    next(err);
+  }
+});
+
+
+// 리뷰 추천 증가
+router.put('/like/:id', verifyToken, async (req, res, next) => {
+  try {
+    const review = await Review.findOne({ where: { id: req.params.id } });
+    await Review.update({ like: review.dataValues.like + 1 }, { where: { id: review.dataValues.id } });
+    res.json({ 'msg': 'success' });
+  } catch(err) {
+    console.error(err);
+    next(err);
+  }
+});
+
 module.exports = router;

@@ -6,12 +6,22 @@
       @click:outside="closeDialog"
     >
       <v-card>
-        <v-card-title
-          class="headline pt-6"
-        >
-          {{ title }}
+
+        <v-card-title>
+          <v-row>
+            <v-col class="ml-5">
+              <h2 class="font-weight-medium">{{ title }}</h2>
+            </v-col>
+            <v-col cols="2">
+              <v-btn icon color="grey" @click="closeDialog">
+                <v-icon>mdi-close-circle</v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
         </v-card-title>
 
+          <v-card-text>
+          <v-subheader>포토리뷰</v-subheader>
           <v-img
             width="250"
             height="200"
@@ -19,31 +29,24 @@
             class="ml-6 mt-5"
           ></v-img>
 
-          <v-card-text>
+          
 
-          <div class="my-4 subtitle-1">
-            작성자 : {{ writer }}
+          <v-subheader>작성자</v-subheader>
+          <div class="ml-8 font-weight-bold">
+            {{ writer }}
           </div>
 
-            <v-rating :value="rating" background-color="amber lighten-3" color="amber" dense half-increments readonly size="25"></v-rating>
-          </v-card-text>
-          <v-card-text>
+          <v-subheader>평점</v-subheader>
+          <v-rating :value="rating" class="ml-8" background-color="amber lighten-3" color="amber" dense half-increments readonly size="25"></v-rating>
+
+
+          <v-subheader>상품평</v-subheader>
+          <div class="ml-8 mb-6 font-weight-regular">
             {{ body }}
+          </div>
+          
           </v-card-text>
 
-  
-        <v-divider></v-divider>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="primary"
-            text
-            @click="closeDialog"
-          >
-            확인
-          </v-btn>
-        </v-card-actions>
       </v-card>
     </v-dialog>
   </div>

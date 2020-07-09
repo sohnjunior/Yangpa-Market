@@ -1,8 +1,8 @@
 <template>
-  <v-content>
+  <v-content class="pt-12">
     <v-container style="height: 450px">
       <div class="mb-5">
-        <h1> 상품정보 </h1>
+        <h1 class="sub-title"> 상품정보 </h1>
       </div>
       <v-row class="product-info">
         <v-col>
@@ -37,7 +37,7 @@
 
     <v-container style="height: 600px">
       <v-content>
-        <h2>이 상품도 함께 봤어요</h2>
+        <h2 class="sub-title">이 상품도 함께 봤어요</h2>
         <v-row>
           <RelatedProductCard v-for="product in related" 
           id="product-card"
