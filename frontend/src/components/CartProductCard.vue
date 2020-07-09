@@ -21,7 +21,7 @@
       </v-col>
       <v-col cols="3">
         <v-row>
-          <b class="ml-4">₩ {{ price }}</b>
+          <b class="ml-4 mt-3">₩ {{ price }}</b>
         </v-row>
         <v-spacer class="mt-3"></v-spacer>
         <v-row>
@@ -40,7 +40,7 @@ export default {
         color: 'darkseagreen',
       },
       soldOut: {
-        color: 'crimson',
+        color: 'tomato',
       },
     }
   },

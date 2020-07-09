@@ -3,7 +3,7 @@
     <v-container style="height: 10px;">
       <v-row class="text-center">
         <v-col>
-          <v-btn color="success" depressed x-large @click="categorySelected('전공서적')">
+          <v-btn color="light-green lighten-4" depressed x-large @click="categorySelected('전공서적')">
             <v-img class="btn-image" :src="require('@/assets/study.svg')"/>
             <span class="ml-2">
               전공서적
@@ -11,7 +11,7 @@
           </v-btn>
         </v-col>
         <v-col>
-          <v-btn color="success" depressed x-large @click="categorySelected('원룸')">
+          <v-btn color="light-green lighten-4" depressed x-large @click="categorySelected('원룸')">
             <v-img class="btn-image" :src="require('@/assets/room.svg')"/>
             <span class="ml-2">
               원룸
@@ -19,7 +19,7 @@
           </v-btn>
         </v-col>
         <v-col>
-          <v-btn color="success" depressed x-large @click="categorySelected('회원권')">
+          <v-btn color="light-green lighten-4" depressed x-large @click="categorySelected('회원권')">
             <v-img class="btn-image" :src="require('@/assets/ticket.svg')"/>
             <span class="ml-2">
               회원권
@@ -27,7 +27,7 @@
           </v-btn>
         </v-col>
         <v-col>
-          <v-btn color="success" depressed x-large @click="categorySelected('의류')">
+          <v-btn color="light-green lighten-4" depressed x-large @click="categorySelected('의류')">
             <v-img class="btn-image" :src="require('@/assets/clothes.svg')"/>
             <span class="ml-2">
               의류
@@ -35,7 +35,7 @@
           </v-btn>
         </v-col>
         <v-col>
-          <v-btn color="success" depressed x-large @click="categorySelected('기타')">
+          <v-btn color="light-green lighten-4" depressed x-large @click="categorySelected('기타')">
             <v-img class="btn-image" :src="require('@/assets/box.svg')"/>
             <span class="ml-2">
               기타

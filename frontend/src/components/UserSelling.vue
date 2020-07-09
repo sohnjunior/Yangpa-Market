@@ -9,6 +9,7 @@
       <template v-slot:item.actions="{ item }">
         <v-icon
           small
+          color="success"
           class="mr-2"
           @click="updateItem(item)"
         >
@@ -16,6 +17,7 @@
         </v-icon>
         <v-icon
           small
+          color="error"
           @click="deleteItem(item)"
         >
           mdi-delete
@@ -50,7 +52,7 @@ export default {
         { text: "가격", align: "start", value: "product.price", sortable: false },
         { text: "조회수", align: "start", value: "hit", sortable: false },
         { text: "좋아요", align: "start", value: "product.like", sortable: false },
-        { text: "수정하기", align: "middle", value: "actions", sortable: false },
+        { align: "middle", value: "actions", sortable: false },
       ],
       headers: [
         { text: "상품명", align: "start", value: "product.title", sortable: false },

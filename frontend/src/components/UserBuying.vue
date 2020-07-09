@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="mb-6">
     <v-data-table :headers="orderHeaders" :items="orderList" class="elevation-1">
       <template v-slot:top>
         <v-toolbar flat color="white">

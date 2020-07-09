@@ -10,10 +10,10 @@
           :name="product.title"
           :price="product.price"
           :image="product.image"
-          :status="false"
+          :status="product.sold"
           @deleteProduct="removeFromCart"
         />
-      </li>
+      </li><br>
     </ul>
     </v-container>
     <v-divider width="70%"/>
@@ -35,14 +35,15 @@ export default {
   data() {
     return {
       picks: [],
+      available: [],  // 내가 찜한 상품중 현재 판매중인것들만
     }
   },
 
   computed: {
     totalPrice() {
       let sum = 0;
-      for (let pick of this.picks) {
-        sum += pick.price;
+      for (let pick of this.available) {
+          sum += pick.price;
       }
       return sum;
     }
@@ -54,6 +55,11 @@ export default {
     const userData = { email: this.$store.getters.getEmail };
     const { data } = await retriveAllCartProducts(userData);
     this.picks = data.result;
+    for (let pick of data.result) {
+      if (!pick.sold) {
+        this.available.push(pick);
+      }
+    }
   },
 
   methods: {
@@ -63,6 +69,8 @@ export default {
     },
 
     async buyProducts() {
+      if (this.available.length === 0) { alert("현재 구매가능한 물폼이 없습니다!"); return; }
+
       let phone = prompt("핀매자와 연락할 수 있는 연락처를 남겨주세요!");
       if (phone) {
 

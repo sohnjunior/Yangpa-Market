@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="mb-6">
     <v-data-table :headers="orderHeaders" :items="orderList" class="elevation-1">
       <template v-slot:top>
         <v-toolbar flat color="white">
@@ -10,10 +10,10 @@
         <span class="font-weight-medium">{{ productList[item.postId] }}</span>
       </template>
       <template v-slot:item.actions="{ item }">
-        <v-btn @click="approve(item)">
+        <v-btn outlined color="success" depressed small @click="approve(item)">
           승인
         </v-btn>
-        <v-btn @click="remove(item)">
+        <v-btn outlined color="error" class="ml-3" depressed small @click="remove(item)">
           삭제
         </v-btn>
       </template>

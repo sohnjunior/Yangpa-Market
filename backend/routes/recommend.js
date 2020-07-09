@@ -81,8 +81,8 @@ router.get('/related/:id', async (req, res, next) => {
     temp.push([score, e]);
   })
 
-  // 점수 높은 순으로 정렬
-  temp.sort((a, b) => { return b[0] - a[0] });
+  // 점수 높은 순으로 정렬 후 상위 5개 반환
+  temp.sort((a, b) => { return b[0] - a[0] }).slice(0, 5);
   res.json({'result': temp});
 });
 

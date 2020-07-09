@@ -1,6 +1,6 @@
 <template>
-  <v-container>
-    <v-form>
+  <v-container style="width: 50%">
+    <v-form v-model="valid">
       <v-row>
         <v-col cols="12">
           <v-card shaped title="회원 가입" class="px-5 py-3">
@@ -15,6 +15,8 @@
                 :rules="emailRules"
                 class="mx-4"
                 required
+                hint="예시: yangpa@gmail.com"
+                persistent-hint
               />
 
               <v-text-field
@@ -40,9 +42,17 @@
                 v-model="nickname"
                 class="mx-4"
                 required
+                hint="예시: yangpa"
+                persistent-hint
               />
 
-              <v-text-field label="Phone" v-model="phone" class="mx-4" />
+              <v-text-field 
+                label="Phone" 
+                v-model="phone" 
+                class="mx-4"
+                hint="예시: 010-1234-5678"
+                persistent-hint
+              />
 
               <v-radio-group :row="true" class="mx-4" v-model="sex">
                 성별
@@ -88,7 +98,7 @@
                   </v-date-picker>
                 </v-menu>
               </v-col>
-              <v-btn @click="submitForm" class="mx-4">가입하기</v-btn>
+              <v-btn large color="success" @click="submitForm" class="mx-4">가입하기</v-btn>
             </v-form>
           </v-card>
         </v-col>
@@ -99,6 +109,7 @@
 
 <script>
 import { registerUser } from "../api/index";
+import { validateEmail, validatePassword } from '../utils/validators';
 
 export default {
   data() {
@@ -111,11 +122,18 @@ export default {
       sex: "male",
       birthday: "",
       admin: false,
-      emailRules: [(v) => !!v || "이메일을 입력하세요."],
-      passwordRules: [(v) => !!v || "비밀번호를 입력하세요."],
-      confirmPasswordRules: [(v) => !!v || "비밀번호를 확인해주세요."],
+      emailRules: [
+        v => !!v || 'email을 입력하세요',
+        v => validateEmail(v) || '올바른 email 형식이 아닙니다',
+      ],
+      passwordRules: [
+        v => !!v || '비밀번호를 입력하세요',
+        v => validatePassword(v) || '올바른 비밀번호 형식이 아닙니다',
+      ],
+      confirmPasswordRules: [(v) => !!v || "비밀번호가 일치하지 않습니다"],
       date: this.birthday,
       menu: false,
+      valid: false,
     };
   },
   methods: {

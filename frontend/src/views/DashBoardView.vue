@@ -1,4 +1,5 @@
 <template>
+  <v-content class="pt-5">
   <v-row>
     <v-col cols="3">
       <v-navigation-drawer
@@ -41,11 +42,12 @@
       </v-navigation-drawer>
     </v-col>
     <v-col>
-      <v-content class="pt-2 pr-12">
+      <div class="pt-2 pr-12">
         <router-view></router-view>
-      </v-content>
+      </div>
     </v-col>
   </v-row>
+  </v-content>
 </template>
 
 <script>

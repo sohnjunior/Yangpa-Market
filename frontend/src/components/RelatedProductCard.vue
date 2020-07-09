@@ -2,8 +2,8 @@
   <v-hover v-slot:default="{ hover }">
     <v-card
       color="grey lighten-4"
-      width="260"
-      height="300"
+      width="240"
+      height="270"
     >
       <v-img
         :aspect-ratio="16/9"

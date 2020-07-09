@@ -26,10 +26,13 @@
         <v-text-field
           placeholder="SEARCH"
           rounded
-          solo
+          outlined
+          single-line
           append-icon="mdi-magnify"
           v-model="keyword"
-          class="mt-7 mr-5"
+          color="orange"
+          class="mt-7 mr-7"
+          style="width: 350px"
           @keyup.enter="search"
         ></v-text-field>
       </div>
@@ -37,11 +40,11 @@
         <h3>상품 후기</h3>
       </v-btn>
 
-      <v-btn text @click="loginClicked" v-if="!isLoggedIn">
-        <h3 class="mr-3 deep-orange--text text--lighten-3">로그인</h3>
+      <v-btn class="mr-3 deep-orange--text text--lighten-3" text @click="loginClicked" v-if="!isLoggedIn">
+        <h3>로그인</h3>
       </v-btn>
-      <v-btn text to="/signup" v-if="!isLoggedIn">
-        <h3 class="mr-3 deep-orange--text text--lighten-3">회원가입</h3>
+      <v-btn class="mr-3 deep-orange--text text--lighten-3" text to="/signup" v-if="!isLoggedIn">
+        <h3>회원가입</h3>
       </v-btn>
      
         <v-menu
@@ -105,7 +108,7 @@ export default {
       deleteCookie('auth_email');
       deleteCookie('auth_token');
       EventBus.$emit('popUp', '로그아웃 되었습니다.');
-      this.$router.push('/');
+      this.$router.go(0);
     },
     // 로그인하기 or 취소 버튼 클릭 시
     modalDestroy() {
@@ -131,5 +134,8 @@ export default {
 <style scoped>
 .title-text:hover {
   cursor: pointer;
+}
+.search-bar {
+  border: solid;
 }
 </style>
