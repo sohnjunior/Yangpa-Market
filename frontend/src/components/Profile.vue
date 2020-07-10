@@ -10,14 +10,14 @@
 
             <v-form class="pt-1">
               <v-text-field
-                label="Email"
+                label="이메일 계정"
                 v-model="email"
                 class="mx-4"
                 disabled
               />
 
               <v-text-field
-                label="Password"
+                label="변경할 비밀번호"
                 v-model="password"
                 :rules="passwordRules"
                 type="password"
@@ -26,7 +26,7 @@
               />
 
               <v-text-field
-                label="Repeat Password"
+                label="비밀번호 확인"
                 v-model="confirmpassword"
                 :rules="confirmPasswordRules.concat(passwordConfirmationRule)"
                 type="password"
@@ -35,19 +35,17 @@
               />
 
               <v-text-field
-                label="Nickname"
+                label="별명"
                 v-model="nickname"
                 class="mx-4"
                 required
               />
 
-              <v-text-field label="Phone" v-model="phone" class="mx-4" />
+              <v-text-field label="전화번호" v-model="phone" class="mx-4" />
 
               <v-radio-group :row="true" class="mx-4" v-model="sex">
-                성별
-                <v-spacer></v-spacer>
-                <v-radio :label="'남'" value="male"></v-radio>
-                <v-radio :label="'여'" value="female"></v-radio>
+                <v-radio :label="'남성'" value="male"></v-radio>
+                <v-radio :label="'여성'" value="female"></v-radio>
               </v-radio-group>
 
               <v-col cols="mx-4">

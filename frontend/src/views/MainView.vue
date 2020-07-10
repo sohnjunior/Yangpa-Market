@@ -61,7 +61,7 @@
                 :title="product.title"
                 :image="product.image"
                 :hit="product.post.hit"
-                :writer="`카테고리 : ${product.category.title}`"
+                :category="product.category.title"
                 :productID="product.post.title"
                 :key="i"/>
             </v-row>
@@ -74,7 +74,7 @@
                 :title="product.title"
                 :image="product.image"
                 :hit="product.post.hit"
-                :writer="`카테고리 : ${product.category.title}`"
+                :category="product.category.title"
                 :productID="product.post.title"
                 :key="i"/>
             </v-row>

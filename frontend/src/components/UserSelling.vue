@@ -3,7 +3,7 @@
     <v-data-table :headers="onSaleHeaders" :items="onSaleList" class="elevation-1">
       <template v-slot:top>
         <v-toolbar flat color="white">
-          <v-toolbar-title>판매 중</v-toolbar-title>
+          <v-toolbar-title style="font-family: 'paybooc-Bold';">판매 중</v-toolbar-title>
         </v-toolbar>
       </template>
       <template v-slot:item.actions="{ item }">
@@ -30,7 +30,7 @@
     <v-data-table :headers="headers" :items="soldList" class="elevation-1">
       <template v-slot:top>
         <v-toolbar flat color="white">
-          <v-toolbar-title>판매 완료</v-toolbar-title>
+          <v-toolbar-title style="font-family: 'paybooc-Bold';">판매 완료</v-toolbar-title>
         </v-toolbar>
       </template>
     </v-data-table>
@@ -48,15 +48,15 @@ export default {
       dialog: false,
       show: false,
       onSaleHeaders: [
-        { text: "상품명", align: "start", value: "product.title", sortable: false },
-        { text: "가격", align: "start", value: "product.price", sortable: false },
-        { text: "조회수", align: "start", value: "hit", sortable: false },
-        { text: "좋아요", align: "start", value: "product.like", sortable: false },
+        { text: "상품명", align: "start", value: "product.title", sortable: false, class: "header" },
+        { text: "가격", align: "start", value: "product.price", sortable: false, class: "header" },
+        { text: "조회수", align: "start", value: "hit", sortable: false, class: "header" },
+        { text: "좋아요", align: "start", value: "product.like", sortable: false, class: "header" },
         { align: "middle", value: "actions", sortable: false },
       ],
       headers: [
-        { text: "상품명", align: "start", value: "product.title", sortable: false },
-        { text: "판매가격", align: "start", value: "product.price", sortable: false },
+        { text: "상품명", align: "start", value: "product.title", sortable: false, class: "header" },
+        { text: "판매가격", align: "start", value: "product.price", sortable: false, class: "header" },
       ],
       onSaleList: [],
       soldList: [],

@@ -33,6 +33,7 @@
 
           <v-subheader>작성자</v-subheader>
           <div class="ml-8 font-weight-bold">
+            <v-icon small>mdi-account</v-icon>
             {{ writer }}
           </div>
 

@@ -3,8 +3,8 @@
     v-slot:default="{ hover }"
   >
       <v-card
-      max-width="260"
-      max-height="420"
+      width="260"
+      height="420"
       class="card"
       :elevation="hover ? 12 : 2"
       @click="move"
@@ -12,19 +12,21 @@
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title style="font-family: 'Handon3gyeopsal300g'; font-size: 1.3rem">{{ title }}</v-list-item-title>
-          <v-list-item-subtitle>{{ writer }}</v-list-item-subtitle> <br>
-          <v-list-item-subtitle>조회수 : {{ hit }}</v-list-item-subtitle>
+          <v-list-item-subtitle style="font-size: 1rem; margin-top: 7px; margin-bottom: 5px;">{{ writer }}</v-list-item-subtitle> <br>
+          <v-list-item-subtitle style="font-size: 1rem; font-family: 'HangeulNuri-Bold';">
+            <v-icon>mdi-eye-check-outline</v-icon> {{ hit }}
+          </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
 
       <v-img
         alt="이미지"
         :src="image"
-        height="190"
+        height="170"
       ></v-img>
 
       <v-card-text>
-        {{ price }} 원 <br>
+        <h3 class="deep-orange--text text--lighten-3 font-weight-medium price-tag">{{ price }} 원</h3>
         {{ body }}
       </v-card-text>
 

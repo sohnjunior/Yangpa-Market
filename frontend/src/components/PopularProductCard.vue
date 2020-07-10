@@ -6,8 +6,19 @@
     <v-list-item>
       <v-list-item-content>
         <v-list-item-title style="font-family: 'Handon3gyeopsal300g'; font-size: 1.3rem" id="title">{{ title }}</v-list-item-title>
-        <v-list-item-subtitle id="writer">{{ writer }}</v-list-item-subtitle> <br>
-        <v-list-item-subtitle id="hit">조회수 : {{ hit }}</v-list-item-subtitle>
+        <v-list-item-subtitle id="category">
+          <v-chip
+            class="mt-2 mb-1"
+            color="success"
+            outlined
+            small
+          >
+           {{ category }}
+          </v-chip>
+        </v-list-item-subtitle> <br>
+        <v-list-item-subtitle id="hit"><v-icon color="grey">mdi-eye-check-outline</v-icon>
+          <span class="ml-1">{{ hit }}</span>
+        </v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
 
@@ -36,7 +47,7 @@
 <script>
 
 export default {
-  props: ['title', 'image', 'hit', 'writer', 'productID'],
+  props: ['title', 'image', 'hit', 'category', 'productID'],
 }
 </script>
 
@@ -44,11 +55,12 @@ export default {
 #title {
   color: black;
 }
-#writer {
+#category {
   color:black
 }
 #hit {
-  color: black;
+  color: grey;
+  font-family: 'HangeulNuri-Bold'; 
 }
 
 @font-face { 

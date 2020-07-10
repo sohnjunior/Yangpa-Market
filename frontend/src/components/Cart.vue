@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h2>장바구니</h2>
+    <h2 class="sub-title">장바구니</h2>
 
     <v-container>
     <ul v-for="product in picks" :key="product.id">
@@ -19,7 +19,7 @@
     <v-divider width="70%"/>
     <div>
       <br>
-      <h3> 합계 : {{ totalPrice }} 원 </h3>
+      <h2 class="price-tag"> 합계 : {{ totalPrice }} 원 </h2>
       <br>
 
       <v-btn large color="success" @click="buyProducts"> 결제하기 </v-btn>

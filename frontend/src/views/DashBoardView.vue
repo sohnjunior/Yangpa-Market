@@ -12,30 +12,32 @@
         nav
         class="py-0"
       >
-        <v-subheader>내 결제</v-subheader>
+        <v-subheader class="sub-title">내 결제</v-subheader>
         <v-list-item
           v-for="item in orders"
           :key="item.title"
           :to="`/dashboard/${item.to}`"
           link
           color="primary"
+          class="sub-title"
         >
           <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
+            <v-list-item-title style="font-size: 0.9rem;">{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
         <v-divider></v-divider>
-        <v-subheader>설정</v-subheader>
+        <v-subheader class="sub-title">설정</v-subheader>
         <v-list-item
           v-for="item in profile"
           :key="item.title"
           :to="`/dashboard/${item.to}`"
           link
           color="primary"
+          class="sub-title"
         >
           <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
+            <v-list-item-title style="font-size: 0.9rem;">{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>

@@ -53,4 +53,21 @@ export default {
 .category {
   font-family: 'GmarketSansMedium'; 
 }
+
+@font-face { 
+  font-family: 'Handon3gyeopsal600g'; 
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_seven@1.2/Handon3gyeopsal600g.woff') format('woff'); 
+  font-weight: normal; font-style: normal;
+}
+
+.price-tag {
+  font-family: 'Handon3gyeopsal600g'; 
+}
+
+@font-face { 
+  font-family: 'HangeulNuri-Bold'; 
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_three@1.0/HangeulNuri-Bold.woff') format('woff'); 
+  font-weight: normal; font-style: normal; 
+}
+
 </style>

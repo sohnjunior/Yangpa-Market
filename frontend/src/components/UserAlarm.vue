@@ -3,7 +3,7 @@
     <v-data-table :headers="orderHeaders" :items="orderList" class="elevation-1">
       <template v-slot:top>
         <v-toolbar flat color="white">
-          <v-toolbar-title>구매요청 알림</v-toolbar-title>
+          <v-toolbar-title style="font-family: 'paybooc-Bold';">구매요청 알림</v-toolbar-title>
         </v-toolbar>
       </template>
       <template v-slot:item.title="{ item }">
@@ -31,10 +31,10 @@ export default {
       dialog: false,
       show: false,
       orderHeaders: [
-        { text: "주문번호", align: "start", value: "code", sortable: false },
-        { text: "상품명", align: "start", value: "title", sortable: false },
-        { text: "연락처", align: "start", value: "phone", sortable: false },
-        { text: "구매자", align: "start", value: "user.nickname", sortable: false },
+        { text: "주문번호", align: "start", value: "code", sortable: false, class: "header" },
+        { text: "상품명", align: "start", value: "title", sortable: false, class: "header" },
+        { text: "연락처", align: "start", value: "phone", sortable: false, class: "header" },
+        { text: "구매자", align: "start", value: "user.nickname", sortable: false, class: "header" },
         { align: "middle", value: "actions", sortable: false },
       ],
       productList: {},

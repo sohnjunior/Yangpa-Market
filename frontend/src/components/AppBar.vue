@@ -24,7 +24,7 @@
 
       <div>
         <v-text-field
-          placeholder="SEARCH"
+          placeholder="상품명 검색"
           rounded
           outlined
           single-line
