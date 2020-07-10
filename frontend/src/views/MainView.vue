@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-container style="height: 10px;">
-      <v-row class="text-center">
+      <v-row class="text-center mt-5">
         <v-col>
           <v-btn color="light-green lighten-4" depressed x-large @click="categorySelected('전공서적')">
             <v-img class="btn-image" :src="require('@/assets/study.svg')"/>
@@ -45,12 +45,12 @@
       </v-row>
     </v-container>
     <v-content>
-      <v-row>
+      <v-row class="mt-3">
         <v-col>
           <h1 class="sub-title">실시간 TOP 10</h1>
         </v-col>
       </v-row>
-      <v-row class="mt-4">
+      <v-row class="mt-7">
         <v-carousel 
           cycle height="400" dark hide-delimiter-background show-arrows-on-hover >
           <v-carousel-item>
