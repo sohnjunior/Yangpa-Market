@@ -3,7 +3,7 @@
     width="195"
     color="white"
   >
-    <v-list-item>
+    <v-list-item style="background-color: rgba(255, 245, 238, 0.4);">
       <v-list-item-content>
         <v-list-item-title style="font-family: 'Handon3gyeopsal300g'; font-size: 1.3rem" id="title">{{ title }}</v-list-item-title>
         <v-list-item-subtitle id="category">
@@ -28,7 +28,7 @@
       height="170"
     ></v-img>
     
-    <v-card-actions>
+    <v-card-actions style="background-color: rgba(255, 245, 238, 0.4);">
       <v-row justify="center">
         <v-btn
           rounded

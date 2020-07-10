@@ -4,10 +4,11 @@
   >
       <v-card
       width="260"
-      height="420"
+      max-height="420"
       class="card"
       :elevation="hover ? 12 : 2"
       @click="move"
+      style="background-color: rgba(255, 245, 238, 0.4);"
       >
       <v-list-item>
         <v-list-item-content>
