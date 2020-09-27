@@ -45,7 +45,7 @@ router.get("/retrieve/buying", verifyToken, async (req, res, next) => {
       const info = await Product.findOne({
         where: { postId: order.dataValues.postId },
       });
-      productInfo.push(info);
+      productInfo.push([info, order.approve]);
     }
 
     res.json({ infos: productInfo });
