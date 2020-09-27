@@ -1,6 +1,6 @@
-const Sequelize = require('sequelize');
-const env = process.env.NODE_ENV || 'development';
-const config = require('../config/config')[env];
+const Sequelize = require("sequelize");
+const env = process.env.NODE_ENV || "development";
+const config = require("../config/config")[env];
 
 const db = {};
 
@@ -15,14 +15,14 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 // 모델 정의
-db.User = require('./user')(sequelize, Sequelize);
-db.Post = require('./post')(sequelize, Sequelize);
-db.Product = require('./product')(sequelize, Sequelize);
-db.Category = require('./category')(sequelize, Sequelize);
-db.Cart = require('./cart')(sequelize, Sequelize);
-db.Comment = require('./comment')(sequelize, Sequelize);
-db.Review = require('./review')(sequelize, Sequelize);
-db.Order = require('./order')(sequelize, Sequelize);
+db.User = require("./user")(sequelize, Sequelize);
+db.Post = require("./post")(sequelize, Sequelize);
+db.Product = require("./product")(sequelize, Sequelize);
+db.Category = require("./category")(sequelize, Sequelize);
+db.Cart = require("./cart")(sequelize, Sequelize);
+db.Comment = require("./comment")(sequelize, Sequelize);
+db.Review = require("./review")(sequelize, Sequelize);
+db.Order = require("./order")(sequelize, Sequelize);
 
 // User와 Post의 1:N 관계
 db.User.hasMany(db.Post);
@@ -61,8 +61,7 @@ db.User.hasOne(db.Cart);
 db.Cart.belongsTo(db.User);
 
 // Cart와 Product의 N:M 관계
-db.Cart.belongsToMany(db.Product, { through: 'CartProduct' });
-db.Product.belongsToMany(db.Cart, { through: 'CartProduct' });
-
+db.Cart.belongsToMany(db.Product, { through: "CartProduct" });
+db.Product.belongsToMany(db.Cart, { through: "CartProduct" });
 
 module.exports = db;
