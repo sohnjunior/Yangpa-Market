@@ -33,11 +33,12 @@
               color="success"
               large
               depressed
+              :disabled="sold"
               @click="addCart"
               style="margin-right: 50px"
             >
-              <v-icon left>mdi-cart</v-icon>
-              장바구니 담기
+              <v-icon v-if="!sold" left>mdi-cart</v-icon>
+              {{ sold ? "판매 완료" : "장바구니 담기" }}
             </v-btn>
             <v-btn
               tile
@@ -110,11 +111,13 @@ export default {
   async created() {
     this.productID = this.$route.params.id;
     const { data } = await retreiveProduct(this.productID);
+
     this.productIMG = data.product.image;
     this.productBody = data.body;
     this.productSeller = data.user.nickname;
     this.productTitle = data.product.title;
     this.productPrice = data.product.price;
+    this.sold = data.product.sold;
     this.seller = data.user.email === this.$store.getters.getEmail;
 
     const result = await relatedProduct(this.productID);

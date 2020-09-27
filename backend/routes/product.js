@@ -127,7 +127,7 @@ router.get("/retreive/:id", async (req, res, next) => {
         },
         {
           model: Product,
-          attributes: ["title", "image", "price", "like"],
+          attributes: ["title", "image", "price", "like", "sold"],
         },
       ],
     });

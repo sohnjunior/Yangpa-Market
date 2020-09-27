@@ -1,7 +1,5 @@
 <template>
-  <v-footer
-    padless
-  >
+  <v-footer padless>
     <v-card
       flat
       tile
@@ -9,12 +7,7 @@
       class="deep-orange lighten-3 white--text text-center"
     >
       <v-card-text>
-        <v-btn
-          v-for="icon in icons"
-          :key="icon"
-          class="mx-4 white--text"
-          icon
-        >
+        <v-btn v-for="icon in icons" :key="icon" class="mx-4 white--text" icon>
           <v-icon size="24px">{{ icon }}</v-icon>
         </v-btn>
       </v-card-text>
@@ -26,7 +19,7 @@
       <v-divider></v-divider>
 
       <v-card-text class="white--text">
-        {{ new Date().getFullYear() }} — <strong>Vue.js + Node.js</strong>
+        {{ new Date().getFullYear() }} — <strong>vue.js & express.js</strong>
       </v-card-text>
     </v-card>
   </v-footer>
@@ -35,14 +28,9 @@
 <script>
 export default {
   data: () => ({
-      icons: [
-        'mdi-github',
-        'mdi-youtube',
-      ],
-    }),
-}
+    icons: ["mdi-github", "mdi-youtube"],
+  }),
+};
 </script>
 
-<style>
-
-</style>
+<style></style>
