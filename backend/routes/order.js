@@ -101,7 +101,8 @@ router.get("/request", verifyToken, async (req, res, next) => {
 router.put("/approve", verifyToken, async (req, res, next) => {
   try {
     const { postId } = req.body;
-    await Product.update({ sold: true }, { where: { postId: postId } });
+    await Product.update({ sold: true }, { where: { postId } });
+    await Order.update({ approve: true }, { where: { postId } });
     res.json({ msg: "success" });
   } catch (err) {
     console.error(err);
