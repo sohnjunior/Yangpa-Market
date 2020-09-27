@@ -44,6 +44,14 @@ router.get("/retrieve/buying", verifyToken, async (req, res, next) => {
     for (let order of orders) {
       const info = await Product.findOne({
         where: { postId: order.dataValues.postId },
+        include: {
+          model: Post,
+          attributes: ["userId"],
+          include: {
+            model: User,
+            attributes: ["nickname", "phone"],
+          },
+        },
       });
       productInfo.push([info, order.approve]);
     }

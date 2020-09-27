@@ -1,25 +1,22 @@
 <template>
-    <v-container>
-    <v-data-table :headers="onSaleHeaders" :items="onSaleList" class="elevation-1">
+  <v-container>
+    <v-data-table
+      :headers="onSaleHeaders"
+      :items="onSaleList"
+      class="elevation-1"
+    >
       <template v-slot:top>
         <v-toolbar flat color="white">
-          <v-toolbar-title style="font-family: 'paybooc-Bold';">판매 중</v-toolbar-title>
+          <v-toolbar-title style="font-family: 'paybooc-Bold';">
+            판매 중
+          </v-toolbar-title>
         </v-toolbar>
       </template>
       <template v-slot:item.actions="{ item }">
-        <v-icon
-          small
-          color="success"
-          class="mr-2"
-          @click="updateItem(item)"
-        >
+        <v-icon small color="success" class="mr-2" @click="updateItem(item)">
           mdi-pencil
         </v-icon>
-        <v-icon
-          small
-          color="error"
-          @click="deleteItem(item)"
-        >
+        <v-icon small color="error" @click="deleteItem(item)">
           mdi-delete
         </v-icon>
       </template>
@@ -30,17 +27,17 @@
     <v-data-table :headers="headers" :items="soldList" class="elevation-1">
       <template v-slot:top>
         <v-toolbar flat color="white">
-          <v-toolbar-title style="font-family: 'paybooc-Bold';">판매 완료</v-toolbar-title>
+          <v-toolbar-title style="font-family: 'paybooc-Bold';"
+            >판매 완료</v-toolbar-title
+          >
         </v-toolbar>
       </template>
     </v-data-table>
-
   </v-container>
 </template>
 
 <script>
-import { getOrder, deletePost } from '../api/index';
-
+import { getOrder, deletePost } from "../api/index";
 
 export default {
   data() {
@@ -48,15 +45,51 @@ export default {
       dialog: false,
       show: false,
       onSaleHeaders: [
-        { text: "상품명", align: "start", value: "product.title", sortable: false, class: "header" },
-        { text: "가격", align: "start", value: "product.price", sortable: false, class: "header" },
-        { text: "조회수", align: "start", value: "hit", sortable: false, class: "header" },
-        { text: "좋아요", align: "start", value: "product.like", sortable: false, class: "header" },
+        {
+          text: "상품명",
+          align: "start",
+          value: "product.title",
+          sortable: false,
+          class: "header",
+        },
+        {
+          text: "가격",
+          align: "start",
+          value: "product.price",
+          sortable: false,
+          class: "header",
+        },
+        {
+          text: "조회수",
+          align: "start",
+          value: "hit",
+          sortable: false,
+          class: "header",
+        },
+        {
+          text: "좋아요",
+          align: "start",
+          value: "product.like",
+          sortable: false,
+          class: "header",
+        },
         { align: "middle", value: "actions", sortable: false },
       ],
       headers: [
-        { text: "상품명", align: "start", value: "product.title", sortable: false, class: "header" },
-        { text: "판매가격", align: "start", value: "product.price", sortable: false, class: "header" },
+        {
+          text: "상품명",
+          align: "start",
+          value: "product.title",
+          sortable: false,
+          class: "header",
+        },
+        {
+          text: "판매가격",
+          align: "start",
+          value: "product.price",
+          sortable: false,
+          class: "header",
+        },
       ],
       onSaleList: [],
       soldList: [],
@@ -66,9 +99,9 @@ export default {
     const userData = { email: this.$store.getters.getEmail };
     const { data } = await getOrder(userData);
 
-    for(let p of data.products) {
+    for (const p of data.products) {
       // 만약 팔린 상품이라면
-      if(p.product.sold) {
+      if (p.product.sold) {
         this.soldList.push(p);
       } else {
         this.onSaleList.push(p);
@@ -82,7 +115,7 @@ export default {
     closeDialog() {
       this.show = false;
     },
-    
+
     // 상품 정보 업데이트
     updateItem(item) {
       this.$router.push(`/product/update/${item.title}`);
@@ -90,15 +123,15 @@ export default {
 
     // 등록된 상품 삭제
     async deleteItem(item) {
-      const allow = confirm('<' + item.product.title + '> 판매글을 정말로 삭제하시겠습니까?');
-      if(allow) {
+      const allow = confirm(
+        "<" + item.product.title + "> 판매글을 정말로 삭제하시겠습니까?"
+      );
+      if (allow) {
         await deletePost(item.title);
-      } 
-    }
-  }
+      }
+    },
+  },
 };
-
 </script>
 
-<style>
-</style>
+<style></style>

@@ -1,7 +1,7 @@
 <template>
   <v-container class="mb-6">
     <v-data-table
-      :headers="orderHeaders.slice(0, 2)"
+      :headers="orderPendingHeaders"
       :items="orderPendingList"
       class="elevation-1"
     >
@@ -15,7 +15,7 @@
     </v-data-table>
     <v-spacer class="mt-7"></v-spacer>
     <v-data-table
-      :headers="orderHeaders"
+      :headers="orderFinishedHeaders"
       :items="orderFinishedList"
       class="elevation-1"
     >
@@ -44,7 +44,37 @@ export default {
     return {
       dialog: false,
       show: false,
-      orderHeaders: [
+      orderPendingHeaders: [
+        {
+          text: "상품명",
+          align: "start",
+          value: "title",
+          sortable: false,
+          class: "header",
+        },
+        {
+          text: "가격",
+          align: "start",
+          value: "price",
+          sortable: false,
+          class: "header",
+        },
+        {
+          text: "판매자",
+          align: "middle",
+          value: "post.user.nickname",
+          sortable: false,
+          class: "header",
+        },
+        {
+          text: "판매자 연락처",
+          align: "middle",
+          value: "post.user.phone",
+          sortable: false,
+          class: "header",
+        },
+      ],
+      orderFinishedHeaders: [
         {
           text: "상품명",
           align: "start",
