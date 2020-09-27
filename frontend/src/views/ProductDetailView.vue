@@ -2,11 +2,16 @@
   <v-content class="pt-12">
     <v-container style="height: 450px">
       <div class="mb-5">
-        <h1 class="sub-title"> 상품정보 </h1>
+        <h1 class="sub-title">상품정보</h1>
       </div>
       <v-row class="product-info">
         <v-col>
-          <v-img :src="productIMG" class="product-image" width="200" height="300"/>
+          <v-img
+            :src="productIMG"
+            class="product-image"
+            width="200"
+            height="300"
+          />
         </v-col>
         <v-col cols="7">
           <v-row class="mt-9">
@@ -22,11 +27,26 @@
             <div id="price">₩ {{ productPrice }}</div>
           </v-row>
           <v-row class="mt-9">
-            <v-btn tile outlined color="success" large depressed @click="addCart" style="margin-right: 50px">
+            <v-btn
+              tile
+              outlined
+              color="success"
+              large
+              depressed
+              @click="addCart"
+              style="margin-right: 50px"
+            >
               <v-icon left>mdi-cart</v-icon>
               장바구니 담기
             </v-btn>
-            <v-btn tile outlined color="success" large depressed @click="likeUpdate">
+            <v-btn
+              tile
+              outlined
+              color="success"
+              large
+              depressed
+              @click="likeUpdate"
+            >
               <v-icon left>mdi-thumb-up</v-icon>
               좋아요
             </v-btn>
@@ -39,47 +59,53 @@
       <v-content>
         <h2 class="sub-title">이 상품도 함께 봤어요</h2>
         <v-row>
-          <RelatedProductCard v-for="product in related" 
-          id="product-card"
-          :title="product[1].title"
-          :image="product[1].image"
-          :body="product[1].post.body"
-          :hit="product[1].post.hit"
-          :productID="product[1].post.title"
-          :price="product[1].price"
-          :key="product[1].id"
+          <RelatedProductCard
+            v-for="product in related"
+            id="product-card"
+            :title="product[1].title"
+            :image="product[1].image"
+            :body="product[1].post.body"
+            :hit="product[1].post.hit"
+            :productID="product[1].post.title"
+            :price="product[1].price"
+            :key="product[1].id"
           />
         </v-row>
       </v-content>
     </v-container>
     <v-spacer class="mt-11"></v-spacer>
-    <hr>
+    <hr />
     <CommentList :seller="seller"></CommentList>
   </v-content>
 </template>
 
 <script>
-import { retreiveProduct, relatedProduct, createNewCartProduct, likeProduct } from '../api/index';
-import CommentList from '../components/CommentList';
-import RelatedProductCard from '../components/RelatedProductCard.vue';
-import EventBus from '../EventBus';
-
+import {
+  retreiveProduct,
+  relatedProduct,
+  createNewCartProduct,
+  likeProduct,
+} from "../api/index";
+import CommentList from "../components/CommentList";
+import RelatedProductCard from "../components/RelatedProductCard.vue";
+import EventBus from "../EventBus";
 
 export default {
   components: {
-    CommentList, RelatedProductCard,
+    CommentList,
+    RelatedProductCard,
   },
   data() {
     return {
-      productID: '',
-      productIMG: '',
-      productSeller: '',
-      productBody: '',
-      productTitle: '',
-      productPrice: '',
+      productID: "",
+      productIMG: "",
+      productSeller: "",
+      productBody: "",
+      productTitle: "",
+      productPrice: "",
       related: [],
       seller: false,
-    }
+    };
   },
   async created() {
     this.productID = this.$route.params.id;
@@ -100,21 +126,24 @@ export default {
     async addCart() {
       // 로그인한 유저인지 확인
       if (!this.$store.getters.isLoggedIn) {
-        alert('로그인이 필요한 서비스입니다.');
+        alert("로그인이 필요한 서비스입니다.");
         return;
       }
 
-      const payload = { email: this.$store.getters.getEmail, productID: this.productID };
+      const payload = {
+        email: this.$store.getters.getEmail,
+        productID: this.productID,
+      };
       await createNewCartProduct(payload);
-      EventBus.$emit('popUp', '장바구니에 추가되었습니다.');
+      EventBus.$emit("popUp", "장바구니에 추가되었습니다.");
     },
 
-    // 좋아요 + 1 
+    // 좋아요 + 1
     async likeUpdate() {
       await likeProduct(this.productID);
     },
-  }
-}
+  },
+};
 </script>
 
 <style scoped>

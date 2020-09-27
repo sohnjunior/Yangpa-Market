@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import SignupForm from '../components/SignupForm';
+import SignupForm from "../components/SignupForm";
 
 export default {
   components: {
@@ -12,6 +12,4 @@ export default {
 };
 </script>
 
-<style>
-
-</style>
+<style></style>
