@@ -7,7 +7,7 @@ const { User, Cart } = require("../models");
 
 require("dotenv").config();
 
-const { verifyToken, tokenLimiter } = require("./middlewares"); //Limiter from middleware.js
+const { verifyToken, tokenLimiter } = require("../middlewares"); //Limiter from middleware.js
 
 //회원정보 수정
 const updateUser = async ({

@@ -1,5 +1,5 @@
 const express = require("express");
-const { productUpload, verifyToken } = require("./middlewares");
+const { productUpload, verifyToken } = require("../middlewares");
 const { Product, Category, User, Post } = require("../models");
 const fs = require("fs");
 const sequelize = require("sequelize");

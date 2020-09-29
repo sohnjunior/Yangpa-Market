@@ -1,6 +1,6 @@
 const fs = require("fs");
 const express = require("express");
-const { verifyToken } = require("./middlewares");
+const { verifyToken } = require("../middlewares");
 const { Product, User, Cart, Post, Order } = require("../models");
 
 const router = express.Router();

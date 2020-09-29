@@ -1,6 +1,6 @@
 const express = require("express");
 const fs = require("fs");
-const { reviewUpload, verifyToken } = require("./middlewares");
+const { reviewUpload, verifyToken } = require("../middlewares");
 const { User, Review } = require("../models");
 
 const router = express.Router();
