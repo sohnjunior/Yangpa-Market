@@ -1,17 +1,17 @@
-const express = require("express");
-const { productUpload, verifyToken } = require("../middlewares");
-const { Product, Category, User, Post } = require("../models");
-const fs = require("fs");
-const sequelize = require("sequelize");
+const express = require('express');
+const { productUpload, verifyToken } = require('../middlewares');
+const { Product, Category, User, Post } = require('../models');
+const fs = require('fs');
+const sequelize = require('sequelize');
 const Op = sequelize.Op;
 
 const router = express.Router();
 
 // 새로운 상품 게시글 생성
 router.post(
-  "/create",
+  '/create',
   verifyToken,
-  productUpload.single("image"),
+  productUpload.single('image'),
   async (req, res, next) => {
     try {
       // user, category 찾기
@@ -41,12 +41,12 @@ router.post(
       next(err);
     }
 
-    res.json({ response: "success" });
+    res.json({ response: 'success' });
   }
 );
 
 // 상품 정보 수정
-router.put("/update/:id", verifyToken, async (req, res, next) => {
+router.put('/update/:id', verifyToken, async (req, res, next) => {
   try {
     const postTitle = req.body.productId;
     const productData = {
@@ -68,11 +68,11 @@ router.put("/update/:id", verifyToken, async (req, res, next) => {
     next(err);
   }
 
-  res.json({ response: "success" });
+  res.json({ response: 'success' });
 });
 
 // 상품 게시글 삭제
-router.delete("/delete/:id", verifyToken, async (req, res, next) => {
+router.delete('/delete/:id', verifyToken, async (req, res, next) => {
   try {
     const post = await Post.findOne({ where: { title: req.params.id } });
     await Product.destroy({ where: { postId: post.dataValues.id } });
@@ -84,30 +84,30 @@ router.delete("/delete/:id", verifyToken, async (req, res, next) => {
 });
 
 // 전체 상품 게시글 조회
-router.get("/retreive", async (req, res, next) => {
+router.get('/retreive', async (req, res, next) => {
   const posts = await Post.findAll({
     include: [
       {
         model: User,
-        attributes: ["email", "nickname"],
+        attributes: ['email', 'nickname'],
       },
       {
         model: Product,
-        attributes: ["title", "image", "price", "like"],
+        attributes: ['title', 'image', 'price', 'like'],
         include: {
           model: Category,
-          attributes: ["title"],
+          attributes: ['title'],
         },
       },
     ],
-    order: [["createdAt", "DESC"]],
+    order: [['createdAt', 'DESC']],
   });
 
   // 이미지 파일을 읽어 바이너리 형태로 전송해줌
   posts.forEach((post) => {
     const imagePath = post.product.dataValues.image;
-    const data = fs.readFileSync("public/images/product/" + imagePath);
-    let base64 = Buffer.from(data).toString("base64");
+    const data = fs.readFileSync('public/images/product/' + imagePath);
+    let base64 = Buffer.from(data).toString('base64');
     base64 = `data:image/png;base64,${base64}`;
     post.product.dataValues.image = base64;
   });
@@ -116,18 +116,18 @@ router.get("/retreive", async (req, res, next) => {
 });
 
 // 특정 상품 게시글 조회
-router.get("/retreive/:id", async (req, res, next) => {
+router.get('/retreive/:id', async (req, res, next) => {
   try {
     let post = await Post.findOne({
       where: { title: req.params.id },
       include: [
         {
           model: User,
-          attributes: ["email", "nickname"],
+          attributes: ['email', 'nickname'],
         },
         {
           model: Product,
-          attributes: ["title", "image", "price", "like", "sold"],
+          attributes: ['title', 'image', 'price', 'like', 'sold'],
         },
       ],
     });
@@ -136,8 +136,8 @@ router.get("/retreive/:id", async (req, res, next) => {
 
     // 이미지 파일을 읽어 바이너리 형태로 전송해줌
     const imagePath = post.product.dataValues.image;
-    const data = fs.readFileSync("public/images/product/" + imagePath);
-    let base64 = Buffer.from(data).toString("base64");
+    const data = fs.readFileSync('public/images/product/' + imagePath);
+    let base64 = Buffer.from(data).toString('base64');
     base64 = `data:image/png;base64,${base64}`;
     post.product.dataValues.image = base64;
     post.hit = currentHit + 1;
@@ -155,11 +155,11 @@ router.get("/retreive/:id", async (req, res, next) => {
 });
 
 // 특정 키워드 기준 상품명 검색 결과
-router.get("/search/:keyword", async (req, res, next) => {
+router.get('/search/:keyword', async (req, res, next) => {
   let keyword = req.params.keyword;
   keyword = keyword.trim(); // 앞뒤 공백문자 제거
-  keyword = keyword.replace(/\s\s+/gi, " "); // 두 개의 공백은 하나로 변경
-  keywords = keyword.split(" "); // 띄어쓰기 기준으로 한 단어라도 들어있으면 결과 찾아서 반환
+  keyword = keyword.replace(/\s\s+/gi, ' '); // 두 개의 공백은 하나로 변경
+  keywords = keyword.split(' '); // 띄어쓰기 기준으로 한 단어라도 들어있으면 결과 찾아서 반환
 
   const idLog = []; // 중복된 상품 검색 방지
   const resultArr = [];
@@ -172,7 +172,7 @@ router.get("/search/:keyword", async (req, res, next) => {
       },
       include: {
         model: Post,
-        attributes: ["title", "hit"],
+        attributes: ['title', 'hit'],
       },
     });
 
@@ -187,8 +187,8 @@ router.get("/search/:keyword", async (req, res, next) => {
   // 이미지 파일을 읽어 바이너리 형태로 전송해줌
   resultArr.forEach((result) => {
     const imagePath = result.dataValues.image;
-    const data = fs.readFileSync("public/images/product/" + imagePath);
-    let base64 = Buffer.from(data).toString("base64");
+    const data = fs.readFileSync('public/images/product/' + imagePath);
+    let base64 = Buffer.from(data).toString('base64');
     base64 = `data:image/png;base64,${base64}`;
     result.dataValues.image = base64;
   });
@@ -197,7 +197,7 @@ router.get("/search/:keyword", async (req, res, next) => {
 });
 
 // 상품 좋아요 요청
-router.put("/like/:id", verifyToken, async (req, res, next) => {
+router.put('/like/:id', verifyToken, async (req, res, next) => {
   try {
     // 상품 찾기
     const post = await Post.findOne({
@@ -213,7 +213,7 @@ router.put("/like/:id", verifyToken, async (req, res, next) => {
       { like: product.dataValues.like + 1 },
       { where: { postId: post.id } }
     );
-    res.json({ result: "success" });
+    res.json({ result: 'success' });
   } catch (err) {
     console.error(err);
     next(err);
@@ -221,7 +221,7 @@ router.put("/like/:id", verifyToken, async (req, res, next) => {
 });
 
 // product 관련 테스트용 라우터
-router.get("/test", async (req, res, next) => {
+router.get('/test', async (req, res, next) => {
   /* 
       테스트 1 : 유저 id를 통한 게시글 조회 
   */
@@ -259,7 +259,7 @@ router.get("/test", async (req, res, next) => {
   //  });
 
   //  console.log(posts);
-  res.json({ test: "test_success" });
+  res.json({ test: 'test_success' });
 });
 
 module.exports = router;
