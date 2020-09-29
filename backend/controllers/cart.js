@@ -1,10 +1,10 @@
-const CartService = require("../services/cart");
+const CartService = require('../services/cart');
 
 const postProduct = async (req, res, next) => {
   try {
     const { email, productID } = req.body;
     await CartService.addCartProduct(email, productID);
-    res.json({ result: "success" });
+    res.json({ result: 'success' });
   } catch (err) {
     console.error(err);
     next(err);
@@ -26,7 +26,7 @@ const deleteProduct = async (req, res, next) => {
   try {
     const { email, productID } = req.query;
     await CartService.removeCartProduct(email, productID);
-    res.json({ result: "success" });
+    res.json({ result: 'success' });
   } catch (err) {
     console.error(err);
     next(err);
@@ -37,7 +37,7 @@ const purchaseProduct = async (req, res, next) => {
   try {
     const { email, postID, productID, phone } = req.body;
     await CartService.purchaseCartProduct(email, postID, productID, phone);
-    res.json({ msg: "success" });
+    res.json({ msg: 'success' });
   } catch (err) {
     console.error(err);
     next(err);

@@ -1,5 +1,5 @@
-const fs = require("fs");
-const { User, Cart, Post, Product, Order } = require("../models");
+const fs = require('fs');
+const { User, Cart, Post, Product, Order } = require('../models');
 
 const addCartProduct = async (email, productID) => {
   try {
@@ -33,8 +33,8 @@ const getCartProducts = async (email) => {
   // 이미지 파일을 읽어 바이너리 형태로 전송해줌
   products.forEach((product) => {
     const imagePath = product.dataValues.image;
-    const data = fs.readFileSync("public/images/product/" + imagePath);
-    let base64 = Buffer.from(data).toString("base64");
+    const data = fs.readFileSync('public/images/product/' + imagePath);
+    let base64 = Buffer.from(data).toString('base64');
     base64 = `data:image/png;base64,${base64}`;
     product.dataValues.image = base64;
   });
