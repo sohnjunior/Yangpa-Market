@@ -1,6 +1,5 @@
-import axios from 'axios';
-import { setInterceptors } from './interceptors';
-
+import axios from "axios";
+import { setInterceptors } from "./interceptors";
 
 /*
     axios 요청을 보내기 전 필요한 헤더를 추가해줍니다.
@@ -8,9 +7,9 @@ import { setInterceptors } from './interceptors';
 */
 function createInstance() {
   const instance = axios.create({
-    baseURL: "http://127.0.0.1:3000",
+    baseURL: "http://127.0.0.1:3000/api",
   });
-  
+
   return setInterceptors(instance);
 }
 
@@ -26,8 +25,8 @@ function registerUser(payload) {
 }
 
 //유저 업데이트 요청
-function updateUser(payload){
-  return instance.post("/users/update",payload);
+function updateUser(payload) {
+  return instance.post("/users/update", payload);
 }
 
 //유저 로그인 요청
@@ -36,7 +35,7 @@ function loginUser(payload) {
 }
 
 //모든 유저 조회 요청
-function getallUser(){
+function getallUser() {
   return instance.get("/users/users");
 }
 
@@ -59,8 +58,8 @@ function isAdminUser(payload) {
 function createNewProduct(payload) {
   return instance.post("/product/create", payload, {
     headers: {
-      'Content-Type': 'multipart/form-data'
-    }
+      "Content-Type": "multipart/form-data",
+    },
   });
 }
 
@@ -74,17 +73,17 @@ function retreiveComment(payload) {
   return instance.get(`/comment/retreive/${payload}`);
 }
 
-// 댓글 삭제 요청 
+// 댓글 삭제 요청
 function deleteComment(payload) {
   return instance.delete(`/comment/delete`, { params: { id: payload.id } });
 }
 
-// 댓글 수정 요청 
+// 댓글 수정 요청
 function updateComment(payload) {
   return instance.put(`/comment/update`, payload);
 }
 
-// 상품 게시글 삭제 요청 
+// 상품 게시글 삭제 요청
 function deletePost(payload) {
   return instance.delete(`/product/delete/${payload}`);
 }
@@ -98,7 +97,6 @@ function retreiveProduct(payload) {
 function retriveAllProducts() {
   return instance.get("/product/retreive");
 }
-
 
 // 상품 게시글 업데이트 요청
 function updateProduct(id, payload) {
@@ -137,7 +135,9 @@ function retriveAllCartProducts(payload) {
 
 // 장바구니 상품 제거 요청
 function removeFromCart(payload) {
-  return instance.delete("/cart/delete", { params: { email: payload.email, productID: payload.productID } });
+  return instance.delete("/cart/delete", {
+    params: { email: payload.email, productID: payload.productID },
+  });
 }
 
 // 장바구니 상품 구매 요청
@@ -152,7 +152,9 @@ function getOrder(payload) {
 
 // 유저의 구매 상품 내역 조회 요청
 function getOrderBuying(payload) {
-  return instance.get("/order/retrieve/buying", { params: { email: payload.email } });
+  return instance.get("/order/retrieve/buying", {
+    params: { email: payload.email },
+  });
 }
 
 // 미승인 상품 구매 요청 조회
@@ -179,8 +181,8 @@ function retrueveAllReview() {
 function createNewReview(payload) {
   return instance.post("/review/create", payload, {
     headers: {
-      'Content-Type': 'multipart/form-data'
-    }
+      "Content-Type": "multipart/form-data",
+    },
   });
 }
 
@@ -206,15 +208,44 @@ function testJWTVerify() {
 }
 
 function testProduct() {
-  return instance.get('/product/test');
+  return instance.get("/product/test");
 }
 
 export {
-  registerUser, updateUser, loginUser, getallUser, getUser, deleteUser, isAdminUser,
-  registerComment, retreiveComment, deleteComment, updateComment,
-  createNewProduct, retriveAllProducts, updateProduct, retreiveProduct, deletePost, searchProduct,
-  realtimePopular, relatedProduct, likeProduct,
-  createNewCartProduct, retriveAllCartProducts, removeFromCart, buyFromCart, getOrder, getOrderBuying, getNotApproved,
-  createNewReview, retrueveAllReview, increaseHitReview, increaseLikeReview,
-  approveProduct, deniedProduct,
-  testJWT, testJWTVerify, testProduct }
+  registerUser,
+  updateUser,
+  loginUser,
+  getallUser,
+  getUser,
+  deleteUser,
+  isAdminUser,
+  registerComment,
+  retreiveComment,
+  deleteComment,
+  updateComment,
+  createNewProduct,
+  retriveAllProducts,
+  updateProduct,
+  retreiveProduct,
+  deletePost,
+  searchProduct,
+  realtimePopular,
+  relatedProduct,
+  likeProduct,
+  createNewCartProduct,
+  retriveAllCartProducts,
+  removeFromCart,
+  buyFromCart,
+  getOrder,
+  getOrderBuying,
+  getNotApproved,
+  createNewReview,
+  retrueveAllReview,
+  increaseHitReview,
+  increaseLikeReview,
+  approveProduct,
+  deniedProduct,
+  testJWT,
+  testJWTVerify,
+  testProduct,
+};
