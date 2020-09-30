@@ -1,11 +1,9 @@
 const express = require('express');
-const UserController = require('../controllers/users');
-
-const router = express.Router();
-
+const UserController = require('../../controllers/users');
+const { verifyToken, tokenLimiter } = require('../../middlewares');
 require('dotenv').config();
 
-const { verifyToken, tokenLimiter } = require('../middlewares');
+const router = express.Router();
 
 // 관리자를 제외한 모든 유저 조회
 router.get('/users', UserController.getUsers);
