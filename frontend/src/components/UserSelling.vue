@@ -7,7 +7,7 @@
     >
       <template v-slot:top>
         <v-toolbar flat color="white">
-          <v-toolbar-title style="font-family: 'paybooc-Bold';">
+          <v-toolbar-title style="font-family: 'paybooc-Bold'">
             판매 중
           </v-toolbar-title>
         </v-toolbar>
@@ -27,7 +27,7 @@
     <v-data-table :headers="headers" :items="soldList" class="elevation-1">
       <template v-slot:top>
         <v-toolbar flat color="white">
-          <v-toolbar-title style="font-family: 'paybooc-Bold';"
+          <v-toolbar-title style="font-family: 'paybooc-Bold'"
             >판매 완료</v-toolbar-title
           >
         </v-toolbar>
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { getOrder, deletePost } from "../api/index";
+import { getOrder, deletePost } from '../api/index';
 
 export default {
   data() {
@@ -46,49 +46,49 @@ export default {
       show: false,
       onSaleHeaders: [
         {
-          text: "상품명",
-          align: "start",
-          value: "product.title",
+          text: '상품명',
+          align: 'start',
+          value: 'product.title',
           sortable: false,
-          class: "header",
+          class: 'header',
         },
         {
-          text: "가격",
-          align: "start",
-          value: "product.price",
+          text: '가격',
+          align: 'start',
+          value: 'product.price',
           sortable: false,
-          class: "header",
+          class: 'header',
         },
         {
-          text: "조회수",
-          align: "start",
-          value: "hit",
+          text: '조회수',
+          align: 'start',
+          value: 'hit',
           sortable: false,
-          class: "header",
+          class: 'header',
         },
         {
-          text: "좋아요",
-          align: "start",
-          value: "product.like",
+          text: '좋아요',
+          align: 'start',
+          value: 'product.like',
           sortable: false,
-          class: "header",
+          class: 'header',
         },
-        { align: "middle", value: "actions", sortable: false },
+        { align: 'middle', value: 'actions', sortable: false },
       ],
       headers: [
         {
-          text: "상품명",
-          align: "start",
-          value: "product.title",
+          text: '상품명',
+          align: 'start',
+          value: 'product.title',
           sortable: false,
-          class: "header",
+          class: 'header',
         },
         {
-          text: "판매가격",
-          align: "start",
-          value: "product.price",
+          text: '판매가격',
+          align: 'start',
+          value: 'product.price',
           sortable: false,
-          class: "header",
+          class: 'header',
         },
       ],
       onSaleList: [],
@@ -124,7 +124,7 @@ export default {
     // 등록된 상품 삭제
     async deleteItem(item) {
       const allow = confirm(
-        "<" + item.product.title + "> 판매글을 정말로 삭제하시겠습니까?"
+        '<' + item.product.title + '> 판매글을 정말로 삭제하시겠습니까?'
       );
       if (allow) {
         await deletePost(item.title);

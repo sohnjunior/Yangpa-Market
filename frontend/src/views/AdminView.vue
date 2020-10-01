@@ -8,9 +8,7 @@
           </v-toolbar>
         </template>
         <template v-slot:item.actions="{ item }">
-          <v-icon small @click="check(item)">
-            mdi-delete
-          </v-icon>
+          <v-icon small @click="check(item)"> mdi-delete </v-icon>
         </template>
       </v-data-table>
     </v-container>
@@ -18,28 +16,28 @@
 </template>
 
 <script>
-import { getallUser, deleteUser } from "../api/index";
+import { getallUser, deleteUser } from '../api/index';
 
 export default {
   data() {
     return {
       dialog: false,
       headers: [
-        { text: "Email", align: "start", value: "email", sortable: false },
-        { text: "닉네임", align: "start", value: "nickname", sortable: false },
-        { text: "전화번호", align: "start", value: "phone", sortable: false },
-        { text: "성별", align: "start", value: "sex", sortable: false },
+        { text: 'Email', align: 'start', value: 'email', sortable: false },
+        { text: '닉네임', align: 'start', value: 'nickname', sortable: false },
+        { text: '전화번호', align: 'start', value: 'phone', sortable: false },
+        { text: '성별', align: 'start', value: 'sex', sortable: false },
         {
-          text: "생년월일",
-          align: "start",
-          value: "birthday",
+          text: '생년월일',
+          align: 'start',
+          value: 'birthday',
           sortable: false,
         },
-        { text: "Delete", align: "end", value: "actions", sortable: false },
+        { text: 'Delete', align: 'end', value: 'actions', sortable: false },
       ],
       userlist: [],
       idx: 0,
-      email: "",
+      email: '',
     };
   },
   async created() {
@@ -50,7 +48,7 @@ export default {
 
   methods: {
     check(item) {
-      confirm("해당 유저를 삭제하시겠습니까") && deleteUser(item);
+      confirm('해당 유저를 삭제하시겠습니까') && deleteUser(item);
     },
 
     async deleteUser(item) {

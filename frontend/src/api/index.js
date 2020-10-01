@@ -40,18 +40,18 @@ function getallUser() {
 }
 
 //유저 조회 요청
-function getUser(payload) {
-  return instance.get("/users/retrieve", { params: { email: payload.email } });
+function getUser() {
+  return instance.get("/users/retrieve");
 }
 
 //유저 삭제 요청
-function deleteUser(payload) {
-  return instance.delete(`/users/delete`, { params: { email: payload.email } });
+function deleteUser() {
+  return instance.delete(`/users/delete`);
 }
 
 // 관리자 권한 여부 조회
-function isAdminUser(payload) {
-  return instance.get("/users/admin", { params: { email: payload.email } });
+function isAdminUser() {
+  return instance.get("/users/admin");
 }
 
 // 상품 게시글 등록 요청
@@ -129,14 +129,14 @@ function createNewCartProduct(payload) {
 }
 
 // 장바구니 상품 조회 요청
-function retriveAllCartProducts(payload) {
-  return instance.get("/cart/retrieve", { params: { email: payload.email } });
+function retriveAllCartProducts() {
+  return instance.get("/cart/retrieve");
 }
 
 // 장바구니 상품 제거 요청
 function removeFromCart(payload) {
   return instance.delete("/cart/delete", {
-    params: { email: payload.email, productID: payload.productID },
+    params: { productID: payload.productID },
   });
 }
 
@@ -146,20 +146,18 @@ function buyFromCart(payload) {
 }
 
 // 유저가 판매중인 상품내역 조회 요청
-function getOrder(payload) {
-  return instance.get("/order/retrieve", { params: { email: payload.email } });
+function getOrder() {
+  return instance.get("/order/retrieve");
 }
 
 // 유저의 구매 상품 내역 조회 요청
-function getOrderBuying(payload) {
-  return instance.get("/order/retrieve/buying", {
-    params: { email: payload.email },
-  });
+function getOrderBuying() {
+  return instance.get("/order/retrieve/buying");
 }
 
 // 미승인 상품 구매 요청 조회
-function getNotApproved(payload) {
-  return instance.get("/order/request", { params: { email: payload.email } });
+function getNotApprovedProduct() {
+  return instance.get("/order/request");
 }
 
 // 상품 구매 승인 요청
@@ -238,7 +236,7 @@ export {
   buyFromCart,
   getOrder,
   getOrderBuying,
-  getNotApproved,
+  getNotApprovedProduct,
   createNewReview,
   retrueveAllReview,
   increaseHitReview,

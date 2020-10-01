@@ -25,13 +25,13 @@
 </template>
 
 <script>
-import { searchProduct } from "../api/index";
-import ProductCard from "../components/ProductCard.vue";
+import { searchProduct } from '../api/index';
+import ProductCard from '../components/ProductCard.vue';
 
 export default {
   data() {
     return {
-      keyword: "",
+      keyword: '',
       products: [],
     };
   },

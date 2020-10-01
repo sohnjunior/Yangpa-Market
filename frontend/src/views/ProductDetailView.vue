@@ -38,7 +38,7 @@
               style="margin-right: 50px"
             >
               <v-icon v-if="!sold" left>mdi-cart</v-icon>
-              {{ sold ? "판매 완료" : "장바구니 담기" }}
+              {{ sold ? '판매 완료' : '장바구니 담기' }}
             </v-btn>
             <v-btn
               tile
@@ -86,10 +86,10 @@ import {
   relatedProduct,
   createNewCartProduct,
   likeProduct,
-} from "../api/index";
-import CommentList from "../components/CommentList";
-import RelatedProductCard from "../components/RelatedProductCard.vue";
-import EventBus from "../EventBus";
+} from '../api/index';
+import CommentList from '../components/CommentList';
+import RelatedProductCard from '../components/RelatedProductCard.vue';
+import EventBus from '../EventBus';
 
 export default {
   components: {
@@ -98,12 +98,12 @@ export default {
   },
   data() {
     return {
-      productID: "",
-      productIMG: "",
-      productSeller: "",
-      productBody: "",
-      productTitle: "",
-      productPrice: "",
+      productID: '',
+      productIMG: '',
+      productSeller: '',
+      productBody: '',
+      productTitle: '',
+      productPrice: '',
       related: [],
       seller: false,
     };
@@ -129,16 +129,15 @@ export default {
     async addCart() {
       // 로그인한 유저인지 확인
       if (!this.$store.getters.isLoggedIn) {
-        alert("로그인이 필요한 서비스입니다.");
+        alert('로그인이 필요한 서비스입니다.');
         return;
       }
 
       const payload = {
-        email: this.$store.getters.getEmail,
         productID: this.productID,
       };
       await createNewCartProduct(payload);
-      EventBus.$emit("popUp", "장바구니에 추가되었습니다.");
+      EventBus.$emit('popUp', '장바구니에 추가되었습니다.');
     },
 
     // 좋아요 + 1

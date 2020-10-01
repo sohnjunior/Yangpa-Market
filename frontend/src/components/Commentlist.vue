@@ -1,10 +1,19 @@
 <template>
   <v-content class="pt-5">
     <v-row justify="center">
-       <v-data-table no-data-text="댓글이 없습니다" :headers="headers" :items="commentList" class="elevation-1 ml-12" style="width: 70%" hide-default-footer>
+      <v-data-table
+        no-data-text="댓글이 없습니다"
+        :headers="headers"
+        :items="commentList"
+        class="elevation-1 ml-12"
+        style="width: 70%"
+        hide-default-footer
+      >
         <template v-slot:top>
           <v-toolbar flat color="white">
-            <v-toolbar-title style="font-family: 'paybooc-Bold'">댓글</v-toolbar-title>
+            <v-toolbar-title style="font-family: 'paybooc-Bold'"
+              >댓글</v-toolbar-title
+            >
 
             <v-spacer></v-spacer>
             <v-btn color="warning" depressed @click="newButton">
@@ -15,7 +24,11 @@
                 <v-card-title>
                   <span class="headline">{{ formTitle }}</span>
                 </v-card-title>
-                <v-card-text class="py-0" background-color="blue lighten-2" outline>
+                <v-card-text
+                  class="py-0"
+                  background-color="blue lighten-2"
+                  outline
+                >
                   <v-container>
                     <v-row>
                       <v-col cols="12">
@@ -29,7 +42,10 @@
                             autofocus
                             auto-grow
                             rows="7"
-                            :rules="[v => !!v || '댓글을 적어도 1자 이상 입력해주세요!']"
+                            :rules="[
+                              (v) =>
+                                !!v || '댓글을 적어도 1자 이상 입력해주세요!',
+                            ]"
                           ></v-textarea>
                         </v-form>
                       </v-col>
@@ -38,9 +54,21 @@
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-checkbox v-model="secret" label="비밀댓글" class="mx-10"></v-checkbox>
-                  <v-btn color="blue darken-1" text @click="confirmButton" :disabled="!valid">확인</v-btn>
-                  <v-btn color="blue darken-1" text @click="closeButton">취소</v-btn>
+                  <v-checkbox
+                    v-model="secret"
+                    label="비밀댓글"
+                    class="mx-10"
+                  ></v-checkbox>
+                  <v-btn
+                    color="blue darken-1"
+                    text
+                    @click="confirmButton"
+                    :disabled="!valid"
+                    >확인</v-btn
+                  >
+                  <v-btn color="blue darken-1" text @click="closeButton"
+                    >취소</v-btn
+                  >
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -50,17 +78,31 @@
           <span class="font-weight-medium">{{ item.user.nickname }}</span>
         </template>
         <template v-slot:item.comment="{ item }">
-          <span class="grey--text" 
-            v-if="!seller && !admin && item.secret && !haveAuth(item.user.email)">
+          <span
+            class="grey--text"
+            v-if="
+              !seller && !admin && item.secret && !haveAuth(item.user.email)
+            "
+          >
             <v-icon small>mdi-lock</v-icon> 비밀댓글입니다.
           </span>
           <span v-else> {{ item.comment }} </span>
         </template>
         <template v-slot:item.actions="{ item }">
-          <v-icon class="mr-2 pen" v-show="haveAuth(item.user.email)" small @click="updateButton(item)">
+          <v-icon
+            class="mr-2 pen"
+            v-show="haveAuth(item.user.email)"
+            small
+            @click="updateButton(item)"
+          >
             mdi-pencil
           </v-icon>
-          <v-icon class="trash" v-show="haveAuth(item.user.email)" small @click="deleteButton(item)">
+          <v-icon
+            class="trash"
+            v-show="haveAuth(item.user.email)"
+            small
+            @click="deleteButton(item)"
+          >
             mdi-delete
           </v-icon>
         </template>
@@ -70,8 +112,13 @@
 </template>
 
 <script>
-import { registerComment, retreiveComment, deleteComment, updateComment, isAdminUser } from "../api/index";
-
+import {
+  registerComment,
+  retreiveComment,
+  deleteComment,
+  updateComment,
+  isAdminUser,
+} from '../api/index';
 
 export default {
   props: ['seller'],
@@ -79,9 +126,21 @@ export default {
     return {
       dialog: false,
       headers: [
-        { text: "작성자", align: "start", sortable: false, value: "user.nickname", class: "header"},
-        { text: "댓글 내용", align: "start", sortable: false, value: "comment", class: "header"},
-        { align:"middle", value: "actions", sortable: false, class: "header" },
+        {
+          text: '작성자',
+          align: 'start',
+          sortable: false,
+          value: 'user.nickname',
+          class: 'header',
+        },
+        {
+          text: '댓글 내용',
+          align: 'start',
+          sortable: false,
+          value: 'comment',
+          class: 'header',
+        },
+        { align: 'middle', value: 'actions', sortable: false, class: 'header' },
       ],
       commentList: [],
       postId: '',
@@ -98,18 +157,17 @@ export default {
     this.postId = this.$route.params.id;
     const comments = await retreiveComment(this.postId);
     this.commentList = comments.data.comments;
-    
+
     // 현재 로그인한 유저라면
     if (this.$store.getters.isLoggedIn) {
-      const payload = { email: this.$store.getters.getEmail };
-      const isAdmin = await isAdminUser(payload);
+      const isAdmin = await isAdminUser();
       this.admin = isAdmin.data.isAdmin;
     }
   },
-  
+
   computed: {
     formTitle() {
-      return !this.editFlag ? "댓글 작성" : "댓글 수정";
+      return !this.editFlag ? '댓글 작성' : '댓글 수정';
     },
   },
 
@@ -119,8 +177,8 @@ export default {
     },
 
     // 삭제 버튼 토글 함수
-    deleteButton(item){
-      confirm("해당 댓글을 삭제하시겠습니까?") && this.deleteComments(item);
+    deleteButton(item) {
+      confirm('해당 댓글을 삭제하시겠습니까?') && this.deleteComments(item);
     },
 
     // 댓글 수정 토글 함수
@@ -160,7 +218,7 @@ export default {
 
     // 댓글 삭제 요청 함수
     async deleteComments(item) {
-      const toDelete = { id : item.id };
+      const toDelete = { id: item.id };
 
       try {
         await deleteComment(toDelete);
@@ -175,7 +233,7 @@ export default {
       const toUpdate = { id: this.updateId, comment: this.comment };
       try {
         await updateComment(toUpdate);
-      } catch(err) {
+      } catch (err) {
         console.error(err);
       }
     },
@@ -183,7 +241,6 @@ export default {
     // 새로운 댓글 생성하는 axios 통신 함수
     async createComments() {
       const Comment = {
-        email: this.$store.getters.getEmail,
         postId: this.postId,
         comment: this.comment,
         secret: this.secret,
@@ -191,7 +248,7 @@ export default {
 
       try {
         await registerComment(Comment);
-        this.$router.go(0);  // refresh the page
+        this.$router.go(0); // refresh the page
       } catch (error) {
         console.log(error);
       }

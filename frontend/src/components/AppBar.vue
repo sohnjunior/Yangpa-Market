@@ -1,81 +1,90 @@
 <template>
-   <v-app-bar
-      app
-      color="white"
-      class="elevation-3"
-      height="100px"
+  <v-app-bar app color="white" class="elevation-3" height="100px">
+    <div class="d-flex align-center">
+      <v-img
+        alt="Vuetify Logo"
+        class="shrink mr-2"
+        contain
+        src="/onion.svg"
+        transition="scale-transition"
+        width="40"
+      />
+
+      <span
+        class="title-text deep-orange--text text--lighten-3"
+        text
+        @click="comeBackHome"
+      >
+        <h2 class="transition-swing app-name ml-2 mt-2">양파 마켓</h2>
+      </span>
+    </div>
+
+    <v-spacer></v-spacer>
+
+    <div>
+      <v-text-field
+        placeholder="상품명 검색"
+        rounded
+        outlined
+        single-line
+        append-icon="mdi-magnify"
+        v-model="keyword"
+        color="orange"
+        class="mt-7 mr-7"
+        style="width: 350px"
+        @keyup.enter="search"
+      ></v-text-field>
+    </div>
+    <v-btn class="mr-5 deep-orange--text text--lighten-3" text to="/review">
+      <h3>상품 후기</h3>
+    </v-btn>
+
+    <v-btn
+      class="mr-3 deep-orange--text text--lighten-3"
+      text
+      @click="loginClicked"
+      v-if="!isLoggedIn"
     >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="/onion.svg"
-          transition="scale-transition"
-          width="40"
-        />
+      <h3>로그인</h3>
+    </v-btn>
+    <v-btn
+      class="mr-3 deep-orange--text text--lighten-3"
+      text
+      to="/signup"
+      v-if="!isLoggedIn"
+    >
+      <h3>회원가입</h3>
+    </v-btn>
 
-        <span class="title-text deep-orange--text text--lighten-3" text @click="comeBackHome">
-          <h2 class="transition-swing app-name ml-2 mt-2">양파 마켓</h2>
-        </span>
-      </div>
-
-      <v-spacer></v-spacer>
-
-      <div>
-        <v-text-field
-          placeholder="상품명 검색"
-          rounded
-          outlined
-          single-line
-          append-icon="mdi-magnify"
-          v-model="keyword"
-          color="orange"
-          class="mt-7 mr-7"
-          style="width: 350px"
-          @keyup.enter="search"
-        ></v-text-field>
-      </div>
-      <v-btn class="mr-5 deep-orange--text text--lighten-3" text to="/review">
-        <h3>상품 후기</h3>
-      </v-btn>
-
-      <v-btn class="mr-3 deep-orange--text text--lighten-3" text @click="loginClicked" v-if="!isLoggedIn">
-        <h3>로그인</h3>
-      </v-btn>
-      <v-btn class="mr-3 deep-orange--text text--lighten-3" text to="/signup" v-if="!isLoggedIn">
-        <h3>회원가입</h3>
-      </v-btn>
-     
-        <v-menu
+    <v-menu
+      text
+      bottom
+      origin="center center"
+      transition="scale-transition"
+      v-if="isLoggedIn"
+    >
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          v-bind="attrs"
+          v-on="on"
+          class="mr-4 deep-orange--text text--lighten-3"
           text
-          bottom
-          origin="center center"
-          transition="scale-transition"
-          v-if="isLoggedIn"
         >
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              v-bind="attrs"
-              v-on="on"
-              class="mr-4 deep-orange--text text--lighten-3"
-              text
-            >
-              <h3>회원정보</h3>
-            </v-btn>
-          </template>
+          <h3>회원정보</h3>
+        </v-btn>
+      </template>
 
-          <v-list>
-            <v-list-item @click="routeToDashboard">
-              <v-list-item-title>대시보드</v-list-item-title>
-            </v-list-item>
-            <v-list-item @click="logoutClicked">
-              <v-list-item-title>로그아웃</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      <LoginModal :dialog="dialog" @modalDestroy="modalDestroy"></LoginModal>
-    </v-app-bar>
+      <v-list>
+        <v-list-item @click="routeToDashboard">
+          <v-list-item-title>대시보드</v-list-item-title>
+        </v-list-item>
+        <v-list-item @click="logoutClicked">
+          <v-list-item-title>로그아웃</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+    <LoginModal :dialog="dialog" @modalDestroy="modalDestroy"></LoginModal>
+  </v-app-bar>
 </template>
 
 <script>
@@ -88,7 +97,7 @@ export default {
     return {
       keyword: '',
       dialog: false,
-    }
+    };
   },
   components: {
     LoginModal,
@@ -96,7 +105,7 @@ export default {
   computed: {
     isLoggedIn() {
       return this.$store.getters.isLoggedIn;
-    }
+    },
   },
   methods: {
     // 로그인 모달 팝업
@@ -127,9 +136,9 @@ export default {
     // 홈으로 이동
     comeBackHome() {
       this.$router.push('/');
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -140,13 +149,15 @@ export default {
   border: solid;
 }
 
-@font-face { 
-  font-family: 'TmonMonsori'; 
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/TmonMonsori.woff') format('woff'); 
-  font-weight: normal; font-style: normal; 
+@font-face {
+  font-family: 'TmonMonsori';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/TmonMonsori.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
 
 .app-name {
-  font-family: 'TmonMonsori'; 
+  font-family: 'TmonMonsori';
 }
 </style>

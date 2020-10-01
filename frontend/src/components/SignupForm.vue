@@ -4,9 +4,7 @@
       <v-row>
         <v-col cols="12">
           <v-card shaped title="회원 가입" class="px-5 py-3">
-            <v-subheader class="display-1 mt-3">
-              회원 가입
-            </v-subheader>
+            <v-subheader class="display-1 mt-3"> 회원 가입 </v-subheader>
 
             <v-form class="pt-1">
               <v-text-field
@@ -46,9 +44,9 @@
                 persistent-hint
               />
 
-              <v-text-field 
-                label="전화번호" 
-                v-model="phone" 
+              <v-text-field
+                label="전화번호"
+                v-model="phone"
                 :rules="phoneRules"
                 class="mx-4"
                 hint="예시: 010-1234-5678"
@@ -99,7 +97,9 @@
                   </v-date-picker>
                 </v-menu>
               </v-col>
-              <v-btn large color="success" @click="submitForm" class="mx-4">가입하기</v-btn>
+              <v-btn large color="success" @click="submitForm" class="mx-4"
+                >가입하기</v-btn
+              >
             </v-form>
           </v-card>
         </v-col>
@@ -109,35 +109,39 @@
 </template>
 
 <script>
-import { registerUser } from "../api/index";
-import { validateEmail, validatePassword, validatePhoneNum } from '../utils/validators';
+import { registerUser } from '../api/index';
+import {
+  validateEmail,
+  validatePassword,
+  validatePhoneNum,
+} from '../utils/validators';
 
 export default {
   data() {
     return {
-      email: "",
-      password: "",
-      confirmpassword: "",
-      nickname: "",
-      phone: "",
-      sex: "male",
-      birthday: "",
+      email: '',
+      password: '',
+      confirmpassword: '',
+      nickname: '',
+      phone: '',
+      sex: 'male',
+      birthday: '',
       admin: false,
       emailRules: [
-        v => !!v || 'email을 입력하세요',
-        v => validateEmail(v) || '올바른 email 형식이 아닙니다',
+        (v) => !!v || 'email을 입력하세요',
+        (v) => validateEmail(v) || '올바른 email 형식이 아닙니다',
       ],
       passwordRules: [
-        v => !!v || '비밀번호를 입력하세요',
-        v => validatePassword(v) || '올바른 비밀번호 형식이 아닙니다',
+        (v) => !!v || '비밀번호를 입력하세요',
+        (v) => validatePassword(v) || '올바른 비밀번호 형식이 아닙니다',
       ],
       confirmPasswordRules: [
-        v => !!v || '비밀번호가 일치하지 않습니다',
-        v => this.password === v || '비밀번호가 일치하지 않습니다.',  
+        (v) => !!v || '비밀번호가 일치하지 않습니다',
+        (v) => this.password === v || '비밀번호가 일치하지 않습니다.',
       ],
       phoneRules: [
-        v => !!v || '전화번호를 입력하세요',
-        v => validatePhoneNum(v) || '전화번호 형식을 확인해주세요',
+        (v) => !!v || '전화번호를 입력하세요',
+        (v) => validatePhoneNum(v) || '전화번호 형식을 확인해주세요',
       ],
       date: this.birthday,
       menu: false,
@@ -169,7 +173,8 @@ export default {
   computed: {
     passwordConfirmationRule() {
       return () =>
-        this.password === this.confirmpassword || "비밀번호가 일치하지 않습니다.";
+        this.password === this.confirmpassword ||
+        '비밀번호가 일치하지 않습니다.';
     },
   },
 };

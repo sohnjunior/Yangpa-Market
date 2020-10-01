@@ -32,16 +32,16 @@
 </template>
 
 <script>
-import { retreiveProduct, updateProduct } from "../api/index";
+import { retreiveProduct, updateProduct } from '../api/index';
 
 export default {
   data() {
     return {
-      productID: "",
-      title: "",
-      productIMG: "",
-      price: "",
-      body: "",
+      productID: '',
+      title: '',
+      productIMG: '',
+      price: '',
+      body: '',
     };
   },
   async created() {

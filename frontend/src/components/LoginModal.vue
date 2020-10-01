@@ -22,35 +22,46 @@
                   class="login-form"
                   label="email"
                   placeholder="E-mail Address"
-                  required 
+                  required
                   rounded
                   solo
                   autofocus
                   v-model="email"
                   :rules="emailRules"
-                  />
+                />
               </v-col>
               <v-col cols="12">
                 <v-text-field
                   class="login-form"
-                  label="password" 
+                  label="password"
                   type="password"
                   placeholder="Password"
-                  required 
+                  required
                   rounded
                   solo
                   v-model="password"
                   :rules="passwordRules"
-                  />
+                />
               </v-col>
             </v-row>
           </v-form>
           <v-row justify="center">
-            <v-btn x-large width="375" rounded color="orange" class="white--text" @click="Login" :disabled="!valid">로그인하기</v-btn>
+            <v-btn
+              x-large
+              width="375"
+              rounded
+              color="orange"
+              class="white--text"
+              @click="Login"
+              :disabled="!valid"
+              >로그인하기</v-btn
+            >
           </v-row>
         </v-container>
         <v-row justify="center">
-          <span class="link" @click="moveRegister">Not registerd? Create an account</span>
+          <span class="link" @click="moveRegister"
+            >Not registerd? Create an account</span
+          >
         </v-row>
       </v-card-text>
     </v-card>
@@ -68,14 +79,14 @@ export default {
       email: '',
       password: '',
       emailRules: [
-        v => !!v || 'email을 입력하세요',
-        v => validateEmail(v) || '올바른 email 형식이 아닙니다',
+        (v) => !!v || 'email을 입력하세요',
+        (v) => validateEmail(v) || '올바른 email 형식이 아닙니다',
       ],
       passwordRules: [
-        v => !!v || '비밀번호를 입력하세요',
+        (v) => !!v || '비밀번호를 입력하세요',
         //v => validatePassword(v) || '올바른 비밀번호 형식이 아닙니다',
-      ]
-    }
+      ],
+    };
   },
   props: ['dialog'],
   methods: {
@@ -91,20 +102,20 @@ export default {
 
     async Login() {
       const userData = {
-        email : this.email,
-        password : this.password,
+        email: this.email,
+        password: this.password,
       };
-      
-      const success =  await this.$store.dispatch('LOGIN', userData);
+
+      const success = await this.$store.dispatch('LOGIN', userData);
       if (success) {
         EventBus.$emit('popUp', '로그인 되었습니다.');
         this.modalDestroy();
       } else {
         alert('이메일 혹은 비밀번호를 확인해주세요');
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>

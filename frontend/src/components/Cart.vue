@@ -3,24 +3,25 @@
     <h2 class="sub-title">장바구니</h2>
 
     <v-container>
-    <ul v-for="product in picks" :key="product.id">
-      <li>
-        <CartProductCard
-          :id="product.id"
-          :name="product.title"
-          :price="product.price"
-          :image="product.image"
-          :status="product.sold"
-          @deleteProduct="removeFromCart"
-        />
-      </li><br>
-    </ul>
+      <ul v-for="product in picks" :key="product.id">
+        <li>
+          <CartProductCard
+            :id="product.id"
+            :name="product.title"
+            :price="product.price"
+            :image="product.image"
+            :status="product.sold"
+            @deleteProduct="removeFromCart"
+          />
+        </li>
+        <br />
+      </ul>
     </v-container>
-    <v-divider width="70%"/>
+    <v-divider width="70%" />
     <div>
-      <br>
-      <h2 class="price-tag"> 합계 : {{ totalPrice }} 원 </h2>
-      <br>
+      <br />
+      <h2 class="price-tag">합계 : {{ totalPrice }} 원</h2>
+      <br />
 
       <v-btn large color="success" @click="buyProducts"> 결제하기 </v-btn>
     </div>
@@ -29,31 +30,34 @@
 
 <script>
 import CartProductCard from '../components/CartProductCard.vue';
-import { retriveAllCartProducts, removeFromCart, buyFromCart } from '../api/index';
+import {
+  retriveAllCartProducts,
+  removeFromCart,
+  buyFromCart,
+} from '../api/index';
 
 export default {
   data() {
     return {
       picks: [],
-      available: [],  // 내가 찜한 상품중 현재 판매중인것들만
-    }
+      available: [], // 내가 찜한 상품중 현재 판매중인것들만
+    };
   },
 
   computed: {
     totalPrice() {
       let sum = 0;
       for (let pick of this.available) {
-          sum += pick.price;
+        sum += pick.price;
       }
       return sum;
-    }
+    },
   },
 
   components: { CartProductCard },
 
   async created() {
-    const userData = { email: this.$store.getters.getEmail };
-    const { data } = await retriveAllCartProducts(userData);
+    const { data } = await retriveAllCartProducts();
     this.picks = data.result;
     for (let pick of data.result) {
       if (!pick.sold) {
@@ -64,20 +68,21 @@ export default {
 
   methods: {
     async removeFromCart(id) {
-      const payload = { email: this.$store.getters.getEmail, productID: id };
+      const payload = { productID: id };
       await removeFromCart(payload);
     },
 
     async buyProducts() {
-      if (this.available.length === 0) { alert("현재 구매가능한 물폼이 없습니다!"); return; }
+      if (this.available.length === 0) {
+        alert('현재 구매가능한 물폼이 없습니다!');
+        return;
+      }
 
-      let phone = prompt("핀매자와 연락할 수 있는 연락처를 남겨주세요!");
+      let phone = prompt('핀매자와 연락할 수 있는 연락처를 남겨주세요!');
       if (phone) {
-
         // 장바구니 모든 상품들에 대해 구매 요청 전송
         for (let product of this.picks) {
-          const payload = { 
-            email: this.$store.getters.getEmail, 
+          const payload = {
             postID: product.postId,
             productID: product.id,
             phone: phone,
@@ -86,9 +91,9 @@ export default {
           await buyFromCart(payload);
         }
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>

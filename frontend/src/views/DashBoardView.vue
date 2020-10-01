@@ -18,7 +18,7 @@
               class="sub-title"
             >
               <v-list-item-content>
-                <v-list-item-title style="font-size: 0.9rem;">{{
+                <v-list-item-title style="font-size: 0.9rem">{{
                   item.title
                 }}</v-list-item-title>
               </v-list-item-content>
@@ -35,7 +35,7 @@
               class="sub-title"
             >
               <v-list-item-content>
-                <v-list-item-title style="font-size: 0.9rem;">{{
+                <v-list-item-title style="font-size: 0.9rem">{{
                   item.title
                 }}</v-list-item-title>
               </v-list-item-content>
@@ -58,26 +58,26 @@ export default {
     return {
       orders: [
         {
-          title: "장바구니",
-          to: "cart",
+          title: '장바구니',
+          to: 'cart',
         },
         {
-          title: "판매 관리",
-          to: "selling",
+          title: '판매 관리',
+          to: 'selling',
         },
         {
-          title: "구매 관리",
-          to: "buying",
+          title: '구매 관리',
+          to: 'buying',
         },
         {
-          title: "알림",
-          to: "alarm",
+          title: '알림',
+          to: 'alarm',
         },
       ],
       profile: [
         {
-          title: "프로필 설정",
-          to: "profile",
+          title: '프로필 설정',
+          to: 'profile',
         },
       ],
     };

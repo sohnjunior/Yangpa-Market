@@ -35,8 +35,8 @@
 </template>
 
 <script>
-import ReviewCreateModal from "./ReviewCreateModal";
-import { getOrderBuying } from "../api/index";
+import ReviewCreateModal from './ReviewCreateModal';
+import { getOrderBuying } from '../api/index';
 
 export default {
   components: { ReviewCreateModal },
@@ -46,55 +46,55 @@ export default {
       show: false,
       orderPendingHeaders: [
         {
-          text: "상품명",
-          align: "start",
-          value: "title",
+          text: '상품명',
+          align: 'start',
+          value: 'title',
           sortable: false,
-          class: "header",
+          class: 'header',
         },
         {
-          text: "가격",
-          align: "start",
-          value: "price",
+          text: '가격',
+          align: 'start',
+          value: 'price',
           sortable: false,
-          class: "header",
+          class: 'header',
         },
         {
-          text: "판매자",
-          align: "middle",
-          value: "post.user.nickname",
+          text: '판매자',
+          align: 'middle',
+          value: 'post.user.nickname',
           sortable: false,
-          class: "header",
+          class: 'header',
         },
         {
-          text: "판매자 연락처",
-          align: "middle",
-          value: "post.user.phone",
+          text: '판매자 연락처',
+          align: 'middle',
+          value: 'post.user.phone',
           sortable: false,
-          class: "header",
+          class: 'header',
         },
       ],
       orderFinishedHeaders: [
         {
-          text: "상품명",
-          align: "start",
-          value: "title",
+          text: '상품명',
+          align: 'start',
+          value: 'title',
           sortable: false,
-          class: "header",
+          class: 'header',
         },
         {
-          text: "가격",
-          align: "start",
-          value: "price",
+          text: '가격',
+          align: 'start',
+          value: 'price',
           sortable: false,
-          class: "header",
+          class: 'header',
         },
         {
-          text: "후기 작성",
-          align: "middle",
-          value: "actions",
+          text: '후기 작성',
+          align: 'middle',
+          value: 'actions',
           sortable: false,
-          class: "header",
+          class: 'header',
         },
       ],
       orderPendingList: [],
@@ -102,10 +102,9 @@ export default {
     };
   },
   async created() {
-    const payload = { email: this.$store.getters.getEmail };
     const {
       data: { infos },
-    } = await getOrderBuying(payload);
+    } = await getOrderBuying();
 
     this.orderPendingList = infos
       .filter((orderInfo) => !orderInfo[1])

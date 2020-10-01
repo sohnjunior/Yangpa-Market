@@ -28,7 +28,7 @@
 <script>
 export default {
   data: () => ({
-    icons: ["mdi-github", "mdi-youtube"],
+    icons: ['mdi-github', 'mdi-youtube'],
   }),
 };
 </script>

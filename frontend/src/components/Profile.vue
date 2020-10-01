@@ -4,9 +4,7 @@
       <v-row>
         <v-col cols="10">
           <v-card shaped title="프로필 관리" class="px-5 py-3">
-            <v-subheader class="display-1 mt-3">
-              프로필 설정
-            </v-subheader>
+            <v-subheader class="display-1 mt-3"> 프로필 설정 </v-subheader>
 
             <v-form class="pt-1">
               <v-text-field
@@ -79,7 +77,9 @@
                 </v-menu>
               </v-col>
               <v-spacer></v-spacer>
-              <v-btn large color="success" @click="submitForm" class="mx-4">변경하기</v-btn>
+              <v-btn large color="success" @click="submitForm" class="mx-4"
+                >변경하기</v-btn
+              >
             </v-form>
           </v-card>
         </v-col>
@@ -89,11 +89,11 @@
 </template>
 
 <script>
-import { getUser, updateUser } from "../api/index";
+import { getUser, updateUser } from '../api/index';
 
 export default {
-  data(){
-    return{
+  data() {
+    return {
       email: '',
       password: '',
       confirmpassword: '',
@@ -101,15 +101,14 @@ export default {
       phone: '',
       sex: '',
       birthday: '',
-      passwordRules: [(v) => !!v || "Password is required"],
-      confirmPasswordRules: [(v) => !!v || "Confirm password"],
+      passwordRules: [(v) => !!v || 'Password is required'],
+      confirmPasswordRules: [(v) => !!v || 'Confirm password'],
       date: this.birthday,
       menu: false,
-    }
+    };
   },
   async created() {
-    const userData = { email: this.$store.getters.getEmail };
-    const { data } = await getUser(userData);
+    const { data } = await getUser();
     this.email = data.result.email;
     this.password = data.result.password;
     this.confirmpassword = data.result.password;
@@ -141,12 +140,11 @@ export default {
   computed: {
     passwordConfirmationRule() {
       return () =>
-        this.password === this.confirmpassword || "Password must match";
+        this.password === this.confirmpassword || 'Password must match';
     },
   },
-}
+};
 </script>
 
 <style>
-
 </style>

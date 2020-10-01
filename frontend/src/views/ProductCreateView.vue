@@ -61,43 +61,43 @@
 </template>
 
 <script>
-import { createNewProduct } from "../api/index";
+import { createNewProduct } from '../api/index';
 
 export default {
   data() {
     return {
       // 지원하고 있는 상품 카테고리
-      items: ["전공서적", "원룸", "회원권", "의류", "기타"],
+      items: ['전공서적', '원룸', '회원권', '의류', '기타'],
 
-      title: "",
-      image: "",
-      category: "",
-      price: "",
-      body: "",
+      title: '',
+      image: '',
+      category: '',
+      price: '',
+      body: '',
       valid: false,
 
       // 필드 규칙
-      titleRules: [(v) => !!v || "상품명을 입력해주세요"],
-      priceRules: [(v) => !!v || "가격을 입력해주세요"],
-      bodyRules: [(v) => !!v || "상품에 대해 설명해주세요"],
-      categoryRules: [(v) => !!v || "상품군이 무엇인가요?"],
-      fileRules: [(v) => !!v || "상품 사진이 필요해요"],
+      titleRules: [(v) => !!v || '상품명을 입력해주세요'],
+      priceRules: [(v) => !!v || '가격을 입력해주세요'],
+      bodyRules: [(v) => !!v || '상품에 대해 설명해주세요'],
+      categoryRules: [(v) => !!v || '상품군이 무엇인가요?'],
+      fileRules: [(v) => !!v || '상품 사진이 필요해요'],
     };
   },
 
   methods: {
     async submit() {
       const formData = new FormData();
-      formData.append("title", this.title);
-      formData.append("image", this.image);
-      formData.append("category", this.category);
-      formData.append("body", this.body);
-      formData.append("price", this.price);
-      formData.append("email", this.$store.getters.getEmail);
+      formData.append('title', this.title);
+      formData.append('image', this.image);
+      formData.append('category', this.category);
+      formData.append('body', this.body);
+      formData.append('price', this.price);
+      formData.append('email', this.$store.getters.getEmail);
 
       try {
         await createNewProduct(formData);
-        this.$router.push("/");
+        this.$router.push('/');
       } catch (err) {
         console.log(err);
       }
@@ -110,17 +110,17 @@ export default {
 
     // 카테고리 선택 시 이벤트 핸들러
     selectCategory(category) {
-      let selected = "";
-      if (category === "회원권") {
-        selected = "tickets";
-      } else if (category === "전공서적") {
-        selected = "books";
-      } else if (category === "원룸") {
-        selected = "rooms";
-      } else if (category === "의류") {
-        selected = "clothes";
+      let selected = '';
+      if (category === '회원권') {
+        selected = 'tickets';
+      } else if (category === '전공서적') {
+        selected = 'books';
+      } else if (category === '원룸') {
+        selected = 'rooms';
+      } else if (category === '의류') {
+        selected = 'clothes';
       } else {
-        selected = "others";
+        selected = 'others';
       }
 
       this.category = selected;

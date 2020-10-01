@@ -51,19 +51,19 @@ import {
   retrueveAllReview,
   increaseHitReview,
   increaseLikeReview,
-} from "../api/index";
-import reviewModal from "../components/ReviewModal.vue";
+} from '../api/index';
+import reviewModal from '../components/ReviewModal.vue';
 
 export default {
   data() {
     return {
       // 선택된 게시글의 정보들 모달 전달용
-      selectedImage: "",
-      selectedTitle: "",
-      selectedReviewer: "",
-      selectedBody: "",
-      selectedRating: "",
-      selectedLike: "",
+      selectedImage: '',
+      selectedTitle: '',
+      selectedReviewer: '',
+      selectedBody: '',
+      selectedRating: '',
+      selectedLike: '',
 
       // 전체 후기글 관련 데이터 호출
       showDialog: false,
