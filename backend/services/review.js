@@ -1,5 +1,5 @@
 const { User, Review } = require('../models');
-const fs = require('fs');
+const { readImageToBase64 } = require('./common');
 
 const getAllReviews = async () => {
   const reviews = await Review.findAll({
@@ -12,11 +12,9 @@ const getAllReviews = async () => {
 
   // 이미지 파일을 읽어 바이너리 형태로 전송해줌
   reviews.forEach((review) => {
-    const imagePath = review.dataValues.image;
-    const data = fs.readFileSync('public/images/review/' + imagePath);
-    let base64 = Buffer.from(data).toString('base64');
-    base64 = `data:image/png;base64,${base64}`;
-    review.dataValues.image = base64;
+    const filename = review.dataValues.image;
+    const base64Encode = readImageToBase64('review', filename);
+    review.dataValues.image = base64Encode;
   });
 
   return reviews;

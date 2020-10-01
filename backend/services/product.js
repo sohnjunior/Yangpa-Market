@@ -1,5 +1,5 @@
 const { Product, Category, User, Post } = require('../models');
-const fs = require('fs');
+const { readImageToBase64 } = require('./common');
 const sequelize = require('sequelize');
 const Op = sequelize.Op;
 
@@ -73,11 +73,9 @@ const getAllProducts = async () => {
 
   // 이미지 파일을 읽어 바이너리 형태로 전송해줌
   posts.forEach((post) => {
-    const imagePath = post.product.dataValues.image;
-    const data = fs.readFileSync('public/images/product/' + imagePath);
-    let base64 = Buffer.from(data).toString('base64');
-    base64 = `data:image/png;base64,${base64}`;
-    post.product.dataValues.image = base64;
+    const filename = post.product.dataValues.image;
+    const base64Encode = readImageToBase64('product', filename);
+    post.product.dataValues.image = base64Encode;
   });
 
   return posts;
@@ -101,22 +99,20 @@ const getProduct = async (orderHash) => {
   let currentHit = post.hit;
 
   // 이미지 파일을 읽어 바이너리 형태로 전송해줌
-  const imagePath = post.product.dataValues.image;
-  const data = fs.readFileSync('public/images/product/' + imagePath);
-  let base64 = Buffer.from(data).toString('base64');
-  base64 = `data:image/png;base64,${base64}`;
-  post.product.dataValues.image = base64;
-  post.hit = currentHit + 1;
+  const filename = post.product.dataValues.image;
+  const base64Encode = readImageToBase64('product', filename);
+  post.product.dataValues.image = base64Encode;
 
   // 조회수 증가
+  post.hit = currentHit + 1;
   await Post.update({ hit: currentHit + 1 }, { where: { title: post.title } });
 
   return post;
 };
 
 const searchProductsWithKeyword = async (keywords) => {
-  const idLog = []; // 중복된 상품 검색 방지
-  const resultArr = [];
+  const memo = []; // 중복된 상품 검색 방지
+  const productData = [];
   for (let keyword of keywords) {
     const result = await Product.findAll({
       where: {
@@ -131,20 +127,18 @@ const searchProductsWithKeyword = async (keywords) => {
     });
 
     for (let product of result) {
-      if (!idLog.includes(product.dataValues.id)) {
-        idLog.push(product.dataValues.id);
-        resultArr.push(product);
+      if (!memo.includes(product.dataValues.id)) {
+        memo.push(product.dataValues.id);
+        productData.push(product);
       }
     }
   }
 
   // 이미지 파일을 읽어 바이너리 형태로 전송해줌
-  resultArr.forEach((result) => {
-    const imagePath = result.dataValues.image;
-    const data = fs.readFileSync('public/images/product/' + imagePath);
-    let base64 = Buffer.from(data).toString('base64');
-    base64 = `data:image/png;base64,${base64}`;
-    result.dataValues.image = base64;
+  productData.forEach((result) => {
+    const filename = result.dataValues.image;
+    const base64Encode = readImageToBase64('product', filename);
+    result.dataValues.image = base64Encode;
   });
 
   return resultArr;

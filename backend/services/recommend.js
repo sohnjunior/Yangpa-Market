@@ -1,5 +1,5 @@
 const { Product, Post, Category } = require('../models');
-const fs = require('fs');
+const { readImageToBase64 } = require('./common');
 
 const getPopularProducts = async () => {
   // 날짜와 조회, like 를 기준으로 정렬한 결과를 반환
@@ -23,11 +23,9 @@ const getPopularProducts = async () => {
 
   // 이미지 파일 바이너리로 읽어오기
   result.forEach((product) => {
-    const imagePath = product.dataValues.image;
-    const data = fs.readFileSync('public/images/product/' + imagePath);
-    let base64 = Buffer.from(data).toString('base64');
-    base64 = `data:image/png;base64,${base64}`;
-    product.dataValues.image = base64;
+    const filename = product.dataValues.image;
+    const base64Encode = readImageToBase64('product', filename);
+    product.dataValues.image = base64Encode;
   });
 
   return result;
@@ -56,11 +54,9 @@ const getRelatedProducts = async (orderHash) => {
 
   // 이미지 파일 바이너리로 읽어오기
   candidates.forEach((product) => {
-    const imagePath = product.dataValues.image;
-    const data = fs.readFileSync('public/images/product/' + imagePath);
-    let base64 = Buffer.from(data).toString('base64');
-    base64 = `data:image/png;base64,${base64}`;
-    product.dataValues.image = base64;
+    const filename = product.dataValues.image;
+    const base64Encode = readImageToBase64('product', filename);
+    product.dataValues.image = base64Encode;
   });
 
   // 조회 및 like 를 기준으로 점수 계산
