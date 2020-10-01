@@ -2,11 +2,12 @@ const ProductService = require('../services/product');
 
 const postProduct = async (req, res, next) => {
   try {
-    const { email, category, title, body, price } = req.body;
+    const { id: userID } = req.decoded;
+    const { category, title, body, price } = req.body;
     const { filename } = req.file;
 
     await ProductService.createProduct(
-      email,
+      userID,
       category,
       title,
       body,
@@ -60,9 +61,8 @@ const getProduct = async (req, res, next) => {
 };
 
 const searchProducts = async (req, res, next) => {
-  let keyword = req.params.keyword;
-  keyword = keyword.trim(); // 앞뒤 공백문자 제거
-  keyword = keyword.replace(/\s\s+/gi, ' '); // 두 개 이상의 공백은 하나로 변경
+  let { keyword } = req.params;
+  keyword = keyword.trim().replace(/\s\s+/gi, ' '); // 앞뒤 공백문자 제거
   const keywords = keyword.split(' '); // 띄어쓰기 기준으로 한 단어라도 들어있으면 결과 찾아서 반환
 
   const products = await ProductService.searchProductsWithKeyword(keywords);

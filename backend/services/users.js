@@ -7,8 +7,8 @@ const getAllUserExceptAdmin = async () => {
   return users;
 };
 
-const getUserInfo = async (email) => {
-  const user = await User.findOne({ where: { email: email } });
+const getUserInfo = async (userID) => {
+  const user = await User.findOne({ where: { id: userID } });
   return user;
 };
 

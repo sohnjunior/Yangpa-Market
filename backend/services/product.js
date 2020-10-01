@@ -3,9 +3,15 @@ const { readImageToBase64 } = require('./common');
 const sequelize = require('sequelize');
 const Op = sequelize.Op;
 
-const createProduct = async (email, category, title, body, price, filename) => {
+const createProduct = async (
+  userID,
+  category,
+  title,
+  body,
+  price,
+  filename
+) => {
   // user, category 찾기
-  const targetUser = await User.findOne({ where: { email: email } });
   const targetCategory = await Category.findOne({
     where: { title: category },
   });
@@ -14,7 +20,7 @@ const createProduct = async (email, category, title, body, price, filename) => {
   const post = await Post.create({
     title: String(Date.now()),
     body: body,
-    userId: targetUser.id,
+    userId: userID,
   });
 
   // product 생성
@@ -28,8 +34,7 @@ const createProduct = async (email, category, title, body, price, filename) => {
   });
 };
 
-const updateProductInfo = async (productId, title, price, body) => {
-  const postTitle = productId;
+const updateProductInfo = async (orderHash, title, price, body) => {
   const productData = {
     title: title,
     price: price,
@@ -39,10 +44,10 @@ const updateProductInfo = async (productId, title, price, body) => {
   };
 
   // 본문 게시글 변경
-  await Post.update(postData, { where: { title: postTitle } });
+  await Post.update(postData, { where: { title: orderHash } });
 
   // 상품 정보 변경
-  const post = await Post.findOne({ where: { title: postTitle } });
+  const post = await Post.findOne({ where: { title: orderHash } });
   await Product.update(productData, { where: { postId: post.id } });
 };
 
@@ -82,7 +87,7 @@ const getAllProducts = async () => {
 };
 
 const getProduct = async (orderHash) => {
-  let post = await Post.findOne({
+  const post = await Post.findOne({
     where: { title: orderHash },
     include: [
       {
@@ -96,16 +101,14 @@ const getProduct = async (orderHash) => {
     ],
   });
 
-  let currentHit = post.hit;
-
   // 이미지 파일을 읽어 바이너리 형태로 전송해줌
   const filename = post.product.dataValues.image;
   const base64Encode = readImageToBase64('product', filename);
   post.product.dataValues.image = base64Encode;
 
   // 조회수 증가
-  post.hit = currentHit + 1;
-  await Post.update({ hit: currentHit + 1 }, { where: { title: post.title } });
+  const currentHit = post.hit;
+  await Post.update({ hit: currentHit + 1 }, { where: { title: orderHash } });
 
   return post;
 };
@@ -141,7 +144,7 @@ const searchProductsWithKeyword = async (keywords) => {
     result.dataValues.image = base64Encode;
   });
 
-  return resultArr;
+  return productData;
 };
 
 const increaseLikeOfProduct = async (orderHash) => {

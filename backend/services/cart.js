@@ -1,13 +1,10 @@
 const { readImageToBase64 } = require('./common');
-const { User, Cart, Post, Product, Order } = require('../models');
+const { Cart, Post, Product, Order } = require('../models');
 
-const addCartProduct = async (email, productID) => {
+const addCartProduct = async (userID, productID) => {
   try {
-    // 이메일로 유저 찾기
-    const user = await User.findOne({ where: { email: email } });
-
     // 유저 ID로 장바구니 찾기
-    const cart = await Cart.findOne({ where: { userId: user.id } });
+    const cart = await Cart.findOne({ where: { userId: userID } });
 
     // 상품 ID로 상품 조회하기
     const post = await Post.findOne({ where: { title: productID } });
@@ -20,12 +17,9 @@ const addCartProduct = async (email, productID) => {
   }
 };
 
-const getCartProducts = async (email) => {
-  // 이메일로 유저 찾기
-  const user = await User.findOne({ where: { email: email } });
-
+const getCartProducts = async (userID) => {
   // 유저 ID로 장바구니 찾기
-  const cart = await Cart.findOne({ where: { userId: user.id } });
+  const cart = await Cart.findOne({ where: { userId: userID } });
 
   // 장바구니의 상품 목록 조회해서 반환
   const products = await cart.getProducts();
@@ -40,12 +34,9 @@ const getCartProducts = async (email) => {
   return products;
 };
 
-const removeCartProduct = async (email, productID) => {
-  // 이메일로 유저 찾기
-  const user = await User.findOne({ where: { email: email } });
-
+const removeCartProduct = async (userID, productID) => {
   // 유저 ID로 장바구니 찾기
-  const cart = await Cart.findOne({ where: { userId: user.id } });
+  const cart = await Cart.findOne({ where: { userId: userID } });
 
   // 상품 ID로 상품 조회하기
   const product = await Product.findOne({
@@ -56,9 +47,8 @@ const removeCartProduct = async (email, productID) => {
   cart.removeProduct(product);
 };
 
-const purchaseCartProduct = async (email, postID, productID, phone) => {
-  const user = await User.findOne({ where: { email: email } });
-  const cart = await Cart.findOne({ where: { userId: user.id } });
+const purchaseCartProduct = async (userID, postID, productID, phone) => {
+  const cart = await Cart.findOne({ where: { userId: userID } });
   const post = await Post.findOne({ where: { id: postID } });
   const product = await Product.findOne({
     where: { id: productID },

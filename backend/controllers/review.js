@@ -13,10 +13,11 @@ const getReviews = async (req, res, next) => {
 
 const postReview = async (req, res, next) => {
   try {
-    const { email, title, body, rating } = req.body;
+    const { id: userID } = req.decoded;
+    const { title, body, rating } = req.body;
     const { filename } = req.file;
 
-    await ReviewService.createReview(email, title, body, rating, filename);
+    await ReviewService.createReview(userID, title, body, rating, filename);
     res.json({ result: 'success' });
   } catch (err) {
     console.error(err);

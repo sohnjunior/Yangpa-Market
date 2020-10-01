@@ -1,13 +1,12 @@
 const { User, Comment, Post } = require('../models');
 
-const createComment = async (email, postId, comment, secret) => {
+const createComment = async (userID, postId, comment, secret) => {
   try {
-    const user = await User.findOne({ where: { email: email } });
     const post = await Post.findOne({ where: { title: postId } });
 
     await Comment.create({
       comment: comment,
-      userId: user.id,
+      userId: userID,
       postId: post.id,
       secret: secret,
     });

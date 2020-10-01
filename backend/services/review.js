@@ -20,17 +20,14 @@ const getAllReviews = async () => {
   return reviews;
 };
 
-const createReview = async (email, title, body, rating, filename) => {
-  // user 찾기
-  const user = await User.findOne({ where: { email: email } });
-
+const createReview = async (userID, title, body, rating, filename) => {
   // Review 생성
   await Review.create({
     title: title,
     body: body,
     rating: rating,
     image: filename,
-    userId: user.id,
+    userId: userID,
   });
 };
 

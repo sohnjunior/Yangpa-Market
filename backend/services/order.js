@@ -3,13 +3,10 @@ const { User, Order, Post, Product } = require('../models');
 const sequelize = require('sequelize');
 const Op = sequelize.Op;
 
-const getSaleProducts = async (email) => {
-  // 이메일로 유저 찾기
-  const user = await User.findOne({ where: { email: email } });
-
+const getSaleProducts = async (userID) => {
   // 본인이 판매중인 목록
   const productOnSale = await Post.findAll({
-    where: { userId: user.id },
+    where: { userId: userID },
     include: {
       model: Product,
       attributes: ['title', 'sold', 'price', 'like'],
@@ -19,13 +16,10 @@ const getSaleProducts = async (email) => {
   return productOnSale;
 };
 
-const getPurchaseHistory = async (email) => {
-  // 이메일로 유저 찾기
-  const user = await User.findOne({ where: { email: email } });
-
+const getPurchaseHistory = async (userID) => {
   // 본인의 구매 내역 조회
   const orders = await Order.findAll({
-    where: { userId: user.id },
+    where: { userId: userID },
   });
 
   const productInfo = [];
@@ -47,12 +41,9 @@ const getPurchaseHistory = async (email) => {
   return productInfo;
 };
 
-const getPendingPurchases = async (email) => {
-  // 이메일로 유저 찾기
-  const user = await User.findOne({ where: { email: email } });
-
+const getPendingPurchases = async (userID) => {
   // 현재 유저가 판매중인 상품 조회
-  const posts = await Post.findAll({ where: { userId: user.id } });
+  const posts = await Post.findAll({ where: { userId: userID } });
 
   const ids = [];
   for (let post of posts) {
@@ -92,9 +83,9 @@ const approvePurchase = async (postId) => {
   }
 };
 
-const rejectPurchase = async (id) => {
+const rejectPurchase = async (orderID) => {
   try {
-    await Order.destroy({ where: { id: req.params.id } });
+    await Order.destroy({ where: { id: orderID } });
   } catch (err) {
     throw new Error(err.message);
   }

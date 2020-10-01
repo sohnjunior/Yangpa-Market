@@ -2,8 +2,8 @@ const OrderService = require('../services/order');
 
 const getSalesHistory = async (req, res, next) => {
   try {
-    const { email } = req.query;
-    const productsOnSale = await OrderService.getSaleProducts(email);
+    const { id: userID } = req.decoded;
+    const productsOnSale = await OrderService.getSaleProducts(userID);
 
     res.json({ products: productsOnSale });
   } catch (err) {
@@ -14,8 +14,8 @@ const getSalesHistory = async (req, res, next) => {
 
 const getPurchases = async (req, res, next) => {
   try {
-    const { email } = req.query;
-    const purchaseHistory = await OrderService.getPurchaseHistory(email);
+    const { id: userID } = req.decoded;
+    const purchaseHistory = await OrderService.getPurchaseHistory(userID);
 
     res.json({ infos: purchaseHistory });
   } catch (err) {
@@ -26,10 +26,9 @@ const getPurchases = async (req, res, next) => {
 
 const getPurchaseRequests = async (req, res, next) => {
   try {
-    const { email } = req.query;
-
+    const { id: userID } = req.decoded;
     const [orders, productInfos] = await OrderService.getPendingPurchases(
-      email
+      userID
     );
 
     res.json({ orders: orders, products: productInfos });
@@ -53,8 +52,8 @@ const approvePurchase = async (req, res, next) => {
 
 const rejectPurchase = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    await OrderService.rejectPurchase(id);
+    const { id: orderID } = req.params;
+    await OrderService.rejectPurchase(orderID);
 
     res.json({ msg: 'success' });
   } catch (err) {

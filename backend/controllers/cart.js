@@ -2,8 +2,9 @@ const CartService = require('../services/cart');
 
 const postProduct = async (req, res, next) => {
   try {
-    const { email, productID } = req.body;
-    await CartService.addCartProduct(email, productID);
+    const { id: userID } = req.decoded;
+    const { productID } = req.body;
+    await CartService.addCartProduct(userID, productID);
     res.json({ result: 'success' });
   } catch (err) {
     console.error(err);
@@ -13,8 +14,8 @@ const postProduct = async (req, res, next) => {
 
 const getProducts = async (req, res, next) => {
   try {
-    const { email } = req.query;
-    const products = await CartService.getCartProducts(email);
+    const { id: userID } = req.decoded;
+    const products = await CartService.getCartProducts(userID);
     res.json({ result: products });
   } catch (err) {
     console.error(err);
@@ -24,8 +25,9 @@ const getProducts = async (req, res, next) => {
 
 const deleteProduct = async (req, res, next) => {
   try {
-    const { email, productID } = req.query;
-    await CartService.removeCartProduct(email, productID);
+    const { id: userID } = req.decoded;
+    const { productID } = req.query;
+    await CartService.removeCartProduct(userID, productID);
     res.json({ result: 'success' });
   } catch (err) {
     console.error(err);
@@ -35,8 +37,9 @@ const deleteProduct = async (req, res, next) => {
 
 const purchaseProduct = async (req, res, next) => {
   try {
-    const { email, postID, productID, phone } = req.body;
-    await CartService.purchaseCartProduct(email, postID, productID, phone);
+    const { id: userID } = req.decoded;
+    const { postID, productID, phone } = req.body;
+    await CartService.purchaseCartProduct(userID, postID, productID, phone);
     res.json({ msg: 'success' });
   } catch (err) {
     console.error(err);

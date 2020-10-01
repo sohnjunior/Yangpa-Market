@@ -12,8 +12,8 @@ const getUsers = async (req, res, next) => {
 
 const getUser = async (req, res, next) => {
   try {
-    const { email } = req.query;
-    const user = await UserService.getUserInfo(email);
+    const { id: userID } = req.decoded;
+    const user = await UserService.getUserInfo(userID);
     res.json({ result: user });
   } catch (err) {
     console.error(err);

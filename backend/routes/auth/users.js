@@ -14,11 +14,11 @@ router.get('/retrieve', verifyToken, UserController.getUser);
 // 관리자 여부 조회
 router.get('/admin', verifyToken, UserController.checkAdmin);
 
-// 새로운 유저 생성
-router.post('/register', UserController.createUser);
-
 // 로그인
 router.post('/login', tokenLimiter, UserController.signin);
+
+// 새로운 유저 생성
+router.post('/register', UserController.createUser);
 
 // 회원 정보 수정
 router.post('/update', verifyToken, UserController.updateUser);

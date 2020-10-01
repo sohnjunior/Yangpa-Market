@@ -2,8 +2,9 @@ const CommentService = require('../services/comment');
 
 const postComment = async (req, res, next) => {
   try {
-    const { email, postId, comment, secret } = req.body;
-    await CommentService.createComment(email, postId, comment, secret);
+    const { id: userID } = req.decoded;
+    const { postId, comment, secret } = req.body;
+    await CommentService.createComment(userID, postId, comment, secret);
 
     res.json({ response: 'success' });
   } catch (err) {
