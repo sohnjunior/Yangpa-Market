@@ -53,8 +53,8 @@ const updateUserInfo = async (
   return user;
 };
 
-const deleteUser = async (email) => {
-  await User.destroy({ where: { email: email } });
+const deleteUser = async (userID) => {
+  await User.destroy({ where: { id: userID } });
 };
 
 const signIn = async (email, password) => {
@@ -73,8 +73,8 @@ const signIn = async (email, password) => {
   return [false, null];
 };
 
-const checkAdminPerm = async (email) => {
-  const user = await User.findOne({ where: { email: email } });
+const checkAdminPerm = async (userID) => {
+  const user = await User.findOne({ where: { id: userID } });
   const isAdmin = user.admin;
 
   return isAdmin;

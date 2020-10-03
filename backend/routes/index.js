@@ -11,7 +11,7 @@ const CommentRouter = require('./board/comment'); // 댓글 관련 라우터
 const apiRouter = express.Router();
 
 apiRouter.use('/users', usersRouter);
-apiRouter.use('/product', ProductRouter);
+apiRouter.use('/products', ProductRouter);
 apiRouter.use('/recommend', RecommandRouter);
 apiRouter.use('/cart', CartRouter);
 apiRouter.use('/order', OrderRouter);

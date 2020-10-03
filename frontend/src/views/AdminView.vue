@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { getallUser, deleteUser } from '../api/index';
+import { fetchAllUser, deleteUser } from '../api/index';
 
 export default {
   data() {
@@ -41,7 +41,7 @@ export default {
     };
   },
   async created() {
-    const { data } = await getallUser();
+    const { data } = await fetchAllUser();
 
     this.userlist = data;
   },

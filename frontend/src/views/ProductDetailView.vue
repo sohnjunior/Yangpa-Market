@@ -82,7 +82,7 @@
 
 <script>
 import {
-  retreiveProduct,
+  fetchProduct,
   relatedProduct,
   createNewCartProduct,
   likeProduct,
@@ -110,7 +110,7 @@ export default {
   },
   async created() {
     this.productID = this.$route.params.id;
-    const { data } = await retreiveProduct(this.productID);
+    const { data } = await fetchProduct(this.productID);
 
     this.productIMG = data.product.image;
     this.productBody = data.body;

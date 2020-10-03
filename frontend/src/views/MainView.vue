@@ -161,7 +161,7 @@
 </template>
 
 <script>
-import { retriveAllProducts, realtimePopular } from '../api/index';
+import { fetchAllProducts, realtimePopular } from '../api/index';
 import ProductCard from '../components/ProductCard.vue';
 import PopularProductCard from '../components/PopularProductCard.vue';
 
@@ -229,7 +229,7 @@ export default {
     this.pivot = '등록일순';
 
     // 전체 상품 조회 API 호출 (날짜순으로 정렬된 상태)
-    const { data } = await retriveAllProducts();
+    const { data } = await fetchAllProducts();
     this.products = data;
 
     // 인기 상품 조회

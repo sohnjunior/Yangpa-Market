@@ -26,113 +26,113 @@ import { isAdminUser } from '../api/index';
 
 Vue.use(VueRouter);
 
-
 export const router = new VueRouter({
-    routes: [
-      {
-        // 홈 화면
-        path: "/",
-        component: MainView,
-      },
-      {
-        // 관리자 페이지
-        path: "/admin",
-        component: AdminView,
-        beforeEnter: async (to, from, next) => {
-          // 만약 관리자 권한을 가지고 있다면
-          const payload = { email: store.state.email };
-          const { data } = await isAdminUser(payload);
-          if (data.isAdmin) {
-            return next();
-          } 
-          
-          next('/no-permission');
+  routes: [
+    {
+      // 홈 화면
+      path: '/',
+      component: MainView,
+    },
+    {
+      // 관리자 페이지
+      path: '/admin',
+      component: AdminView,
+      beforeEnter: async (to, from, next) => {
+        // 만약 관리자 권한을 가지고 있다면
+        const {
+          data: { isAdmin },
+        } = await isAdminUser();
+        if (isAdmin) {
+          return next();
         }
+
+        next('/no-permission');
       },
-      {
-        // 유저 대시보드
-        path: "/dashboard",
-        component: DashBoardView,
-        children: [
-          {
-            // 대시보드 메인
-            path: "",
-            component: DashBoard,
-          },
-          {
-            // 장바구니
-            path: "cart",
-            component: UserCart,
-          },
-          {
-            // 판매 관리
-            path: "selling",
-            component: UserSelling,
-          },
-          {
-            // 구매 목록
-            path: "buying",
-            component: UserBuying,
-          },
-          {
-            // 상품 구매요청 알림
-            path: "alarm",
-            component: UserAlarm,
-          },
-          {
-            // 프로필 관리
-            path: "profile",
-            component: UserProfile,
-          },
-        ],
-      },
-      {
-        // 회원가입
-        path: "/signup",
-        component: SignupView,
-      },
-      {
-        // 상품 게시글 생성 페이지
-        path: "/product/new",
-        component: ProductCreateView,
-        beforeEnter: (to, from, next) => {
-          // 만약 로그인 상태라면
-          if (store.state.email !== '' && store.state.token !== '') {
-            return next();
-          }
-          alert('로그인이 필요한 서비스입니다.');
-          next('/signup');
+    },
+    {
+      // 유저 대시보드
+      path: '/dashboard',
+      component: DashBoardView,
+      children: [
+        {
+          // 대시보드 메인
+          path: '',
+          component: DashBoard,
+        },
+        {
+          // 장바구니
+          path: 'cart',
+          component: UserCart,
+        },
+        {
+          // 판매 관리
+          path: 'selling',
+          component: UserSelling,
+        },
+        {
+          // 구매 목록
+          path: 'buying',
+          component: UserBuying,
+        },
+        {
+          // 상품 구매요청 알림
+          path: 'alarm',
+          component: UserAlarm,
+        },
+        {
+          // 프로필 관리
+          path: 'profile',
+          component: UserProfile,
+        },
+      ],
+    },
+    {
+      // 회원가입
+      path: '/signup',
+      component: SignupView,
+    },
+    {
+      // 상품 게시글 생성 페이지
+      path: '/product/new',
+      component: ProductCreateView,
+      beforeEnter: (to, from, next) => {
+        // 만약 로그인 상태라면
+        if (store.state.email !== '' && store.state.token !== '') {
+          return next();
         }
+        alert('로그인이 필요한 서비스입니다.');
+        next('/signup');
       },
-      {
-        // 상품 상세 글 페이지
-        path: "/product/:id",
-        component: ProductDetailView,
-      },
-      {
-        // 상품 게시글 수정 페이지
-        path: "/product/update/:id",
-        component: ProductUpdateView,
-      },
-      {
-        // 검색 결과
-        path: "/search/:keyword",
-        component: SearchView,
-      },
-      {
-        // 후기 게시판
-        path: "/review",
-        component: ReviewBoardView,
-      },
-      {
-        // 403 페이지
-        path: "/no-permission",
-        component: PageNotAllowed,
-      },
-      {
-        // 404 페이지
-        path: "*",
-        component: PageNotFound,
-      },
-    ],
+    },
+    {
+      // 상품 상세 글 페이지
+      path: '/product/:id',
+      component: ProductDetailView,
+    },
+    {
+      // 상품 게시글 수정 페이지
+      path: '/product/update/:id',
+      component: ProductUpdateView,
+    },
+    {
+      // 검색 결과
+      path: '/search/:keyword',
+      component: SearchView,
+    },
+    {
+      // 후기 게시판
+      path: '/review',
+      component: ReviewBoardView,
+    },
+    {
+      // 403 페이지
+      path: '/no-permission',
+      component: PageNotAllowed,
+    },
+    {
+      // 404 페이지
+      path: '*',
+      component: PageNotFound,
+    },
+  ],
 });

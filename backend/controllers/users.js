@@ -61,8 +61,8 @@ const updateUser = async (req, res, next) => {
 
 const deleteUser = async (req, res, next) => {
   try {
-    const { email } = req.query;
-    await UserService.deleteUser(email);
+    const { id: userID } = req.decoded;
+    await UserService.deleteUser(userID);
     res.json({ msg: 'account deleted successfully' });
   } catch (err) {
     console.error(err);
@@ -84,8 +84,8 @@ const signin = async (req, res, next) => {
 
 const checkAdmin = async (req, res, next) => {
   try {
-    const { email } = req.query;
-    const isAdmin = await UserService.checkAdminPerm(email);
+    const { id: userID } = req.decoded;
+    const isAdmin = await UserService.checkAdminPerm(userID);
     res.json({ isAdmin });
   } catch (err) {
     console.error(err);

@@ -160,8 +160,10 @@ export default {
 
     // 현재 로그인한 유저라면
     if (this.$store.getters.isLoggedIn) {
-      const isAdmin = await isAdminUser();
-      this.admin = isAdmin.data.isAdmin;
+      const {
+        data: { isAdmin },
+      } = await isAdminUser();
+      this.admin = isAdmin;
     }
   },
 
