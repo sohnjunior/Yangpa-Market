@@ -60,7 +60,7 @@ const purchaseCartProduct = async (userID, postID, productID, phone) => {
   await Order.create({
     code: String(Date.now()),
     phone: phone,
-    userId: user.id,
+    userId: userID,
     postId: post.id,
   });
 };

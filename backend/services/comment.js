@@ -34,9 +34,9 @@ const updateComment = async (commentID, commentText) => {
   }
 };
 
-const getCommentsOfPost = async (orderHash) => {
+const getCommentsOfPost = async (postID) => {
   // 상품 찾기
-  const post = await Post.findOne({ where: { title: orderHash } });
+  const post = await Post.findOne({ where: { title: postID } });
 
   // 상품에 연관된 댓글 조회
   const comments = await Comment.findAll({

@@ -161,7 +161,7 @@
 </template>
 
 <script>
-import { fetchAllProducts, realtimePopular } from '../api/index';
+import { fetchAllProducts, fetchPopularProducts } from '../api/index';
 import ProductCard from '../components/ProductCard.vue';
 import PopularProductCard from '../components/PopularProductCard.vue';
 
@@ -233,7 +233,7 @@ export default {
     this.products = data;
 
     // 인기 상품 조회
-    const result = await realtimePopular();
+    const result = await fetchPopularProducts();
     this.populars = result.data.result;
     if (this.populars.length > 4) {
       this.populars = this.populars.slice(0, 10);

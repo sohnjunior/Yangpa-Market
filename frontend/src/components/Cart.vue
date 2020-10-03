@@ -31,9 +31,9 @@
 <script>
 import CartProductCard from '../components/CartProductCard.vue';
 import {
-  retriveAllCartProducts,
-  removeFromCart,
-  buyFromCart,
+  fetchAllCartProducts,
+  removeCartProduct,
+  purchaseCartProduct,
 } from '../api/index';
 
 export default {
@@ -57,7 +57,7 @@ export default {
   components: { CartProductCard },
 
   async created() {
-    const { data } = await retriveAllCartProducts();
+    const { data } = await fetchAllCartProducts();
     this.picks = data.result;
     for (let pick of data.result) {
       if (!pick.sold) {
@@ -69,7 +69,7 @@ export default {
   methods: {
     async removeFromCart(id) {
       const payload = { productID: id };
-      await removeFromCart(payload);
+      await removeCartProduct(payload);
     },
 
     async buyProducts() {
@@ -88,7 +88,7 @@ export default {
             phone: phone,
           };
 
-          await buyFromCart(payload);
+          await purchaseCartProduct(payload);
         }
       }
     },

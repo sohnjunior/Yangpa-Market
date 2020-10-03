@@ -8,9 +8,9 @@ const router = express.Router();
 */
 
 // 전체 카테고리 내 인기 상품 추천
-router.get('/popular', RecommendController.getPopularProducts);
+router.get('/', RecommendController.getPopularProducts);
 
 // 연관 상품 추천
-router.get('/related/:id', RecommendController.getRelatedProducts);
+router.get('/:id', RecommendController.getRelatedProducts);
 
 module.exports = router;

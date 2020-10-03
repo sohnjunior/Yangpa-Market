@@ -83,8 +83,8 @@
 <script>
 import {
   fetchProduct,
-  relatedProduct,
-  createNewCartProduct,
+  fetchRelatedProducts,
+  createCartProduct,
   likeProduct,
 } from '../api/index';
 import CommentList from '../components/CommentList';
@@ -120,7 +120,7 @@ export default {
     this.sold = data.product.sold;
     this.seller = data.user.email === this.$store.getters.getEmail;
 
-    const result = await relatedProduct(this.productID);
+    const result = await fetchRelatedProducts(this.productID);
     this.related = result.data.result;
     window.scrollTo(0, 0);
   },
@@ -136,7 +136,7 @@ export default {
       const payload = {
         productID: this.productID,
       };
-      await createNewCartProduct(payload);
+      await createCartProduct(payload);
       EventBus.$emit('popUp', '장바구니에 추가되었습니다.');
     },
 

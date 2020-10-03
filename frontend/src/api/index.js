@@ -58,41 +58,21 @@ const deleteComment = ({ commentID }) =>
  * @purpose 상품 추천 API
  */
 
-// 실시간 인기 상품 요청
-function realtimePopular() {
-  return instance.get('/recommend/popular');
-}
-
-// 연관 상품 추천 요청
-function relatedProduct(payload) {
-  return instance.get(`/recommend/related/${payload}`);
-}
+const fetchPopularProducts = () => instance.get('/recommendation');
+const fetchRelatedProducts = (productID) =>
+  instance.get(`/recommendation/${productID}`);
 
 /**
  * @purpose 장바구니 API
  */
 
-// 장바구니 상품 조회 요청
-function retriveAllCartProducts() {
-  return instance.get('/cart/retrieve');
-}
-
-// 장바구니 상품 추가 요청
-function createNewCartProduct(payload) {
-  return instance.post('/cart/new', payload);
-}
-
-// 장바구니 상품 구매 요청
-function buyFromCart(payload) {
-  return instance.post('/cart/buy', payload);
-}
-
-// 장바구니 상품 제거 요청
-function removeFromCart(payload) {
-  return instance.delete('/cart/delete', {
-    params: { productID: payload.productID },
-  });
-}
+const fetchAllCartProducts = () => instance.get('/carts/self/products');
+const createCartProduct = (payload) =>
+  instance.post('/carts/self/products', payload);
+const purchaseCartProduct = (payload) =>
+  instance.post('/carts/self/products/purchase', payload);
+const removeCartProduct = ({ productID }) =>
+  instance.delete(`/carts/self/products/${productID}`);
 
 /**
  * @purpose 주문 API
@@ -169,13 +149,13 @@ export {
   fetchProduct,
   deletePost,
   searchProduct,
-  realtimePopular,
-  relatedProduct,
+  fetchPopularProducts,
+  fetchRelatedProducts,
   likeProduct,
-  createNewCartProduct,
-  retriveAllCartProducts,
-  removeFromCart,
-  buyFromCart,
+  createCartProduct,
+  fetchAllCartProducts,
+  removeCartProduct,
+  purchaseCartProduct,
   getOrder,
   getOrderBuying,
   getNotApprovedProduct,

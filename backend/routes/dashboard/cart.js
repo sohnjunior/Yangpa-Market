@@ -4,9 +4,13 @@ const { verifyToken } = require('../../middlewares');
 
 const router = express.Router();
 
-router.post('/new', verifyToken, CartController.postProduct); // 장바구니 상품 추가
-router.get('/retrieve', verifyToken, CartController.getProducts); // 장바구니 상품 조회
-router.delete('/delete', verifyToken, CartController.deleteProduct); // 장바구니 상품 삭제
-router.post('/buy', verifyToken, CartController.purchaseProduct); // 장바구니 상품 구매 처리
+router.get('/self/products', verifyToken, CartController.getProducts); // 장바구니 상품 조회
+router.post('/self/products', verifyToken, CartController.postProduct); // 장바구니 상품 추가
+router.post(
+  '/self/products/purchase',
+  verifyToken,
+  CartController.purchaseProduct
+); // 장바구니 상품 구매 처리
+router.delete('/self/products/:id', verifyToken, CartController.deleteProduct); // 장바구니 상품 삭제
 
 module.exports = router;

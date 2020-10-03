@@ -31,9 +31,9 @@ const getPopularProducts = async () => {
   return result;
 };
 
-const getRelatedProducts = async (orderHash) => {
+const getRelatedProducts = async (postID) => {
   // id 값으로 상품 찾기
-  const post = await Post.findOne({ where: { title: orderHash } });
+  const post = await Post.findOne({ where: { title: postID } });
   const product = await Product.findOne({
     where: { postId: post.id },
     include: {

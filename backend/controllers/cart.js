@@ -26,7 +26,7 @@ const getProducts = async (req, res, next) => {
 const deleteProduct = async (req, res, next) => {
   try {
     const { id: userID } = req.decoded;
-    const { productID } = req.query;
+    const { id: productID } = req.params;
     await CartService.removeCartProduct(userID, productID);
     res.json({ result: 'success' });
   } catch (err) {

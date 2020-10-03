@@ -7,8 +7,8 @@ const getPopularProducts = async (req, res, next) => {
 };
 
 const getRelatedProducts = async (req, res, next) => {
-  const { id: orderHash } = req.params;
-  const relatedProducts = await RecommendService.getRelatedProducts(orderHash);
+  const { id: productID } = req.params;
+  const relatedProducts = await RecommendService.getRelatedProducts(productID);
 
   res.json({ result: relatedProducts });
 };
