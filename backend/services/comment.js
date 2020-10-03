@@ -23,17 +23,20 @@ const removeComment = async (id) => {
   }
 };
 
-const updateComment = async (id, contentText) => {
+const updateComment = async (commentID, commentText) => {
   try {
-    await Comment.update({ comment: contentText }, { where: { id: id } });
+    await Comment.update(
+      { comment: commentText },
+      { where: { id: commentID } }
+    );
   } catch (err) {
     throw new Error(err.message);
   }
 };
 
-const getCommentsOfPost = async (id) => {
+const getCommentsOfPost = async (orderHash) => {
   // 상품 찾기
-  const post = await Post.findOne({ where: { title: id } });
+  const post = await Post.findOne({ where: { title: orderHash } });
 
   // 상품에 연관된 댓글 조회
   const comments = await Comment.findAll({

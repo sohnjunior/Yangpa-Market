@@ -16,6 +16,6 @@ apiRouter.use('/recommend', RecommandRouter);
 apiRouter.use('/cart', CartRouter);
 apiRouter.use('/order', OrderRouter);
 apiRouter.use('/review', ReviewRouter);
-apiRouter.use('/comment', CommentRouter);
+apiRouter.use('/comments', CommentRouter);
 
 module.exports = apiRouter;

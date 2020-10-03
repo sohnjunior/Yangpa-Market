@@ -113,8 +113,8 @@
 
 <script>
 import {
-  registerComment,
-  retreiveComment,
+  createComment,
+  fetchComment,
   deleteComment,
   updateComment,
   isAdminUser,
@@ -155,7 +155,7 @@ export default {
 
   async created() {
     this.postId = this.$route.params.id;
-    const comments = await retreiveComment(this.postId);
+    const comments = await fetchComment(this.postId);
     this.commentList = comments.data.comments;
 
     // 현재 로그인한 유저라면
@@ -220,10 +220,8 @@ export default {
 
     // 댓글 삭제 요청 함수
     async deleteComments(item) {
-      const toDelete = { id: item.id };
-
       try {
-        await deleteComment(toDelete);
+        await deleteComment({ commentID: item.id });
       } catch (err) {
         console.log(err);
       }
@@ -232,9 +230,11 @@ export default {
 
     // 댓글 업데이트 함수
     async updateComments() {
-      const toUpdate = { id: this.updateId, comment: this.comment };
       try {
-        await updateComment(toUpdate);
+        await updateComment({
+          commentID: this.updateId,
+          payload: { comment: this.comment },
+        });
       } catch (err) {
         console.error(err);
       }
@@ -249,7 +249,7 @@ export default {
       };
 
       try {
-        await registerComment(Comment);
+        await createComment(Comment);
         this.$router.go(0); // refresh the page
       } catch (error) {
         console.log(error);

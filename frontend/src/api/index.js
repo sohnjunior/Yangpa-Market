@@ -47,25 +47,12 @@ const deletePost = (orderHash) => instance.delete(`/products/${orderHash}`);
  * @purpose 댓글 API
  */
 
-// 댓글 조회 요청
-function retreiveComment(payload) {
-  return instance.get(`/comment/retreive/${payload}`);
-}
-
-//댓글 등록 요청
-function registerComment(payload) {
-  return instance.post('/comment/create', payload);
-}
-
-// 댓글 수정 요청
-function updateComment(payload) {
-  return instance.put(`/comment/update`, payload);
-}
-
-// 댓글 삭제 요청
-function deleteComment(payload) {
-  return instance.delete(`/comment/delete`, { params: { id: payload.id } });
-}
+const fetchComment = (postID) => instance.get(`/comments/${postID}`);
+const createComment = (payload) => instance.post('/comments', payload);
+const updateComment = ({ commentID, payload }) =>
+  instance.put(`/comments/${commentID}`, payload);
+const deleteComment = ({ commentID }) =>
+  instance.delete(`/comments/${commentID}`);
 
 /**
  * @purpose 상품 추천 API
@@ -172,8 +159,8 @@ export {
   fetchUser,
   deleteUser,
   isAdminUser,
-  registerComment,
-  retreiveComment,
+  createComment,
+  fetchComment,
   deleteComment,
   updateComment,
   createNewProduct,

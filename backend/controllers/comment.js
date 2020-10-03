@@ -15,8 +15,8 @@ const postComment = async (req, res, next) => {
 
 const deleteComment = async (req, res, next) => {
   try {
-    const { id } = req.query;
-    await CommentService.removeComment(id);
+    const { id: commentID } = req.params;
+    await CommentService.removeComment(commentID);
 
     res.json({ msg: 'Comment deleted successfully' });
   } catch (err) {
@@ -27,8 +27,9 @@ const deleteComment = async (req, res, next) => {
 
 const updateComment = async (req, res, next) => {
   try {
-    const { comment, id } = req.body;
-    await CommentService.updateComment(id, comment);
+    const { id: commentID } = req.params;
+    const { comment: commentText } = req.body;
+    await CommentService.updateComment(commentID, commentText);
 
     res.json({ msg: 'Comment updated successfully' });
   } catch (err) {
@@ -39,8 +40,8 @@ const updateComment = async (req, res, next) => {
 
 const getComment = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const comments = await CommentService.getCommentsOfPost(id);
+    const { id: postID } = req.params;
+    const comments = await CommentService.getCommentsOfPost(postID);
 
     res.json({ comments: comments });
   } catch (err) {
