@@ -107,29 +107,14 @@ function deniedProduct(payload) {
  * @purpose 리뷰 API
  */
 
-// 전체 상품 후기 조회 요청
-function retrueveAllReview() {
-  return instance.get('/review/retrieve');
-}
-
-// 새로운 후기 생성 요청
-function createNewReview(payload) {
-  return instance.post('/review/create', payload, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
+const fetchAllReviews = () => instance.get('/reviews');
+const createReview = (payload) =>
+  instance.post('/reviews', payload, {
+    headers: { 'Content-Type': 'multipart/form-data' },
   });
-}
-
-// 리뷰 조회수 증가
-function increaseHitReview(payload) {
-  return instance.put(`/review/hit/${payload}`);
-}
-
-// 리뷰 좋아요 증가
-function increaseLikeReview(payload) {
-  return instance.put(`/review/like/${payload}`);
-}
+const increaseReviewHit = (reviewID) => instance.put(`reviews/${reviewID}/hit`);
+const increaseReviewLike = (reviewID) =>
+  instance.put(`reviews/${reviewID}/like`);
 
 export {
   registerUser,
@@ -159,10 +144,10 @@ export {
   getOrder,
   getOrderBuying,
   getNotApprovedProduct,
-  createNewReview,
-  retrueveAllReview,
-  increaseHitReview,
-  increaseLikeReview,
+  createReview,
+  fetchAllReviews,
+  increaseReviewHit,
+  increaseReviewLike,
   approveProduct,
   deniedProduct,
 };

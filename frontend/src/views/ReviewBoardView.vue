@@ -48,9 +48,9 @@
 
 <script>
 import {
-  retrueveAllReview,
-  increaseHitReview,
-  increaseLikeReview,
+  fetchAllReviews,
+  increaseReviewHit,
+  increaseReviewLike,
 } from '../api/index';
 import reviewModal from '../components/ReviewModal.vue';
 
@@ -83,10 +83,10 @@ export default {
       this.selectedLike = content.like;
 
       // 조회수 증가
-      await increaseHitReview(content.id);
+      await increaseReviewHit(content.id);
     },
     async handleLike(content) {
-      await increaseLikeReview(content.id);
+      await increaseReviewLike(content.id);
     },
     closeModal() {
       this.showDialog = false;
@@ -96,7 +96,7 @@ export default {
 
   // 전체 게시글 호출해서 데이터 초기화하기
   async created() {
-    const { data } = await retrueveAllReview();
+    const { data } = await fetchAllReviews();
     this.reviews = data.reviews;
   },
 };
