@@ -36,8 +36,8 @@ const updateProduct = async (req, res, next) => {
 
 const deleteProduct = async (req, res, next) => {
   try {
-    const { id: productID } = req.params;
-    await ProductService.deleteProduct(productID);
+    const { id: orderHash } = req.params;
+    await ProductService.deleteProduct(orderHash);
   } catch (err) {
     console.error(err);
     next(err);
@@ -61,7 +61,7 @@ const getProduct = async (req, res, next) => {
 };
 
 const searchProducts = async (req, res, next) => {
-  let { keyword } = req.params;
+  let { keyword } = req.query;
   keyword = keyword.trim().replace(/\s\s+/gi, ' '); // 앞뒤 공백문자 제거
   const keywords = keyword.split(' '); // 띄어쓰기 기준으로 한 단어라도 들어있으면 결과 찾아서 반환
 

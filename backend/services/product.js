@@ -51,8 +51,8 @@ const updateProductInfo = async (orderHash, title, price, body) => {
   await Product.update(productData, { where: { postId: post.id } });
 };
 
-const deleteProduct = async (productID) => {
-  const post = await Post.findOne({ where: { title: productID } });
+const deleteProduct = async (orderHash) => {
+  const post = await Post.findOne({ where: { title: orderHash } });
   await Product.destroy({ where: { postId: post.dataValues.id } });
   await Post.destroy({ where: { id: post.dataValues.id } });
 };

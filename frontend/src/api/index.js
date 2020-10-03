@@ -30,42 +30,18 @@ const isAdminUser = () => instance.get(`/users/admin/check`);
  * @purpose 상품 게시글 API
  */
 
-// 상품 게시글 등록 요청
-function createNewProduct(payload) {
-  return instance.post('/product/create', payload, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
+const createNewProduct = (payload) =>
+  instance.post('/products', payload, {
+    headers: { 'Content-Type': 'multipart/form-data' },
   });
-}
-
-// 상품 게시글 삭제 요청
-function deletePost(payload) {
-  return instance.delete(`/product/delete/${payload}`);
-}
-
 const fetchAllProducts = () => instance.get('/products');
-
-// 특정 상품 게시글 조회 요청
 const fetchProduct = (productID) => instance.get(`/products/${productID}`);
-// function retreiveProduct(payload) {
-//   return instance.get(`/product/retreive/${payload}`);
-// }
-
-// 상품 게시글 업데이트 요청
-function updateProduct(id, payload) {
-  return instance.put(`/product/update/${id}`, payload);
-}
-
-// 상품 검색 요청
-function searchProduct(payload) {
-  return instance.get(`/product/search/${payload}`);
-}
-
-// 상품 좋아요 요청
-function likeProduct(id) {
-  return instance.put(`/product/like/${id}`);
-}
+const searchProduct = (keyword) =>
+  instance.get(`/products/search?keyword=${keyword}`);
+const updateProduct = (productID, payload) =>
+  instance.put(`/products/${productID}`, payload);
+const likeProduct = (productID) => instance.put(`/products/${productID}/like`);
+const deletePost = (orderHash) => instance.delete(`/products/${orderHash}`);
 
 /**
  * @purpose 댓글 API
