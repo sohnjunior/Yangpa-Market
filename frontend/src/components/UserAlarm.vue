@@ -35,11 +35,7 @@
 </template>
 
 <script>
-import {
-  getNotApprovedProduct,
-  approveProduct,
-  deniedProduct,
-} from '../api/index';
+import { fetchPendingOrder, approveOrder, rejectOrder } from '../api/index';
 
 export default {
   data() {
@@ -82,17 +78,16 @@ export default {
     };
   },
   async created() {
-    const { data } = await getNotApprovedProduct();
+    const { data } = await fetchPendingOrder();
     this.productList = data.products;
     this.orderList = data.orders;
   },
   methods: {
     async approve(item) {
-      const payload = { postId: item.postId };
-      await approveProduct(payload);
+      await approveOrder({ postID: item.postId });
     },
     async remove(item) {
-      await deniedProduct(item.id);
+      await rejectOrder(item.id);
     },
   },
 };

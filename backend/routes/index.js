@@ -14,7 +14,7 @@ apiRouter.use('/users', usersRouter);
 apiRouter.use('/products', ProductRouter);
 apiRouter.use('/recommendation', RecommandRouter);
 apiRouter.use('/carts', CartRouter);
-apiRouter.use('/order', OrderRouter);
+apiRouter.use('/orders', OrderRouter);
 apiRouter.use('/reviews', ReviewRouter);
 apiRouter.use('/comments', CommentRouter);
 

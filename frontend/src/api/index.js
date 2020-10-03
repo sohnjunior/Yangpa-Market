@@ -29,7 +29,6 @@ const isAdminUser = () => instance.get(`/users/admin/check`);
 /**
  * @purpose 상품 게시글 API
  */
-
 const createNewProduct = (payload) =>
   instance.post('/products', payload, {
     headers: { 'Content-Type': 'multipart/form-data' },
@@ -46,7 +45,6 @@ const deletePost = (orderHash) => instance.delete(`/products/${orderHash}`);
 /**
  * @purpose 댓글 API
  */
-
 const fetchComment = (postID) => instance.get(`/comments/${postID}`);
 const createComment = (payload) => instance.post('/comments', payload);
 const updateComment = ({ commentID, payload }) =>
@@ -57,7 +55,6 @@ const deleteComment = ({ commentID }) =>
 /**
  * @purpose 상품 추천 API
  */
-
 const fetchPopularProducts = () => instance.get('/recommendation');
 const fetchRelatedProducts = (productID) =>
   instance.get(`/recommendation/${productID}`);
@@ -65,7 +62,6 @@ const fetchRelatedProducts = (productID) =>
 /**
  * @purpose 장바구니 API
  */
-
 const fetchAllCartProducts = () => instance.get('/carts/self/products');
 const createCartProduct = (payload) =>
   instance.post('/carts/self/products', payload);
@@ -77,36 +73,15 @@ const removeCartProduct = ({ productID }) =>
 /**
  * @purpose 주문 API
  */
-
-// 유저가 판매중인 상품내역 조회 요청
-function getOrder() {
-  return instance.get('/order/retrieve');
-}
-
-// 유저의 구매 상품 내역 조회 요청
-function getOrderBuying() {
-  return instance.get('/order/retrieve/buying');
-}
-
-// 미승인 상품 구매 요청 조회
-function getNotApprovedProduct() {
-  return instance.get('/order/request');
-}
-
-// 상품 구매 승인 요청
-function approveProduct(payload) {
-  return instance.put('/order/approve', payload);
-}
-
-// 상품 구매 거부 처리 요청
-function deniedProduct(payload) {
-  return instance.delete(`/order/denied/${payload}`);
-}
+const fetchSalesOrder = () => instance.get('/orders?status=sale');
+const fetchPurchasedOrder = () => instance.get('/orders?status=purchased');
+const fetchPendingOrder = () => instance.get('/orders?status=pending');
+const approveOrder = ({ postID }) => instance.put(`/orders/${postID}/approve`);
+const rejectOrder = (orderID) => instance.delete(`/orders/${orderID}/reject`);
 
 /**
  * @purpose 리뷰 API
  */
-
 const fetchAllReviews = () => instance.get('/reviews');
 const createReview = (payload) =>
   instance.post('/reviews', payload, {
@@ -141,13 +116,13 @@ export {
   fetchAllCartProducts,
   removeCartProduct,
   purchaseCartProduct,
-  getOrder,
-  getOrderBuying,
-  getNotApprovedProduct,
+  fetchSalesOrder,
+  fetchPurchasedOrder,
+  fetchPendingOrder,
   createReview,
   fetchAllReviews,
   increaseReviewHit,
   increaseReviewLike,
-  approveProduct,
-  deniedProduct,
+  approveOrder,
+  rejectOrder,
 };

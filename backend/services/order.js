@@ -3,7 +3,7 @@ const { User, Order, Post, Product } = require('../models');
 const sequelize = require('sequelize');
 const Op = sequelize.Op;
 
-const getSaleProducts = async (userID) => {
+const getSaleHistory = async (userID) => {
   // 본인이 판매중인 목록
   const productOnSale = await Post.findAll({
     where: { userId: userID },
@@ -41,7 +41,7 @@ const getPurchaseHistory = async (userID) => {
   return productInfo;
 };
 
-const getPendingPurchases = async (userID) => {
+const getPendingHistory = async (userID) => {
   // 현재 유저가 판매중인 상품 조회
   const posts = await Post.findAll({ where: { userId: userID } });
 
@@ -67,14 +67,14 @@ const getPendingPurchases = async (userID) => {
 
   const products = await productPromise;
   const productInfos = {};
-  for (let product of products) {
+  for (const product of products) {
     productInfos[product.dataValues.postId] = product.dataValues.title;
   }
 
   return [orders, productInfos];
 };
 
-const approvePurchase = async (postId) => {
+const approveOrder = async (postId) => {
   try {
     await Product.update({ sold: true }, { where: { postId } });
     await Order.update({ approve: true }, { where: { postId } });
@@ -83,7 +83,7 @@ const approvePurchase = async (postId) => {
   }
 };
 
-const rejectPurchase = async (orderID) => {
+const rejectOrder = async (orderID) => {
   try {
     await Order.destroy({ where: { id: orderID } });
   } catch (err) {
@@ -92,9 +92,9 @@ const rejectPurchase = async (orderID) => {
 };
 
 module.exports = {
-  getSaleProducts,
+  getSaleHistory,
   getPurchaseHistory,
-  getPendingPurchases,
-  approvePurchase,
-  rejectPurchase,
+  getPendingHistory,
+  approveOrder,
+  rejectOrder,
 };

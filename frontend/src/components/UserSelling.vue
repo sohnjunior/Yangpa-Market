@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { getOrder, deletePost } from '../api/index';
+import { fetchSalesOrder, deletePost } from '../api/index';
 
 export default {
   data() {
@@ -97,7 +97,7 @@ export default {
   },
   async created() {
     const userData = { email: this.$store.getters.getEmail };
-    const { data } = await getOrder(userData);
+    const { data } = await fetchSalesOrder(userData);
 
     for (const p of data.products) {
       // 만약 팔린 상품이라면
