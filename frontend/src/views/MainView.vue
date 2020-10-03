@@ -161,7 +161,7 @@
 </template>
 
 <script>
-import { fetchAllProducts, fetchPopularProducts } from '../api/index';
+import { ProductAPI, RecommendationAPI } from '../api';
 import ProductCard from '../components/ProductCard.vue';
 import PopularProductCard from '../components/PopularProductCard.vue';
 
@@ -229,11 +229,11 @@ export default {
     this.pivot = '등록일순';
 
     // 전체 상품 조회 API 호출 (날짜순으로 정렬된 상태)
-    const { data } = await fetchAllProducts();
+    const { data } = await ProductAPI.fetchAllProducts();
     this.products = data;
 
     // 인기 상품 조회
-    const result = await fetchPopularProducts();
+    const result = await RecommendationAPI.fetchPopularProducts();
     this.populars = result.data.result;
     if (this.populars.length > 4) {
       this.populars = this.populars.slice(0, 10);

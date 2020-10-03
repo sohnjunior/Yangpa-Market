@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { signinUser } from '../api/index';
+import { UserAPI } from '../api';
 import {
   getAuthEmailFromCookie,
   getAuthTokenFromCookie,
@@ -44,7 +44,7 @@ export default new Vuex.Store({
   actions: {
     async LOGIN({ commit }, userData) {
       try {
-        const { data } = await signinUser(userData);
+        const { data } = await UserAPI.signinUser(userData);
         commit('setEmail', data.email);
         commit('setToken', data.token);
         saveAuthEmailToCookie(data.email);

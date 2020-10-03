@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { searchProduct } from '../api/index';
+import { ProductAPI } from '../api';
 import ProductCard from '../components/ProductCard.vue';
 
 export default {
@@ -37,7 +37,7 @@ export default {
   },
   async created() {
     this.keyword = this.$route.params.keyword;
-    const { data } = await searchProduct(this.keyword);
+    const { data } = await ProductAPI.searchProduct(this.keyword);
     this.products = data.result;
   },
   components: {

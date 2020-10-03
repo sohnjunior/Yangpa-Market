@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { createReview } from '../api/index';
+import { ReviewAPI } from '../api';
 
 export default {
   props: ['show'],
@@ -79,7 +79,7 @@ export default {
       formData.append('rating', this.rating);
       formData.append('email', this.$store.getters.getEmail);
 
-      const { data } = await createReview(formData);
+      const { data } = await ReviewAPI.createReview(formData);
       console.log(data);
       this.$emit('closeDialog');
     },

@@ -112,13 +112,7 @@
 </template>
 
 <script>
-import {
-  createComment,
-  fetchComment,
-  deleteComment,
-  updateComment,
-  isAdminUser,
-} from '../api/index';
+import { CommentAPI, UserAPI } from '../api/index';
 
 export default {
   props: ['seller'],
@@ -155,14 +149,14 @@ export default {
 
   async created() {
     this.postId = this.$route.params.id;
-    const comments = await fetchComment(this.postId);
+    const comments = await CommentAPI.fetchComment(this.postId);
     this.commentList = comments.data.comments;
 
     // 현재 로그인한 유저라면
     if (this.$store.getters.isLoggedIn) {
       const {
         data: { isAdmin },
-      } = await isAdminUser();
+      } = await UserAPI.isAdminUser();
       this.admin = isAdmin;
     }
   },
@@ -180,7 +174,8 @@ export default {
 
     // 삭제 버튼 토글 함수
     deleteButton(item) {
-      confirm('해당 댓글을 삭제하시겠습니까?') && this.deleteComments(item);
+      confirm('해당 댓글을 삭제하시겠습니까?') &&
+        this.CommentAPI.deleteComments(item);
     },
 
     // 댓글 수정 토글 함수
@@ -221,7 +216,7 @@ export default {
     // 댓글 삭제 요청 함수
     async deleteComments(item) {
       try {
-        await deleteComment({ commentID: item.id });
+        await CommentAPI.deleteComment({ commentID: item.id });
       } catch (err) {
         console.log(err);
       }
@@ -231,7 +226,7 @@ export default {
     // 댓글 업데이트 함수
     async updateComments() {
       try {
-        await updateComment({
+        await CommentAPI.updateComment({
           commentID: this.updateId,
           payload: { comment: this.comment },
         });
@@ -249,7 +244,7 @@ export default {
       };
 
       try {
-        await createComment(Comment);
+        await CommentAPI.createComment(Comment);
         this.$router.go(0); // refresh the page
       } catch (error) {
         console.log(error);

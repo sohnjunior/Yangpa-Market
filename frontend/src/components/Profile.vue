@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import { fetchUser, updateUser } from '../api/index';
+import { UserAPI } from '../api';
 
 export default {
   data() {
@@ -108,7 +108,7 @@ export default {
     };
   },
   async created() {
-    const { data } = await fetchUser();
+    const { data } = await UserAPI.fetchUser();
     this.email = data.result.email;
     this.password = data.result.password;
     this.confirmpassword = data.result.password;
@@ -129,7 +129,7 @@ export default {
       };
 
       try {
-        const { data } = await updateUser(userData);
+        const { data } = await UserAPI.updateUser(userData);
         console.log(data);
         this.$router.go(0);
       } catch (error) {

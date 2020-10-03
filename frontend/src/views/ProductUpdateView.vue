@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { fetchProduct, updateProduct } from '../api/index';
+import { ProductAPI } from '../api';
 
 export default {
   data() {
@@ -47,7 +47,7 @@ export default {
   async created() {
     // 상품 초기 입력값을 불러옵니다.
     this.productID = this.$route.params.id;
-    const { data } = await fetchProduct(this.productID);
+    const { data } = await ProductAPI.fetchProduct(this.productID);
     this.title = data.product.title;
     this.price = data.product.price;
     this.productIMG = data.product.image;
@@ -63,7 +63,10 @@ export default {
       };
 
       try {
-        const { data } = await updateProduct(this.productID, updataData);
+        const { data } = await ProductAPI.updateProduct(
+          this.productID,
+          updataData
+        );
         console.log(data);
       } catch (err) {
         console.log(err);

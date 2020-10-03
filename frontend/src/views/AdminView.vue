@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { fetchAllUser, deleteUser } from '../api/index';
+import { UserAPI } from '../api';
 
 export default {
   data() {
@@ -41,14 +41,14 @@ export default {
     };
   },
   async created() {
-    const { data } = await fetchAllUser();
+    const { data } = await UserAPI.fetchAllUser();
 
     this.userlist = data;
   },
 
   methods: {
     check(item) {
-      confirm('해당 유저를 삭제하시겠습니까') && deleteUser(item);
+      confirm('해당 유저를 삭제하시겠습니까') && UserAPI.deleteUser(item);
     },
 
     async deleteUser(item) {
@@ -57,7 +57,7 @@ export default {
       const Todelete = { email: this.userlist[index].email };
 
       try {
-        const { data } = await deleteUser(Todelete);
+        const { data } = await UserAPI.deleteUser(Todelete);
         console.log(data);
         this.$router.go(0);
       } catch (error) {

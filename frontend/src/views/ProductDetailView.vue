@@ -81,12 +81,7 @@
 </template>
 
 <script>
-import {
-  fetchProduct,
-  fetchRelatedProducts,
-  createCartProduct,
-  likeProduct,
-} from '../api/index';
+import { ProductAPI, RecommendationAPI, CartAPI } from '../api';
 import CommentList from '../components/CommentList';
 import RelatedProductCard from '../components/RelatedProductCard.vue';
 import EventBus from '../EventBus';
@@ -110,7 +105,7 @@ export default {
   },
   async created() {
     this.productID = this.$route.params.id;
-    const { data } = await fetchProduct(this.productID);
+    const { data } = await ProductAPI.fetchProduct(this.productID);
 
     this.productIMG = data.product.image;
     this.productBody = data.body;
@@ -120,7 +115,7 @@ export default {
     this.sold = data.product.sold;
     this.seller = data.user.email === this.$store.getters.getEmail;
 
-    const result = await fetchRelatedProducts(this.productID);
+    const result = await RecommendationAPI.fetchRelatedProducts(this.productID);
     this.related = result.data.result;
     window.scrollTo(0, 0);
   },
@@ -136,13 +131,13 @@ export default {
       const payload = {
         productID: this.productID,
       };
-      await createCartProduct(payload);
+      await CartAPI.createCartProduct(payload);
       EventBus.$emit('popUp', '장바구니에 추가되었습니다.');
     },
 
     // 좋아요 + 1
     async likeUpdate() {
-      await likeProduct(this.productID);
+      await ProductAPI.likeProduct(this.productID);
     },
   },
 };

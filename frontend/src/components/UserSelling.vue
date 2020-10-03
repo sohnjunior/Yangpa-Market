@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { fetchSalesOrder, deletePost } from '../api/index';
+import { OrderAPI, ProductAPI } from '../api';
 
 export default {
   data() {
@@ -97,7 +97,7 @@ export default {
   },
   async created() {
     const userData = { email: this.$store.getters.getEmail };
-    const { data } = await fetchSalesOrder(userData);
+    const { data } = await OrderAPI.fetchSalesOrder(userData);
 
     for (const p of data.products) {
       // 만약 팔린 상품이라면
@@ -127,7 +127,7 @@ export default {
         '<' + item.product.title + '> 판매글을 정말로 삭제하시겠습니까?'
       );
       if (allow) {
-        await deletePost(item.title);
+        await ProductAPI.deletePost(item.title);
       }
     },
   },

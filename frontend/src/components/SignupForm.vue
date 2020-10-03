@@ -109,7 +109,7 @@
 </template>
 
 <script>
-import { registerUser } from '../api/index';
+import { UserAPI } from '../api';
 import {
   validateEmail,
   validatePassword,
@@ -163,7 +163,7 @@ export default {
       };
 
       try {
-        await registerUser(userData);
+        await UserAPI.registerUser(userData);
         this.$router.push('/');
       } catch (error) {
         console.log(error);

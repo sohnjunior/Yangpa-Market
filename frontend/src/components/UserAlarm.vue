@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { fetchPendingOrder, approveOrder, rejectOrder } from '../api/index';
+import { OrderAPI } from '../api';
 
 export default {
   data() {
@@ -78,16 +78,16 @@ export default {
     };
   },
   async created() {
-    const { data } = await fetchPendingOrder();
+    const { data } = await OrderAPI.fetchPendingOrder();
     this.productList = data.products;
     this.orderList = data.orders;
   },
   methods: {
     async approve(item) {
-      await approveOrder({ postID: item.postId });
+      await OrderAPI.approveOrder({ postID: item.postId });
     },
     async remove(item) {
-      await rejectOrder(item.id);
+      await OrderAPI.rejectOrder(item.id);
     },
   },
 };

@@ -22,7 +22,7 @@ import UserProfile from '../components/Profile.vue';
 
 // import store for navigation gurad
 import store from '../store/index';
-import { isAdminUser } from '../api/index';
+import { UserAPI } from '../api';
 
 Vue.use(VueRouter);
 
@@ -41,7 +41,7 @@ export const router = new VueRouter({
         // 만약 관리자 권한을 가지고 있다면
         const {
           data: { isAdmin },
-        } = await isAdminUser();
+        } = await UserAPI.isAdminUser();
         if (isAdmin) {
           return next();
         }

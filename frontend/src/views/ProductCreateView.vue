@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { createNewProduct } from '../api/index';
+import { ProductAPI } from '../api';
 
 export default {
   data() {
@@ -96,7 +96,7 @@ export default {
       formData.append('email', this.$store.getters.getEmail);
 
       try {
-        await createNewProduct(formData);
+        await ProductAPI.createNewProduct(formData);
         this.$router.push('/');
       } catch (err) {
         console.log(err);

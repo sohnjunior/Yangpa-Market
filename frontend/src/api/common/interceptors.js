@@ -1,24 +1,23 @@
-import store from '../store';
-
+import store from '../../store';
 
 export function setInterceptors(instance) {
   // Add a request interceptor
   instance.interceptors.request.use(
-    function(config) {
+    function (config) {
       config.headers.Authorization = store.state.token;
       return config;
     },
-    function(error) {
+    function (error) {
       return Promise.reject(error);
     }
   );
 
   // Add a response interceptor
   instance.interceptors.response.use(
-    function(response) {
+    function (response) {
       return response;
     },
-    function(error) {
+    function (error) {
       return Promise.reject(error);
     }
   );

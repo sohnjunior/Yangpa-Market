@@ -36,7 +36,7 @@
 
 <script>
 import ReviewCreateModal from './ReviewCreateModal';
-import { fetchPurchasedOrder } from '../api/index';
+import { OrderAPI } from '../api';
 
 export default {
   components: { ReviewCreateModal },
@@ -104,7 +104,7 @@ export default {
   async created() {
     const {
       data: { infos },
-    } = await fetchPurchasedOrder();
+    } = await OrderAPI.fetchPurchasedOrder();
 
     this.orderPendingList = infos
       .filter((orderInfo) => !orderInfo[1])
