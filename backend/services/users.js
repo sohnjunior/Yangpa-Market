@@ -1,5 +1,4 @@
 const { User, Cart } = require('../models');
-const jwt = require('jsonwebtoken');
 
 const getAllUserExceptAdmin = async () => {
   try {
@@ -76,24 +75,6 @@ const deleteUser = async (userID) => {
   }
 };
 
-const signIn = async (email, password) => {
-  try {
-    const user = await User.findOne({ where: { email } });
-    if (!user) return [false, null];
-
-    if (user.password === password) {
-      const payload = { id: user.id };
-      const token = jwt.sign(payload, process.env.JWT_SECRET);
-
-      return [true, token];
-    }
-
-    return [false, null];
-  } catch (err) {
-    throw err;
-  }
-};
-
 const checkAdminPerm = async (userID) => {
   try {
     const user = await User.findOne({ where: { id: userID } });
@@ -111,6 +92,5 @@ module.exports = {
   createUser,
   updateUserInfo,
   deleteUser,
-  signIn,
   checkAdminPerm,
 };

@@ -3,14 +3,13 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const flash = require('connect-flash');
-const passport = require('passport');
 const cors = require('cors');
+const passport = require('passport');
+const passportConfig = require('./passport');
 const apiRouter = require('./routes');
 const handleErrors = require('./middlewares/error-handler');
 const { HTTP404Error } = require('./utils/errors');
-
 const { sequelize } = require('./models');
-const passportConfig = require('./passport/passport');
 
 const app = express();
 

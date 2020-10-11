@@ -1,7 +1,7 @@
 const multer = require('multer');
 const path = require('path');
-const jwt = require('jsonwebtoken');
 const { HTTP401Error, HTTP419Error } = require('../utils/errors');
+const passport = require('passport');
 
 const imageUpload = (dirname) =>
   multer({
@@ -20,16 +20,18 @@ const imageUpload = (dirname) =>
   });
 
 const verifyToken = (req, res, next) => {
-  try {
-    req.decoded = jwt.verify(req.headers.authorization, process.env.JWT_SECRET);
-    next();
-  } catch (error) {
-    if (error.name === 'TokenExpiredError') {
-      next(new HTTP419Error('토큰이 만료되었습니다'));
-    }
+  passport.authenticate('jwt', { session: false }, (err, user) => {
+    if (user) {
+      req.decoded = user;
+      next();
+    } else {
+      if (err.name === 'TokenExpiredError') {
+        next(new HTTP419Error('토큰이 만료되었습니다'));
+      }
 
-    next(new HTTP401Error('유효하지 않은 토큰입니다'));
-  }
+      next(new HTTP401Error('유효하지 않은 토큰입니다'));
+    }
+  })(req, res, next);
 };
 
 module.exports = {

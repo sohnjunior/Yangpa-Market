@@ -1,3 +1,4 @@
+const passport = require('passport');
 const UserService = require('../services/users');
 const { HTTP400Error } = require('../utils/errors');
 
@@ -79,19 +80,14 @@ const deleteUser = async (req, res, next) => {
 };
 
 const signin = async (req, res, next) => {
-  try {
-    const { email, password } = req.body;
-
-    const [isValid, token] = await UserService.signIn(email, password);
-
-    if (!isValid) {
-      next(new HTTP401Error('이메일 혹은 비밀번호를 확인해주세요'));
+  passport.authenticate('signin', async (err, data, info) => {
+    if (err) return next(err);
+    if (info) {
+      return next(new HTTP401Error('이메일 혹은 비밀번호를 확인해주세요'));
     }
 
-    res.status(200).json({ status: 'ok', token, email });
-  } catch (err) {
-    next(err);
-  }
+    res.status(200).json({ status: 'ok', ...data });
+  })(req, res, next);
 };
 
 const checkAdmin = async (req, res, next) => {
