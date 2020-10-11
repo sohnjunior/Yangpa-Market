@@ -26,7 +26,9 @@ const getOrderHistory = async (req, res, next) => {
       default:
         next(new HTTP400Error('알 수 없는 쿼리 값입니다'));
     }
-    res.status(200).json(resObj);
+    res
+      .status(200)
+      .json({ status: 'ok', message: '주문 내역 조회', ...resObj });
   } catch (err) {
     next(err);
   }
@@ -37,7 +39,7 @@ const approveOrder = async (req, res, next) => {
     const { id: orderID } = req.params;
     await OrderService.approveOrder(orderID);
 
-    res.status(200).json({ status: 'ok', message: 'success' });
+    res.status(200).json({ status: 'ok', message: '구매요청 승인 성공' });
   } catch (err) {
     next(err);
   }
@@ -48,7 +50,7 @@ const rejectOrder = async (req, res, next) => {
     const { id: orderID } = req.params;
     await OrderService.rejectOrder(orderID);
 
-    res.status(200).json({ status: 'ok', message: 'success' });
+    res.status(200).json({ status: 'ok', message: '구매요청 거부 성공' });
   } catch (err) {
     next(err);
   }

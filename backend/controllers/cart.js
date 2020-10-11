@@ -7,7 +7,7 @@ const postProduct = async (req, res, next) => {
 
     await CartService.addCartProduct(userID, productID);
 
-    res.json({ status: 'ok', message: '장바구니 추가 성공' });
+    res.status(200).json({ status: 'ok', message: '장바구니 추가 성공' });
   } catch (err) {
     next(err);
   }
@@ -19,7 +19,7 @@ const getProducts = async (req, res, next) => {
 
     const products = await CartService.getCartProducts(userID);
 
-    res.json({
+    res.status(200).json({
       status: 'ok',
       message: '장바구니 상품 조회 성공',
       result: products,
@@ -36,7 +36,7 @@ const deleteProduct = async (req, res, next) => {
 
     await CartService.removeCartProduct(userID, productID);
 
-    res.json({ status: 'ok', message: '장바구니 상품 삭제 성공' });
+    res.status(200).json({ status: 'ok', message: '장바구니 상품 삭제 성공' });
   } catch (err) {
     next(err);
   }
@@ -49,7 +49,7 @@ const purchaseProduct = async (req, res, next) => {
 
     await CartService.purchaseCartProduct(userID, postID, productID, phone);
 
-    res.json({ status: 'ok', message: '장바구니 상품 구매 완료' });
+    res.status(200).json({ status: 'ok', message: '장바구니 상품 구매 완료' });
   } catch (err) {
     next(err);
   }

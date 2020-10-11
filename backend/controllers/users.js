@@ -6,7 +6,13 @@ const getUsers = async (req, res, next) => {
   try {
     const users = await UserService.getAllUserExceptAdmin();
 
-    res.status(200).json({ status: 'ok', user: users });
+    res
+      .status(200)
+      .json({
+        status: 'ok',
+        message: '관리자를 제외한 모든 유저 정보 조회',
+        user: users,
+      });
   } catch (err) {
     next(err);
   }
@@ -18,7 +24,9 @@ const getUser = async (req, res, next) => {
 
     const user = await UserService.getUserInfo(userID);
 
-    res.status(200).json({ status: 'ok', result: user });
+    res
+      .status(200)
+      .json({ status: 'ok', message: '유저 정보 조회', result: user });
   } catch (err) {
     next(err);
   }
@@ -61,7 +69,11 @@ const updateUser = async (req, res, next) => {
       birthday
     );
 
-    res.status(200).json({ user, message: '계정이 성공적으로 생성되었습니다' });
+    res.status(200).json({
+      status: 'ok',
+      message: '계정이 성공적으로 생성되었습니다',
+      user,
+    });
   } catch (err) {
     next(err);
   }
@@ -73,7 +85,9 @@ const deleteUser = async (req, res, next) => {
 
     await UserService.deleteUser(userID);
 
-    res.status(200).json({ message: '계정이 성공적으로 삭제되었습니다' });
+    res
+      .status(200)
+      .json({ status: 'ok', message: '계정이 성공적으로 삭제되었습니다' });
   } catch (err) {
     next(err);
   }
@@ -86,7 +100,9 @@ const signin = async (req, res, next) => {
       return next(new HTTP401Error('이메일 혹은 비밀번호를 확인해주세요'));
     }
 
-    res.status(200).json({ status: 'ok', ...data });
+    res
+      .status(200)
+      .json({ status: 'ok', message: '로그인 되었습니다', ...data });
   })(req, res, next);
 };
 
@@ -96,7 +112,9 @@ const checkAdmin = async (req, res, next) => {
 
     const isAdmin = await UserService.checkAdminPerm(userID);
 
-    res.status(200).json({ status: 'ok', isAdmin });
+    res
+      .status(200)
+      .json({ status: 'ok', message: '관리자 권한 체크', isAdmin });
   } catch (err) {
     next(err);
   }
