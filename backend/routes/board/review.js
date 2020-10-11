@@ -1,6 +1,7 @@
 const express = require('express');
 const ReviewController = require('../../controllers/review');
 const { reviewUpload, verifyToken } = require('../../middlewares');
+const { checkBodyNull } = require('../../middlewares/validator');
 
 const router = express.Router();
 
@@ -8,6 +9,7 @@ router.get('/', ReviewController.getReviews); // 전체 상품 후기 목록 조
 router.post(
   '/',
   verifyToken,
+  checkBodyNull,
   reviewUpload.single('image'),
   ReviewController.postReview
 ); // 특정 상품 후기 등록

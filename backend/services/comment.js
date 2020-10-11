@@ -11,7 +11,7 @@ const createComment = async (userID, postId, comment, secret) => {
       secret: secret,
     });
   } catch (err) {
-    throw new Error(err.message);
+    throw err;
   }
 };
 
@@ -19,7 +19,7 @@ const removeComment = async (id) => {
   try {
     await Comment.destroy({ where: { id: id } });
   } catch (err) {
-    throw new Error(err.message);
+    throw err;
   }
 };
 
@@ -30,24 +30,28 @@ const updateComment = async (commentID, commentText) => {
       { where: { id: commentID } }
     );
   } catch (err) {
-    throw new Error(err.message);
+    throw err;
   }
 };
 
 const getCommentsOfPost = async (postID) => {
-  // 상품 찾기
-  const post = await Post.findOne({ where: { title: postID } });
+  try {
+    // 상품 찾기
+    const post = await Post.findOne({ where: { title: postID } });
 
-  // 상품에 연관된 댓글 조회
-  const comments = await Comment.findAll({
-    where: { postId: post.id },
-    include: {
-      model: User,
-      attributes: ['email', 'nickname'],
-    },
-  });
+    // 상품에 연관된 댓글 조회
+    const comments = await Comment.findAll({
+      where: { postId: post.id },
+      include: {
+        model: User,
+        attributes: ['email', 'nickname'],
+      },
+    });
 
-  return comments;
+    return comments;
+  } catch (err) {
+    throw err;
+  }
 };
 
 module.exports = {

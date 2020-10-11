@@ -3,7 +3,7 @@ const { HTTP400Error } = require('../utils/errors');
 const checkBodyNull = (req, res, next) => {
   let valid = true;
   for (const field in req.body) {
-    if (!!req.body[field]) {
+    if (!req.body[field]) {
       valid = false;
       break;
     }

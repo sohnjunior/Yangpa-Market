@@ -1,4 +1,5 @@
 const ProductService = require('../services/product');
+const { HTTP404Error } = require('../utils/errors');
 
 const postProduct = async (req, res, next) => {
   try {
@@ -14,70 +15,89 @@ const postProduct = async (req, res, next) => {
       price,
       filename
     );
+    res.status(201).json({ status: 'ok', message: '상품이 추가되었습니다' });
   } catch (err) {
-    console.error(err);
     next(err);
   }
-
-  res.json({ response: 'success' });
 };
 
 const updateProduct = async (req, res, next) => {
   try {
     const { productId, title, price, body } = req.body;
+
     await ProductService.updateProductInfo(productId, title, price, body);
+
+    res
+      .status(200)
+      .json({ status: 'ok', message: '상품 정보가 업데이트 되었습니다' });
   } catch (err) {
-    console.error(err);
     next(err);
   }
-
-  res.json({ response: 'success' });
 };
 
 const deleteProduct = async (req, res, next) => {
   try {
     const { id: orderHash } = req.params;
+
     await ProductService.deleteProduct(orderHash);
+
+    res.status(200).json({ status: 'ok', message: '상품이 삭제되었습니다' });
   } catch (err) {
-    console.error(err);
     next(err);
   }
 };
 
 const getProducts = async (req, res, next) => {
-  const posts = await ProductService.getAllProducts();
-  res.json(posts);
+  try {
+    const posts = await ProductService.getAllProducts();
+
+    res.status(200).json(posts);
+  } catch (err) {
+    next(err);
+  }
 };
 
 const getProduct = async (req, res, next) => {
   try {
     const { id: orderHash } = req.params;
+
     const post = await ProductService.getProduct(orderHash);
-    res.json(post);
+    if (!post) next(new HTTP404Error('상품 정보를 찾을 수 없습니다'));
+
+    res.status(200).json(post);
   } catch (err) {
-    console.error(err);
     next(err);
   }
 };
 
 const searchProducts = async (req, res, next) => {
-  let { keyword } = req.query;
-  keyword = keyword.trim().replace(/\s\s+/gi, ' '); // 앞뒤 공백문자 제거
-  const keywords = keyword.split(' '); // 띄어쓰기 기준으로 한 단어라도 들어있으면 결과 찾아서 반환
+  try {
+    let { keyword } = req.query;
+    keyword = keyword.trim().replace(/\s\s+/gi, ' '); // 앞뒤 공백문자 제거
+    const keywords = keyword.split(' '); // 띄어쓰기 기준으로 한 단어라도 들어있으면 결과 찾아서 반환
 
-  const products = await ProductService.searchProductsWithKeyword(keywords);
+    const products = await ProductService.searchProductsWithKeyword(keywords);
 
-  res.json({ result: products });
+    res.status(200).json({
+      status: 'ok',
+      message: '조회가 성공적으로 이루어졌습니다',
+      result: products,
+    });
+  } catch (err) {
+    next(err);
+  }
 };
 
 const updateLikeOfProduct = async (req, res, next) => {
   try {
     const { id: orderHash } = req.params;
+
     await ProductService.increaseLikeOfProduct(orderHash);
 
-    res.json({ result: 'success' });
+    res
+      .status(200)
+      .json({ status: 'ok', message: '상품 좋아요가 증가했습니다' });
   } catch (err) {
-    console.error(err);
     next(err);
   }
 };

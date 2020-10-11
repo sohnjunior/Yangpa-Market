@@ -78,7 +78,7 @@ const deleteUser = async (userID) => {
 
 const signIn = async (email, password) => {
   try {
-    const user = await User.findOne({ where: { email: email } });
+    const user = await User.findOne({ where: { email } });
     if (!user) return [false, null];
 
     if (user.password === password) {

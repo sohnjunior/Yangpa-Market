@@ -1,4 +1,5 @@
 const OrderService = require('../services/order');
+const { HTTP400Error } = require('../utils/errors');
 
 const getOrderHistory = async (req, res, next) => {
   try {
@@ -23,11 +24,10 @@ const getOrderHistory = async (req, res, next) => {
         break;
       }
       default:
-        throw new Error('unknown status');
+        next(new HTTP400Error('알 수 없는 쿼리 값입니다'));
     }
-    res.json(resObj);
+    res.status(200).json(resObj);
   } catch (err) {
-    console.error(err);
     next(err);
   }
 };
@@ -37,9 +37,8 @@ const approveOrder = async (req, res, next) => {
     const { id: orderID } = req.params;
     await OrderService.approveOrder(orderID);
 
-    res.json({ msg: 'success' });
+    res.status(200).json({ status: 'ok', message: 'success' });
   } catch (err) {
-    console.error(err);
     next(err);
   }
 };
@@ -49,9 +48,8 @@ const rejectOrder = async (req, res, next) => {
     const { id: orderID } = req.params;
     await OrderService.rejectOrder(orderID);
 
-    res.json({ msg: 'success' });
+    res.status(200).json({ status: 'ok', message: 'success' });
   } catch (err) {
-    console.error(err);
     next(err);
   }
 };
