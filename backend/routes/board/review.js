@@ -1,6 +1,6 @@
 const express = require('express');
 const ReviewController = require('../../controllers/review');
-const { reviewUpload, verifyToken } = require('../../middlewares');
+const { imageUpload, verifyToken } = require('../../middlewares');
 const { checkBodyNull } = require('../../middlewares/validator');
 
 const router = express.Router();
@@ -10,7 +10,7 @@ router.post(
   '/',
   verifyToken,
   checkBodyNull,
-  reviewUpload.single('image'),
+  imageUpload('review').single('image'),
   ReviewController.postReview
 ); // 특정 상품 후기 등록
 router.put('/:id/hit', ReviewController.updateViewCount); // 조회수 증가

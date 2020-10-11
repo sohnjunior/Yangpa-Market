@@ -1,6 +1,6 @@
 const express = require('express');
 const ProductController = require('../../controllers/product');
-const { productUpload, verifyToken } = require('../../middlewares');
+const { imageUpload, verifyToken } = require('../../middlewares');
 const { checkBodyNull } = require('../../middlewares/validator');
 
 const router = express.Router();
@@ -13,7 +13,7 @@ router.post(
   '/',
   verifyToken,
   checkBodyNull,
-  productUpload.single('image'),
+  imageUpload('product').single('image'),
   ProductController.postProduct
 ); // 새로운 상품 게시글 생성
 
