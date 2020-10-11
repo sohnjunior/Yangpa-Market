@@ -3,6 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const Ratelimit = require('express-rate-limit');
+const { HTTP401Error, HTTP419Error } = require('../utils/errors');
 
 /* 
     라우터에 필요한 커스텀 미들웨어를 정의합니다.
@@ -25,7 +26,7 @@ fs.readdir('public/images/review', (err) => {
 });
 
 // 상품 이미지 업로드용 미들웨어
-exports.productUpload = multer({
+const productUpload = multer({
   storage: multer.diskStorage({
     destination(req, file, cb) {
       cb(null, 'public/images/product/');
@@ -38,7 +39,7 @@ exports.productUpload = multer({
 });
 
 // 상품 후기 이미지 업로드용 미들웨어
-exports.reviewUpload = multer({
+const reviewUpload = multer({
   storage: multer.diskStorage({
     destination(req, file, cb) {
       cb(null, 'public/images/review/');
@@ -51,34 +52,21 @@ exports.reviewUpload = multer({
 });
 
 // JWT 토큰 검증 미들웨어
-exports.verifyToken = (req, res, next) => {
+const verifyToken = (req, res, next) => {
   try {
     req.decoded = jwt.verify(req.headers.authorization, process.env.JWT_SECRET);
-    return next();
+    next();
   } catch (error) {
     if (error.name === 'TokenExpiredError') {
-      return res.status(419).json({
-        code: 419,
-        massage: '토큰 만료',
-      });
+      next(new HTTP419Error('토큰이 만료되었습니다'));
     }
 
-    return res.status(401).json({
-      code: 401,
-      massage: '유효하지 않은 토큰',
-    });
+    next(new HTTP401Error('유효하지 않은 토큰입니다'));
   }
 };
 
-// Token Limiter
-exports.tokenLimiter = new Ratelimit({
-  windowMs: 1000 * 60, //1min : 허용 시간
-  max: 10, // 허용 요청 횟수
-  delatMs: 0, //호출 간격
-  handler(req, res) {
-    res.status(this.statusCode).json({
-      code: this.statusCode, //code : 429
-      message: '1시간당 1번 요청 가능',
-    });
-  },
-});
+module.exports = {
+  productUpload,
+  reviewUpload,
+  verifyToken,
+};

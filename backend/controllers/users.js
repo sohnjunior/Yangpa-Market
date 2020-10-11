@@ -1,11 +1,12 @@
 const UserService = require('../services/users');
+const { HTTP400Error } = require('../utils/errors');
 
 const getUsers = async (req, res, next) => {
   try {
     const users = await UserService.getAllUserExceptAdmin();
-    res.json({ user: users });
+
+    res.status(200).json({ status: 'ok', user: users });
   } catch (err) {
-    console.error(err);
     next(err);
   }
 };
@@ -13,36 +14,43 @@ const getUsers = async (req, res, next) => {
 const getUser = async (req, res, next) => {
   try {
     const { id: userID } = req.decoded;
+
     const user = await UserService.getUserInfo(userID);
-    res.json({ result: user });
+
+    res.status(200).json({ status: 'ok', result: user });
   } catch (err) {
-    console.error(err);
     next(err);
   }
 };
 
 const createUser = async (req, res, next) => {
-  const { email, password, nickname, phone, sex, birthday, admin } = req.body;
-  const isValid = await UserService.createUser(
-    email,
-    password,
-    nickname,
-    phone,
-    sex,
-    birthday,
-    admin
-  );
+  try {
+    const { email, password, nickname, phone, sex, birthday, admin } = req.body;
 
-  if (isValid) {
-    res.json({ msg: 'account created successfully' });
-  } else {
-    res.status(401).json({ msg: 'Email already Exist' });
+    const isValid = await UserService.createUser(
+      email,
+      password,
+      nickname,
+      phone,
+      sex,
+      birthday,
+      admin
+    );
+
+    if (!isValid) {
+      next(new HTTP400Error('이미 존재하는 이메일입니다'));
+    }
+
+    res.status(201).json({ status: 'ok', message: '회원가입이 성공했습니다' });
+  } catch (err) {
+    next(err);
   }
 };
 
 const updateUser = async (req, res, next) => {
   try {
     const { email, password, nickname, phone, sex, birthday } = req.body;
+
     const user = UserService.updateUserInfo(
       email,
       password,
@@ -52,9 +60,8 @@ const updateUser = async (req, res, next) => {
       birthday
     );
 
-    res.json({ user, msg: 'account created successfully' });
+    res.status(200).json({ user, message: '계정이 성공적으로 생성되었습니다' });
   } catch (err) {
-    console.error(err);
     next(err);
   }
 };
@@ -62,33 +69,39 @@ const updateUser = async (req, res, next) => {
 const deleteUser = async (req, res, next) => {
   try {
     const { id: userID } = req.decoded;
+
     await UserService.deleteUser(userID);
-    res.json({ msg: 'account deleted successfully' });
+
+    res.status(200).json({ message: '계정이 성공적으로 삭제되었습니다' });
   } catch (err) {
-    console.error(err);
     next(err);
   }
 };
 
 const signin = async (req, res, next) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const [isValid, token] = await UserService.signIn(email, password);
+    const [isValid, token] = await UserService.signIn(email, password);
 
-  if (isValid) {
-    res.json({ msg: 'ok', token, email });
-  } else {
-    res.status(401).json({ msg: 'Password is incorrect' });
+    if (!isValid) {
+      next(new HTTP401Error('이메일 혹은 비밀번호를 확인해주세요'));
+    }
+
+    res.status(200).json({ status: 'ok', token, email });
+  } catch (err) {
+    next(err);
   }
 };
 
 const checkAdmin = async (req, res, next) => {
   try {
     const { id: userID } = req.decoded;
+
     const isAdmin = await UserService.checkAdminPerm(userID);
-    res.json({ isAdmin });
+
+    res.status(200).json({ status: 'ok', isAdmin });
   } catch (err) {
-    console.error(err);
     next(err);
   }
 };
