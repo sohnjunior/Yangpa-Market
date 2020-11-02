@@ -12,9 +12,9 @@
 </template>
 
 <script>
-import AppBar from './components/Common/AppBar';
-import Footer from './components/Common/Footer';
-import SnackBar from './components/SnackBar';
+import AppBar from '@components/Common/AppBar';
+import Footer from '@components/Common/Footer';
+import SnackBar from '@components/SnackBar';
 
 export default {
   name: 'App',

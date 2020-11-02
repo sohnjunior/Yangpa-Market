@@ -1,12 +1,12 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { UserAPI } from '../api';
+import { UserAPI } from '@api';
 import {
   getAuthEmailFromCookie,
   getAuthTokenFromCookie,
   saveAuthTokenToCookie,
   saveAuthEmailToCookie,
-} from '../utils/cookies.js';
+} from '@utils/cookies.js';
 
 Vue.use(Vuex);
 

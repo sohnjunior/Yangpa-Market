@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import EventBus from '../utils/bus';
+import EventBus from '@utils/bus';
 
 export default {
   data() {

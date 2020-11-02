@@ -1,4 +1,3 @@
-
 /* 
     로그인시 이메일 및 비밀번호를 검증하기 위한 모듈을 정의합니다.
 */
@@ -22,4 +21,4 @@ function validatePhoneNum(phone) {
   return re.test(phone);
 }
 
-export { validateEmail, validatePassword, validatePhoneNum }
+export { validateEmail, validatePassword, validatePhoneNum };

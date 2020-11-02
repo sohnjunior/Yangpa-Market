@@ -112,7 +112,7 @@
 </template>
 
 <script>
-import { CommentAPI, UserAPI } from '../api/index';
+import { CommentAPI, UserAPI } from '@api';
 
 export default {
   props: ['seller'],

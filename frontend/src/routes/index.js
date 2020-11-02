@@ -1,28 +1,28 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import MainView from '../views/MainView.vue';
-import PageNotFound from '../views/PageNotFound.vue';
-import PageNotAllowed from '../views/PageNotAllowed.vue';
-import DashBoardView from '../views/DashBoardView.vue';
-import ProductCreateView from '../views/ProductCreateView.vue';
-import ProductDetailView from '../views/ProductDetailView.vue';
-import ProductUpdateView from '../views/ProductUpdateView.vue';
-import ReviewBoardView from '../views/ReviewBoardView.vue';
-import SignupView from '../views/SignupView.vue';
-import SearchView from '../views/SearchView.vue';
-import AdminView from '../views/AdminView.vue';
+import MainView from '@views/MainView.vue';
+import PageNotFound from '@views/PageNotFound.vue';
+import PageNotAllowed from '@views/PageNotAllowed.vue';
+import DashBoardView from '@views/DashBoardView.vue';
+import ProductCreateView from '@views/ProductCreateView.vue';
+import ProductDetailView from '@views/ProductDetailView.vue';
+import ProductUpdateView from '@views/ProductUpdateView.vue';
+import ReviewBoardView from '@views/ReviewBoardView.vue';
+import SignupView from '@views/SignupView.vue';
+import SearchView from '@views/SearchView.vue';
+import AdminView from '@views/AdminView.vue';
 
 // sub component for Dashboard
-import DashBoard from '../components/DashBoard.vue';
-import UserCart from '../components/UserCart.vue';
-import UserSelling from '../components/UserSelling.vue';
-import UserBuying from '../components/UserBuying.vue';
-import UserAlarm from '../components/UserAlarm.vue';
-import UserProfile from '../components/UserProfile.vue';
+import DashBoard from '@components/DashBoard.vue';
+import UserCart from '@components/UserCart.vue';
+import UserSelling from '@components/UserSelling.vue';
+import UserBuying from '@components/UserBuying.vue';
+import UserAlarm from '@components/UserAlarm.vue';
+import UserProfile from '@components/UserProfile.vue';
 
 // import store for navigation gurad
-import store from '../store/index';
-import { UserAPI } from '../api';
+import store from '@store';
+import { UserAPI } from '@api';
 
 Vue.use(VueRouter);
 

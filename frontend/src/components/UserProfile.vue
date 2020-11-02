@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import { UserAPI } from '../api';
+import { UserAPI } from '@api';
 
 export default {
   data() {
@@ -146,5 +146,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

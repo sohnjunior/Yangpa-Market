@@ -88,9 +88,9 @@
 </template>
 
 <script>
-import EventBus from '../../utils/bus';
-import LoginModal from '../Modals/LoginModal.vue';
-import { deleteCookie } from '../../utils/cookies.js';
+import EventBus from '@utils/bus';
+import LoginModal from '@components/Modals/LoginModal.vue';
+import { deleteCookie } from '@utils/cookies.js';
 
 export default {
   data() {

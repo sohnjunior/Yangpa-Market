@@ -29,8 +29,8 @@
 </template>
 
 <script>
-import CartProductCard from '../components/Cards/CartProductCard.vue';
-import { CartAPI } from '../api';
+import CartProductCard from '@components/Cards/CartProductCard.vue';
+import { CartAPI } from '@api';
 
 export default {
   data() {

@@ -35,8 +35,8 @@
 </template>
 
 <script>
-import ReviewCreateModal from './Modals/ReviewCreateModal';
-import { OrderAPI } from '../api';
+import ReviewCreateModal from '@components/Modals/ReviewCreateModal';
+import { OrderAPI } from '@api';
 
 export default {
   components: { ReviewCreateModal },

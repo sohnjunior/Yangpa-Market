@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { OrderAPI, ProductAPI } from '../api';
+import { OrderAPI, ProductAPI } from '@api';
 
 export default {
   data() {
