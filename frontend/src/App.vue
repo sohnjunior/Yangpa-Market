@@ -1,19 +1,19 @@
 <template>
   <v-app>
-    <AppBar></AppBar>
+    <AppBar />
     <v-content>
-      <SnackBar></SnackBar>
+      <SnackBar />
       <transition name="fade">
-        <router-view></router-view>
+        <router-view />
       </transition>
     </v-content>
-    <Footer class="mt-10"></Footer>
+    <Footer class="mt-10" />
   </v-app>
 </template>
 
 <script>
-import AppBar from './components/AppBar';
-import Footer from './components/Footer';
+import AppBar from './components/Common/AppBar';
+import Footer from './components/Common/Footer';
 import SnackBar from './components/SnackBar';
 
 export default {

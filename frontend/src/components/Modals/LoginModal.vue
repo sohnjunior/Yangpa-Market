@@ -69,8 +69,8 @@
 </template>
 
 <script>
-import EventBus from '../EventBus';
-import { validateEmail } from '../utils/validators';
+import EventBus from '../../utils/bus';
+import { validateEmail } from '../../utils/validators';
 
 export default {
   data() {

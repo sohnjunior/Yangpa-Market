@@ -48,7 +48,7 @@
 
 <script>
 import { ReviewAPI } from '../api';
-import reviewModal from '../components/ReviewModal.vue';
+import reviewModal from '../components/Modals/ReviewModal.vue';
 
 export default {
   data() {

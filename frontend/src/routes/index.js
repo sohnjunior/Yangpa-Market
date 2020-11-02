@@ -14,11 +14,11 @@ import AdminView from '../views/AdminView.vue';
 
 // sub component for Dashboard
 import DashBoard from '../components/DashBoard.vue';
-import UserCart from '../components/Cart.vue';
+import UserCart from '../components/UserCart.vue';
 import UserSelling from '../components/UserSelling.vue';
 import UserBuying from '../components/UserBuying.vue';
 import UserAlarm from '../components/UserAlarm.vue';
-import UserProfile from '../components/Profile.vue';
+import UserProfile from '../components/UserProfile.vue';
 
 // import store for navigation gurad
 import store from '../store/index';

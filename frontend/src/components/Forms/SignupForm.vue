@@ -109,12 +109,12 @@
 </template>
 
 <script>
-import { UserAPI } from '../api';
+import { UserAPI } from '../../api';
 import {
   validateEmail,
   validatePassword,
   validatePhoneNum,
-} from '../utils/validators';
+} from '../../utils/validators';
 
 export default {
   data() {

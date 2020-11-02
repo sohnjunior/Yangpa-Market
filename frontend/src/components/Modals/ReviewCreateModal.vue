@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { ReviewAPI } from '../api';
+import { ReviewAPI } from '../../api';
 
 export default {
   props: ['show'],
@@ -96,5 +96,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

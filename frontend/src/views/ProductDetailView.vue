@@ -83,8 +83,8 @@
 <script>
 import { ProductAPI, RecommendationAPI, CartAPI } from '../api';
 import CommentList from '../components/CommentList';
-import RelatedProductCard from '../components/RelatedProductCard.vue';
-import EventBus from '../EventBus';
+import RelatedProductCard from '../components/Cards/RelatedProductCard.vue';
+import EventBus from '../utils/bus';
 
 export default {
   components: {

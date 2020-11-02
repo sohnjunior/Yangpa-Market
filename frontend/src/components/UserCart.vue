@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import CartProductCard from '../components/CartProductCard.vue';
+import CartProductCard from '../components/Cards/CartProductCard.vue';
 import { CartAPI } from '../api';
 
 export default {

@@ -162,8 +162,8 @@
 
 <script>
 import { ProductAPI, RecommendationAPI } from '../api';
-import ProductCard from '../components/ProductCard.vue';
-import PopularProductCard from '../components/PopularProductCard.vue';
+import ProductCard from '../components/Cards/ProductCard.vue';
+import PopularProductCard from '../components/Cards/PopularProductCard.vue';
 
 export default {
   data() {

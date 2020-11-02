@@ -1,9 +1,9 @@
 <template>
-  <SignupForm></SignupForm>
+  <SignupForm />
 </template>
 
 <script>
-import SignupForm from '../components/SignupForm';
+import SignupForm from '../components/Forms/SignupForm';
 
 export default {
   components: {
