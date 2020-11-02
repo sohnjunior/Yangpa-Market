@@ -7,7 +7,7 @@
             <h2 class="font-weight-medium">Login</h2>
           </v-col>
           <v-col cols="2">
-            <v-btn icon color="grey" @click="modalDestroy">
+            <v-btn icon color="grey" @click="closeModal">
               <v-icon>mdi-close-circle</v-icon>
             </v-btn>
           </v-col>
@@ -52,7 +52,7 @@
               rounded
               color="orange"
               class="white--text"
-              @click="Login"
+              @click="login"
               :disabled="!valid"
               >로그인하기</v-btn
             >
@@ -69,10 +69,11 @@
 </template>
 
 <script>
-import EventBus from '../../utils/bus';
-import { validateEmail } from '../../utils/validators';
+import EventBus from '@utils/bus';
+import { validateEmail } from '@utils/validators';
 
 export default {
+  props: ['dialog'],
   data() {
     return {
       valid: false,
@@ -88,19 +89,18 @@ export default {
       ],
     };
   },
-  props: ['dialog'],
   methods: {
     // 로그인하기 or 취소 버튼 클릭 시 부모 컴포넌트에 이벤트 전달
-    modalDestroy() {
+    closeModal() {
       this.$emit('modalDestroy');
     },
 
     moveRegister() {
-      this.modalDestroy();
+      this.closeModal();
       this.$router.push('/signup');
     },
 
-    async Login() {
+    async login() {
       const userData = {
         email: this.email,
         password: this.password,
@@ -108,8 +108,8 @@ export default {
 
       const success = await this.$store.dispatch('LOGIN', userData);
       if (success) {
-        EventBus.$emit('popUp', '로그인 되었습니다.');
-        this.modalDestroy();
+        EventBus.$emit('pop-up', '로그인 되었습니다.');
+        this.closeModal();
       } else {
         alert('이메일 혹은 비밀번호를 확인해주세요');
       }

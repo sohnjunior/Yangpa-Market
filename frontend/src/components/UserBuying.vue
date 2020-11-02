@@ -40,6 +40,7 @@ import { OrderAPI } from '@api';
 
 export default {
   components: { ReviewCreateModal },
+
   data() {
     return {
       dialog: false,
@@ -118,7 +119,6 @@ export default {
       this.show = true;
     },
     closeDialog(item) {
-      console.log(item);
       this.show = false;
     },
   },

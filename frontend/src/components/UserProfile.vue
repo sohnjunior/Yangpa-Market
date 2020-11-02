@@ -107,6 +107,14 @@ export default {
       menu: false,
     };
   },
+
+  computed: {
+    passwordConfirmationRule() {
+      return () =>
+        this.password === this.confirmpassword || 'Password must match';
+    },
+  },
+
   async created() {
     const { data } = await UserAPI.fetchUser();
     this.email = data.result.email;
@@ -117,6 +125,7 @@ export default {
     this.sex = data.result.sex;
     this.birthday = data.result.birthday.substr(0, 10);
   },
+
   methods: {
     async submitForm() {
       const userData = {
@@ -135,12 +144,6 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    },
-  },
-  computed: {
-    passwordConfirmationRule() {
-      return () =>
-        this.password === this.confirmpassword || 'Password must match';
     },
   },
 };

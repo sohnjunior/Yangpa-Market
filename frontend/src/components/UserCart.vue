@@ -33,6 +33,8 @@ import CartProductCard from '@components/Cards/CartProductCard.vue';
 import { CartAPI } from '@api';
 
 export default {
+  components: { CartProductCard },
+
   data() {
     return {
       picks: [],
@@ -49,8 +51,6 @@ export default {
       return sum;
     },
   },
-
-  components: { CartProductCard },
 
   async created() {
     const { data } = await CartAPI.fetchAllCartProducts();

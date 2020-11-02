@@ -148,6 +148,15 @@ export default {
       valid: false,
     };
   },
+
+  computed: {
+    passwordConfirmationRule() {
+      return () =>
+        this.password === this.confirmpassword ||
+        '비밀번호가 일치하지 않습니다.';
+    },
+  },
+
   methods: {
     async submitForm() {
       //비밀번호 확인, 이메일, 닉네임 필히 기재 알람 필요
@@ -168,13 +177,6 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    },
-  },
-  computed: {
-    passwordConfirmationRule() {
-      return () =>
-        this.password === this.confirmpassword ||
-        '비밀번호가 일치하지 않습니다.';
     },
   },
 };

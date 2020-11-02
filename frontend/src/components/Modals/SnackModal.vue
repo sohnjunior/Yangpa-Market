@@ -22,7 +22,7 @@ export default {
     };
   },
   created() {
-    EventBus.$on('popUp', (message) => {
+    EventBus.$on('pop-up', (message) => {
       this.snackbar = true;
       this.text = message;
     });

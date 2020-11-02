@@ -147,6 +147,12 @@ export default {
     };
   },
 
+  computed: {
+    formTitle() {
+      return !this.editFlag ? '댓글 작성' : '댓글 수정';
+    },
+  },
+
   async created() {
     this.postId = this.$route.params.id;
     const comments = await CommentAPI.fetchComment(this.postId);
@@ -161,12 +167,6 @@ export default {
     }
   },
 
-  computed: {
-    formTitle() {
-      return !this.editFlag ? '댓글 작성' : '댓글 수정';
-    },
-  },
-
   methods: {
     haveAuth(email) {
       return email === this.$store.getters.getEmail;
@@ -174,8 +174,9 @@ export default {
 
     // 삭제 버튼 토글 함수
     deleteButton(item) {
-      confirm('해당 댓글을 삭제하시겠습니까?') &&
+      if (confirm('해당 댓글을 삭제하시겠습니까?')) {
         this.CommentAPI.deleteComments(item);
+      }
     },
 
     // 댓글 수정 토글 함수
@@ -191,20 +192,16 @@ export default {
       if (!this.$store.getters.isLoggedIn) {
         alert('로그인이 필요한 서비스입니다.');
         return;
-      } else {
-        this.comment = '';
-        this.editFlag = false;
-        this.dialog = true;
       }
+
+      this.comment = '';
+      this.editFlag = false;
+      this.dialog = true;
     },
 
     // 모달 확인 버튼 토글 함수
     confirmButton() {
-      if (this.editFlag) {
-        this.updateComments();
-      } else {
-        this.createComments();
-      }
+      this.editFlag ? this.updateComments() : this.createComments();
       this.closeButton();
     },
 
@@ -218,9 +215,10 @@ export default {
       try {
         await CommentAPI.deleteComment({ commentID: item.id });
       } catch (err) {
-        console.log(err);
+        console.error(err);
+      } finally {
+        this.dialog = false;
       }
-      this.dialog = false;
     },
 
     // 댓글 업데이트 함수
@@ -237,17 +235,17 @@ export default {
 
     // 새로운 댓글 생성하는 axios 통신 함수
     async createComments() {
-      const Comment = {
+      const comment = {
         postId: this.postId,
         comment: this.comment,
         secret: this.secret,
       };
 
       try {
-        await CommentAPI.createComment(Comment);
+        await CommentAPI.createComment(comment);
         this.$router.go(0); // refresh the page
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     },
   },

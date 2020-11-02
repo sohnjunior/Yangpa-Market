@@ -2,7 +2,7 @@
   <v-app>
     <AppBar />
     <v-content>
-      <SnackBar />
+      <SnackModal />
       <transition name="fade">
         <router-view />
       </transition>
@@ -14,7 +14,7 @@
 <script>
 import AppBar from '@components/Common/AppBar';
 import Footer from '@components/Common/Footer';
-import SnackBar from '@components/SnackBar';
+import SnackModal from '@components/Modals/SnackModal';
 
 export default {
   name: 'App',
@@ -22,7 +22,7 @@ export default {
   components: {
     AppBar,
     Footer,
-    SnackBar,
+    SnackModal,
   },
 };
 </script>

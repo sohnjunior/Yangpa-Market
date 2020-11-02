@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { ReviewAPI } from '../../api';
+import { ReviewAPI } from '@api';
 
 export default {
   props: ['show'],
@@ -70,7 +70,6 @@ export default {
     };
   },
   methods: {
-    // 확인 버튼 클릭 시 이벤트 핸들러
     async handleConfirm() {
       const formData = new FormData();
       formData.append('title', this.title);
@@ -80,11 +79,9 @@ export default {
       formData.append('email', this.$store.getters.getEmail);
 
       const { data } = await ReviewAPI.createReview(formData);
-      console.log(data);
       this.$emit('closeDialog');
     },
 
-    // 파일 변경 시 이벤트 핸들러
     selectFile(file) {
       this.image = file;
     },

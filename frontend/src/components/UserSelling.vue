@@ -95,6 +95,7 @@ export default {
       soldList: [],
     };
   },
+
   async created() {
     const userData = { email: this.$store.getters.getEmail };
     const { data } = await OrderAPI.fetchSalesOrder(userData);

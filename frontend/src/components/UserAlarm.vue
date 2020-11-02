@@ -77,11 +77,13 @@ export default {
       orderList: [],
     };
   },
+
   async created() {
     const { data } = await OrderAPI.fetchPendingOrder();
     this.productList = data.products;
     this.orderList = data.orders;
   },
+
   methods: {
     async approve(item) {
       await OrderAPI.approveOrder({ postID: item.postId });

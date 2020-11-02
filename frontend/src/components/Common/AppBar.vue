@@ -93,14 +93,12 @@ import LoginModal from '@components/Modals/LoginModal.vue';
 import { deleteCookie } from '@utils/cookies.js';
 
 export default {
+  components: { LoginModal },
   data() {
     return {
       keyword: '',
       dialog: false,
     };
-  },
-  components: {
-    LoginModal,
   },
   computed: {
     isLoggedIn() {
@@ -108,32 +106,26 @@ export default {
     },
   },
   methods: {
-    // 로그인 모달 팝업
     loginClicked() {
       this.dialog = true;
     },
-    // 로그아웃
     logoutClicked() {
       deleteCookie('auth_email');
       deleteCookie('auth_token');
-      EventBus.$emit('popUp', '로그아웃 되었습니다.');
+      EventBus.$emit('pop-up', '로그아웃 되었습니다.');
       this.$router.go(0);
     },
-    // 로그인하기 or 취소 버튼 클릭 시
     modalDestroy() {
       this.dialog = false;
     },
-    // 검색
     search() {
       this.$router.push(`/search/${this.keyword}`);
       this.keyword = '';
       this.$router.go(0);
     },
-    // 대시보드로 이동
     routeToDashboard() {
       this.$router.push('/dashboard/cart');
     },
-    // 홈으로 이동
     comeBackHome() {
       this.$router.push('/');
     },

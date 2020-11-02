@@ -132,7 +132,7 @@ export default {
         productID: this.productID,
       };
       await CartAPI.createCartProduct(payload);
-      EventBus.$emit('popUp', '장바구니에 추가되었습니다.');
+      EventBus.$emit('pop-up', '장바구니에 추가되었습니다.');
     },
 
     // 좋아요 + 1
