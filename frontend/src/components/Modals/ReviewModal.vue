@@ -51,9 +51,8 @@
 export default {
   props: ['show', 'title', 'writer', 'image', 'body', 'rating', 'like'],
   methods: {
-    // 확인 버튼 클릭 시 이벤트 핸들러
     closeDialog() {
-      this.$emit('closeDialog');
+      this.$emit('close-dialog');
     },
   },
 };

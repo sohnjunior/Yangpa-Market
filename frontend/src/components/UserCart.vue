@@ -11,7 +11,7 @@
             :price="product.price"
             :image="product.image"
             :status="product.sold"
-            @deleteProduct="removeFromCart"
+            @delete-product="removeFromCart"
           />
         </li>
         <br />

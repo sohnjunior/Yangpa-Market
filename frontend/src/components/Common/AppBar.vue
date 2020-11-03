@@ -9,7 +9,6 @@
         transition="scale-transition"
         width="40"
       />
-
       <span class="title-text deep-orange--text text--lighten-3" text @click="comeBackHome">
         <h2 class="transition-swing app-name ml-2 mt-2">양파 마켓</h2>
       </span>
@@ -63,7 +62,7 @@
         </v-list-item>
       </v-list>
     </v-menu>
-    <LoginModal :dialog="dialog" @modalDestroy="modalDestroy"></LoginModal>
+    <LoginModal :dialog="dialog" @close-modal="closeModal"></LoginModal>
   </v-app-bar>
 </template>
 
@@ -94,7 +93,7 @@ export default {
       EventBus.$emit('pop-up', '로그아웃 되었습니다.');
       this.$router.go(0);
     },
-    modalDestroy() {
+    closeModal() {
       this.dialog = false;
     },
     search() {

@@ -18,23 +18,19 @@
 <script>
 import { UserAPI } from '@api';
 
+const headers = [
+  { text: 'Email', align: 'start', value: 'email', sortable: false },
+  { text: '닉네임', align: 'start', value: 'nickname', sortable: false },
+  { text: '전화번호', align: 'start', value: 'phone', sortable: false },
+  { text: '성별', align: 'start', value: 'sex', sortable: false },
+  { text: '생년월일', align: 'start', value: 'birthday', sortable: false },
+  { text: 'Delete', align: 'end', value: 'actions', sortable: false },
+];
+
 export default {
   data() {
     return {
       dialog: false,
-      headers: [
-        { text: 'Email', align: 'start', value: 'email', sortable: false },
-        { text: '닉네임', align: 'start', value: 'nickname', sortable: false },
-        { text: '전화번호', align: 'start', value: 'phone', sortable: false },
-        { text: '성별', align: 'start', value: 'sex', sortable: false },
-        {
-          text: '생년월일',
-          align: 'start',
-          value: 'birthday',
-          sortable: false,
-        },
-        { text: 'Delete', align: 'end', value: 'actions', sortable: false },
-      ],
       userlist: [],
       idx: 0,
       email: '',
@@ -43,18 +39,19 @@ export default {
 
   async created() {
     const { data } = await UserAPI.fetchAllUser();
-
     this.userlist = data;
+    this.headers = headers;
   },
 
   methods: {
     check(item) {
-      confirm('해당 유저를 삭제하시겠습니까') && UserAPI.deleteUser(item);
+      if (confirm('해당 유저를 삭제하시겠습니까')) {
+        UserAPI.deleteUser(item);
+      }
     },
 
     async deleteUser(item) {
       const index = this.userlist.indexOf(item);
-
       const Todelete = { email: this.userlist[index].email };
 
       try {

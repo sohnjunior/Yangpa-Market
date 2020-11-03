@@ -55,12 +55,11 @@
 import { ProductAPI } from '@api';
 import { mapGetters } from 'vuex';
 
+const items = ['전공서적', '원룸', '회원권', '의류', '기타'];
+
 export default {
   data() {
     return {
-      // 지원하고 있는 상품 카테고리
-      items: ['전공서적', '원룸', '회원권', '의류', '기타'],
-
       title: '',
       image: '',
       category: '',
@@ -79,6 +78,10 @@ export default {
 
   computed: {
     ...mapGetters({ userEmail: 'getEmail' }),
+  },
+
+  created() {
+    this.items = items;
   },
 
   methods: {

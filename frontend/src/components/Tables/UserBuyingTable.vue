@@ -16,7 +16,7 @@
       </template>
       <template v-slot:item.actions="{ item }">
         <v-btn @click="showReviewModal"> 후기 등록 </v-btn>
-        <ReviewCreateModal :show="show" @closeDialog="closeDialog(item)" />
+        <ReviewCreateModal :show="show" @close-dialog="closeDialog(item)" />
       </template>
     </v-data-table>
   </v-container>

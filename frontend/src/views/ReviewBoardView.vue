@@ -32,9 +32,9 @@
           </tbody>
         </template>
       </v-simple-table>
-      <review-modal
+      <ReviewModal
         :show="showDialog"
-        @closeDialog="closeModal"
+        @close-dialog="closeModal"
         :title="selectedTitle"
         :writer="selectedReviewer"
         :image="selectedImage"
@@ -48,10 +48,10 @@
 
 <script>
 import { ReviewAPI } from '@api';
-import reviewModal from '@components/Modals/ReviewModal.vue';
+import ReviewModal from '@components/Modals/ReviewModal.vue';
 
 export default {
-  components: { reviewModal },
+  components: { ReviewModal },
 
   data() {
     return {

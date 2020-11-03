@@ -90,7 +90,7 @@ export default {
   },
   methods: {
     closeModal() {
-      this.$emit('modalDestroy');
+      this.$emit('close-modal');
     },
 
     moveRegister() {

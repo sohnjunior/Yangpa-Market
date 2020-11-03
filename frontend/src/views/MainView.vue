@@ -139,6 +139,15 @@ import { ProductAPI, RecommendationAPI } from '@api';
 import ProductCard from '@components/Cards/ProductCard.vue';
 import PopularProductCard from '@components/Cards/PopularProductCard.vue';
 
+const items = ['등록일순', '조회순', '가격순'];
+const categoryMap = {
+  전공서적: 'books',
+  원룸: 'rooms',
+  회원권: 'tickets',
+  의류: 'clothes',
+  기타: 'others',
+};
+
 export default {
   components: {
     ProductCard,
@@ -147,19 +156,10 @@ export default {
 
   data() {
     return {
-      items: ['등록일순', '조회순', '가격순'],
       pivot: '',
       products: [],
       populars: [],
       category: '',
-      categoryMap: {
-        전공서적: 'books',
-        원룸: 'rooms',
-        회원권: 'tickets',
-        의류: 'clothes',
-        기타: 'others',
-      },
-      slides: ['First', 'Second', 'Third', 'Fourth', 'Fifth'],
     };
   },
 
@@ -167,7 +167,7 @@ export default {
     categorized() {
       const categorized = [];
       for (let i = 0; i < this.products.length; i++) {
-        if (this.products[i].product.category.title === this.categoryMap[this.category]) {
+        if (this.products[i].product.category.title === categoryMap[this.category]) {
           categorized.push(this.products[i]);
         }
       }
@@ -191,14 +191,8 @@ export default {
     },
   },
 
-  methods: {
-    // 선택된 카테고리에 따라 상품 출력
-    categorySelected(category) {
-      this.category = category;
-    },
-  },
-  // created 라이프 사이클에 카테고리 전체로 설정하고 상품 데이터 로드
   async created() {
+    this.items = items;
     this.category = '전공서적';
     this.pivot = '등록일순';
 
@@ -212,6 +206,13 @@ export default {
     if (this.populars.length > 4) {
       this.populars = this.populars.slice(0, 10);
     }
+  },
+
+  methods: {
+    // 선택된 카테고리에 따라 상품 출력
+    categorySelected(category) {
+      this.category = category;
+    },
   },
 };
 </script>

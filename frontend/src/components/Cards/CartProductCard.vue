@@ -29,6 +29,7 @@
 
 <script>
 export default {
+  props: ['id', 'name', 'price', 'image', 'status'],
   data() {
     return {
       onSale: {
@@ -39,7 +40,6 @@ export default {
       },
     };
   },
-  props: ['id', 'name', 'price', 'image', 'status'],
   computed: {
     statusMessage() {
       return this.status ? '판매완료' : '판매중';
@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     deleteProduct() {
-      this.$emit('deleteProduct', this.id);
+      this.$emit('delete-product', this.id);
       this.$router.go(0);
     },
   },

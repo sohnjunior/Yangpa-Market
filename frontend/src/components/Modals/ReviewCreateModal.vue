@@ -76,7 +76,7 @@ export default {
       formData.append('email', this.userEmail);
 
       const { data } = await ReviewAPI.createReview(formData);
-      this.$emit('closeDialog');
+      this.closeDialog();
     },
 
     selectFile(file) {
@@ -84,7 +84,7 @@ export default {
     },
 
     closeDialog() {
-      this.$emit('closeDialog');
+      this.$emit('close-dialog');
     },
   },
 };
