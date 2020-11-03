@@ -7,14 +7,14 @@
             color="light-green lighten-4"
             depressed
             x-large
-            @click="categorySelected('전공서적')"
+            @click="onSelectCategory('전공서적')"
           >
             <v-img class="btn-image" :src="require('@/assets/study.svg')" />
             <span class="ml-2 category"> 전공서적 </span>
           </v-btn>
         </v-col>
         <v-col>
-          <v-btn color="light-green lighten-4" depressed x-large @click="categorySelected('원룸')">
+          <v-btn color="light-green lighten-4" depressed x-large @click="onSelectCategory('원룸')">
             <v-img class="btn-image" :src="require('@/assets/room.svg')" />
             <span class="ml-2 category"> 원룸 </span>
           </v-btn>
@@ -24,20 +24,20 @@
             color="light-green lighten-4"
             depressed
             x-large
-            @click="categorySelected('회원권')"
+            @click="onSelectCategory('회원권')"
           >
             <v-img class="btn-image" :src="require('@/assets/ticket.svg')" />
             <span class="ml-2 category"> 회원권 </span>
           </v-btn>
         </v-col>
         <v-col>
-          <v-btn color="light-green lighten-4" depressed x-large @click="categorySelected('의류')">
+          <v-btn color="light-green lighten-4" depressed x-large @click="onSelectCategory('의류')">
             <v-img class="btn-image" :src="require('@/assets/clothes.svg')" />
             <span class="ml-2 category"> 의류 </span>
           </v-btn>
         </v-col>
         <v-col>
-          <v-btn color="light-green lighten-4" depressed x-large @click="categorySelected('기타')">
+          <v-btn color="light-green lighten-4" depressed x-large @click="onSelectCategory('기타')">
             <v-img class="btn-image" :src="require('@/assets/box.svg')" />
             <span class="ml-2 category"> 기타 </span>
           </v-btn>
@@ -165,29 +165,16 @@ export default {
 
   computed: {
     categorized() {
-      const categorized = [];
-      for (let i = 0; i < this.products.length; i++) {
-        if (this.products[i].product.category.title === categoryMap[this.category]) {
-          categorized.push(this.products[i]);
-        }
-      }
-
-      return categorized;
+      return this.products.filter(
+        ({ product }) => product.category.title === categoryMap[this.category]
+      );
     },
     sorted() {
-      if (this.pivot === '등록일순') {
-        return this.categorized.slice().sort((a, b) => {
-          return b.createdAt - a.createdAt;
-        });
-      } else if (this.pivot === '조회순') {
-        return this.categorized.slice().sort((a, b) => {
-          return b.hit - a.hit;
-        });
-      } else {
-        return this.categorized.slice().sort((a, b) => {
-          return a.product.price - b.product.price;
-        });
-      }
+      return [...this.categorized].sort((a, b) => {
+        if (this.pivot === '등록일순') return a.createdAt - a.createdAt;
+        else if (this.pivot === '조회순') return b.hit - a.hit;
+        else return a.product.price - b.product.price;
+      });
     },
   },
 
@@ -201,16 +188,14 @@ export default {
     this.products = data;
 
     // 인기 상품 조회
-    const result = await RecommendationAPI.fetchPopularProducts();
-    this.populars = result.data.result;
-    if (this.populars.length > 4) {
-      this.populars = this.populars.slice(0, 10);
-    }
+    const {
+      data: { result },
+    } = await RecommendationAPI.fetchPopularProducts();
+    this.populars = result.length > 4 ? result.slice(0, 10) : result;
   },
 
   methods: {
-    // 선택된 카테고리에 따라 상품 출력
-    categorySelected(category) {
+    onSelectCategory(category) {
       this.category = category;
     },
   },

@@ -1,18 +1,16 @@
 const passport = require('passport');
 const UserService = require('../services/users');
-const { HTTP400Error } = require('../utils/errors');
+const { HTTP400Error, HTTP401Error } = require('../utils/errors');
 
 const getUsers = async (req, res, next) => {
   try {
     const users = await UserService.getAllUserExceptAdmin();
 
-    res
-      .status(200)
-      .json({
-        status: 'ok',
-        message: '관리자를 제외한 모든 유저 정보 조회',
-        user: users,
-      });
+    res.status(200).json({
+      status: 'ok',
+      message: '관리자를 제외한 모든 유저 정보 조회',
+      user: users,
+    });
   } catch (err) {
     next(err);
   }

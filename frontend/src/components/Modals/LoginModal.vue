@@ -52,7 +52,7 @@
               rounded
               color="orange"
               class="white--text"
-              @click="login"
+              @click="onClickLogin"
               :disabled="!valid"
               >로그인하기</v-btn
             >
@@ -98,7 +98,7 @@ export default {
       this.$router.push('/signup');
     },
 
-    async login() {
+    async onClickLogin() {
       const userData = {
         email: this.email,
         password: this.password,

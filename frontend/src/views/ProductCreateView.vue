@@ -3,13 +3,13 @@
     <h1 class="mt-6 mb-4 sub-title">새로운 중고상품 등록</h1>
 
     <v-container style="width: 60%">
-      <v-form v-model="valid">
+      <v-form v-model="isValid" @submit.prevent="onSubmit">
         <v-subheader>상품명</v-subheader>
         <v-text-field
           label="Solo"
           placeholder="어떤 상품인가요?"
           solo
-          :rules="titleRules"
+          :rules="this.rules.titleRules"
           v-model="title"
         />
 
@@ -18,19 +18,19 @@
           :items="items"
           label="카테고리 선택"
           solo
-          :rules="categoryRules"
-          @change="selectCategory"
+          :rules="this.rules.categoryRules"
+          @change="onSelectCategory"
         />
 
         <v-subheader>상품 사진</v-subheader>
-        <v-file-input label="File input" :rules="fileRules" @change="selectFile" />
+        <v-file-input label="File input" :rules="fileRules" @change="onSelectFile" />
 
         <v-subheader>희망 가격</v-subheader>
         <v-text-field
           label="Solo"
           placeholder="상품 가격"
           solo
-          :rules="priceRules"
+          :rules="this.rules.priceRules"
           v-model="price"
         />
 
@@ -40,13 +40,13 @@
           solo
           auto-grow
           rounded
-          :rules="bodyRules"
+          :rules="this.rules.bodyRules"
           v-model="body"
         />
+        <v-btn type="submit" class="mt-6" x-large color="success" :disabled="!isValid">
+          등록하기
+        </v-btn>
       </v-form>
-      <v-btn class="mt-6" x-large color="success" :disabled="!valid" @click="submit">
-        등록하기
-      </v-btn>
     </v-container>
   </v-container>
 </template>
@@ -55,7 +55,21 @@
 import { ProductAPI } from '@api';
 import { mapGetters } from 'vuex';
 
-const items = ['전공서적', '원룸', '회원권', '의류', '기타'];
+const categoryMap = {
+  회원권: 'tickets',
+  원룸: 'rooms',
+  전공서적: 'books',
+  의류: 'clothes',
+  기타: 'others',
+};
+
+const rules = {
+  titleRules: [(v) => !!v || '상품명을 입력해주세요'],
+  priceRules: [(v) => !!v || '가격을 입력해주세요'],
+  bodyRules: [(v) => !!v || '상품에 대해 설명해주세요'],
+  categoryRules: [(v) => !!v || '상품군이 무엇인가요?'],
+  fileRules: [(v) => !!v || '상품 사진이 필요해요'],
+};
 
 export default {
   data() {
@@ -65,14 +79,7 @@ export default {
       category: '',
       price: '',
       body: '',
-      valid: false,
-
-      // 필드 규칙
-      titleRules: [(v) => !!v || '상품명을 입력해주세요'],
-      priceRules: [(v) => !!v || '가격을 입력해주세요'],
-      bodyRules: [(v) => !!v || '상품에 대해 설명해주세요'],
-      categoryRules: [(v) => !!v || '상품군이 무엇인가요?'],
-      fileRules: [(v) => !!v || '상품 사진이 필요해요'],
+      isValid: false,
     };
   },
 
@@ -81,11 +88,12 @@ export default {
   },
 
   created() {
-    this.items = items;
+    this.items = Object.keys(categoryMap);
+    this.rules = rules;
   },
 
   methods: {
-    async submit() {
+    async onSubmit() {
       const formData = new FormData();
       formData.append('title', this.title);
       formData.append('image', this.image);
@@ -102,28 +110,12 @@ export default {
       }
     },
 
-    selectFile(file) {
+    onSelectFile(file) {
       this.image = file;
     },
 
-    selectCategory(category) {
-      switch (category) {
-        case '회원권':
-          this.category = 'tickets';
-          break;
-        case '전공서적':
-          this.category = 'books';
-          break;
-        case '원룸':
-          this.category = 'rooms';
-          break;
-        case '의류':
-          this.category = 'clothes';
-          break;
-        default:
-          this.category = 'others';
-          break;
-      }
+    onSelectCategory(category) {
+      this.category = categoryMap[category];
     },
   },
 };
