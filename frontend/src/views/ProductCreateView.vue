@@ -53,6 +53,7 @@
 
 <script>
 import { ProductAPI } from '@api';
+import { mapGetters } from 'vuex';
 
 export default {
   data() {
@@ -76,6 +77,10 @@ export default {
     };
   },
 
+  computed: {
+    ...mapGetters({ userEmail: 'getEmail' }),
+  },
+
   methods: {
     async submit() {
       const formData = new FormData();
@@ -84,7 +89,7 @@ export default {
       formData.append('category', this.category);
       formData.append('body', this.body);
       formData.append('price', this.price);
-      formData.append('email', this.$store.getters.getEmail);
+      formData.append('email', this.userEmail);
 
       try {
         await ProductAPI.createNewProduct(formData);

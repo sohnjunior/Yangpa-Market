@@ -7,6 +7,7 @@ import {
   saveAuthTokenToCookie,
   saveAuthEmailToCookie,
 } from '@utils/cookies.js';
+import { SET_ADMIN, SET_EMAIL, SET_TOKEN } from './mutation-types';
 
 Vue.use(Vuex);
 
@@ -29,23 +30,23 @@ export default new Vuex.Store({
   },
 
   mutations: {
-    setEmail(state, email) {
+    [SET_EMAIL](state, email) {
       state.email = email;
     },
-    setToken(state, token) {
+    [SET_TOKEN](state, token) {
       state.token = token;
     },
-    setAdmin(state, admin) {
+    [SET_ADMIN](state, admin) {
       state.admin = admin;
     },
   },
 
   actions: {
-    async LOGIN({ commit }, userData) {
+    async login({ commit }, userData) {
       try {
         const { data } = await UserAPI.signinUser(userData);
-        commit('setEmail', data.email);
-        commit('setToken', data.token);
+        commit(SET_EMAIL, data.email);
+        commit(SET_TOKEN, data.token);
         saveAuthEmailToCookie(data.email);
         saveAuthTokenToCookie(data.token);
         return true;

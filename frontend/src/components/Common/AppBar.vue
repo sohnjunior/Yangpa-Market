@@ -71,6 +71,7 @@
 import EventBus from '@utils/bus';
 import LoginModal from '@components/Modals/LoginModal.vue';
 import { deleteCookie } from '@utils/cookies.js';
+import { mapGetters } from 'vuex';
 
 export default {
   components: { LoginModal },
@@ -81,9 +82,7 @@ export default {
     };
   },
   computed: {
-    isLoggedIn() {
-      return this.$store.getters.isLoggedIn;
-    },
+    ...mapGetters(['isLoggedIn']),
   },
   methods: {
     loginClicked() {

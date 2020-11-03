@@ -26,6 +26,7 @@
 
 <script>
 import { OrderAPI, ProductAPI } from '@api';
+import { mapGetters } from 'vuex';
 
 export default {
   data() {
@@ -84,8 +85,12 @@ export default {
     };
   },
 
+  computed: {
+    ...mapGetters({ userEmail: 'getEmail' }),
+  },
+
   async created() {
-    const userData = { email: this.$store.getters.getEmail };
+    const userData = { email: this.userEmail };
     const { data } = await OrderAPI.fetchSalesOrder(userData);
 
     for (const p of data.products) {

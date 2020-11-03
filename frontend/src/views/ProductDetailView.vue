@@ -62,9 +62,9 @@
         </v-row>
       </v-content>
     </v-container>
-    <v-spacer class="mt-11"></v-spacer>
+    <v-spacer class="mt-11" />
     <hr />
-    <CommentList :seller="seller"></CommentList>
+    <CommentList :seller="seller" />
   </v-content>
 </template>
 
@@ -73,6 +73,7 @@ import { ProductAPI, RecommendationAPI, CartAPI } from '@api';
 import CommentList from '@components/Tables/CommentTable';
 import RelatedProductCard from '@components/Cards/RelatedProductCard.vue';
 import EventBus from '@utils/bus';
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
@@ -93,6 +94,10 @@ export default {
     };
   },
 
+  computed: {
+    ...mapGetters({ isLoggedIn: 'isLoggedIn', userEmail: 'getEmail' }),
+  },
+
   async created() {
     this.productID = this.$route.params.id;
     const { data } = await ProductAPI.fetchProduct(this.productID);
@@ -103,7 +108,7 @@ export default {
     this.productTitle = data.product.title;
     this.productPrice = data.product.price;
     this.sold = data.product.sold;
-    this.seller = data.user.email === this.$store.getters.getEmail;
+    this.seller = data.user.email === this.userEmail;
 
     const result = await RecommendationAPI.fetchRelatedProducts(this.productID);
     this.related = result.data.result;
@@ -112,7 +117,7 @@ export default {
 
   methods: {
     async addCart() {
-      if (!this.$store.getters.isLoggedIn) {
+      if (!this.isLoggedIn) {
         alert('로그인이 필요한 서비스입니다.');
         return;
       }

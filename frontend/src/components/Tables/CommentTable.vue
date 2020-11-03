@@ -90,6 +90,7 @@
 
 <script>
 import { CommentAPI, UserAPI } from '@api';
+import { mapGetters } from 'vuex';
 
 export default {
   props: ['seller'],
@@ -128,6 +129,7 @@ export default {
     formTitle() {
       return !this.editFlag ? '댓글 작성' : '댓글 수정';
     },
+    ...mapGetters({ isLoggedIn: 'isLoggedIn', userEmail: 'getEmail' }),
   },
 
   async created() {
@@ -136,7 +138,7 @@ export default {
     this.commentList = comments.data.comments;
 
     // 현재 로그인한 유저라면
-    if (this.$store.getters.isLoggedIn) {
+    if (this.isLoggedIn) {
       const {
         data: { isAdmin },
       } = await UserAPI.isAdminUser();
@@ -145,8 +147,8 @@ export default {
   },
 
   methods: {
-    haveAuth(email) {
-      return email === this.$store.getters.getEmail;
+    haveAuth(target) {
+      return target === this.userEmail;
     },
 
     // 삭제 버튼 토글 함수
@@ -166,7 +168,7 @@ export default {
 
     // 모달 확인버튼 토글 함수
     newButton() {
-      if (!this.$store.getters.isLoggedIn) {
+      if (!this.isLoggedIn) {
         alert('로그인이 필요한 서비스입니다.');
         return;
       }
@@ -220,7 +222,7 @@ export default {
 
       try {
         await CommentAPI.createComment(comment);
-        this.$router.go(0); // refresh the page
+        this.$router.go(0);
       } catch (error) {
         console.error(error);
       }

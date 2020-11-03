@@ -50,6 +50,7 @@
 
 <script>
 import { ReviewAPI } from '@api';
+import { mapGetters } from 'vuex';
 
 export default {
   props: ['show'],
@@ -62,6 +63,9 @@ export default {
       valid: false,
     };
   },
+  computed: {
+    ...mapGetters({ userEmail: 'getEmail' }),
+  },
   methods: {
     async handleConfirm() {
       const formData = new FormData();
@@ -69,7 +73,7 @@ export default {
       formData.append('image', this.image);
       formData.append('body', this.body);
       formData.append('rating', this.rating);
-      formData.append('email', this.$store.getters.getEmail);
+      formData.append('email', this.userEmail);
 
       const { data } = await ReviewAPI.createReview(formData);
       this.$emit('closeDialog');

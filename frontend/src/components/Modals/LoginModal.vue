@@ -69,6 +69,7 @@
 <script>
 import EventBus from '@utils/bus';
 import { validateEmail } from '@utils/validators';
+import { mapActions } from 'vuex';
 
 export default {
   props: ['dialog'],
@@ -88,7 +89,6 @@ export default {
     };
   },
   methods: {
-    // 로그인하기 or 취소 버튼 클릭 시 부모 컴포넌트에 이벤트 전달
     closeModal() {
       this.$emit('modalDestroy');
     },
@@ -104,7 +104,7 @@ export default {
         password: this.password,
       };
 
-      const success = await this.$store.dispatch('LOGIN', userData);
+      const success = await this.login(userData);
       if (success) {
         EventBus.$emit('pop-up', '로그인 되었습니다.');
         this.closeModal();
@@ -112,6 +112,7 @@ export default {
         alert('이메일 혹은 비밀번호를 확인해주세요');
       }
     },
+    ...mapActions(['login']),
   },
 };
 </script>
