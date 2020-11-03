@@ -2,35 +2,27 @@
   <v-card width="195" color="white">
     <v-list-item style="background-color: rgba(255, 245, 238, 0.4)">
       <v-list-item-content>
-        <v-list-item-title
-          style="font-family: 'Handon3gyeopsal300g'; font-size: 1.3rem"
-          id="title"
-          >{{ title }}</v-list-item-title
-        >
+        <v-list-item-title style="font-family: 'Handon3gyeopsal300g'; font-size: 1.3rem" id="title">
+          {{ title }}
+        </v-list-item-title>
         <v-list-item-subtitle id="category">
           <v-chip class="mt-2 mb-1" color="success" outlined small>
             {{ category }}
           </v-chip>
         </v-list-item-subtitle>
         <br />
-        <v-list-item-subtitle id="hit"
-          ><v-icon color="grey">mdi-eye-check-outline</v-icon>
+        <v-list-item-subtitle id="hit">
+          <v-icon color="grey">mdi-eye-check-outline</v-icon>
           <span class="ml-1">{{ hit }}</span>
         </v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
 
-    <v-img alt="이미지" :src="image" height="170"></v-img>
+    <v-img alt="이미지" :src="image" height="170" />
 
     <v-card-actions style="background-color: rgba(255, 245, 238, 0.4)">
       <v-row justify="center">
-        <v-btn
-          rounded
-          depressed
-          width="100"
-          color="warning"
-          :to="`/product/${productID}`"
-        >
+        <v-btn rounded depressed width="100" color="warning" :to="`/product/${productID}`">
           보러가기
         </v-btn>
       </v-row>

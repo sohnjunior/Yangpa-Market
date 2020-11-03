@@ -55,14 +55,14 @@
 
               <v-radio-group :row="true" class="mx-4" v-model="sex">
                 성별
-                <v-spacer></v-spacer>
+                <v-spacer />
                 <v-radio label="남" value="male"></v-radio>
                 <v-radio label="여" value="female"></v-radio>
               </v-radio-group>
 
               <v-radio-group :row="true" class="mx-4" v-model="admin">
                 관리자 계정
-                <v-spacer></v-spacer>
+                <v-spacer />
                 <v-radio label="예" :value="true"></v-radio>
                 <v-radio label="아니오" :value="false"></v-radio>
               </v-radio-group>
@@ -84,22 +84,16 @@
                       readonly
                       v-bind="attrs"
                       v-on="on"
-                    ></v-text-field>
+                    />
                   </template>
                   <v-date-picker v-model="birthday" no-title scrollable>
-                    <v-spacer></v-spacer>
-                    <v-btn text color="primary" @click="menu = false"
-                      >Cancel</v-btn
-                    >
-                    <v-btn text color="primary" @click="$refs.menu.save(date)"
-                      >OK</v-btn
-                    >
+                    <v-spacer />
+                    <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
+                    <v-btn text color="primary" @click="$refs.menu.save(date)">OK</v-btn>
                   </v-date-picker>
                 </v-menu>
               </v-col>
-              <v-btn large color="success" @click="submitForm" class="mx-4"
-                >가입하기</v-btn
-              >
+              <v-btn large color="success" @click="submitForm" class="mx-4">가입하기</v-btn>
             </v-form>
           </v-card>
         </v-col>
@@ -110,11 +104,7 @@
 
 <script>
 import { UserAPI } from '@api';
-import {
-  validateEmail,
-  validatePassword,
-  validatePhoneNum,
-} from '@utils/validators';
+import { validateEmail, validatePassword, validatePhoneNum } from '@utils/validators';
 
 export default {
   data() {
@@ -151,9 +141,7 @@ export default {
 
   computed: {
     passwordConfirmationRule() {
-      return () =>
-        this.password === this.confirmpassword ||
-        '비밀번호가 일치하지 않습니다.';
+      return () => this.password === this.confirmpassword || '비밀번호가 일치하지 않습니다.';
     },
   },
 

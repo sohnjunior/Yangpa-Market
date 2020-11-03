@@ -10,16 +10,12 @@
         width="40"
       />
 
-      <span
-        class="title-text deep-orange--text text--lighten-3"
-        text
-        @click="comeBackHome"
-      >
+      <span class="title-text deep-orange--text text--lighten-3" text @click="comeBackHome">
         <h2 class="transition-swing app-name ml-2 mt-2">양파 마켓</h2>
       </span>
     </div>
 
-    <v-spacer></v-spacer>
+    <v-spacer />
 
     <div>
       <v-text-field
@@ -33,7 +29,7 @@
         class="mt-7 mr-7"
         style="width: 350px"
         @keyup.enter="search"
-      ></v-text-field>
+      />
     </div>
     <v-btn class="mr-5 deep-orange--text text--lighten-3" text to="/review">
       <h3>상품 후기</h3>
@@ -47,29 +43,13 @@
     >
       <h3>로그인</h3>
     </v-btn>
-    <v-btn
-      class="mr-3 deep-orange--text text--lighten-3"
-      text
-      to="/signup"
-      v-if="!isLoggedIn"
-    >
+    <v-btn class="mr-3 deep-orange--text text--lighten-3" text to="/signup" v-if="!isLoggedIn">
       <h3>회원가입</h3>
     </v-btn>
 
-    <v-menu
-      text
-      bottom
-      origin="center center"
-      transition="scale-transition"
-      v-if="isLoggedIn"
-    >
+    <v-menu text bottom origin="center center" transition="scale-transition" v-if="isLoggedIn">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          v-bind="attrs"
-          v-on="on"
-          class="mr-4 deep-orange--text text--lighten-3"
-          text
-        >
+        <v-btn v-bind="attrs" v-on="on" class="mr-4 deep-orange--text text--lighten-3" text>
           <h3>회원정보</h3>
         </v-btn>
       </template>

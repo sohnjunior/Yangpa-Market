@@ -11,7 +11,7 @@
           solo
           :rules="titleRules"
           v-model="title"
-        ></v-text-field>
+        />
 
         <v-subheader>상품 카테고리</v-subheader>
         <v-select
@@ -20,14 +20,10 @@
           solo
           :rules="categoryRules"
           @change="selectCategory"
-        ></v-select>
+        />
 
         <v-subheader>상품 사진</v-subheader>
-        <v-file-input
-          label="File input"
-          :rules="fileRules"
-          @change="selectFile"
-        ></v-file-input>
+        <v-file-input label="File input" :rules="fileRules" @change="selectFile" />
 
         <v-subheader>희망 가격</v-subheader>
         <v-text-field
@@ -36,7 +32,7 @@
           solo
           :rules="priceRules"
           v-model="price"
-        ></v-text-field>
+        />
 
         <v-subheader>상품 설명</v-subheader>
         <v-textarea
@@ -46,22 +42,17 @@
           rounded
           :rules="bodyRules"
           v-model="body"
-        ></v-textarea>
+        />
       </v-form>
-      <v-btn
-        class="mt-6"
-        x-large
-        color="success"
-        :disabled="!valid"
-        @click="submit"
-        >등록하기</v-btn
-      >
+      <v-btn class="mt-6" x-large color="success" :disabled="!valid" @click="submit">
+        등록하기
+      </v-btn>
     </v-container>
   </v-container>
 </template>
 
 <script>
-import { ProductAPI } from '../api';
+import { ProductAPI } from '@api';
 
 export default {
   data() {
@@ -103,27 +94,28 @@ export default {
       }
     },
 
-    // 파일 변경 시 이벤트 핸들러
     selectFile(file) {
       this.image = file;
     },
 
-    // 카테고리 선택 시 이벤트 핸들러
     selectCategory(category) {
-      let selected = '';
-      if (category === '회원권') {
-        selected = 'tickets';
-      } else if (category === '전공서적') {
-        selected = 'books';
-      } else if (category === '원룸') {
-        selected = 'rooms';
-      } else if (category === '의류') {
-        selected = 'clothes';
-      } else {
-        selected = 'others';
+      switch (category) {
+        case '회원권':
+          this.category = 'tickets';
+          break;
+        case '전공서적':
+          this.category = 'books';
+          break;
+        case '원룸':
+          this.category = 'rooms';
+          break;
+        case '의류':
+          this.category = 'clothes';
+          break;
+        default:
+          this.category = 'others';
+          break;
       }
-
-      this.category = selected;
     },
   },
 };

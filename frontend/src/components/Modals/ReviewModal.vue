@@ -17,12 +17,7 @@
 
         <v-card-text>
           <v-subheader>포토리뷰</v-subheader>
-          <v-img
-            width="250"
-            height="200"
-            :src="image"
-            class="ml-6 mt-5"
-          ></v-img>
+          <v-img width="250" height="200" :src="image" class="ml-6 mt-5" />
 
           <v-subheader>작성자</v-subheader>
           <div class="ml-8 font-weight-bold">
@@ -40,7 +35,7 @@
             half-increments
             readonly
             size="25"
-          ></v-rating>
+          />
 
           <v-subheader>상품평</v-subheader>
           <div class="ml-8 mb-6 font-weight-regular">
@@ -64,5 +59,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

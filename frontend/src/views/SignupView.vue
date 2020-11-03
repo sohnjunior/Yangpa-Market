@@ -3,12 +3,10 @@
 </template>
 
 <script>
-import SignupForm from '../components/Forms/SignupForm';
+import SignupForm from '@components/Forms/SignupForm';
 
 export default {
-  components: {
-    SignupForm,
-  },
+  components: { SignupForm },
 };
 </script>
 

@@ -74,10 +74,10 @@ export default {
         return;
       }
 
-      let phone = prompt('핀매자와 연락할 수 있는 연락처를 남겨주세요!');
+      const phone = prompt('핀매자와 연락할 수 있는 연락처를 남겨주세요!');
       if (phone) {
         // 장바구니 모든 상품들에 대해 구매 요청 전송
-        for (let product of this.picks) {
+        for (const product of this.picks) {
           const payload = {
             postID: product.postId,
             productID: product.id,

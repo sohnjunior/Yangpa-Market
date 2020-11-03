@@ -1,8 +1,6 @@
 <template>
   <v-container>
-    <h1 class="mt-6 mb-4 sub-title">
-      &quot;{{ keyword }}&quot; 에 대한 검색 결과
-    </h1>
+    <h1 class="mt-6 mb-4 sub-title">&quot;{{ keyword }}&quot; 에 대한 검색 결과</h1>
 
     <v-container>
       <v-row>
@@ -25,23 +23,23 @@
 </template>
 
 <script>
-import { ProductAPI } from '../api';
-import ProductCard from '../components/Cards/ProductCard.vue';
+import { ProductAPI } from '@api';
+import ProductCard from '@components/Cards/ProductCard.vue';
 
 export default {
+  components: { ProductCard },
+
   data() {
     return {
       keyword: '',
       products: [],
     };
   },
+
   async created() {
     this.keyword = this.$route.params.keyword;
     const { data } = await ProductAPI.searchProduct(this.keyword);
     this.products = data.result;
-  },
-  components: {
-    ProductCard,
   },
 };
 </script>

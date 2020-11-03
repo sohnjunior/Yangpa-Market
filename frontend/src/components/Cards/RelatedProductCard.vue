@@ -13,16 +13,7 @@
         </v-expand-transition>
       </v-img>
       <v-card-text style="position: relative">
-        <v-btn
-          absolute
-          color="orange"
-          class="white--text"
-          fab
-          normal
-          right
-          top
-          @click="move"
-        >
+        <v-btn absolute color="orange" class="white--text" fab normal right top @click="move">
           <v-icon>mdi-cursor-default-click-outline</v-icon>
         </v-btn>
         <h3 class="font-weight-medium orange--text mb-2">{{ title }}</h3>

@@ -1,24 +1,14 @@
 <template>
   <v-container>
-    <v-data-table
-      :headers="onSaleHeaders"
-      :items="onSaleList"
-      class="elevation-1"
-    >
+    <v-data-table :headers="onSaleHeaders" :items="onSaleList" class="elevation-1">
       <template v-slot:top>
         <v-toolbar flat color="white">
-          <v-toolbar-title style="font-family: 'paybooc-Bold'">
-            판매 중
-          </v-toolbar-title>
+          <v-toolbar-title style="font-family: 'paybooc-Bold'"> 판매 중 </v-toolbar-title>
         </v-toolbar>
       </template>
       <template v-slot:item.actions="{ item }">
-        <v-icon small color="success" class="mr-2" @click="updateItem(item)">
-          mdi-pencil
-        </v-icon>
-        <v-icon small color="error" @click="deleteItem(item)">
-          mdi-delete
-        </v-icon>
+        <v-icon small color="success" class="mr-2" @click="updateItem(item)"> mdi-pencil </v-icon>
+        <v-icon small color="error" @click="deleteItem(item)"> mdi-delete </v-icon>
       </template>
     </v-data-table>
 
@@ -27,9 +17,7 @@
     <v-data-table :headers="headers" :items="soldList" class="elevation-1">
       <template v-slot:top>
         <v-toolbar flat color="white">
-          <v-toolbar-title style="font-family: 'paybooc-Bold'"
-            >판매 완료</v-toolbar-title
-          >
+          <v-toolbar-title style="font-family: 'paybooc-Bold'">판매 완료</v-toolbar-title>
         </v-toolbar>
       </template>
     </v-data-table>
@@ -124,9 +112,7 @@ export default {
 
     // 등록된 상품 삭제
     async deleteItem(item) {
-      const allow = confirm(
-        '<' + item.product.title + '> 판매글을 정말로 삭제하시겠습니까?'
-      );
+      const allow = confirm('<' + item.product.title + '> 판매글을 정말로 삭제하시겠습니까?');
       if (allow) {
         await ProductAPI.deletePost(item.title);
       }

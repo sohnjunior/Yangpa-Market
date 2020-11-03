@@ -11,24 +11,16 @@
       >
         <template v-slot:top>
           <v-toolbar flat color="white">
-            <v-toolbar-title style="font-family: 'paybooc-Bold'"
-              >댓글</v-toolbar-title
-            >
+            <v-toolbar-title style="font-family: 'paybooc-Bold'">댓글</v-toolbar-title>
 
-            <v-spacer></v-spacer>
-            <v-btn color="warning" depressed @click="newButton">
-              작성하기
-            </v-btn>
+            <v-spacer />
+            <v-btn color="warning" depressed @click="newButton"> 작성하기 </v-btn>
             <v-dialog v-model="dialog" max-width="500px">
               <v-card>
                 <v-card-title>
                   <span class="headline">{{ formTitle }}</span>
                 </v-card-title>
-                <v-card-text
-                  class="py-0"
-                  background-color="blue lighten-2"
-                  outline
-                >
+                <v-card-text class="py-0" background-color="blue lighten-2" outline>
                   <v-container>
                     <v-row>
                       <v-col cols="12">
@@ -42,10 +34,7 @@
                             autofocus
                             auto-grow
                             rows="7"
-                            :rules="[
-                              (v) =>
-                                !!v || '댓글을 적어도 1자 이상 입력해주세요!',
-                            ]"
+                            :rules="[(v) => !!v || '댓글을 적어도 1자 이상 입력해주세요!']"
                           ></v-textarea>
                         </v-form>
                       </v-col>
@@ -53,22 +42,12 @@
                   </v-container>
                 </v-card-text>
                 <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-checkbox
-                    v-model="secret"
-                    label="비밀댓글"
-                    class="mx-10"
-                  ></v-checkbox>
-                  <v-btn
-                    color="blue darken-1"
-                    text
-                    @click="confirmButton"
-                    :disabled="!valid"
+                  <v-spacer />
+                  <v-checkbox v-model="secret" label="비밀댓글" class="mx-10"></v-checkbox>
+                  <v-btn color="blue darken-1" text @click="confirmButton" :disabled="!valid"
                     >확인</v-btn
                   >
-                  <v-btn color="blue darken-1" text @click="closeButton"
-                    >취소</v-btn
-                  >
+                  <v-btn color="blue darken-1" text @click="closeButton">취소</v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -80,9 +59,7 @@
         <template v-slot:item.comment="{ item }">
           <span
             class="grey--text"
-            v-if="
-              !seller && !admin && item.secret && !haveAuth(item.user.email)
-            "
+            v-if="!seller && !admin && item.secret && !haveAuth(item.user.email)"
           >
             <v-icon small>mdi-lock</v-icon> 비밀댓글입니다.
           </span>

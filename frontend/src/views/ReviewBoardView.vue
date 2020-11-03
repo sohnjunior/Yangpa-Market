@@ -16,9 +16,9 @@
           <tbody>
             <tr v-for="item in reviews" :key="item.name">
               <td>
-                <span @click="handleClick(item)" id="review-title">{{
-                  item.title
-                }}</span>
+                <span @click="handleClick(item)" id="review-title">
+                  {{ item.title }}
+                </span>
               </td>
               <td>{{ item.user.nickname }}</td>
               <td>{{ item.hit }}</td>
@@ -47,10 +47,12 @@
 </template>
 
 <script>
-import { ReviewAPI } from '../api';
-import reviewModal from '../components/Modals/ReviewModal.vue';
+import { ReviewAPI } from '@api';
+import reviewModal from '@components/Modals/ReviewModal.vue';
 
 export default {
+  components: { reviewModal },
+
   data() {
     return {
       // 선택된 게시글의 정보들 모달 전달용
@@ -66,6 +68,13 @@ export default {
       reviews: [],
     };
   },
+
+  // 전체 게시글 호출해서 데이터 초기화하기
+  async created() {
+    const { data } = await ReviewAPI.fetchAllReviews();
+    this.reviews = data.reviews;
+  },
+
   methods: {
     async handleClick(content) {
       this.showDialog = true;
@@ -88,18 +97,10 @@ export default {
       this.showDialog = false;
     },
   },
-  components: { reviewModal },
-
-  // 전체 게시글 호출해서 데이터 초기화하기
-  async created() {
-    const { data } = await ReviewAPI.fetchAllReviews();
-    this.reviews = data.reviews;
-  },
 };
 </script>
 
 <style>
-/* 후기글 제목 마우스 hover 효과 */
 #review-title:hover {
   cursor: pointer;
 }

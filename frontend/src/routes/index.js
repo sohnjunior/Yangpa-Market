@@ -13,12 +13,11 @@ import SearchView from '@views/SearchView.vue';
 import AdminView from '@views/AdminView.vue';
 
 // sub component for Dashboard
-import DashBoard from '@components/DashBoard.vue';
 import UserCart from '@components/UserCart.vue';
-import UserSelling from '@components/UserSelling.vue';
-import UserBuying from '@components/UserBuying.vue';
-import UserAlarm from '@components/UserAlarm.vue';
-import UserProfile from '@components/UserProfile.vue';
+import UserSellingTable from '@components/Tables/UserSellingTable.vue';
+import UserBuyingTable from '@components/Tables/UserBuyingTable.vue';
+import UserAlarmTable from '@components/Tables/UserAlarmTable.vue';
+import UserProfileForm from '@components/Forms/UserProfileForm.vue';
 
 // import store for navigation gurad
 import store from '@store';
@@ -55,11 +54,6 @@ export const router = new VueRouter({
       component: DashBoardView,
       children: [
         {
-          // 대시보드 메인
-          path: '',
-          component: DashBoard,
-        },
-        {
           // 장바구니
           path: 'cart',
           component: UserCart,
@@ -67,22 +61,22 @@ export const router = new VueRouter({
         {
           // 판매 관리
           path: 'selling',
-          component: UserSelling,
+          component: UserSellingTable,
         },
         {
           // 구매 목록
           path: 'buying',
-          component: UserBuying,
+          component: UserBuyingTable,
         },
         {
           // 상품 구매요청 알림
           path: 'alarm',
-          component: UserAlarm,
+          component: UserAlarmTable,
         },
         {
           // 프로필 관리
           path: 'profile',
-          component: UserProfile,
+          component: UserProfileForm,
         },
       ],
     },

@@ -18,13 +18,14 @@
               class="sub-title"
             >
               <v-list-item-content>
-                <v-list-item-title style="font-size: 0.9rem">{{
-                  item.title
-                }}</v-list-item-title>
+                <v-list-item-title style="font-size: 0.9rem">
+                  {{ item.title }}
+                </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
 
-            <v-divider></v-divider>
+            <v-divider />
+
             <v-subheader class="sub-title">설정</v-subheader>
             <v-list-item
               v-for="item in profile"
@@ -35,9 +36,9 @@
               class="sub-title"
             >
               <v-list-item-content>
-                <v-list-item-title style="font-size: 0.9rem">{{
-                  item.title
-                }}</v-list-item-title>
+                <v-list-item-title style="font-size: 0.9rem">
+                  {{ item.title }}
+                </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list>
@@ -45,7 +46,7 @@
       </v-col>
       <v-col>
         <div class="pt-2 pr-12">
-          <router-view></router-view>
+          <router-view />
         </div>
       </v-col>
     </v-row>

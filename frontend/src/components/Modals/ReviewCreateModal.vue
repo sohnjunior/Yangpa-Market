@@ -11,14 +11,10 @@
               solo
               v-model="title"
               :rules="[(v) => !!v || '제목을 입력해주세요']"
-            ></v-text-field>
+            />
 
             <v-subheader>평점</v-subheader>
-            <v-rating
-              color="amber"
-              background-color="orange lighten-3"
-              v-model="rating"
-            ></v-rating>
+            <v-rating color="amber" background-color="orange lighten-3" v-model="rating" />
 
             <v-subheader>내용</v-subheader>
             <v-textarea
@@ -30,13 +26,10 @@
               v-model="body"
               label="생생한 후기를 남겨주세요!"
               :rules="[(v) => !!v || '후기를 작성해주세요']"
-            ></v-textarea>
+            />
 
             <v-subheader>사진 첨부</v-subheader>
-            <v-file-input
-              label="사진을 첨부하세요"
-              @change="selectFile"
-            ></v-file-input>
+            <v-file-input label="사진을 첨부하세요" @change="selectFile" />
           </v-form>
           <v-row justify="center">
             <v-btn

@@ -59,9 +59,7 @@
           </v-row>
         </v-container>
         <v-row justify="center">
-          <span class="link" @click="moveRegister"
-            >Not registerd? Create an account</span
-          >
+          <span class="link" @click="moveRegister">Not registerd? Create an account</span>
         </v-row>
       </v-card-text>
     </v-card>

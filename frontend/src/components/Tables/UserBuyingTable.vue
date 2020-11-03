@@ -1,29 +1,17 @@
 <template>
   <v-container class="mb-6">
-    <v-data-table
-      :headers="orderPendingHeaders"
-      :items="orderPendingList"
-      class="elevation-1"
-    >
+    <v-data-table :headers="orderPendingHeaders" :items="orderPendingList" class="elevation-1">
       <template v-slot:top>
         <v-toolbar flat color="white">
-          <v-toolbar-title style="font-family: 'paybooc-Bold'">
-            구매 대기
-          </v-toolbar-title>
+          <v-toolbar-title style="font-family: 'paybooc-Bold'"> 구매 대기 </v-toolbar-title>
         </v-toolbar>
       </template>
     </v-data-table>
     <v-spacer class="mt-7"></v-spacer>
-    <v-data-table
-      :headers="orderFinishedHeaders"
-      :items="orderFinishedList"
-      class="elevation-1"
-    >
+    <v-data-table :headers="orderFinishedHeaders" :items="orderFinishedList" class="elevation-1">
       <template v-slot:top>
         <v-toolbar flat color="white">
-          <v-toolbar-title style="font-family: 'paybooc-Bold'">
-            구매 완료
-          </v-toolbar-title>
+          <v-toolbar-title style="font-family: 'paybooc-Bold'"> 구매 완료 </v-toolbar-title>
         </v-toolbar>
       </template>
       <template v-slot:item.actions="{ item }">

@@ -7,12 +7,7 @@
             <v-subheader class="display-1 mt-3"> 프로필 설정 </v-subheader>
 
             <v-form class="pt-1">
-              <v-text-field
-                label="이메일 계정"
-                v-model="email"
-                class="mx-4"
-                disabled
-              />
+              <v-text-field label="이메일 계정" v-model="email" class="mx-4" disabled />
 
               <v-text-field
                 label="변경할 비밀번호"
@@ -32,18 +27,13 @@
                 required
               />
 
-              <v-text-field
-                label="별명"
-                v-model="nickname"
-                class="mx-4"
-                required
-              />
+              <v-text-field label="별명" v-model="nickname" class="mx-4" required />
 
               <v-text-field label="전화번호" v-model="phone" class="mx-4" />
 
               <v-radio-group :row="true" class="mx-4" v-model="sex">
-                <v-radio :label="'남성'" value="male"></v-radio>
-                <v-radio :label="'여성'" value="female"></v-radio>
+                <v-radio :label="'남성'" value="male" />
+                <v-radio :label="'여성'" value="female" />
               </v-radio-group>
 
               <v-col cols="mx-4">
@@ -63,23 +53,17 @@
                       readonly
                       v-bind="attrs"
                       v-on="on"
-                    ></v-text-field>
+                    />
                   </template>
                   <v-date-picker v-model="birthday" no-title scrollable>
-                    <v-spacer></v-spacer>
-                    <v-btn text color="primary" @click="menu = false"
-                      >Cancel</v-btn
-                    >
-                    <v-btn text color="primary" @click="$refs.menu.save(date)"
-                      >OK</v-btn
-                    >
+                    <v-spacer />
+                    <v-btn text color="primary" @click="menu = false"> Cancel </v-btn>
+                    <v-btn text color="primary" @click="$refs.menu.save(date)"> OK </v-btn>
                   </v-date-picker>
                 </v-menu>
               </v-col>
-              <v-spacer></v-spacer>
-              <v-btn large color="success" @click="submitForm" class="mx-4"
-                >변경하기</v-btn
-              >
+              <v-spacer />
+              <v-btn large color="success" @click="submitForm" class="mx-4"> 변경하기 </v-btn>
             </v-form>
           </v-card>
         </v-col>
@@ -110,8 +94,7 @@ export default {
 
   computed: {
     passwordConfirmationRule() {
-      return () =>
-        this.password === this.confirmpassword || 'Password must match';
+      return () => this.password === this.confirmpassword || 'Password must match';
     },
   },
 

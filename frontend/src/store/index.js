@@ -15,6 +15,7 @@ export default new Vuex.Store({
     email: getAuthEmailFromCookie() || '',
     token: getAuthTokenFromCookie() || '',
   },
+
   getters: {
     getEmail(state) {
       return state.email;
@@ -23,13 +24,10 @@ export default new Vuex.Store({
       return state.token;
     },
     isLoggedIn(state) {
-      if (state.token === '') {
-        return false;
-      } else {
-        return true;
-      }
+      return state.token !== '';
     },
   },
+
   mutations: {
     setEmail(state, email) {
       state.email = email;
@@ -41,6 +39,7 @@ export default new Vuex.Store({
       state.admin = admin;
     },
   },
+
   actions: {
     async LOGIN({ commit }, userData) {
       try {
@@ -51,7 +50,6 @@ export default new Vuex.Store({
         saveAuthTokenToCookie(data.token);
         return true;
       } catch (err) {
-        // 이메일 혹은 비밀번호 오류
         return false;
       }
     },

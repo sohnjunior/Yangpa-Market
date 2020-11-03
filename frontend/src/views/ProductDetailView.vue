@@ -6,12 +6,7 @@
       </div>
       <v-row class="product-info">
         <v-col>
-          <v-img
-            :src="productIMG"
-            class="product-image"
-            width="200"
-            height="300"
-          />
+          <v-img :src="productIMG" class="product-image" width="200" height="300" />
         </v-col>
         <v-col cols="7">
           <v-row class="mt-9">
@@ -40,14 +35,7 @@
               <v-icon v-if="!sold" left>mdi-cart</v-icon>
               {{ sold ? '판매 완료' : '장바구니 담기' }}
             </v-btn>
-            <v-btn
-              tile
-              outlined
-              color="success"
-              large
-              depressed
-              @click="likeUpdate"
-            >
+            <v-btn tile outlined color="success" large depressed @click="likeUpdate">
               <v-icon left>mdi-thumb-up</v-icon>
               좋아요
             </v-btn>
@@ -81,16 +69,17 @@
 </template>
 
 <script>
-import { ProductAPI, RecommendationAPI, CartAPI } from '../api';
-import CommentList from '../components/CommentList';
-import RelatedProductCard from '../components/Cards/RelatedProductCard.vue';
-import EventBus from '../utils/bus';
+import { ProductAPI, RecommendationAPI, CartAPI } from '@api';
+import CommentList from '@components/Tables/CommentTable';
+import RelatedProductCard from '@components/Cards/RelatedProductCard.vue';
+import EventBus from '@utils/bus';
 
 export default {
   components: {
     CommentList,
     RelatedProductCard,
   },
+
   data() {
     return {
       productID: '',
@@ -103,6 +92,7 @@ export default {
       seller: false,
     };
   },
+
   async created() {
     this.productID = this.$route.params.id;
     const { data } = await ProductAPI.fetchProduct(this.productID);
@@ -119,10 +109,9 @@ export default {
     this.related = result.data.result;
     window.scrollTo(0, 0);
   },
+
   methods: {
-    // 장바구니에 상품 추가
     async addCart() {
-      // 로그인한 유저인지 확인
       if (!this.$store.getters.isLoggedIn) {
         alert('로그인이 필요한 서비스입니다.');
         return;
@@ -135,7 +124,6 @@ export default {
       EventBus.$emit('pop-up', '장바구니에 추가되었습니다.');
     },
 
-    // 좋아요 + 1
     async likeUpdate() {
       await ProductAPI.likeProduct(this.productID);
     },

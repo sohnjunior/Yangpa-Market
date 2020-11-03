@@ -9,24 +9,18 @@
           <span class="product-name">{{ name }}</span>
         </v-row>
         <v-row class="mt-2">
-          <b :style="[status ? soldOut : onSale]">{{ statusMessage }}</b>
+          <b :style="[status ? soldOut : onSale]">{{ statusMessage }} </b>
         </v-row>
       </v-col>
       <v-col cols="3">
         <v-row>
-          <b class="ml-4 mt-3 price-tag">₩ {{ price }}</b>
+          <b class="ml-4 mt-3 price-tag">₩ {{ price }} </b>
         </v-row>
-        <v-spacer class="mt-3"></v-spacer>
+        <v-spacer class="mt-3" />
         <v-row>
-          <v-btn
-            class="ml-4"
-            small
-            color="teal"
-            tile
-            outlined
-            @click="deleteProduct"
-            >바구니에서 삭제</v-btn
-          >
+          <v-btn class="ml-4" small color="teal" tile outlined @click="deleteProduct">
+            바구니에서 삭제
+          </v-btn>
         </v-row>
       </v-col>
     </v-row>

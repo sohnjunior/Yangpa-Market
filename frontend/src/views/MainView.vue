@@ -14,12 +14,7 @@
           </v-btn>
         </v-col>
         <v-col>
-          <v-btn
-            color="light-green lighten-4"
-            depressed
-            x-large
-            @click="categorySelected('원룸')"
-          >
+          <v-btn color="light-green lighten-4" depressed x-large @click="categorySelected('원룸')">
             <v-img class="btn-image" :src="require('@/assets/room.svg')" />
             <span class="ml-2 category"> 원룸 </span>
           </v-btn>
@@ -36,23 +31,13 @@
           </v-btn>
         </v-col>
         <v-col>
-          <v-btn
-            color="light-green lighten-4"
-            depressed
-            x-large
-            @click="categorySelected('의류')"
-          >
+          <v-btn color="light-green lighten-4" depressed x-large @click="categorySelected('의류')">
             <v-img class="btn-image" :src="require('@/assets/clothes.svg')" />
             <span class="ml-2 category"> 의류 </span>
           </v-btn>
         </v-col>
         <v-col>
-          <v-btn
-            color="light-green lighten-4"
-            depressed
-            x-large
-            @click="categorySelected('기타')"
-          >
+          <v-btn color="light-green lighten-4" depressed x-large @click="categorySelected('기타')">
             <v-img class="btn-image" :src="require('@/assets/box.svg')" />
             <span class="ml-2 category"> 기타 </span>
           </v-btn>
@@ -66,13 +51,7 @@
         </v-col>
       </v-row>
       <v-row class="mt-7">
-        <v-carousel
-          cycle
-          height="400"
-          dark
-          hide-delimiter-background
-          show-arrows-on-hover
-        >
+        <v-carousel cycle height="400" dark hide-delimiter-background show-arrows-on-hover>
           <v-carousel-item>
             <v-row>
               <PopularProductCard
@@ -114,12 +93,7 @@
         </v-col>
 
         <v-col cols="2">
-          <v-select
-            :items="items"
-            label="정렬기준"
-            outlined
-            v-model="pivot"
-          ></v-select>
+          <v-select :items="items" label="정렬기준" outlined v-model="pivot"></v-select>
         </v-col>
       </v-row>
       <v-row>
@@ -161,11 +135,16 @@
 </template>
 
 <script>
-import { ProductAPI, RecommendationAPI } from '../api';
-import ProductCard from '../components/Cards/ProductCard.vue';
-import PopularProductCard from '../components/Cards/PopularProductCard.vue';
+import { ProductAPI, RecommendationAPI } from '@api';
+import ProductCard from '@components/Cards/ProductCard.vue';
+import PopularProductCard from '@components/Cards/PopularProductCard.vue';
 
 export default {
+  components: {
+    ProductCard,
+    PopularProductCard,
+  },
+
   data() {
     return {
       items: ['등록일순', '조회순', '가격순'],
@@ -183,14 +162,12 @@ export default {
       slides: ['First', 'Second', 'Third', 'Fourth', 'Fifth'],
     };
   },
+
   computed: {
     categorized() {
       const categorized = [];
       for (let i = 0; i < this.products.length; i++) {
-        if (
-          this.products[i].product.category.title ===
-          this.categoryMap[this.category]
-        ) {
+        if (this.products[i].product.category.title === this.categoryMap[this.category]) {
           categorized.push(this.products[i]);
         }
       }
@@ -213,10 +190,7 @@ export default {
       }
     },
   },
-  components: {
-    ProductCard,
-    PopularProductCard,
-  },
+
   methods: {
     // 선택된 카테고리에 따라 상품 출력
     categorySelected(category) {

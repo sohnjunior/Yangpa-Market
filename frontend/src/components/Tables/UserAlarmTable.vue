@@ -1,32 +1,17 @@
 <template>
   <v-container class="mb-6">
-    <v-data-table
-      :headers="orderHeaders"
-      :items="orderList"
-      class="elevation-1"
-    >
+    <v-data-table :headers="orderHeaders" :items="orderList" class="elevation-1">
       <template v-slot:top>
         <v-toolbar flat color="white">
-          <v-toolbar-title style="font-family: 'paybooc-Bold'"
-            >구매요청 알림</v-toolbar-title
-          >
+          <v-toolbar-title style="font-family: 'paybooc-Bold'">구매요청 알림</v-toolbar-title>
         </v-toolbar>
       </template>
       <template v-slot:item.title="{ item }">
         <span class="font-weight-medium">{{ productList[item.postId] }}</span>
       </template>
       <template v-slot:item.actions="{ item }">
-        <v-btn outlined color="success" depressed small @click="approve(item)">
-          승인
-        </v-btn>
-        <v-btn
-          outlined
-          color="error"
-          class="ml-3"
-          depressed
-          small
-          @click="remove(item)"
-        >
+        <v-btn outlined color="success" depressed small @click="approve(item)"> 승인 </v-btn>
+        <v-btn outlined color="error" class="ml-3" depressed small @click="remove(item)">
           삭제
         </v-btn>
       </template>
@@ -79,9 +64,11 @@ export default {
   },
 
   async created() {
-    const { data } = await OrderAPI.fetchPendingOrder();
-    this.productList = data.products;
-    this.orderList = data.orders;
+    const {
+      data: { products, orders },
+    } = await OrderAPI.fetchPendingOrder();
+    this.productList = products;
+    this.orderList = orders;
   },
 
   methods: {
