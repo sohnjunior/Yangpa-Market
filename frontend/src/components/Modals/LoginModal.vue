@@ -15,51 +15,10 @@
       </v-card-title>
       <v-card-text>
         <v-container>
-          <v-form v-model="valid">
-            <v-row>
-              <v-col cols="12">
-                <v-text-field
-                  class="login-form"
-                  label="email"
-                  placeholder="E-mail Address"
-                  required
-                  rounded
-                  solo
-                  autofocus
-                  v-model="email"
-                  :rules="emailRules"
-                />
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  class="login-form"
-                  label="password"
-                  type="password"
-                  placeholder="Password"
-                  required
-                  rounded
-                  solo
-                  v-model="password"
-                  :rules="passwordRules"
-                />
-              </v-col>
-            </v-row>
-          </v-form>
-          <v-row justify="center">
-            <v-btn
-              x-large
-              width="375"
-              rounded
-              color="orange"
-              class="white--text"
-              @click="onClickLogin"
-              :disabled="!valid"
-              >로그인하기</v-btn
-            >
-          </v-row>
+          <LoginForm @submit-form="onSubmit" />
         </v-container>
         <v-row justify="center">
-          <span class="link" @click="moveRegister">Not registerd? Create an account</span>
+          <span class="link" @click="moveToRegisterPage">Not registerd? Create an account</span>
         </v-row>
       </v-card-text>
     </v-card>
@@ -68,42 +27,23 @@
 
 <script>
 import EventBus from '@utils/bus';
-import { validateEmail } from '@utils/validators';
 import { mapActions } from 'vuex';
+import LoginForm from '@components/Forms/LoginForm';
 
 export default {
+  components: { LoginForm },
   props: ['dialog'],
-  data() {
-    return {
-      valid: false,
-      email: '',
-      password: '',
-      emailRules: [
-        (v) => !!v || 'email을 입력하세요',
-        (v) => validateEmail(v) || '올바른 email 형식이 아닙니다',
-      ],
-      passwordRules: [
-        (v) => !!v || '비밀번호를 입력하세요',
-        //v => validatePassword(v) || '올바른 비밀번호 형식이 아닙니다',
-      ],
-    };
-  },
   methods: {
     closeModal() {
       this.$emit('close-modal');
     },
 
-    moveRegister() {
+    moveToRegisterPage() {
       this.closeModal();
       this.$router.push('/signup');
     },
 
-    async onClickLogin() {
-      const userData = {
-        email: this.email,
-        password: this.password,
-      };
-
+    async onSubmit(userData) {
       const success = await this.login(userData);
       if (success) {
         EventBus.$emit('pop-up', '로그인 되었습니다.');

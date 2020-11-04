@@ -36,9 +36,7 @@
           :rules="this.rules.bodyRules"
           v-model="body"
         />
-        <v-btn type="submit" class="mt-6" x-large color="success" :disabled="!isValid">
-          등록하기
-        </v-btn>
+        <SubmitButton :isValid="isValid"> 등록하기 </SubmitButton>
       </v-form>
     </v-container>
   </v-container>
@@ -47,6 +45,7 @@
 <script>
 import { ProductAPI } from '@api';
 import { mapGetters } from 'vuex';
+import SubmitButton from '@components/Buttons/SubmitButton';
 
 const categoryMap = {
   회원권: 'tickets',
@@ -65,6 +64,7 @@ const rules = {
 };
 
 export default {
+  components: { SubmitButton },
   data() {
     return {
       title: '',
