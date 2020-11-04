@@ -6,7 +6,6 @@
       <v-form v-model="isValid" @submit.prevent="onSubmit">
         <v-subheader>상품명</v-subheader>
         <v-text-field
-          label="Solo"
           placeholder="어떤 상품인가요?"
           solo
           :rules="this.rules.titleRules"
@@ -26,13 +25,7 @@
         <v-file-input label="File input" :rules="fileRules" @change="onSelectFile" />
 
         <v-subheader>희망 가격</v-subheader>
-        <v-text-field
-          label="Solo"
-          placeholder="상품 가격"
-          solo
-          :rules="this.rules.priceRules"
-          v-model="price"
-        />
+        <v-text-field placeholder="상품 가격" solo :rules="this.rules.priceRules" v-model="price" />
 
         <v-subheader>상품 설명</v-subheader>
         <v-textarea

@@ -38,8 +38,10 @@ export default {
 
   async created() {
     this.keyword = this.$route.params.keyword;
-    const { data } = await ProductAPI.searchProduct(this.keyword);
-    this.products = data.result;
+    const {
+      data: { result },
+    } = await ProductAPI.searchProduct(this.keyword);
+    this.products = result;
   },
 };
 </script>

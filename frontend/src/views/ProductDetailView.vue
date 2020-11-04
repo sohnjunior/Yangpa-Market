@@ -29,13 +29,13 @@
               large
               depressed
               :disabled="sold"
-              @click="addCart"
+              @click="onAddCart"
               style="margin-right: 50px"
             >
               <v-icon v-if="!sold" left>mdi-cart</v-icon>
               {{ sold ? '판매 완료' : '장바구니 담기' }}
             </v-btn>
-            <v-btn tile outlined color="success" large depressed @click="likeUpdate">
+            <v-btn tile outlined color="success" large depressed @click="onClickLikeButton">
               <v-icon left>mdi-thumb-up</v-icon>
               좋아요
             </v-btn>
@@ -100,37 +100,48 @@ export default {
 
   async created() {
     this.productID = this.$route.params.id;
-    const { data } = await ProductAPI.fetchProduct(this.productID);
+    const {
+      data: { product, body, user },
+    } = await ProductAPI.fetchProduct(this.productID);
 
-    this.productIMG = data.product.image;
-    this.productBody = data.body;
-    this.productSeller = data.user.nickname;
-    this.productTitle = data.product.title;
-    this.productPrice = data.product.price;
-    this.sold = data.product.sold;
-    this.seller = data.user.email === this.userEmail;
+    this.productIMG = product.image;
+    this.productBody = body;
+    this.productSeller = user.nickname;
+    this.productTitle = product.title;
+    this.productPrice = product.price;
+    this.sold = product.sold;
+    this.seller = user.email === this.userEmail;
 
-    const result = await RecommendationAPI.fetchRelatedProducts(this.productID);
-    this.related = result.data.result;
+    const {
+      data: { result },
+    } = await RecommendationAPI.fetchRelatedProducts(this.productID);
+    this.related = result;
     window.scrollTo(0, 0);
   },
 
   methods: {
-    async addCart() {
+    async onAddCart() {
       if (!this.isLoggedIn) {
         alert('로그인이 필요한 서비스입니다.');
         return;
       }
 
-      const payload = {
-        productID: this.productID,
-      };
-      await CartAPI.createCartProduct(payload);
-      EventBus.$emit('pop-up', '장바구니에 추가되었습니다.');
+      try {
+        await CartAPI.createCartProduct({
+          productID: this.productID,
+        });
+        EventBus.$emit('pop-up', '장바구니에 추가되었습니다.');
+      } catch (err) {
+        console.error(err);
+      }
     },
 
-    async likeUpdate() {
-      await ProductAPI.likeProduct(this.productID);
+    async onClickLikeButton() {
+      try {
+        await ProductAPI.likeProduct(this.productID);
+      } catch (err) {
+        console.error(err);
+      }
     },
   },
 };

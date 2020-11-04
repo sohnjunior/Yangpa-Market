@@ -16,14 +16,14 @@
           <tbody>
             <tr v-for="item in reviews" :key="item.name">
               <td>
-                <span @click="handleClick(item)" id="review-title">
+                <span @click="onClickReview(item)" id="review-title">
                   {{ item.title }}
                 </span>
               </td>
               <td>{{ item.user.nickname }}</td>
               <td>{{ item.hit }}</td>
               <td>
-                <v-btn color="error" icon @click="handleLike(item)">
+                <v-btn color="error" icon @click="onClickLike(item)">
                   <v-icon>mdi-heart</v-icon>
                   {{ item.like }}
                 </v-btn>
@@ -34,7 +34,7 @@
       </v-simple-table>
       <ReviewModal
         :show="showDialog"
-        @close-dialog="closeModal"
+        @close-dialog="onCloseModal"
         :title="selectedTitle"
         :writer="selectedReviewer"
         :image="selectedImage"
@@ -76,10 +76,8 @@ export default {
   },
 
   methods: {
-    async handleClick(content) {
+    async onClickReview(content) {
       this.showDialog = true;
-
-      // props 데이터 연동
       this.selectedRating = content.rating;
       this.selectedTitle = content.title;
       this.selectedReviewer = content.user.nickname;
@@ -87,13 +85,12 @@ export default {
       this.selectedBody = content.body;
       this.selectedLike = content.like;
 
-      // 조회수 증가
       await ReviewAPI.increaseReviewHit(content.id);
     },
-    async handleLike(content) {
+    async onClickLike(content) {
       await ReviewAPI.increaseReviewLike(content.id);
     },
-    closeModal() {
+    onCloseModal() {
       this.showDialog = false;
     },
   },
