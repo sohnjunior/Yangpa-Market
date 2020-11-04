@@ -2,45 +2,8 @@
   <v-container>
     <v-container style="height: 10px">
       <v-row class="text-center mt-5">
-        <v-col>
-          <v-btn
-            color="light-green lighten-4"
-            depressed
-            x-large
-            @click="onSelectCategory('전공서적')"
-          >
-            <v-img class="btn-image" :src="require('@/assets/study.svg')" />
-            <span class="ml-2 category"> 전공서적 </span>
-          </v-btn>
-        </v-col>
-        <v-col>
-          <v-btn color="light-green lighten-4" depressed x-large @click="onSelectCategory('원룸')">
-            <v-img class="btn-image" :src="require('@/assets/room.svg')" />
-            <span class="ml-2 category"> 원룸 </span>
-          </v-btn>
-        </v-col>
-        <v-col>
-          <v-btn
-            color="light-green lighten-4"
-            depressed
-            x-large
-            @click="onSelectCategory('회원권')"
-          >
-            <v-img class="btn-image" :src="require('@/assets/ticket.svg')" />
-            <span class="ml-2 category"> 회원권 </span>
-          </v-btn>
-        </v-col>
-        <v-col>
-          <v-btn color="light-green lighten-4" depressed x-large @click="onSelectCategory('의류')">
-            <v-img class="btn-image" :src="require('@/assets/clothes.svg')" />
-            <span class="ml-2 category"> 의류 </span>
-          </v-btn>
-        </v-col>
-        <v-col>
-          <v-btn color="light-green lighten-4" depressed x-large @click="onSelectCategory('기타')">
-            <v-img class="btn-image" :src="require('@/assets/box.svg')" />
-            <span class="ml-2 category"> 기타 </span>
-          </v-btn>
+        <v-col v-for="category in ['전공서적', '원룸', '회원권', '의류', '기타']" :key="category">
+          <CategoryButton :name="category" @click="onSelectCategory" />
         </v-col>
       </v-row>
     </v-container>
@@ -50,27 +13,13 @@
           <h1 class="sub-title">실시간 TOP 10</h1>
         </v-col>
       </v-row>
+
       <v-row class="mt-7">
         <v-carousel cycle height="400" dark hide-delimiter-background show-arrows-on-hover>
-          <v-carousel-item>
+          <v-carousel-item v-for="n in 2" :key="n">
             <v-row>
               <PopularProductCard
-                v-for="(product, i) in populars.slice(0, 5)"
-                id="carousel-product"
-                class="ml-10"
-                :title="product.title"
-                :image="product.image"
-                :hit="product.post.hit"
-                :category="product.category.title"
-                :productID="product.post.title"
-                :key="i"
-              />
-            </v-row>
-          </v-carousel-item>
-          <v-carousel-item>
-            <v-row>
-              <PopularProductCard
-                v-for="(product, i) in populars.slice(5)"
+                v-for="(product, i) in populars.slice(5 * (n - 1), 5 * n)"
                 id="carousel-product"
                 class="ml-10"
                 :title="product.title"
@@ -85,17 +34,15 @@
         </v-carousel>
       </v-row>
 
-      <br />
-
       <v-row>
         <v-col cols="2">
           <h1 class="sub-title">{{ category }}</h1>
         </v-col>
-
         <v-col cols="2">
-          <v-select :items="items" label="정렬기준" outlined v-model="pivot"></v-select>
+          <v-select :items="items" label="정렬기준" outlined v-model="pivot" />
         </v-col>
       </v-row>
+
       <v-row>
         <ProductCard
           v-for="product in sorted"
@@ -136,8 +83,9 @@
 
 <script>
 import { ProductAPI, RecommendationAPI } from '@api';
-import ProductCard from '@components/Cards/ProductCard.vue';
-import PopularProductCard from '@components/Cards/PopularProductCard.vue';
+import CategoryButton from '@components/Buttons/CategoryButton';
+import ProductCard from '@components/Cards/ProductCard';
+import PopularProductCard from '@components/Cards/PopularProductCard';
 
 const items = ['등록일순', '조회순', '가격순'];
 const categoryMap = {
@@ -150,6 +98,7 @@ const categoryMap = {
 
 export default {
   components: {
+    CategoryButton,
     ProductCard,
     PopularProductCard,
   },
@@ -210,9 +159,5 @@ export default {
 #carousel-product {
   width: 15%;
   height: 10%;
-}
-.btn-image {
-  width: 30px;
-  height: 30px;
 }
 </style>

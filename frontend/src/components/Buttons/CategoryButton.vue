@@ -1,0 +1,37 @@
+<template>
+  <v-btn color="light-green lighten-4" depressed x-large @click="onClick">
+    <v-img class="btn-image" :src="imageSrcMap[name]" />
+    <span class="ml-2 category"> {{ name }} </span>
+  </v-btn>
+</template>
+
+<script>
+const imageSrcMap = {
+  원룸: require('@/assets/room.svg'),
+  전공서적: require('@/assets/study.svg'),
+  회원권: require('@/assets/ticket.svg'),
+  의류: require('@/assets/clothes.svg'),
+  기타: require('@/assets/box.svg'),
+};
+
+export default {
+  props: ['name'],
+
+  created() {
+    this.imageSrcMap = imageSrcMap;
+  },
+
+  methods: {
+    onClick() {
+      this.$emit('click', name);
+    },
+  },
+};
+</script>
+
+<style scoped>
+.btn-image {
+  width: 30px;
+  height: 30px;
+}
+</style>
