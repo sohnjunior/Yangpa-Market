@@ -14,43 +14,14 @@
             <v-toolbar-title style="font-family: 'paybooc-Bold'">댓글</v-toolbar-title>
 
             <v-spacer />
-            <v-btn color="warning" depressed @click="newButton"> 작성하기 </v-btn>
-            <v-dialog v-model="dialog" max-width="500px">
-              <v-card>
-                <v-card-title>
-                  <span class="headline">{{ formTitle }}</span>
-                </v-card-title>
-                <v-card-text class="py-0" background-color="blue lighten-2" outline>
-                  <v-container>
-                    <v-row>
-                      <v-col cols="12">
-                        <v-form v-model="valid">
-                          <v-textarea
-                            v-model="comment"
-                            label="댓글을 입력하세요"
-                            class="py-5"
-                            outlined
-                            clearable
-                            autofocus
-                            auto-grow
-                            rows="7"
-                            :rules="[(v) => !!v || '댓글을 적어도 1자 이상 입력해주세요!']"
-                          ></v-textarea>
-                        </v-form>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer />
-                  <v-checkbox v-model="secret" label="비밀댓글" class="mx-10"></v-checkbox>
-                  <v-btn color="blue darken-1" text @click="confirmButton" :disabled="!valid"
-                    >확인</v-btn
-                  >
-                  <v-btn color="blue darken-1" text @click="closeButton">취소</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
+            <v-btn color="warning" depressed @click="onClickCreate"> 작성하기 </v-btn>
+            <CommentModal
+              :dialog="dialog"
+              :isEdit="editFlag"
+              @create-comment="createComment"
+              @update-comment="updateComment"
+              @close-modal="closeModal"
+            />
           </v-toolbar>
         </template>
         <template v-slot:item.user.nickname="{ item }">
@@ -59,7 +30,7 @@
         <template v-slot:item.comment="{ item }">
           <span
             class="grey--text"
-            v-if="!seller && !admin && item.secret && !haveAuth(item.user.email)"
+            v-if="!seller && !isAdmin && item.secret && !hasAuth(item.user.email)"
           >
             <v-icon small>mdi-lock</v-icon> 비밀댓글입니다.
           </span>
@@ -68,17 +39,17 @@
         <template v-slot:item.actions="{ item }">
           <v-icon
             class="mr-2 pen"
-            v-show="haveAuth(item.user.email)"
+            v-show="hasAuth(item.user.email)"
             small
-            @click="updateButton(item)"
+            @click="onClickUpdate(item)"
           >
             mdi-pencil
           </v-icon>
           <v-icon
             class="trash"
-            v-show="haveAuth(item.user.email)"
+            v-show="hasAuth(item.user.email)"
             small
-            @click="deleteButton(item)"
+            @click="onClickDelete(item)"
           >
             mdi-delete
           </v-icon>
@@ -91,140 +62,117 @@
 <script>
 import { CommentAPI, UserAPI } from '@api';
 import { mapGetters } from 'vuex';
+import CommentModal from '@components/Modals/CommentModal';
+
+const headers = [
+  {
+    text: '작성자',
+    align: 'start',
+    sortable: false,
+    value: 'user.nickname',
+    class: 'header',
+  },
+  {
+    text: '댓글 내용',
+    align: 'start',
+    sortable: false,
+    value: 'comment',
+    class: 'header',
+  },
+  { align: 'middle', value: 'actions', sortable: false, class: 'header' },
+];
 
 export default {
+  components: { CommentModal },
   props: ['seller'],
   data() {
     return {
       dialog: false,
-      headers: [
-        {
-          text: '작성자',
-          align: 'start',
-          sortable: false,
-          value: 'user.nickname',
-          class: 'header',
-        },
-        {
-          text: '댓글 내용',
-          align: 'start',
-          sortable: false,
-          value: 'comment',
-          class: 'header',
-        },
-        { align: 'middle', value: 'actions', sortable: false, class: 'header' },
-      ],
       commentList: [],
       postId: '',
-      updateId: 0,
-      comment: '',
-      valid: false,
-      editFlag: true,
-      secret: false,
-      admin: false,
+      updateID: 0,
+      editFlag: false,
+      isAdmin: false,
     };
   },
 
   computed: {
-    formTitle() {
-      return !this.editFlag ? '댓글 작성' : '댓글 수정';
-    },
     ...mapGetters({ isLoggedIn: 'isLoggedIn', userEmail: 'getEmail' }),
   },
 
   async created() {
+    this.headers = headers;
     this.postId = this.$route.params.id;
     const comments = await CommentAPI.fetchComment(this.postId);
     this.commentList = comments.data.comments;
 
-    // 현재 로그인한 유저라면
     if (this.isLoggedIn) {
       const {
         data: { isAdmin },
       } = await UserAPI.isAdminUser();
-      this.admin = isAdmin;
+      this.isAdmin = isAdmin;
     }
   },
 
   methods: {
-    haveAuth(target) {
+    hasAuth(target) {
       return target === this.userEmail;
     },
 
-    // 삭제 버튼 토글 함수
-    deleteButton(item) {
-      if (confirm('해당 댓글을 삭제하시겠습니까?')) {
-        this.CommentAPI.deleteComments(item);
-      }
+    closeModal() {
+      this.dialog = false;
+      this.editFlag = false;
     },
 
-    // 댓글 수정 토글 함수
-    updateButton(item) {
-      this.editFlag = true;
-      this.dialog = true;
-      this.updateId = item.id;
-      this.comment = item.comment;
-    },
-
-    // 모달 확인버튼 토글 함수
-    newButton() {
+    onClickCreate() {
       if (!this.isLoggedIn) {
         alert('로그인이 필요한 서비스입니다.');
         return;
       }
-
-      this.comment = '';
-      this.editFlag = false;
       this.dialog = true;
     },
 
-    // 모달 확인 버튼 토글 함수
-    confirmButton() {
-      this.editFlag ? this.updateComments() : this.createComments();
-      this.closeButton();
+    onClickUpdate({ id, comment }) {
+      this.editFlag = true;
+      this.dialog = true;
+      this.updateID = id;
+      this.comment = comment;
     },
 
-    // 모달 취소 버튼 토글 함수
-    closeButton() {
-      this.dialog = false;
-    },
-
-    // 댓글 삭제 요청 함수
-    async deleteComments(item) {
+    async createComment({ comment, secret }) {
       try {
-        await CommentAPI.deleteComment({ commentID: item.id });
-      } catch (err) {
-        console.error(err);
-      } finally {
-        this.dialog = false;
-      }
-    },
-
-    // 댓글 업데이트 함수
-    async updateComments() {
-      try {
-        await CommentAPI.updateComment({
-          commentID: this.updateId,
-          payload: { comment: this.comment },
+        console.log(comment, secret);
+        await CommentAPI.createComment({
+          postId: this.postId,
+          comment,
+          secret,
         });
-      } catch (err) {
-        console.error(err);
-      }
-    },
-
-    // 새로운 댓글 생성하는 axios 통신 함수
-    async createComments() {
-      const comment = {
-        postId: this.postId,
-        comment: this.comment,
-        secret: this.secret,
-      };
-
-      try {
-        await CommentAPI.createComment(comment);
         this.$router.go(0);
       } catch (error) {
         console.error(error);
+      }
+    },
+
+    async updateComment({ comment }) {
+      try {
+        await CommentAPI.updateComment({
+          commentID: this.updateID,
+          payload: { comment },
+        });
+        this.$router.go(0);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
+    async onClickDelete({ id }) {
+      if (confirm('해당 댓글을 삭제하시겠습니까?')) {
+        try {
+          await CommentAPI.deleteComment({ commentID: id });
+          this.$router.go(0);
+        } catch (err) {
+          console.error(err);
+        }
       }
     },
   },
