@@ -28,4 +28,9 @@ interface Post {
   deletedAt?: string;
 }
 
-export { Category, Product, User, Post };
+interface DashBoardAsideMenu {
+  title: string;
+  to: string;
+}
+
+export { Category, Product, User, Post, DashBoardAsideMenu };

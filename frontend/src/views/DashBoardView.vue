@@ -24,7 +24,7 @@
 
             <v-subheader class="sub-title">설정</v-subheader>
             <v-list-item
-              v-for="item in profile"
+              v-for="item in profiles"
               :key="item.title"
               :to="`/dashboard/${item.to}`"
               link
@@ -49,8 +49,11 @@
   </v-content>
 </template>
 
-<script>
-const orders = [
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import { DashBoardAsideMenu } from '../types';
+
+const orders: DashBoardAsideMenu[] = [
   {
     title: '장바구니',
     to: 'cart',
@@ -69,19 +72,18 @@ const orders = [
   },
 ];
 
-const profile = [
+const profiles: DashBoardAsideMenu[] = [
   {
     title: '프로필 설정',
     to: 'profile',
   },
 ];
 
-export default {
-  created() {
-    this.orders = orders;
-    this.profile = profile;
-  },
-};
+@Component
+export default class DashBoardView extends Vue {
+  private orders: DashBoardAsideMenu[] = orders;
+  private profiles: DashBoardAsideMenu[] = profiles;
+}
 </script>
 
 <style></style>
