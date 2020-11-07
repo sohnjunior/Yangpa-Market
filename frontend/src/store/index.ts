@@ -1,13 +1,13 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { UserAPI } from '@api';
+import { UserAPI } from '../api';
 import {
   getAuthEmailFromCookie,
   getAuthTokenFromCookie,
   saveAuthTokenToCookie,
   saveAuthEmailToCookie,
-} from '@utils/cookies.js';
-import { SET_ADMIN, SET_EMAIL, SET_TOKEN } from './mutation-types';
+} from '../utils/cookies';
+import { SET_EMAIL, SET_TOKEN } from './mutation-types';
 
 Vue.use(Vuex);
 
@@ -35,9 +35,6 @@ export default new Vuex.Store({
     },
     [SET_TOKEN](state, token) {
       state.token = token;
-    },
-    [SET_ADMIN](state, admin) {
-      state.admin = admin;
     },
   },
 

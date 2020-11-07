@@ -84,6 +84,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { ProductAPI, RecommendationAPI } from '../api';
+import { Post, Product } from '../types';
 import CategoryButton from '@components/Buttons/CategoryButton.vue';
 import ProductCard from '@components/Cards/ProductCard.vue';
 import PopularProductCard from '@components/Cards/PopularProductCard.vue';
@@ -96,10 +97,6 @@ enum categoryMap {
   기타 = 'others',
 }
 
-interface Demo {
-  product: any;
-}
-
 @Component({
   components: {
     CategoryButton,
@@ -110,19 +107,20 @@ interface Demo {
 export default class MainView extends Vue {
   private pivot: string = '';
   private category: string = '';
-  private products: Demo[] = [];
-  private populars: Demo[] = [];
+  private products: Post[] = [];
+  private populars: Post[] = [];
   private items: string[] = ['등록일순', '조회순', '가격순'];
 
-  get categorized(): any[] {
+  get categorized() {
     return this.products.filter(
       ({ product }) => product.category.title === categoryMap[this.category]
     );
   }
 
-  get sorted(): any[] {
-    return [...this.categorized].sort((a, b) => {
-      if (this.pivot === '등록일순') return a.createdAt - a.createdAt;
+  get sorted() {
+    return [...this.categorized].sort((a: Post, b: Post) => {
+      if (this.pivot === '등록일순')
+        return new Date(a.createdAt).getTime() - new Date(a.createdAt).getTime();
       else if (this.pivot === '조회순') return b.hit - a.hit;
       else return a.product.price - b.product.price;
     });
@@ -133,15 +131,13 @@ export default class MainView extends Vue {
     this.pivot = '등록일순';
 
     // 전체 상품 조회 API 호출 (날짜순으로 정렬된 상태)
-    const { data } = await ProductAPI.fetchAllProducts();
+    const { data }: { data: Post[] } = await ProductAPI.fetchAllProducts();
     this.products = data;
-
-    console.log(data);
 
     // 인기 상품 조회
     const {
       data: { result },
-    } = await RecommendationAPI.fetchPopularProducts();
+    }: { data: { result: Post[] } } = await RecommendationAPI.fetchPopularProducts();
     this.populars = result.length > 4 ? result.slice(0, 10) : result;
   }
 

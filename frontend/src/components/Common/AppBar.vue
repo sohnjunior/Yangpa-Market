@@ -69,7 +69,7 @@
 <script>
 import EventBus from '@utils/bus';
 import LoginModal from '@components/Modals/LoginModal.vue';
-import { deleteCookie } from '@utils/cookies.js';
+import { deleteCookie } from '@utils/cookies';
 import { mapGetters } from 'vuex';
 
 export default {

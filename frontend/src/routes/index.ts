@@ -20,8 +20,8 @@ import UserAlarmTable from '@components/Tables/UserAlarmTable.vue';
 import UserProfileForm from '@components/Forms/UserProfileForm.vue';
 
 // import store for navigation gurad
-import store from '@store';
-import { UserAPI } from '@api';
+import store from '../store';
+import { UserAPI } from '../api';
 
 Vue.use(VueRouter);
 
