@@ -28,9 +28,15 @@ interface Post {
   deletedAt?: string;
 }
 
+interface Review extends Post {
+  image: string;
+  like: number;
+  rating: number;
+}
+
 interface DashBoardAsideMenu {
   title: string;
   to: string;
 }
 
-export { Category, Product, User, Post, DashBoardAsideMenu };
+export { Category, Product, User, Post, DashBoardAsideMenu, Review };

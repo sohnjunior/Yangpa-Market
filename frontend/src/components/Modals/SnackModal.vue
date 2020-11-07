@@ -7,24 +7,23 @@
   </v-snackbar>
 </template>
 
-<script>
-import EventBus from '@utils/bus';
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import EventBus from '../../utils/bus';
 
-export default {
-  data() {
-    return {
-      snackbar: false,
-      text: 'Hello, snack bar!',
-      timeout: 2000,
-    };
-  },
+@Component
+export default class SnackModal extends Vue {
+  private snackbar: boolean = false;
+  private text: string = 'Hello, snack bar!';
+  private timeout: number = 2000;
+
   created() {
-    EventBus.$on('pop-up', (message) => {
+    EventBus.$on('pop-up', (message: string) => {
       this.snackbar = true;
       this.text = message;
     });
-  },
-};
+  }
+}
 </script>
 
 <style></style>

@@ -22,9 +22,11 @@
 
 <script>
 export default {
-  data: () => ({
-    icons: ['mdi-github', 'mdi-youtube'],
-  }),
+  data() {
+    return {
+      icons: ['mdi-github', 'mdi-youtube'],
+    };
+  },
 };
 </script>
 

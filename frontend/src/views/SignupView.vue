@@ -2,12 +2,14 @@
   <SignupForm />
 </template>
 
-<script>
-import SignupForm from '@components/Forms/SignupForm';
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import SignupForm from '@components/Forms/SignupForm.vue';
 
-export default {
+@Component({
   components: { SignupForm },
-};
+})
+export default class SignupView extends Vue {}
 </script>
 
 <style></style>

@@ -22,19 +22,18 @@
   </v-container>
 </template>
 
-<script>
-import { ProductAPI } from '@api';
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import { Post } from '../types';
+import { ProductAPI } from '../api';
 import ProductCard from '@components/Cards/ProductCard.vue';
 
-export default {
+@Component({
   components: { ProductCard },
-
-  data() {
-    return {
-      keyword: '',
-      products: [],
-    };
-  },
+})
+export default class SearchView extends Vue {
+  private keyword: string = '';
+  private products: Post[] = [];
 
   async created() {
     this.keyword = this.$route.params.keyword;
@@ -42,8 +41,8 @@ export default {
       data: { result },
     } = await ProductAPI.searchProduct(this.keyword);
     this.products = result;
-  },
-};
+  }
+}
 </script>
 
 <style scoped>

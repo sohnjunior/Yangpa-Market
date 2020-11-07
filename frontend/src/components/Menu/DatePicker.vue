@@ -17,23 +17,20 @@
   </v-menu>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      date: '',
-      openMenu: false,
-    };
-  },
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
 
-  methods: {
-    onSaveDate() {
-      const date = this.date;
-      this.$emit('pick-date', date);
-      this.openMenu = !this.openMenu;
-    },
-  },
-};
+@Component
+export default class DatePicker extends Vue {
+  private date: string = '';
+  private openMenu: boolean = false;
+
+  onSaveDate(): void {
+    const date = this.date;
+    this.$emit('pick-date', date);
+    this.openMenu = !this.openMenu;
+  }
+}
 </script>
 
 <style></style>
