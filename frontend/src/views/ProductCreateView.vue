@@ -22,7 +22,7 @@
         />
 
         <v-subheader>상품 사진</v-subheader>
-        <v-file-input label="File input" :rules="fileRules" @change="onSelectFile" />
+        <v-file-input label="File input" :rules="this.rules.fileRules" @change="onSelectFile" />
 
         <v-subheader>희망 가격</v-subheader>
         <v-text-field placeholder="상품 가격" solo :rules="this.rules.priceRules" v-model="price" />
@@ -42,20 +42,21 @@
   </v-container>
 </template>
 
-<script>
-import { ProductAPI } from '@api';
-import { mapGetters } from 'vuex';
-import SubmitButton from '@components/Buttons/SubmitButton';
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import { ProductAPI } from '../api';
+import { namespace } from 'vuex-class';
+import SubmitButton from '@components/Buttons/SubmitButton.vue';
 
-const categoryMap = {
-  회원권: 'tickets',
-  원룸: 'rooms',
-  전공서적: 'books',
-  의류: 'clothes',
-  기타: 'others',
-};
+enum categoryMap {
+  회원권 = 'tickets',
+  원룸 = 'rooms',
+  전공서적 = 'books',
+  의류 = 'clothes',
+  기타 = 'others',
+}
 
-const rules = {
+const ruleMap = {
   titleRules: [(v) => !!v || '상품명을 입력해주세요'],
   priceRules: [(v) => !!v || '가격을 입력해주세요'],
   bodyRules: [(v) => !!v || '상품에 대해 설명해주세요'],
@@ -63,55 +64,49 @@ const rules = {
   fileRules: [(v) => !!v || '상품 사진이 필요해요'],
 };
 
-export default {
+const user = namespace('user');
+
+@Component({
   components: { SubmitButton },
-  data() {
-    return {
-      title: '',
-      image: '',
-      category: '',
-      price: '',
-      body: '',
-      isValid: false,
-    };
-  },
+})
+export default class ProductCreateView extends Vue {
+  private title: string = '';
+  private image: string = '';
+  private price: string = '';
+  private body: string = '';
+  private category: string = '';
+  private isValid: boolean = false;
+  private items: string[] = Object.keys(categoryMap);
+  private rules = ruleMap;
 
-  computed: {
-    ...mapGetters({ userEmail: 'getEmail' }),
-  },
+  @user.Getter
+  public getEmail!: string;
 
-  created() {
-    this.items = Object.keys(categoryMap);
-    this.rules = rules;
-  },
+  async onSubmit() {
+    const formData = new FormData();
+    formData.append('title', this.title);
+    formData.append('image', this.image);
+    formData.append('category', this.category);
+    formData.append('body', this.body);
+    formData.append('price', this.price);
+    formData.append('email', this.getEmail);
 
-  methods: {
-    async onSubmit() {
-      const formData = new FormData();
-      formData.append('title', this.title);
-      formData.append('image', this.image);
-      formData.append('category', this.category);
-      formData.append('body', this.body);
-      formData.append('price', this.price);
-      formData.append('email', this.userEmail);
+    try {
+      await ProductAPI.createNewProduct(formData);
+      this.$router.push('/');
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
-      try {
-        await ProductAPI.createNewProduct(formData);
-        this.$router.push('/');
-      } catch (err) {
-        console.log(err);
-      }
-    },
+  onSelectFile(file) {
+    this.image = file;
+  }
 
-    onSelectFile(file) {
-      this.image = file;
-    },
-
-    onSelectCategory(category) {
-      this.category = categoryMap[category];
-    },
-  },
-};
+  onSelectCategory(category) {
+    this.category = categoryMap[category];
+  }
+}
 </script>
 
 <style></style>
