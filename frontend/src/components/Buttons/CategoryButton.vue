@@ -5,7 +5,11 @@
   </v-btn>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator';
+
+declare const require;
+
 const imageSrcMap = {
   원룸: require('@/assets/room.svg'),
   전공서적: require('@/assets/study.svg'),
@@ -14,19 +18,16 @@ const imageSrcMap = {
   기타: require('@/assets/box.svg'),
 };
 
-export default {
-  props: ['name'],
+@Component
+export default class CategoryButton extends Vue {
+  @Prop({ required: true }) readonly name!: string;
 
-  created() {
-    this.imageSrcMap = imageSrcMap;
-  },
+  private imageSrcMap = imageSrcMap;
 
-  methods: {
-    onClick() {
-      this.$emit('click', name);
-    },
-  },
-};
+  public onClick() {
+    this.$emit('click', name);
+  }
+}
 </script>
 
 <style scoped>

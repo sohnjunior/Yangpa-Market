@@ -47,15 +47,23 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: ['show', 'title', 'writer', 'image', 'body', 'rating', 'like'],
-  methods: {
-    closeDialog() {
-      this.$emit('close-dialog');
-    },
-  },
-};
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator';
+
+@Component
+export default class ReviewModal extends Vue {
+  @Prop({ required: true }) readonly show!: boolean;
+  @Prop({ required: true }) readonly title!: string;
+  @Prop({ required: true }) readonly writer!: string;
+  @Prop({ required: true }) readonly image!: string;
+  @Prop({ required: true }) readonly body!: string;
+  @Prop({ required: true }) readonly rating!: number;
+  @Prop({ required: true }) readonly like!: number;
+
+  public closeDialog(): void {
+    this.$emit('close-dialog');
+  }
+}
 </script>
 
 <style></style>
