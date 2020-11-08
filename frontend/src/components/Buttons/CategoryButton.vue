@@ -25,7 +25,7 @@ export default class CategoryButton extends Vue {
   private imageSrcMap = imageSrcMap;
 
   public onClick() {
-    this.$emit('click', name);
+    this.$emit('click', this.name);
   }
 }
 </script>
