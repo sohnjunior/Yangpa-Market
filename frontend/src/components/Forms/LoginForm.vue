@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { validateEmail } from '@utils/validators';
+import { validateEmail } from '../../utils/validators';
 import SubmitButton from '@components/Buttons/SubmitButton';
 
 export default {

@@ -13,34 +13,34 @@ export default class UserModule extends VuexModule {
   public email: string = getAuthEmailFromCookie() || '';
   public token: string = getAuthTokenFromCookie() || '';
 
-  get getEmail() {
+  get getEmail(): string {
     return this.email;
   }
 
-  get getToken() {
+  get getToken(): string {
     return this.token;
   }
 
-  get isLoggedIn() {
+  get isLoggedIn(): boolean {
     return this.token !== '';
   }
 
   @Mutation
-  setEmail(email: string): void {
+  public setEmail(email: string): void {
     this.email = email;
   }
 
   @Mutation
-  setToken(token: string): void {
+  public setToken(token: string): void {
     this.token = token;
   }
 
   @Action
-  async login({ commit }, userData: User): Promise<boolean> {
+  public async login(userData: User): Promise<boolean> {
     try {
       const { data } = await UserAPI.signinUser(userData);
-      commit('SET_EMAIL', data.email);
-      commit('SET_TOKEN', data.token);
+      this.context.commit('SET_EMAIL', data.email);
+      this.context.commit('SET_TOKEN', data.token);
       saveAuthEmailToCookie(data.email);
       saveAuthTokenToCookie(data.token);
       return true;

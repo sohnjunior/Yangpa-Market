@@ -10,7 +10,7 @@
               <v-text-field
                 label="이메일 계정"
                 v-model="email"
-                :rules="rules.emailRules"
+                :rules="rulesMap.emailRules"
                 class="mx-4"
                 required
                 hint="예시: yangpa@gmail.com"
@@ -20,7 +20,7 @@
               <v-text-field
                 label="비밀번호 (8~15자, 적어도 하나의 특수문자와 숫자 포함)"
                 v-model="password"
-                :rules="rules.passwordRules"
+                :rules="rulesMap.passwordRules"
                 type="password"
                 class="mx-4"
                 required
@@ -29,7 +29,7 @@
               <v-text-field
                 label="비밀번호 확인"
                 v-model="confirmpassword"
-                :rules="rules.confirmPasswordRules"
+                :rules="rulesMap.confirmPasswordRules"
                 type="password"
                 class="mx-4"
                 required
@@ -47,7 +47,7 @@
               <v-text-field
                 label="전화번호"
                 v-model="phone"
-                :rules="rules.phoneRules"
+                :rules="rulesMap.phoneRules"
                 class="mx-4"
                 hint="예시: 010-1234-5678"
                 persistent-hint
