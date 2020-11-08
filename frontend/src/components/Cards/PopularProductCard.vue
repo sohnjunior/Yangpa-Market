@@ -30,10 +30,17 @@
   </v-card>
 </template>
 
-<script>
-export default {
-  props: ['title', 'image', 'hit', 'category', 'productID'],
-};
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator';
+
+@Component
+export default class PopularProductCard extends Vue {
+  @Prop({ required: true }) readonly title!: string;
+  @Prop({ required: true }) readonly image!: string;
+  @Prop({ required: true }) readonly hit!: number;
+  @Prop({ required: true }) readonly category!: string;
+  @Prop({ required: true }) readonly productID!: string;
+}
 </script>
 
 <style scoped>

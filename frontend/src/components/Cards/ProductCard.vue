@@ -42,15 +42,24 @@
   </v-hover>
 </template>
 
-<script>
-export default {
-  props: ['title', 'image', 'body', 'hit', 'writer', 'like', 'price', 'productID'],
-  methods: {
-    move() {
-      this.$router.push(`/product/${this.productID}`);
-    },
-  },
-};
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator';
+
+@Component
+export default class ProductCard extends Vue {
+  @Prop({ required: true }) title!: string;
+  @Prop({ required: true }) image!: string;
+  @Prop({ required: true }) body!: string;
+  @Prop({ required: true }) hit!: number;
+  @Prop({ required: true }) writer!: string;
+  @Prop({ required: true }) like!: number;
+  @Prop({ required: true }) price!: string;
+  @Prop({ required: true }) productID!: string;
+
+  public move(): void {
+    this.$router.push(`/product/${this.productID}`);
+  }
+}
 </script>
 
 <style scoped>
