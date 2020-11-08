@@ -94,7 +94,7 @@ export default {
 
   computed: {
     passwordConfirmationRule() {
-      return () => this.password === this.confirmpassword || 'Password must match';
+      return () => this.password === this.confirmpassword || '비밀번호가 일치하지 않습니다';
     },
   },
 

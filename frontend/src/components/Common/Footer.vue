@@ -8,7 +8,7 @@
       </v-card-text>
 
       <v-card-text class="white--text pt-0" style="width: 100%">
-        광운대학교 소프트웨어공학 Term 프로젝트 - 양파 마켓
+        광운대학교 소프트웨어공학 Term 프로젝트 - 🧅 양파 마켓
       </v-card-text>
 
       <v-divider />
@@ -20,14 +20,13 @@
   </v-footer>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      icons: ['mdi-github', 'mdi-youtube'],
-    };
-  },
-};
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+
+@Component
+export default class Footer extends Vue {
+  private icons: string[] = ['mdi-github', 'mdi-youtube'];
+}
 </script>
 
 <style></style>

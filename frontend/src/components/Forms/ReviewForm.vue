@@ -29,36 +29,34 @@
   </v-form>
 </template>
 
-<script>
-import SubmitButton from '@components/Buttons/SubmitButton';
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import SubmitButton from '@components/Buttons/SubmitButton.vue';
 
-export default {
+@Component({
   components: { SubmitButton },
-  data() {
-    return {
-      title: '',
-      body: '',
-      image: '',
-      rating: 0,
-      isValid: false,
-    };
-  },
+})
+export default class ReviewForm extends Vue {
+  private title: string = '';
+  private body: string = '';
+  private image: string = '';
+  private rating: number = 0;
+  private isValid: boolean = false;
 
-  methods: {
-    onSubmit() {
-      const payload = {
-        title: this.title,
-        body: this.body,
-        image: this.image,
-        rating: this.rating,
-      };
-      this.$emit('submit-form', payload);
-    },
-    onChangeFile(file) {
-      this.image = file;
-    },
-  },
-};
+  public onSubmit(): void {
+    const payload = {
+      title: this.title,
+      body: this.body,
+      image: this.image,
+      rating: this.rating,
+    };
+    this.$emit('submit-form', payload);
+  }
+
+  public onChangeFile(file): void {
+    this.image = file;
+  }
+}
 </script>
 
 <style></style>
