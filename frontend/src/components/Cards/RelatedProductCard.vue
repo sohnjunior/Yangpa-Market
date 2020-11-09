@@ -25,16 +25,23 @@
   </v-hover>
 </template>
 
-<script>
-export default {
-  props: ['title', 'image', 'body', 'hit', 'price', 'productID'],
-  methods: {
-    move() {
-      this.$router.push(`/product/${this.productID}`);
-      this.$router.go(0); // refresh
-    },
-  },
-};
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator';
+
+@Component
+export default class RelatedProductCard extends Vue {
+  @Prop({ required: true }) readonly title!: string;
+  @Prop({ required: true }) readonly image!: string;
+  @Prop({ required: true }) readonly body!: string;
+  @Prop({ required: true }) readonly hit!: number;
+  @Prop({ required: true }) readonly price!: string;
+  @Prop({ required: true }) readonly productID!: string;
+
+  public move(): void {
+    this.$router.push(`/product/${this.productID}`);
+    this.$router.go(0);
+  }
+}
 </script>
 
 <style scoped>

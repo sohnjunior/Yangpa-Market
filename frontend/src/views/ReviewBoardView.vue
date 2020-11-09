@@ -46,55 +46,50 @@
   </v-container>
 </template>
 
-<script>
-import { ReviewAPI } from '@api';
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import { Review } from '../types';
+import { ReviewAPI } from '../api';
 import ReviewModal from '@components/Modals/ReviewModal.vue';
 
-export default {
+@Component({
   components: { ReviewModal },
+})
+export default class ReviewBoardView extends Vue {
+  private selectedImage: string = '';
+  private selectedTitle: string = '';
+  private selectedReviewer: string = '';
+  private selectedBody: string = '';
+  private selectedRating: number = 0;
+  private selectedLike: number = 0;
+  private showDialog: boolean = false;
+  private reviews: Review[] = [];
 
-  data() {
-    return {
-      // 선택된 게시글의 정보들 모달 전달용
-      selectedImage: '',
-      selectedTitle: '',
-      selectedReviewer: '',
-      selectedBody: '',
-      selectedRating: '',
-      selectedLike: '',
-
-      // 전체 후기글 관련 데이터 호출
-      showDialog: false,
-      reviews: [],
-    };
-  },
-
-  // 전체 게시글 호출해서 데이터 초기화하기
   async created() {
     const { data } = await ReviewAPI.fetchAllReviews();
     this.reviews = data.reviews;
-  },
+  }
 
-  methods: {
-    async onClickReview(content) {
-      this.showDialog = true;
-      this.selectedRating = content.rating;
-      this.selectedTitle = content.title;
-      this.selectedReviewer = content.user.nickname;
-      this.selectedImage = content.image;
-      this.selectedBody = content.body;
-      this.selectedLike = content.like;
+  public async onClickReview(content: Review): Promise<void> {
+    this.showDialog = true;
+    this.selectedRating = content.rating;
+    this.selectedTitle = content.title;
+    this.selectedReviewer = content.user.nickname;
+    this.selectedImage = content.image;
+    this.selectedBody = content.body;
+    this.selectedLike = content.like;
 
-      await ReviewAPI.increaseReviewHit(content.id);
-    },
-    async onClickLike(content) {
-      await ReviewAPI.increaseReviewLike(content.id);
-    },
-    onCloseModal() {
-      this.showDialog = false;
-    },
-  },
-};
+    await ReviewAPI.increaseReviewHit(content.id);
+  }
+
+  public async onClickLike(content: Review): Promise<void> {
+    await ReviewAPI.increaseReviewLike(content.id);
+  }
+
+  public onCloseModal(): void {
+    this.showDialog = false;
+  }
+}
 </script>
 
 <style>

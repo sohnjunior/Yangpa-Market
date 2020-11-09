@@ -25,36 +25,43 @@
   </v-dialog>
 </template>
 
-<script>
-import EventBus from '@utils/bus';
-import { mapActions } from 'vuex';
-import LoginForm from '@components/Forms/LoginForm';
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
+import { User } from '../../types';
+import EventBus from '../../utils/bus';
+import LoginForm from '@components/Forms/LoginForm.vue';
 
-export default {
+const userModule = namespace('UserModule');
+
+@Component({
   components: { LoginForm },
-  props: ['dialog'],
-  methods: {
-    closeModal() {
-      this.$emit('close-modal');
-    },
+})
+export default class LoginModal extends Vue {
+  @Prop({ required: true, default: false }) readonly dialog!: boolean;
 
-    moveToRegisterPage() {
+  public closeModal(): void {
+    this.$emit('close-modal');
+  }
+
+  public moveToRegisterPage(): void {
+    this.closeModal();
+    this.$router.push('/signup');
+  }
+
+  public async onSubmit(userData: User): Promise<void> {
+    const success = await this.login(userData);
+    if (success) {
+      EventBus.$emit('pop-up', '로그인 되었습니다.');
       this.closeModal();
-      this.$router.push('/signup');
-    },
+    } else {
+      alert('이메일 혹은 비밀번호를 확인해주세요');
+    }
+  }
 
-    async onSubmit(userData) {
-      const success = await this.login(userData);
-      if (success) {
-        EventBus.$emit('pop-up', '로그인 되었습니다.');
-        this.closeModal();
-      } else {
-        alert('이메일 혹은 비밀번호를 확인해주세요');
-      }
-    },
-    ...mapActions(['login']),
-  },
-};
+  @userModule.Action
+  public login!: (userData: User) => Promise<boolean>;
+}
 </script>
 
 <style scoped>

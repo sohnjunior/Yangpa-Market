@@ -35,36 +35,33 @@
   </v-dialog>
 </template>
 
-<script>
-export default {
-  props: ['dialog', 'isEdit'],
-  data() {
-    return {
-      isValid: false,
-      isSecret: false,
-      comment: '',
-    };
-  },
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
-  computed: {
-    title() {
-      return this.isEdit ? '댓글 수정' : '댓글 작성';
-    },
-  },
+@Component
+export default class CommentModal extends Vue {
+  @Prop({ required: true, default: false }) readonly dialog!: boolean;
+  @Prop({ required: true, default: false }) readonly isEdit!: boolean;
 
-  methods: {
-    closeModal() {
-      this.$emit('close-modal');
-    },
+  private isValid: boolean = false;
+  private isSecret: boolean = false;
+  private comment: string = '';
 
-    onSubmit() {
-      this.isEdit
-        ? this.$emit('update-comment', { comment: this.comment })
-        : this.$emit('create-comment', { comment: this.comment, secret: this.isSecret });
-      this.closeModal();
-    },
-  },
-};
+  get title(): string {
+    return this.isEdit ? '댓글 수정' : '댓글 작성';
+  }
+
+  public closeModal(): void {
+    this.$emit('close-modal');
+  }
+
+  public onSubmit(): void {
+    this.isEdit
+      ? this.$emit('update-comment', { comment: this.comment })
+      : this.$emit('create-comment', { comment: this.comment, secret: this.isSecret });
+    this.closeModal();
+  }
+}
 </script>
 
 <style></style>

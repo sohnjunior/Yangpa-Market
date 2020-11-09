@@ -66,49 +66,49 @@
   </v-app-bar>
 </template>
 
-<script>
-import EventBus from '@utils/bus';
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
 import LoginModal from '@components/Modals/LoginModal.vue';
-import { deleteCookie } from '@utils/cookies.js';
-import { mapGetters } from 'vuex';
+import EventBus from '../../utils/bus';
+import { deleteCookie } from '../../utils/cookies';
 
-export default {
+const userModule = namespace('UserModule');
+
+@Component({
   components: { LoginModal },
-  data() {
-    return {
-      keyword: '',
-      dialog: false,
-    };
-  },
-  computed: {
-    ...mapGetters(['isLoggedIn']),
-  },
-  methods: {
-    loginClicked() {
-      this.dialog = true;
-    },
-    logoutClicked() {
-      deleteCookie('auth_email');
-      deleteCookie('auth_token');
-      EventBus.$emit('pop-up', '로그아웃 되었습니다.');
-      this.$router.go(0);
-    },
-    closeModal() {
-      this.dialog = false;
-    },
-    search() {
-      this.$router.push(`/search/${this.keyword}`);
-      this.keyword = '';
-      this.$router.go(0);
-    },
-    routeToDashboard() {
-      this.$router.push('/dashboard/cart');
-    },
-    comeBackHome() {
-      this.$router.push('/');
-    },
-  },
-};
+})
+export default class AppBar extends Vue {
+  private keyword: string = '';
+  private dialog: boolean = false;
+
+  @userModule.Getter
+  public isLoggedIn!: boolean;
+
+  public loginClicked(): void {
+    this.dialog = true;
+  }
+  public logoutClicked(): void {
+    deleteCookie('auth_email');
+    deleteCookie('auth_token');
+    EventBus.$emit('pop-up', '로그아웃 되었습니다.');
+    this.$router.go(0);
+  }
+  public closeModal(): void {
+    this.dialog = false;
+  }
+  public search(): void {
+    this.$router.push(`/search/${this.keyword}`);
+    this.keyword = '';
+    this.$router.go(0);
+  }
+  public routeToDashboard(): void {
+    this.$router.push('/dashboard/cart');
+  }
+  public comeBackHome(): void {
+    this.$router.push('/');
+  }
+}
 </script>
 
 <style scoped>

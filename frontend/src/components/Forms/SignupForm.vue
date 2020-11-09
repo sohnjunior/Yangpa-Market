@@ -10,7 +10,7 @@
               <v-text-field
                 label="이메일 계정"
                 v-model="email"
-                :rules="rules.emailRules"
+                :rules="rulesMap.emailRules"
                 class="mx-4"
                 required
                 hint="예시: yangpa@gmail.com"
@@ -20,7 +20,7 @@
               <v-text-field
                 label="비밀번호 (8~15자, 적어도 하나의 특수문자와 숫자 포함)"
                 v-model="password"
-                :rules="rules.passwordRules"
+                :rules="rulesMap.passwordRules"
                 type="password"
                 class="mx-4"
                 required
@@ -29,7 +29,7 @@
               <v-text-field
                 label="비밀번호 확인"
                 v-model="confirmpassword"
-                :rules="rules.confirmPasswordRules"
+                :rules="rulesMap.confirmPasswordRules"
                 type="password"
                 class="mx-4"
                 required
@@ -47,7 +47,7 @@
               <v-text-field
                 label="전화번호"
                 v-model="phone"
-                :rules="rules.phoneRules"
+                :rules="rulesMap.phoneRules"
                 class="mx-4"
                 hint="예시: 010-1234-5678"
                 persistent-hint
@@ -60,7 +60,7 @@
                 <v-radio label="여" value="female" />
               </v-radio-group>
 
-              <v-radio-group :row="true" class="mx-4" v-model="admin">
+              <v-radio-group :row="true" class="mx-4" v-model="isAdmin">
                 관리자 계정
                 <v-spacer />
                 <v-radio label="예" :value="true" />
@@ -79,13 +79,14 @@
   </v-container>
 </template>
 
-<script>
-import { UserAPI } from '@api';
-import { validateEmail, validatePassword, validatePhoneNum } from '@utils/validators';
-import SubmitButton from '@components/Buttons/SubmitButton';
-import DatePicker from '@components/Menu/DatePicker';
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import { UserAPI } from '../../api';
+import { validateEmail, validatePassword, validatePhoneNum } from '../../utils/validators';
+import SubmitButton from '@components/Buttons/SubmitButton.vue';
+import DatePicker from '@components/Menu/DatePicker.vue';
 
-const rules = {
+const rulesMap = {
   emailRules: [
     (v) => !!v || 'email을 입력하세요',
     (v) => validateEmail(v) || '올바른 email 형식이 아닙니다',
@@ -104,57 +105,44 @@ const rules = {
   ],
 };
 
-export default {
+@Component({
   components: { SubmitButton, DatePicker },
-  data() {
-    return {
-      email: '',
-      password: '',
-      confirmpassword: '',
-      nickname: '',
-      phone: '',
-      sex: 'male',
-      birthday: '',
-      admin: false,
-      isValid: false,
+})
+export default class SignupForm extends Vue {
+  private email: string = '';
+  private password: string = '';
+  private confirmpassword: string = '';
+  private nickname: string = '';
+  private phone: string = '';
+  private sex: string = 'male';
+  private birthday: string = '';
+  private isAdmin: boolean = false;
+  private isValid: boolean = false;
+  private rulesMap = rulesMap;
+
+  public async submitForm(): Promise<void> {
+    const userData = {
+      email: this.email,
+      password: this.password,
+      nickname: this.nickname,
+      phone: this.phone,
+      sex: this.sex,
+      birthday: this.birthday,
+      admin: this.isAdmin,
     };
-  },
 
-  computed: {
-    passwordConfirmationRule() {
-      return () => this.password === this.confirmpassword || '비밀번호가 일치하지 않습니다.';
-    },
-  },
+    try {
+      await UserAPI.registerUser(userData);
+      this.$router.push('/');
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-  created() {
-    this.rules = rules;
-  },
-
-  methods: {
-    async submitForm() {
-      const userData = {
-        email: this.email,
-        password: this.password,
-        nickname: this.nickname,
-        phone: this.phone,
-        sex: this.sex,
-        birthday: this.birthday,
-        admin: this.admin,
-      };
-
-      try {
-        await UserAPI.registerUser(userData);
-        this.$router.push('/');
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    onPickDate(date) {
-      console.log(date);
-      this.birthday = date;
-    },
-  },
-};
+  public onPickDate(date): void {
+    this.birthday = date;
+  }
+}
 </script>
 
 <style></style>

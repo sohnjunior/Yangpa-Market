@@ -19,67 +19,66 @@
   </v-container>
 </template>
 
-<script>
-import { OrderAPI } from '@api';
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import { OrderAPI } from '../../api';
 
-export default {
-  data() {
-    return {
-      dialog: false,
-      show: false,
-      orderHeaders: [
-        {
-          text: '주문번호',
-          align: 'start',
-          value: 'code',
-          sortable: false,
-          class: 'header',
-        },
-        {
-          text: '상품명',
-          align: 'start',
-          value: 'title',
-          sortable: false,
-          class: 'header',
-        },
-        {
-          text: '연락처',
-          align: 'start',
-          value: 'phone',
-          sortable: false,
-          class: 'header',
-        },
-        {
-          text: '구매자',
-          align: 'start',
-          value: 'user.nickname',
-          sortable: false,
-          class: 'header',
-        },
-        { align: 'middle', value: 'actions', sortable: false },
-      ],
-      productList: {},
-      orderList: [],
-    };
+const orderHeaders = [
+  {
+    text: '주문번호',
+    align: 'start',
+    value: 'code',
+    sortable: false,
+    class: 'header',
   },
+  {
+    text: '상품명',
+    align: 'start',
+    value: 'title',
+    sortable: false,
+    class: 'header',
+  },
+  {
+    text: '연락처',
+    align: 'start',
+    value: 'phone',
+    sortable: false,
+    class: 'header',
+  },
+  {
+    text: '구매자',
+    align: 'start',
+    value: 'user.nickname',
+    sortable: false,
+    class: 'header',
+  },
+  { align: 'middle', value: 'actions', sortable: false },
+];
 
-  async created() {
+@Component
+export default class UserAlarmTable extends Vue {
+  private dialog: boolean = false;
+  private show: boolean = false;
+  private orderHeaders = orderHeaders;
+  private productList = {};
+  private orderList = [];
+
+  public async created(): Promise<void> {
     const {
       data: { products, orders },
     } = await OrderAPI.fetchPendingOrder();
     this.productList = products;
     this.orderList = orders;
-  },
+  }
 
-  methods: {
-    async approve(item) {
-      await OrderAPI.approveOrder({ postID: item.postId });
-    },
-    async remove(item) {
-      await OrderAPI.rejectOrder(item.id);
-    },
-  },
-};
+  public async approve(item): Promise<void> {
+    await OrderAPI.approveOrder({ postID: item.postId });
+  }
+
+  async remove(item): Promise<void> {
+    await OrderAPI.rejectOrder(item.id);
+  }
+}
 </script>
 
 <style></style>

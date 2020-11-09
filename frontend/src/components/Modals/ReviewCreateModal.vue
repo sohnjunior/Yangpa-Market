@@ -11,39 +11,41 @@
   </div>
 </template>
 
-<script>
-import { ReviewAPI } from '@api';
-import { mapGetters } from 'vuex';
-import ReviewForm from '@components/Forms/ReviewForm';
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
+import { ReviewAPI } from '../../api';
+import ReviewForm from '@components/Forms/ReviewForm.vue';
 
-export default {
+const userModule = namespace('UserModule');
+
+@Component({
   components: { ReviewForm },
-  props: ['show'],
+})
+export default class ReviewCreateModal extends Vue {
+  @Prop({ required: true, default: false }) readonly show!: boolean;
 
-  computed: {
-    ...mapGetters({ userEmail: 'getEmail' }),
-  },
+  @userModule.Getter
+  public getEmail!: string;
 
-  methods: {
-    async onSubmitForm(payload) {
-      const { title, body, rating, image } = payload;
+  public async onSubmitForm(payload): Promise<void> {
+    const { title, body, rating, image } = payload;
 
-      const formData = new FormData();
-      formData.append('email', this.userEmail);
-      formData.append('title', title);
-      formData.append('image', image);
-      formData.append('body', body);
-      formData.append('rating', rating);
+    const formData = new FormData();
+    formData.append('email', this.getEmail);
+    formData.append('title', title);
+    formData.append('image', image);
+    formData.append('body', body);
+    formData.append('rating', rating);
 
-      const { data } = await ReviewAPI.createReview(formData);
-      this.closeDialog();
-    },
+    const { data } = await ReviewAPI.createReview(formData);
+    this.closeDialog();
+  }
 
-    closeDialog() {
-      this.$emit('close-dialog');
-    },
-  },
-};
+  public closeDialog(): void {
+    this.$emit('close-dialog');
+  }
+}
 </script>
 
 <style></style>

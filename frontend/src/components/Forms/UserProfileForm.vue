@@ -72,31 +72,27 @@
   </v-container>
 </template>
 
-<script>
-import { UserAPI } from '@api';
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import { UserAPI } from '../../api';
 
-export default {
-  data() {
-    return {
-      email: '',
-      password: '',
-      confirmpassword: '',
-      nickname: '',
-      phone: '',
-      sex: '',
-      birthday: '',
-      passwordRules: [(v) => !!v || 'Password is required'],
-      confirmPasswordRules: [(v) => !!v || 'Confirm password'],
-      date: this.birthday,
-      menu: false,
-    };
-  },
+@Component
+export default class UserProfileForm extends Vue {
+  private email: string = '';
+  private password: string = '';
+  private confirmpassword: string = '';
+  private nickname: string = '';
+  private phone: string = '';
+  private sex: string = '';
+  private birthday: string = '';
+  private date: string = '';
+  private menu: boolean = false;
+  private passwordRules = [(v) => !!v || 'Password is required'];
+  private confirmPasswordRules = [(v) => !!v || 'Confirm password'];
 
-  computed: {
-    passwordConfirmationRule() {
-      return () => this.password === this.confirmpassword || 'Password must match';
-    },
-  },
+  get passwordConfirmationRule(): () => boolean | string {
+    return () => this.password === this.confirmpassword || '비밀번호가 일치하지 않습니다';
+  }
 
   async created() {
     const { data } = await UserAPI.fetchUser();
@@ -107,29 +103,26 @@ export default {
     this.phone = data.result.phone;
     this.sex = data.result.sex;
     this.birthday = data.result.birthday.substr(0, 10);
-  },
+  }
 
-  methods: {
-    async submitForm() {
-      const userData = {
-        email: this.email,
-        password: this.password,
-        nickname: this.nickname,
-        phone: this.phone,
-        sex: this.sex,
-        birthday: this.birthday,
-      };
+  public async submitForm(): Promise<void> {
+    const userData = {
+      email: this.email,
+      password: this.password,
+      nickname: this.nickname,
+      phone: this.phone,
+      sex: this.sex,
+      birthday: this.birthday,
+    };
 
-      try {
-        const { data } = await UserAPI.updateUser(userData);
-        console.log(data);
-        this.$router.go(0);
-      } catch (error) {
-        console.log(error);
-      }
-    },
-  },
-};
+    try {
+      const { data } = await UserAPI.updateUser(userData);
+      this.$router.go(0);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
 </script>
 
 <style></style>

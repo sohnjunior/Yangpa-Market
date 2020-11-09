@@ -27,31 +27,29 @@
   </v-card>
 </template>
 
-<script>
-export default {
-  props: ['id', 'name', 'price', 'image', 'status'],
-  data() {
-    return {
-      onSale: {
-        color: 'darkseagreen',
-      },
-      soldOut: {
-        color: 'tomato',
-      },
-    };
-  },
-  computed: {
-    statusMessage() {
-      return this.status ? '판매완료' : '판매중';
-    },
-  },
-  methods: {
-    deleteProduct() {
-      this.$emit('delete-product', this.id);
-      this.$router.go(0);
-    },
-  },
-};
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator';
+
+@Component
+export default class CartProductCard extends Vue {
+  @Prop({ required: true }) readonly id!: string;
+  @Prop({ required: true }) readonly name!: string;
+  @Prop({ required: true }) readonly price!: string;
+  @Prop({ required: true }) readonly image!: string;
+  @Prop({ required: true }) readonly status!: string;
+
+  private onSale = { color: 'darkseagreen' };
+  private soldOut = { color: 'tomato' };
+
+  get statusMessage(): string {
+    return this.status ? '판매완료' : '판매중';
+  }
+
+  public deleteProduct(): void {
+    this.$emit('delete-product', this.id);
+    this.$router.go(0);
+  }
+}
 </script>
 
 <style scoped>

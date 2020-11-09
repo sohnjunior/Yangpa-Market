@@ -12,19 +12,17 @@
   </v-container>
 </template>
 
-<script>
-import { ProductAPI } from '@api';
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import { ProductAPI } from '../api';
 
-export default {
-  data() {
-    return {
-      productID: '',
-      productTitle: '',
-      productIMG: '',
-      price: '',
-      body: '',
-    };
-  },
+@Component
+export default class ProductUpdateView extends Vue {
+  private productID: string = '';
+  private productTitle: string = '';
+  private productIMG: string = '';
+  private price: string = '';
+  private body: string = '';
 
   async created() {
     this.productID = this.$route.params.id;
@@ -35,25 +33,23 @@ export default {
     this.price = product.price;
     this.productIMG = product.image;
     this.body = body;
-  },
+  }
 
-  methods: {
-    async onEditProductInfo() {
-      const updataData = {
-        productId: this.productID,
-        title: this.productTitle,
-        body: this.body,
-        price: this.price,
-      };
+  async onEditProductInfo(): Promise<void> {
+    const updataData = {
+      productId: this.productID,
+      title: this.productTitle,
+      body: this.body,
+      price: this.price,
+    };
 
-      try {
-        await ProductAPI.updateProduct(this.productID, updataData);
-      } catch (err) {
-        console.log(err);
-      }
-    },
-  },
-};
+    try {
+      await ProductAPI.updateProduct(this.productID, updataData);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+}
 </script>
 
 <style scoped>

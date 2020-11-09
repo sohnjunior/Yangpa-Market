@@ -64,39 +64,40 @@
     </v-container>
     <v-spacer class="mt-11" />
     <hr />
-    <CommentList :seller="seller" />
+    <CommentList :seller="isSeller" />
   </v-content>
 </template>
 
-<script>
-import { ProductAPI, RecommendationAPI, CartAPI } from '@api';
-import CommentList from '@components/Tables/CommentTable';
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import { ProductAPI, RecommendationAPI, CartAPI } from '../api';
+import { namespace } from 'vuex-class';
+import CommentList from '@components/Tables/CommentTable.vue';
 import RelatedProductCard from '@components/Cards/RelatedProductCard.vue';
-import EventBus from '@utils/bus';
-import { mapGetters } from 'vuex';
+import EventBus from '../utils/bus';
 
-export default {
+const userModule = namespace('UserModule');
+
+@Component({
   components: {
     CommentList,
     RelatedProductCard,
   },
+})
+export default class ProductDetailView extends Vue {
+  private productID: string = '';
+  private productIMG: string = '';
+  private productSeller: string = '';
+  private productBody: string = '';
+  private productTitle: string = '';
+  private productPrice: string = '';
+  private related = [];
+  private isSeller: boolean = false;
+  private isSold: boolean = false;
 
-  data() {
-    return {
-      productID: '',
-      productIMG: '',
-      productSeller: '',
-      productBody: '',
-      productTitle: '',
-      productPrice: '',
-      related: [],
-      seller: false,
-    };
-  },
-
-  computed: {
-    ...mapGetters({ isLoggedIn: 'isLoggedIn', userEmail: 'getEmail' }),
-  },
+  @userModule.Getter
+  public isLoggedIn!: boolean;
+  public getEmail!: string;
 
   async created() {
     this.productID = this.$route.params.id;
@@ -109,42 +110,40 @@ export default {
     this.productSeller = user.nickname;
     this.productTitle = product.title;
     this.productPrice = product.price;
-    this.sold = product.sold;
-    this.seller = user.email === this.userEmail;
+    this.isSeller = user.email === this.getEmail;
+    this.isSold = product.sold;
 
     const {
       data: { result },
     } = await RecommendationAPI.fetchRelatedProducts(this.productID);
     this.related = result;
     window.scrollTo(0, 0);
-  },
+  }
 
-  methods: {
-    async onAddCart() {
-      if (!this.isLoggedIn) {
-        alert('로그인이 필요한 서비스입니다.');
-        return;
-      }
+  public async onAddCart(): Promise<void> {
+    if (!this.isLoggedIn) {
+      alert('로그인이 필요한 서비스입니다.');
+      return;
+    }
 
-      try {
-        await CartAPI.createCartProduct({
-          productID: this.productID,
-        });
-        EventBus.$emit('pop-up', '장바구니에 추가되었습니다.');
-      } catch (err) {
-        console.error(err);
-      }
-    },
+    try {
+      await CartAPI.createCartProduct({
+        productID: this.productID,
+      });
+      EventBus.$emit('pop-up', '장바구니에 추가되었습니다.');
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
-    async onClickLikeButton() {
-      try {
-        await ProductAPI.likeProduct(this.productID);
-      } catch (err) {
-        console.error(err);
-      }
-    },
-  },
-};
+  public async onClickLikeButton(): Promise<void> {
+    try {
+      await ProductAPI.likeProduct(this.productID);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+}
 </script>
 
 <style scoped>
