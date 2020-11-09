@@ -28,68 +28,62 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
 import CartProductCard from '@components/Cards/CartProductCard.vue';
-import { CartAPI } from '@api';
+import { CartAPI } from '../api';
 
-export default {
+@Component({
   components: { CartProductCard },
+})
+export default class UserCart extends Vue {
+  private picks: any[] = [];
+  private available: any[] = []; // 내가 찜한 상품중 현재 판매중인것들만
 
-  data() {
-    return {
-      picks: [],
-      available: [], // 내가 찜한 상품중 현재 판매중인것들만
-    };
-  },
-
-  computed: {
-    totalPrice() {
-      let sum = 0;
-      for (let pick of this.available) {
-        sum += pick.price;
-      }
-      return sum;
-    },
-  },
+  get totalPrice(): number {
+    let sum = 0;
+    for (const pick of this.available) {
+      sum += pick.price;
+    }
+    return sum;
+  }
 
   async created() {
-    const { data } = await CartAPI.fetchAllCartProducts();
-    this.picks = data.result;
-    for (let pick of data.result) {
+    const { data: result } = await CartAPI.fetchAllCartProducts();
+    this.picks = result;
+    for (const pick of result) {
       if (!pick.sold) {
         this.available.push(pick);
       }
     }
-  },
+  }
 
-  methods: {
-    async removeFromCart(id) {
-      const payload = { productID: id };
-      await CartAPI.removeCartProduct(payload);
-    },
+  public async removeFromCart(id: string) {
+    const payload = { productID: id };
+    await CartAPI.removeCartProduct(payload);
+  }
 
-    async buyProducts() {
-      if (this.available.length === 0) {
-        alert('현재 구매가능한 물폼이 없습니다!');
-        return;
+  public async buyProducts() {
+    if (this.available.length === 0) {
+      alert('현재 구매가능한 물폼이 없습니다!');
+      return;
+    }
+
+    const phone = prompt('핀매자와 연락할 수 있는 연락처를 남겨주세요!');
+    if (phone) {
+      // 장바구니 모든 상품들에 대해 구매 요청 전송
+      for (const product of this.picks) {
+        const payload = {
+          postID: product.postId,
+          productID: product.id,
+          phone: phone,
+        };
+
+        await CartAPI.purchaseCartProduct(payload);
       }
-
-      const phone = prompt('핀매자와 연락할 수 있는 연락처를 남겨주세요!');
-      if (phone) {
-        // 장바구니 모든 상품들에 대해 구매 요청 전송
-        for (const product of this.picks) {
-          const payload = {
-            postID: product.postId,
-            productID: product.id,
-            phone: phone,
-          };
-
-          await CartAPI.purchaseCartProduct(payload);
-        }
-      }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style scoped>

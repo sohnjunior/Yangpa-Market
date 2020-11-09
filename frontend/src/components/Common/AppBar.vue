@@ -73,7 +73,7 @@ import LoginModal from '@components/Modals/LoginModal.vue';
 import EventBus from '../../utils/bus';
 import { deleteCookie } from '../../utils/cookies';
 
-const user = namespace('user');
+const userModule = namespace('UserModule');
 
 @Component({
   components: { LoginModal },
@@ -82,7 +82,7 @@ export default class AppBar extends Vue {
   private keyword: string = '';
   private dialog: boolean = false;
 
-  @user.Getter
+  @userModule.Getter
   public isLoggedIn!: boolean;
 
   public loginClicked(): void {

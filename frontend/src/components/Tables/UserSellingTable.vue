@@ -12,7 +12,7 @@
       </template>
     </v-data-table>
 
-    <v-spacer class="mt-7"></v-spacer>
+    <v-spacer class="mt-7" />
 
     <v-data-table :headers="headers" :items="soldList" class="elevation-1">
       <template v-slot:top>
@@ -24,106 +24,107 @@
   </v-container>
 </template>
 
-<script>
-import { OrderAPI, ProductAPI } from '@api';
-import { mapGetters } from 'vuex';
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
+import { OrderAPI, ProductAPI } from '../../api';
 
-export default {
-  data() {
-    return {
-      dialog: false,
-      show: false,
-      onSaleHeaders: [
-        {
-          text: '상품명',
-          align: 'start',
-          value: 'product.title',
-          sortable: false,
-          class: 'header',
-        },
-        {
-          text: '가격',
-          align: 'start',
-          value: 'product.price',
-          sortable: false,
-          class: 'header',
-        },
-        {
-          text: '조회수',
-          align: 'start',
-          value: 'hit',
-          sortable: false,
-          class: 'header',
-        },
-        {
-          text: '좋아요',
-          align: 'start',
-          value: 'product.like',
-          sortable: false,
-          class: 'header',
-        },
-        { align: 'middle', value: 'actions', sortable: false },
-      ],
-      headers: [
-        {
-          text: '상품명',
-          align: 'start',
-          value: 'product.title',
-          sortable: false,
-          class: 'header',
-        },
-        {
-          text: '판매가격',
-          align: 'start',
-          value: 'product.price',
-          sortable: false,
-          class: 'header',
-        },
-      ],
-      onSaleList: [],
-      soldList: [],
-    };
-  },
+const userModule = namespace('UserModule');
 
-  computed: {
-    ...mapGetters({ userEmail: 'getEmail' }),
+const onSaleHeaders = [
+  {
+    text: '상품명',
+    align: 'start',
+    value: 'product.title',
+    sortable: false,
+    class: 'header',
   },
+  {
+    text: '가격',
+    align: 'start',
+    value: 'product.price',
+    sortable: false,
+    class: 'header',
+  },
+  {
+    text: '조회수',
+    align: 'start',
+    value: 'hit',
+    sortable: false,
+    class: 'header',
+  },
+  {
+    text: '좋아요',
+    align: 'start',
+    value: 'product.like',
+    sortable: false,
+    class: 'header',
+  },
+  { align: 'middle', value: 'actions', sortable: false },
+];
+
+const headers = [
+  {
+    text: '상품명',
+    align: 'start',
+    value: 'product.title',
+    sortable: false,
+    class: 'header',
+  },
+  {
+    text: '판매가격',
+    align: 'start',
+    value: 'product.price',
+    sortable: false,
+    class: 'header',
+  },
+];
+
+@Component
+export default class UserSellingTable extends Vue {
+  private dialog: boolean = false;
+  private show: boolean = false;
+
+  private onSaleList: any[] = [];
+  private soldList: any[] = [];
+
+  private onSaleHeaders = onSaleHeaders;
+  private headers = headers;
+
+  @userModule.Getter
+  public getEmail!: string;
 
   async created() {
-    const userData = { email: this.userEmail };
-    const { data } = await OrderAPI.fetchSalesOrder(userData);
+    const { data } = await OrderAPI.fetchSalesOrder();
 
     for (const p of data.products) {
-      // 만약 팔린 상품이라면
       if (p.product.sold) {
         this.soldList.push(p);
       } else {
         this.onSaleList.push(p);
       }
     }
-  },
-  methods: {
-    showReviewModal() {
-      this.show = true;
-    },
-    closeDialog() {
-      this.show = false;
-    },
+  }
 
-    // 상품 정보 업데이트
-    updateItem(item) {
-      this.$router.push(`/product/update/${item.title}`);
-    },
+  public showReviewModal(): void {
+    this.show = true;
+  }
 
-    // 등록된 상품 삭제
-    async deleteItem(item) {
-      const allow = confirm('<' + item.product.title + '> 판매글을 정말로 삭제하시겠습니까?');
-      if (allow) {
-        await ProductAPI.deletePost(item.title);
-      }
-    },
-  },
-};
+  public closeDialog(): void {
+    this.show = false;
+  }
+
+  public updateItem(item): void {
+    this.$router.push(`/product/update/${item.title}`);
+  }
+
+  public async deleteItem(item): Promise<void> {
+    const allow = confirm('<' + item.product.title + '> 판매글을 정말로 삭제하시겠습니까?');
+    if (allow) {
+      await ProductAPI.deletePost(item.title);
+    }
+  }
+}
 </script>
 
 <style></style>

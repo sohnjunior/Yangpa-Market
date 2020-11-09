@@ -64,7 +64,7 @@ const ruleMap = {
   fileRules: [(v) => !!v || '상품 사진이 필요해요'],
 };
 
-const user = namespace('user');
+const userModule = namespace('UserModule');
 
 @Component({
   components: { SubmitButton },
@@ -79,7 +79,7 @@ export default class ProductCreateView extends Vue {
   private items: string[] = Object.keys(categoryMap);
   private rules = ruleMap;
 
-  @user.Getter
+  @userModule.Getter
   public getEmail!: string;
 
   async onSubmit() {

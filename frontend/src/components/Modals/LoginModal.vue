@@ -32,7 +32,7 @@ import { User } from '../../types';
 import EventBus from '../../utils/bus';
 import LoginForm from '@components/Forms/LoginForm.vue';
 
-const user = namespace('user');
+const userModule = namespace('UserModule');
 
 @Component({
   components: { LoginForm },
@@ -59,7 +59,7 @@ export default class LoginModal extends Vue {
     }
   }
 
-  @user.Action
+  @userModule.Action
   public login!: (userData: User) => Promise<boolean>;
 }
 </script>

@@ -76,7 +76,7 @@ import CommentList from '@components/Tables/CommentTable.vue';
 import RelatedProductCard from '@components/Cards/RelatedProductCard.vue';
 import EventBus from '../utils/bus';
 
-const user = namespace('user');
+const userModule = namespace('UserModule');
 
 @Component({
   components: {
@@ -95,7 +95,7 @@ export default class ProductDetailView extends Vue {
   private isSeller: boolean = false;
   private isSold: boolean = false;
 
-  @user.Getter
+  @userModule.Getter
   public isLoggedIn!: boolean;
   public getEmail!: string;
 

@@ -8,7 +8,7 @@ import {
 import { UserAPI } from '../../api';
 import { User } from '../../types';
 
-@Module({ namespaced: true, name: 'user' })
+@Module({ namespaced: true })
 export default class UserModule extends VuexModule {
   public email: string = getAuthEmailFromCookie() || '';
   public token: string = getAuthTokenFromCookie() || '';
@@ -39,8 +39,8 @@ export default class UserModule extends VuexModule {
   public async login(userData: User): Promise<boolean> {
     try {
       const { data } = await UserAPI.signinUser(userData);
-      this.context.commit('SET_EMAIL', data.email);
-      this.context.commit('SET_TOKEN', data.token);
+      this.context.commit('setEmail', data.email);
+      this.context.commit('setToken', data.token);
       saveAuthEmailToCookie(data.email);
       saveAuthTokenToCookie(data.token);
       return true;

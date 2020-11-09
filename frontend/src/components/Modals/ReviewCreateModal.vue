@@ -17,7 +17,7 @@ import { namespace } from 'vuex-class';
 import { ReviewAPI } from '../../api';
 import ReviewForm from '@components/Forms/ReviewForm.vue';
 
-const user = namespace('user');
+const userModule = namespace('UserModule');
 
 @Component({
   components: { ReviewForm },
@@ -25,7 +25,7 @@ const user = namespace('user');
 export default class ReviewCreateModal extends Vue {
   @Prop({ required: true, default: false }) readonly show!: boolean;
 
-  @user.Getter
+  @userModule.Getter
   public getEmail!: string;
 
   public async onSubmitForm(payload): Promise<void> {
