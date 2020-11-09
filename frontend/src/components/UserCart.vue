@@ -49,9 +49,11 @@ export default class UserCart extends Vue {
   }
 
   async created() {
-    const { data: result } = await CartAPI.fetchAllCartProducts();
+    const {
+      data: { result },
+    } = await CartAPI.fetchAllCartProducts();
     this.picks = result;
-    for (const pick of result) {
+    for (const pick of this.picks) {
       if (!pick.sold) {
         this.available.push(pick);
       }
@@ -72,15 +74,15 @@ export default class UserCart extends Vue {
     const phone = prompt('핀매자와 연락할 수 있는 연락처를 남겨주세요!');
     if (phone) {
       // 장바구니 모든 상품들에 대해 구매 요청 전송
-      for (const product of this.picks) {
-        const payload = {
+      const promises = this.picks.map((product) => {
+        CartAPI.purchaseCartProduct({
           postID: product.postId,
           productID: product.id,
           phone: phone,
-        };
+        });
+      });
 
-        await CartAPI.purchaseCartProduct(payload);
-      }
+      await Promise.all(promises);
     }
   }
 }
