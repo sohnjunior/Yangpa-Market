@@ -1,12 +1,12 @@
 <template>
   <v-app>
     <AppBar />
-    <v-content>
+    <main>
       <SnackModal />
       <transition name="fade">
         <router-view />
       </transition>
-    </v-content>
+    </main>
     <Footer class="mt-10" />
   </v-app>
 </template>
@@ -26,7 +26,14 @@ export default {
   },
 };
 </script>
+
 <style>
+main {
+  padding-top: 130px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
 @font-face {
   font-family: 'BMHANNAAir';
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.0/BMHANNAAir.woff')
