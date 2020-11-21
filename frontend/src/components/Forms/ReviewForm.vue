@@ -1,32 +1,33 @@
 <template>
-  <v-form v-model="isValid" @submit.prevent="onSubmit">
-    <v-text-field
-      placeholder="제목"
-      solo
-      v-model="title"
-      :rules="[(v) => !!v || '제목을 입력해주세요']"
-    />
+  <form @submit.prevent="onSubmit">
+    <fieldset>
+      <label for="review-title">
+        제묵
+        <input type="text" v-model="title" :rules="[(v) => !!v || '제목을 입력해주세요']" />
+      </label>
 
-    <v-subheader>평점</v-subheader>
-    <v-rating v-model="rating" color="amber" background-color="orange lighten-3" />
+      <label for="review-rating">
+        평점
+        <v-rating v-model="rating" color="amber" background-color="orange lighten-3" />
+      </label>
 
-    <v-subheader>내용</v-subheader>
-    <v-textarea
-      solo
-      rows="7"
-      rounded
-      auto-grow
-      clearable
-      v-model="body"
-      label="생생한 후기를 남겨주세요!"
-      :rules="[(v) => !!v || '후기를 작성해주세요']"
-    />
+      <label for="review-body">
+        내용
+        <textarea
+          v-model="body"
+          placeholder="생생한 후기를 남겨주세요!"
+          :rules="[(v) => !!v || '후기를 작성해주세요']"
+        />
+      </label>
 
-    <v-subheader>사진 첨부</v-subheader>
-    <v-file-input @change="onChangeFile" label="사진을 첨부하세요" />
+      <label for="review-file">
+        사진 첨부
+        <input type="file" @change="onChangeFile" />
+      </label>
+    </fieldset>
 
     <SubmitButton :isValid="isValid"> 후기 등록 </SubmitButton>
-  </v-form>
+  </form>
 </template>
 
 <script lang="ts">
