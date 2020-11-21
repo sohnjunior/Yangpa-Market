@@ -1,23 +1,17 @@
 <template>
-  <v-footer padless>
-    <v-card flat tile width="100%" class="deep-orange lighten-3 white--text text-center">
-      <v-card-text>
-        <v-btn v-for="icon in icons" :key="icon" class="mx-4 white--text" icon>
-          <v-icon size="24px">{{ icon }}</v-icon>
-        </v-btn>
-      </v-card-text>
+  <footer class="footer-container">
+    <div class="button-wrapper">
+      <button v-for="icon in icons" :key="icon">
+        <v-icon size="24px">{{ icon }}</v-icon>
+      </button>
+    </div>
 
-      <v-card-text class="white--text pt-0" style="width: 100%">
-        광운대학교 소프트웨어공학 Term 프로젝트 - 🧅 양파 마켓
-      </v-card-text>
+    <div class="footer-description">광운대학교 소프트웨어공학 Term 프로젝트 - 🧅 양파 마켓</div>
 
-      <v-divider />
-
-      <v-card-text class="white--text">
-        {{ new Date().getFullYear() }} — <strong>vue.js & express.js</strong>
-      </v-card-text>
-    </v-card>
-  </v-footer>
+    <div class="footer-description">
+      <strong>vue.js & express.js</strong>
+    </div>
+  </footer>
 </template>
 
 <script lang="ts">
@@ -29,4 +23,21 @@ export default class Footer extends Vue {
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.footer-container {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffab91;
+  color: #ffffff;
+
+  .button-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+
+  .footer-description {
+    display: flex;
+    justify-content: center;
+  }
+}
+</style>
