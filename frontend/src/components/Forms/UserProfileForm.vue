@@ -1,82 +1,49 @@
 <template>
-  <v-container>
-    <v-form>
-      <v-row>
-        <v-col cols="10">
-          <v-card shaped title="프로필 관리" class="px-5 py-3">
-            <v-subheader class="display-1 mt-3"> 프로필 설정 </v-subheader>
+  <form>
+    <h1>프로필 설정</h1>
 
-            <v-form class="pt-1">
-              <v-text-field label="이메일 계정" v-model="email" class="mx-4" disabled />
+    <fieldset>
+      <input type="email" placeholder="이메일 계정" v-model="email" />
 
-              <v-text-field
-                label="변경할 비밀번호"
-                v-model="password"
-                :rules="passwordRules"
-                type="password"
-                class="mx-4"
-                required
-              />
+      <input
+        type="password"
+        placeholder="변경할 비밀번호"
+        v-model="password"
+        :rules="passwordRules"
+        required
+      />
 
-              <v-text-field
-                label="비밀번호 확인"
-                v-model="confirmpassword"
-                :rules="confirmPasswordRules.concat(passwordConfirmationRule)"
-                type="password"
-                class="mx-4"
-                required
-              />
+      <input
+        type="password"
+        placeholder="비밀번호 확인"
+        v-model="confirmpassword"
+        :rules="confirmPasswordRules.concat(passwordConfirmationRule)"
+        required
+      />
 
-              <v-text-field label="별명" v-model="nickname" class="mx-4" required />
+      <input placeholder="별명" v-model="nickname" required />
+      <input placeholder="전화번호" v-model="phone" />
+    </fieldset>
+    <fieldset>
+      <input type="radio" id="male" value="male" v-model="sex" />
+      <label for="male">남성</label>
+      <input type="radio" id="female" value="female" v-model="sex" />
+      <label for="female">여성</label>
+    </fieldset>
 
-              <v-text-field label="전화번호" v-model="phone" class="mx-4" />
-
-              <v-radio-group :row="true" class="mx-4" v-model="sex">
-                <v-radio :label="'남성'" value="male" />
-                <v-radio :label="'여성'" value="female" />
-              </v-radio-group>
-
-              <v-col cols="mx-4">
-                <v-menu
-                  ref="menu"
-                  v-model="menu"
-                  :close-on-content-click="false"
-                  :return-value.sync="date"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="290px"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      v-model="birthday"
-                      label="생년월일"
-                      readonly
-                      v-bind="attrs"
-                      v-on="on"
-                    />
-                  </template>
-                  <v-date-picker v-model="birthday" no-title scrollable>
-                    <v-spacer />
-                    <v-btn text color="primary" @click="menu = false"> Cancel </v-btn>
-                    <v-btn text color="primary" @click="$refs.menu.save(date)"> OK </v-btn>
-                  </v-date-picker>
-                </v-menu>
-              </v-col>
-              <v-spacer />
-              <v-btn large color="success" @click="submitForm" class="mx-4"> 변경하기 </v-btn>
-            </v-form>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-form>
-  </v-container>
+    <DatePicker @pick-date="onPickDate" />
+    <button type="submit" @click="submitForm">변경하기</button>
+  </form>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import DatePicker from '@components/Menu/DatePicker.vue';
 import { UserAPI } from '../../api';
 
-@Component
+@Component({
+  components: { DatePicker },
+})
 export default class UserProfileForm extends Vue {
   private email: string = '';
   private password: string = '';
@@ -121,6 +88,10 @@ export default class UserProfileForm extends Vue {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  public onPickDate(date): void {
+    this.birthday = date;
   }
 }
 </script>
