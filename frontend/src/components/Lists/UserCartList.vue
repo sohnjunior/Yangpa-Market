@@ -31,7 +31,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import CartProductCard from '@components/Cards/CartProductCard.vue';
-import { CartAPI } from '../api';
+import { CartAPI } from '../../api';
 
 @Component({
   components: { CartProductCard },
