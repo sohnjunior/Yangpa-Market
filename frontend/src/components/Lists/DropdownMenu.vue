@@ -1,7 +1,6 @@
 <template>
   <div>
     <slot name="trigger"></slot>
-
     <ul>
       <li v-for="(item, index) in items" :key="index" @click="onClick(index)">
         {{ item.text }}

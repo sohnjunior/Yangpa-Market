@@ -72,6 +72,7 @@ $logo-color: #ffab91;
 
 .appbar-container {
   display: flex;
+  align-items: center;
   position: fixed;
   width: 100%;
   height: 100px;
@@ -89,6 +90,8 @@ $logo-color: #ffab91;
     }
 
     .logo__title {
+      font-size: 2rem;
+      font-weight: 700;
       color: $logo-color;
     }
   }
