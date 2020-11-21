@@ -1,7 +1,7 @@
 <template>
   <button class="category-btn" @click="onClick">
     <img class="category-btn__image" :src="imageSrcMap[name]" />
-    <span class="category-btn__text"> {{ name }} </span>
+    <span> {{ name }} </span>
   </button>
 </template>
 
@@ -31,26 +31,21 @@ export default class CategoryButton extends Vue {
 </script>
 
 <style lang="scss" scoped>
-$category-btn-color: #69db7c;
+@import '../../assets/scss/_mixins';
+
+$category-btn-color: #8ce99a;
 
 .category-btn {
+  @include button(130px, 50px);
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 130px;
-  height: 50px;
-  border-radius: 10px;
   background-color: $category-btn-color;
 
   &__image {
     width: 30px;
     height: 30px;
     margin-right: 6px;
-  }
-  &__text {
-    color: white;
-    font-size: 1.1rem;
-    font-weight: 600;
   }
 }
 </style>

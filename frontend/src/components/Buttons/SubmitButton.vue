@@ -1,7 +1,7 @@
 <template>
-  <v-btn type="submit" class="mt-6" x-large color="success" :disabled="!isValid">
+  <button type="submit" class="submit-btn" :disabled="!isValid">
     <slot></slot>
-  </v-btn>
+  </button>
 </template>
 
 <script lang="ts">
@@ -13,4 +13,13 @@ export default class SubmitButton extends Vue {
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+@import '../../assets/scss/_mixins';
+
+$submit-btn-color: #69db7c;
+
+.submit-btn {
+  @include button(150px, 60px);
+  background-color: $submit-btn-color;
+}
+</style>
