@@ -1,23 +1,5 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import MainView from '@views/MainView.vue';
-import PageNotFound from '@views/PageNotFound.vue';
-import PageNotAllowed from '@views/PageNotAllowed.vue';
-import DashBoardView from '@views/DashBoardView.vue';
-import ProductCreateView from '@views/ProductCreateView.vue';
-import ProductDetailView from '@views/ProductDetailView.vue';
-import ProductUpdateView from '@views/ProductUpdateView.vue';
-import ReviewBoardView from '@views/ReviewBoardView.vue';
-import SignupView from '@views/SignupView.vue';
-import SearchView from '@views/SearchView.vue';
-import AdminView from '@views/AdminView.vue';
-
-// sub component for Dashboard
-import UserCart from '@components/UserCart.vue';
-import UserSellingTable from '@components/Tables/UserSellingTable.vue';
-import UserBuyingTable from '@components/Tables/UserBuyingTable.vue';
-import UserAlarmTable from '@components/Tables/UserAlarmTable.vue';
-import UserProfileForm from '@components/Forms/UserProfileForm.vue';
 
 // import store for navigation gurad
 import store from '../store';
@@ -25,19 +7,29 @@ import { UserAPI } from '../api';
 
 Vue.use(VueRouter);
 
+const loadView = (viewName: string) => () =>
+  import(/* webpackChunkName: "view-[request]" */ `@views/${viewName}.vue`);
+const UserCartList = () =>
+  import(/* webpackChunkName: "UserCartList" */ '@components/Lists/UserCartList.vue');
+const UserSellingTable = () =>
+  import(/* webpackChunkName: "UserSellingTable" */ '@components/Tables/UserSellingTable.vue');
+const UserBuyingTable = () =>
+  import(/* webpackChunkName: "UserBuyingTable" */ '@components/Tables/UserBuyingTable.vue');
+const UserAlarmTable = () =>
+  import(/* webpackChunkName: "UserAlarmTable" */ '@components/Tables/UserAlarmTable.vue');
+const UserProfileForm = () =>
+  import(/* webpackChunkName: "UserProfileForm" */ '@components/Forms/UserProfileForm.vue');
+
 export const router = new VueRouter({
   routes: [
     {
-      // 홈 화면
       path: '/',
-      component: MainView,
+      component: loadView('MainView'),
     },
     {
-      // 관리자 페이지
       path: '/admin',
-      component: AdminView,
+      component: loadView('AdminView'),
       beforeEnter: async (to, from, next) => {
-        // 만약 관리자 권한을 가지고 있다면
         const {
           data: { isAdmin },
         } = await UserAPI.isAdminUser();
@@ -49,46 +41,38 @@ export const router = new VueRouter({
       },
     },
     {
-      // 유저 대시보드
       path: '/dashboard',
-      component: DashBoardView,
+      component: loadView('DashBoardView'),
       children: [
         {
-          // 장바구니
           path: 'cart',
-          component: UserCart,
+          component: UserCartList,
         },
         {
-          // 판매 관리
           path: 'selling',
           component: UserSellingTable,
         },
         {
-          // 구매 목록
           path: 'buying',
           component: UserBuyingTable,
         },
         {
-          // 상품 구매요청 알림
           path: 'alarm',
           component: UserAlarmTable,
         },
         {
-          // 프로필 관리
           path: 'profile',
           component: UserProfileForm,
         },
       ],
     },
     {
-      // 회원가입
       path: '/signup',
-      component: SignupView,
+      component: loadView('SignupView'),
     },
     {
-      // 상품 게시글 생성 페이지
       path: '/product/new',
-      component: ProductCreateView,
+      component: loadView('ProductCreateView'),
       beforeEnter: (to, from, next) => {
         // 만약 로그인 상태라면
         if (store.state.email !== '' && store.state.token !== '') {
@@ -99,34 +83,28 @@ export const router = new VueRouter({
       },
     },
     {
-      // 상품 상세 글 페이지
       path: '/product/:id',
-      component: ProductDetailView,
+      component: loadView('ProductDetailView'),
     },
     {
-      // 상품 게시글 수정 페이지
       path: '/product/update/:id',
-      component: ProductUpdateView,
+      component: loadView('ProductUpdateView'),
     },
     {
-      // 검색 결과
       path: '/search/:keyword',
-      component: SearchView,
+      component: loadView('SearchView'),
     },
     {
-      // 후기 게시판
       path: '/review',
-      component: ReviewBoardView,
+      component: loadView('ReviewBoardView'),
     },
     {
-      // 403 페이지
       path: '/no-permission',
-      component: PageNotAllowed,
+      component: loadView('PageNotAllowedView'),
     },
     {
-      // 404 페이지
       path: '*',
-      component: PageNotFound,
+      component: loadView('PageNotFoundView'),
     },
   ],
 });
