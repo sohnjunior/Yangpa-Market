@@ -19,7 +19,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class DropdownList extends Vue {
-  @Prop({ required: true, default: [] }) readonly items: DropdownMenuItem[];
+  @Prop({ required: true, default: [] }) readonly items!: DropdownMenuItem[];
 
   onClick(index) {
     console.log(this.items);

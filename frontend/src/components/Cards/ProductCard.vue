@@ -1,51 +1,45 @@
 <template>
-  <v-hover v-slot:default="{ hover }">
-    <v-card
-      width="260"
-      max-height="420"
-      class="card"
-      :elevation="hover ? 12 : 2"
-      @click="move"
-      style="background-color: rgba(255, 245, 238, 0.4)"
-    >
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title style="font-family: 'Handon3gyeopsal300g'; font-size: 1.3rem">
-            {{ title }}
-          </v-list-item-title>
-          <v-list-item-subtitle style="font-size: 1rem; margin-top: 7px; margin-bottom: 5px">
-            {{ writer }}
-          </v-list-item-subtitle>
-          <br />
-          <v-list-item-subtitle style="font-size: 1rem; font-family: 'HangeulNuri-Bold'">
-            <v-icon>mdi-eye-check-outline</v-icon>
-            {{ hit }}
-          </v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
+  <BaseCard @click="move">
+    <template v-slot:card-title>
+      <div>
+        <div class="product-name">
+          {{ title }}
+        </div>
+        <div class="product-seller">
+          {{ writer }}
+        </div>
+        <div class="product-meta">
+          <v-icon>mdi-eye-check-outline</v-icon>
+          {{ hit }}
+        </div>
+      </div>
+    </template>
+    <template v-slot:card-body>
+      <img class="product-image" alt="상품 이미지" :src="image" />
+    </template>
+    <template v-slot:card-footer>
+      <div>
+        <div>
+          {{ body }}
+        </div>
 
-      <v-img alt="이미지" :src="image" height="170" />
-
-      <v-card-text>
-        <h3 class="deep-orange--text text--lighten-3 font-weight-medium price-tag">
-          {{ price }} 원
-        </h3>
-        {{ body }}
-      </v-card-text>
-
-      <v-card-actions>
-        <v-spacer />
-        <v-icon color="pink">mdi-heart</v-icon>
-        {{ like }}
-      </v-card-actions>
-    </v-card>
-  </v-hover>
+        <div>
+          <em>{{ price }} 원</em>
+          <v-icon color="pink">mdi-heart</v-icon>
+          {{ like }}
+        </div>
+      </div>
+    </template>
+  </BaseCard>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import BaseCard from '@components/Cards/BaseCard.vue';
 
-@Component
+@Component({
+  components: { BaseCard },
+})
 export default class ProductCard extends Vue {
   @Prop({ required: true }) title!: string;
   @Prop({ required: true }) image!: string;
@@ -62,12 +56,32 @@ export default class ProductCard extends Vue {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 @font-face {
   font-family: 'Handon3gyeopsal300g';
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_seven@1.2/Handon3gyeopsal300g.woff')
     format('woff');
   font-weight: normal;
   font-style: normal;
+}
+
+.product-name {
+  font-family: 'Handon3gyeopsal300g';
+  font-size: 1.3rem;
+}
+
+.product-seller {
+  margin-top: 7px;
+  margin-bottom: 5px;
+  font-size: 1rem;
+}
+
+.product-meta {
+  font-family: 'HangeulNuri-Bold';
+  font-size: 1rem;
+}
+
+.product-image {
+  height: 170px;
 }
 </style>

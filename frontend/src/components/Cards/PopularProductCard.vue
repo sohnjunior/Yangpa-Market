@@ -1,39 +1,40 @@
 <template>
-  <v-card width="195" color="white">
-    <v-list-item style="background-color: rgba(255, 245, 238, 0.4)">
-      <v-list-item-content>
-        <v-list-item-title style="font-family: 'Handon3gyeopsal300g'; font-size: 1.3rem" id="title">
+  <BaseCard>
+    <template v-slot:card-title>
+      <div class="card-title-wrapper">
+        <h1 class="card-title">
           {{ title }}
-        </v-list-item-title>
-        <v-list-item-subtitle id="category">
+        </h1>
+        <div class="card-subtitle">
           <v-chip class="mt-2 mb-1" color="success" outlined small>
             {{ category }}
           </v-chip>
-        </v-list-item-subtitle>
-        <br />
-        <v-list-item-subtitle id="hit">
+        </div>
+
+        <div class="card-subtitle">
           <v-icon color="grey">mdi-eye-check-outline</v-icon>
-          <span class="ml-1">{{ hit }}</span>
-        </v-list-item-subtitle>
-      </v-list-item-content>
-    </v-list-item>
-
-    <v-img alt="이미지" :src="image" height="170" />
-
-    <v-card-actions style="background-color: rgba(255, 245, 238, 0.4)">
-      <v-row justify="center">
-        <v-btn rounded depressed width="100" color="warning" :to="`/product/${productID}`">
-          보러가기
-        </v-btn>
-      </v-row>
-    </v-card-actions>
-  </v-card>
+          <span>{{ hit }}</span>
+        </div>
+      </div>
+    </template>
+    <template v-slot:card-body>
+      <img class="product-image" alt="상품 이미지" :src="image" />
+    </template>
+    <template v-slot:card-footer>
+      <div>
+        <router-link :to="`/product/${productID}`"> 보러가기 </router-link>
+      </div>
+    </template>
+  </BaseCard>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import BaseCard from '@components/Cards/BaseCard.vue';
 
-@Component
+@Component({
+  components: { BaseCard },
+})
 export default class PopularProductCard extends Vue {
   @Prop({ required: true }) readonly title!: string;
   @Prop({ required: true }) readonly image!: string;
@@ -43,16 +44,24 @@ export default class PopularProductCard extends Vue {
 }
 </script>
 
-<style scoped>
-#title {
-  color: black;
+<style lang="scss" scoped>
+.card-title-wrapper {
+  background-color: rgba(255, 245, 238, 0.4);
+
+  .card-title {
+    font-family: 'Handon3gyeopsal300g';
+    font-size: 1.3rem;
+    color: black;
+  }
+
+  .card-subtitle {
+    color: grey;
+    font-family: 'HangeulNuri-Bold';
+  }
 }
-#category {
-  color: black;
-}
-#hit {
-  color: grey;
-  font-family: 'HangeulNuri-Bold';
+
+.product-image {
+  height: 170px;
 }
 
 @font-face {

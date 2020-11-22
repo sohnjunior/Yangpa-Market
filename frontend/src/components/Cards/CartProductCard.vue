@@ -1,36 +1,30 @@
 <template>
-  <v-card max-width="600" outlined class="elevation-1">
-    <v-row>
-      <v-col cols="auto" class="ml-5 mr-2">
-        <v-img height="100" width="100" :src="image" />
-      </v-col>
-      <v-col cols="6">
-        <v-row class="mt-2">
-          <span class="product-name">{{ name }}</span>
-        </v-row>
-        <v-row class="mt-2">
-          <b :style="[status ? soldOut : onSale]">{{ statusMessage }} </b>
-        </v-row>
-      </v-col>
-      <v-col cols="3">
-        <v-row>
-          <b class="ml-4 mt-3 price-tag">₩ {{ price }} </b>
-        </v-row>
-        <v-spacer class="mt-3" />
-        <v-row>
-          <v-btn class="ml-4" small color="teal" tile outlined @click="deleteProduct">
-            바구니에서 삭제
-          </v-btn>
-        </v-row>
-      </v-col>
-    </v-row>
-  </v-card>
+  <BaseCard>
+    <template v-slot:card-body>
+      <div>
+        <div>
+          <img class="product-image" alt="상품 이미지" :src="image" />
+          <div>
+            <span class="product-name">{{ name }}</span>
+            <b :style="[status ? soldOut : onSale]">{{ statusMessage }} </b>
+          </div>
+        </div>
+        <div>
+          <em>₩ {{ price }} </em>
+          <button @click="deleteProduct">바구니에서 삭제</button>
+        </div>
+      </div>
+    </template>
+  </BaseCard>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import BaseCard from '@components/Cards/BaseCard.vue';
 
-@Component
+@Component({
+  components: { BaseCard },
+})
 export default class CartProductCard extends Vue {
   @Prop({ required: true }) readonly id!: string;
   @Prop({ required: true }) readonly name!: string;
@@ -64,5 +58,10 @@ export default class CartProductCard extends Vue {
 .product-name {
   font-family: 'Handon3gyeopsal300g';
   font-size: 1.1rem;
+}
+
+.product-image {
+  height: 100px;
+  width: 100px;
 }
 </style>

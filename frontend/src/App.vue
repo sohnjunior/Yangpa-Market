@@ -32,6 +32,7 @@ main {
   padding-top: 130px;
   padding-left: 20px;
   padding-right: 20px;
+  background-color: #f9f9f9;
 }
 
 @font-face {
