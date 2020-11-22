@@ -1,35 +1,27 @@
 <template>
-  <v-form v-model="isValid" @submit.prevent="onSubmit">
-    <v-row>
-      <v-col cols="12">
-        <v-text-field
-          class="login-form"
-          label="email"
-          placeholder="E-mail Address"
-          required
-          rounded
-          solo
-          autofocus
-          v-model="email"
-          :rules="emailRules"
-        />
-      </v-col>
-      <v-col cols="12">
-        <v-text-field
-          class="login-form"
-          label="password"
-          type="password"
-          placeholder="Password"
-          required
-          rounded
-          solo
-          v-model="password"
-          :rules="passwordRules"
-        />
-      </v-col>
-    </v-row>
+  <form @submit.prevent="onSubmit">
+    <fieldset>
+      <input
+        type="text"
+        label="email"
+        placeholder="이메일 주소"
+        required
+        autofocus
+        v-model="email"
+        :rules="emailRules"
+      />
+      <input
+        type="password"
+        label="password"
+        placeholder="비밀번호"
+        required
+        v-model="password"
+        :rules="passwordRules"
+      />
+    </fieldset>
+
     <SubmitButton :isValid="isValid"> 로그인하기 </SubmitButton>
-  </v-form>
+  </form>
 </template>
 
 <script>

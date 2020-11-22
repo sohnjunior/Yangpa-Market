@@ -25,10 +25,14 @@
       <input placeholder="전화번호" v-model="phone" />
     </fieldset>
     <fieldset>
-      <input type="radio" id="male" value="male" v-model="sex" />
-      <label for="male">남성</label>
-      <input type="radio" id="female" value="female" v-model="sex" />
-      <label for="female">여성</label>
+      <label>
+        남성
+        <input type="radio" value="male" v-model="sex" />
+      </label>
+      <label>
+        여성
+        <input type="radio" value="female" v-model="sex" />
+      </label>
     </fieldset>
 
     <DatePicker @pick-date="onPickDate" />

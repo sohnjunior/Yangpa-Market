@@ -1,82 +1,55 @@
 <template>
-  <v-container style="width: 50%">
-    <v-form v-model="isValid" @submit.prevent="submitForm">
-      <v-row>
-        <v-col cols="12">
-          <v-card shaped title="회원 가입" class="px-5 py-3">
-            <v-subheader class="display-1 mt-3"> 회원 가입 </v-subheader>
+  <form @submit.prevent="submitForm">
+    <h2>회원 가입</h2>
 
-            <v-form class="pt-1">
-              <v-text-field
-                label="이메일 계정"
-                v-model="email"
-                :rules="rulesMap.emailRules"
-                class="mx-4"
-                required
-                hint="예시: yangpa@gmail.com"
-                persistent-hint
-              />
+    <fieldset>
+      <label>
+        이메일 계정
+        <input v-model="email" :rules="rulesMap.emailRules" required />
+      </label>
 
-              <v-text-field
-                label="비밀번호 (8~15자, 적어도 하나의 특수문자와 숫자 포함)"
-                v-model="password"
-                :rules="rulesMap.passwordRules"
-                type="password"
-                class="mx-4"
-                required
-              />
+      <label>
+        비밀번호 (8~15자, 적어도 하나의 특수문자와 숫자 포함)
+        <input v-model="password" :rules="rulesMap.passwordRules" type="password" required />
+      </label>
 
-              <v-text-field
-                label="비밀번호 확인"
-                v-model="confirmpassword"
-                :rules="rulesMap.confirmPasswordRules"
-                type="password"
-                class="mx-4"
-                required
-              />
+      <label>
+        비밀번호 확인
+        <input
+          v-model="confirmpassword"
+          :rules="rulesMap.confirmPasswordRules"
+          type="password"
+          required
+        />
+      </label>
 
-              <v-text-field
-                label="별명"
-                v-model="nickname"
-                class="mx-4"
-                hint="예시: yangpa"
-                persistent-hint
-                required
-              />
+      <label>
+        별명
+        <input v-model="nickname" required />
+      </label>
 
-              <v-text-field
-                label="전화번호"
-                v-model="phone"
-                :rules="rulesMap.phoneRules"
-                class="mx-4"
-                hint="예시: 010-1234-5678"
-                persistent-hint
-              />
+      <label>
+        전화번호
+        <input v-model="phone" :rules="rulesMap.phoneRules" />
+      </label>
+    </fieldset>
 
-              <v-radio-group :row="true" class="mx-4" v-model="sex">
-                성별
-                <v-spacer />
-                <v-radio label="남" value="male" />
-                <v-radio label="여" value="female" />
-              </v-radio-group>
+    <fieldset>
+      <legend>성별</legend>
+      <input type="radio" label="남" value="male" v-model="sex" />
+      <input type="radio" label="여" value="female" v-model="sex" />
+    </fieldset>
 
-              <v-radio-group :row="true" class="mx-4" v-model="isAdmin">
-                관리자 계정
-                <v-spacer />
-                <v-radio label="예" :value="true" />
-                <v-radio label="아니오" :value="false" />
-              </v-radio-group>
+    <fieldset>
+      <legend>관리자 계정</legend>
+      <input type="radio" label="예" :value="true" v-model="isAdmin" />
+      <input type="radio" label="아니오" :value="false" v-model="isAdmin" />
+    </fieldset>
 
-              <v-col cols="mx-4">
-                <DatePicker @pick-date="onPickDate" />
-              </v-col>
-              <SubmitButton :isValid="isValid">가입하기</SubmitButton>
-            </v-form>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-form>
-  </v-container>
+    <DatePicker @pick-date="onPickDate" />
+
+    <SubmitButton :isValid="isValid">가입하기</SubmitButton>
+  </form>
 </template>
 
 <script lang="ts">
