@@ -26,7 +26,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import LoginModal from '@components/Modals/LoginModal.vue';
-import DropdownMenu from '@components/Lists/DropdownMenu.vue';
+import DropdownMenu from '@components/Menu/DropdownMenu.vue';
 import SearchInput from '@components/Inputs/SearchInput.vue';
 import EventBus from '../../utils/bus';
 import { deleteCookie } from '../../utils/cookies';
