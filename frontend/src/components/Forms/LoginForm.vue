@@ -1,58 +1,43 @@
 <template>
   <form @submit.prevent="onSubmit">
     <fieldset>
-      <input
-        type="text"
-        label="email"
-        placeholder="이메일 주소"
-        required
-        autofocus
-        v-model="email"
-        :rules="emailRules"
-      />
-      <input
-        type="password"
-        label="password"
-        placeholder="비밀번호"
-        required
-        v-model="password"
-        :rules="passwordRules"
-      />
+      <input type="text" name="email" placeholder="이메일 주소" required v-model="email" />
+      <input type="password" name="password" placeholder="비밀번호" required v-model="password" />
     </fieldset>
 
     <SubmitButton :isValid="isValid"> 로그인하기 </SubmitButton>
   </form>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
 import { validateEmail } from '../../utils/validators';
-import SubmitButton from '@components/Buttons/SubmitButton';
+import SubmitButton from '@components/Buttons/SubmitButton.vue';
 
-export default {
+@Component({
   components: { SubmitButton },
+})
+export default class LoginForm extends Vue {
+  private isValid = true; // FIXME: 입력 값에 따라 valid 유무 판단 로직 추가
+  private email = '';
+  private password = '';
+  private emailRules = [
+    (v) => !!v || 'email을 입력하세요',
+    (v) => validateEmail(v) || '올바른 email 형식이 아닙니다',
+  ];
+  private passwordRules = [
+    (v) => !!v || '비밀번호를 입력하세요',
+    //v => validatePassword(v) || '올바른 비밀번호 형식이 아닙니다',
+  ];
 
-  data() {
-    return {
-      isValid: false,
-      email: '',
-      password: '',
-      emailRules: [
-        (v) => !!v || 'email을 입력하세요',
-        (v) => validateEmail(v) || '올바른 email 형식이 아닙니다',
-      ],
-      passwordRules: [
-        (v) => !!v || '비밀번호를 입력하세요',
-        //v => validatePassword(v) || '올바른 비밀번호 형식이 아닙니다',
-      ],
-    };
-  },
+  public click() {
+    console.log('ah');
+  }
 
-  methods: {
-    onSubmit() {
-      this.$emit('submit-form', { email: this.email, password: this.password });
-    },
-  },
-};
+  public onSubmit() {
+    this.$emit('submit-form', { email: this.email, password: this.password });
+  }
+}
 </script>
 
 <style></style>

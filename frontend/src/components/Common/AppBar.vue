@@ -18,7 +18,7 @@
       <button @click="openModal">로그인</button>
       <router-link to="/signup">회원가입</router-link>
     </div>
-    <LoginModal :dialog="dialog" @close-modal="closeModal" />
+    <LoginModal :show="dialog" @close-modal="closeModal" />
   </header>
 </template>
 
