@@ -1,11 +1,17 @@
 <template>
   <table>
     <slot name="table-name"></slot>
-    <th v-for="(header, index) in headers" :key="index">{{ header }}</th>
-    <tr v-for="(item, index) in items" :key="index">
-      <td v-for="(cell, index) in item" :key="index">{{ cell }}</td>
-      <td><slot name="table-action" :item="item"></slot></td>
-    </tr>
+    <thead>
+      <tr>
+        <th v-for="(header, index) in headers" :key="index">{{ header }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="(item, index) in items" :key="index">
+        <td v-for="(cell, index) in item" :key="index">{{ cell }}</td>
+        <td><slot name="table-action" :item="item"></slot></td>
+      </tr>
+    </tbody>
   </table>
 </template>
 
