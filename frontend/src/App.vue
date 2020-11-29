@@ -7,7 +7,7 @@
         <router-view />
       </transition>
     </main>
-    <Footer class="mt-10" />
+    <Footer />
   </v-app>
 </template>
 
@@ -27,7 +27,9 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+@import './assets/scss/reset';
+
 main {
   padding-top: 130px;
   padding-left: 20px;
@@ -35,7 +37,7 @@ main {
   background-color: #f9f9f9;
 }
 
-@font-face {
+/* @font-face {
   font-family: 'BMHANNAAir';
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.0/BMHANNAAir.woff')
     format('woff');
@@ -89,7 +91,7 @@ main {
     format('woff');
   font-weight: normal;
   font-style: normal;
-}
+} */
 
 .fade-enter-active,
 .fade-leave-active {
