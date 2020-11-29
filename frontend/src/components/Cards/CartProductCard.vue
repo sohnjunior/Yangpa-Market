@@ -1,17 +1,15 @@
 <template>
   <BaseCard>
     <template v-slot:card-body>
-      <div>
-        <div>
-          <img class="product-image" alt="상품 이미지" :src="image" />
-          <div>
-            <span class="product-name">{{ name }}</span>
-            <b :style="[status ? soldOut : onSale]">{{ statusMessage }} </b>
-          </div>
-        </div>
-        <div>
+      <div class="body-container">
+        <img class="product-image" alt="상품 이미지" :src="image" />
+        <div class="product-description">
+          <b :style="[status ? soldOut : onSale]">{{ statusMessage }} </b>
+          <span class="product-name">{{ name }}</span>
           <em>₩ {{ price }} </em>
-          <button @click="deleteProduct">바구니에서 삭제</button>
+        </div>
+        <div class="button-wrapper">
+          <button @click="deleteProduct">삭제</button>
         </div>
       </div>
     </template>
@@ -46,22 +44,41 @@ export default class CartProductCard extends Vue {
 }
 </script>
 
-<style scoped>
-@font-face {
-  font-family: 'Handon3gyeopsal300g';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_seven@1.2/Handon3gyeopsal300g.woff')
-    format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
+<style lang="scss" scoped>
+.body-container {
+  display: flex;
+  width: 600px;
 
-.product-name {
-  font-family: 'Handon3gyeopsal300g';
-  font-size: 1.1rem;
-}
+  .product-image {
+    height: 100px;
+    width: 100px;
+  }
 
-.product-image {
-  height: 100px;
-  width: 100px;
+  .product-description {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 62%;
+    margin-left: 20px;
+
+    .product-name {
+      font-size: 1.1rem;
+    }
+  }
+
+  .button-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    button {
+      width: 70px;
+      height: 30px;
+      border-radius: 10px;
+      background-color: #ff6b6b;
+      font-size: 1rem;
+      font-weight: 500;
+      color: #ffffff;
+    }
+  }
 }
 </style>

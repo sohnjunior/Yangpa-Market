@@ -6,3 +6,9 @@
   font-size: 1.1rem;
   font-weight: 600;
 }
+
+@mixin text-shorthand() {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

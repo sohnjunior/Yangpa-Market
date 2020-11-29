@@ -2,13 +2,9 @@
   <BaseCard>
     <template v-slot:card-title>
       <div class="card-title-wrapper">
-        <h1 class="card-title">
-          {{ title }}
-        </h1>
+        <h1 class="card-title">{{ title }}</h1>
         <div class="card-subtitle">
-          <v-chip class="mt-2 mb-1" color="success" outlined small>
-            {{ category }}
-          </v-chip>
+          <Chip :text="category" />
         </div>
 
         <div class="card-subtitle">
@@ -21,7 +17,7 @@
       <img class="product-image" alt="상품 이미지" :src="image" />
     </template>
     <template v-slot:card-footer>
-      <div>
+      <div class="link-wrapper">
         <router-link :to="`/product/${productID}`"> 보러가기 </router-link>
       </div>
     </template>
@@ -31,9 +27,10 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import BaseCard from '@components/Cards/BaseCard.vue';
+import Chip from '@components/Common/Chip.vue';
 
 @Component({
-  components: { BaseCard },
+  components: { BaseCard, Chip },
 })
 export default class PopularProductCard extends Vue {
   @Prop({ required: true }) readonly title!: string;
@@ -46,29 +43,38 @@ export default class PopularProductCard extends Vue {
 
 <style lang="scss" scoped>
 .card-title-wrapper {
-  background-color: rgba(255, 245, 238, 0.4);
-
   .card-title {
-    font-family: 'Handon3gyeopsal300g';
-    font-size: 1.3rem;
+    font-size: 1.2rem;
+    font-weight: 500;
     color: black;
   }
 
   .card-subtitle {
     color: grey;
-    font-family: 'HangeulNuri-Bold';
   }
 }
 
 .product-image {
+  width: 100%;
   height: 170px;
 }
 
-@font-face {
-  font-family: 'Handon3gyeopsal300g';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_seven@1.2/Handon3gyeopsal300g.woff')
-    format('woff');
-  font-weight: normal;
-  font-style: normal;
+.link-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 30px;
+    background-color: #ffab91;
+    border-radius: 15px;
+    color: #ffffff;
+    font-weight: 500;
+    text-decoration: none;
+  }
 }
 </style>
