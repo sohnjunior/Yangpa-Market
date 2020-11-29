@@ -1,89 +1,35 @@
 <template>
-  <v-container class="mb-6">
-    <v-data-table :headers="orderPendingHeaders" :items="orderPendingList" class="elevation-1">
-      <template v-slot:top>
-        <v-toolbar flat color="white">
-          <v-toolbar-title style="font-family: 'paybooc-Bold'"> 구매 대기 </v-toolbar-title>
-        </v-toolbar>
+  <div>
+    <BaseTable :headers="orderPendingHeaders" :items="orderPendingList">
+      <template v-slot:table-name>
+        <h1>구매 대기</h1>
       </template>
-    </v-data-table>
-    <v-spacer class="mt-7" />
-    <v-data-table :headers="orderFinishedHeaders" :items="orderFinishedList" class="elevation-1">
-      <template v-slot:top>
-        <v-toolbar flat color="white">
-          <v-toolbar-title style="font-family: 'paybooc-Bold'"> 구매 완료 </v-toolbar-title>
-        </v-toolbar>
+    </BaseTable>
+
+    <BaseTable :headers="orderFinishedHeaders" :items="orderFinishedList">
+      <template v-slot:table-name>
+        <h1>구매 완료</h1>
       </template>
-      <template v-slot:item.actions="{ item }">
-        <v-btn @click="showReviewModal"> 후기 등록 </v-btn>
-        <ReviewCreateModal :show="show" @close-dialog="closeDialog(item)" />
+      <template v-slot:table-action>
+        <button @click="showReviewCreateModal">후기 등록</button>
       </template>
-    </v-data-table>
-  </v-container>
+      <ReviewCreateModal :show="show" @close-dialog="closeDialog()" />
+    </BaseTable>
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import ReviewCreateModal from '@components/Modals/ReviewCreateModal.vue';
+import BaseTable from '@components/Tables/BaseTable.vue';
 import { OrderAPI } from '../../api';
 
-const orderPendingHeaders = [
-  {
-    text: '상품명',
-    align: 'start',
-    value: 'title',
-    sortable: false,
-    class: 'header',
-  },
-  {
-    text: '가격',
-    align: 'start',
-    value: 'price',
-    sortable: false,
-    class: 'header',
-  },
-  {
-    text: '판매자',
-    align: 'middle',
-    value: 'post.user.nickname',
-    sortable: false,
-    class: 'header',
-  },
-  {
-    text: '판매자 연락처',
-    align: 'middle',
-    value: 'post.user.phone',
-    sortable: false,
-    class: 'header',
-  },
-];
+const orderPendingHeaders = ['상품명', '가격', '판매자', '판매자 연락처'];
 
-const orderFinishedHeaders = [
-  {
-    text: '상품명',
-    align: 'start',
-    value: 'title',
-    sortable: false,
-    class: 'header',
-  },
-  {
-    text: '가격',
-    align: 'start',
-    value: 'price',
-    sortable: false,
-    class: 'header',
-  },
-  {
-    text: '후기 작성',
-    align: 'middle',
-    value: 'actions',
-    sortable: false,
-    class: 'header',
-  },
-];
+const orderFinishedHeaders = ['상품명', '가격', '후기 작성'];
 
 @Component({
-  components: { ReviewCreateModal },
+  components: { ReviewCreateModal, BaseTable },
 })
 export default class UserBuyingTable extends Vue {
   private dialog: boolean = false;
@@ -106,11 +52,12 @@ export default class UserBuyingTable extends Vue {
       .map((orderInfo) => orderInfo[0]);
   }
 
-  public showReviewModal(): void {
+  public showReviewCreateModal(): void {
+    // FIXME: 선택된 상품에 대한 리뷰를 남기도록 해야함
     this.show = true;
   }
 
-  public closeDialog(item): void {
+  public closeDialog(): void {
     this.show = false;
   }
 }

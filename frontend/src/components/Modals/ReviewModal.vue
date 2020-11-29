@@ -1,5 +1,5 @@
 <template>
-  <BaseModal :isOpen="show" @click:outside="closeDialog">
+  <BaseModal :isOpen="show">
     <template v-slot:modal-header>
       <h1>{{ title }}</h1>
       <button @click="closeDialog">

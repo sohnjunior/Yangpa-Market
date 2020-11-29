@@ -1,86 +1,37 @@
 <template>
-  <v-container>
-    <v-data-table :headers="onSaleHeaders" :items="onSaleList" class="elevation-1">
-      <template v-slot:top>
-        <v-toolbar flat color="white">
-          <v-toolbar-title style="font-family: 'paybooc-Bold'"> 판매 중 </v-toolbar-title>
-        </v-toolbar>
+  <div>
+    <BaseTable :headers="onSaleHeaders" :items="onSaleList">
+      <template v-slot:table-name>
+        <h1>판매 중</h1>
       </template>
-      <template v-slot:item.actions="{ item }">
-        <v-icon small color="success" class="mr-2" @click="updateItem(item)"> mdi-pencil </v-icon>
-        <v-icon small color="error" @click="deleteItem(item)"> mdi-delete </v-icon>
+      <template v-slot:table-action="item">
+        <v-icon small @click="updateItem(item)"> mdi-pencil </v-icon>
+        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
       </template>
-    </v-data-table>
+    </BaseTable>
 
-    <v-spacer class="mt-7" />
-
-    <v-data-table :headers="headers" :items="soldList" class="elevation-1">
-      <template v-slot:top>
-        <v-toolbar flat color="white">
-          <v-toolbar-title style="font-family: 'paybooc-Bold'">판매 완료</v-toolbar-title>
-        </v-toolbar>
+    <BaseTable :headers="soldHeaders" :items="soldList">
+      <template v-slot:table-name>
+        <h1>판매 완료</h1>
       </template>
-    </v-data-table>
-  </v-container>
+    </BaseTable>
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
+import BaseTable from '@components/Tables/BaseTable.vue';
 import { OrderAPI, ProductAPI } from '../../api';
 
 const userModule = namespace('UserModule');
 
-const onSaleHeaders = [
-  {
-    text: '상품명',
-    align: 'start',
-    value: 'product.title',
-    sortable: false,
-    class: 'header',
-  },
-  {
-    text: '가격',
-    align: 'start',
-    value: 'product.price',
-    sortable: false,
-    class: 'header',
-  },
-  {
-    text: '조회수',
-    align: 'start',
-    value: 'hit',
-    sortable: false,
-    class: 'header',
-  },
-  {
-    text: '좋아요',
-    align: 'start',
-    value: 'product.like',
-    sortable: false,
-    class: 'header',
-  },
-  { align: 'middle', value: 'actions', sortable: false },
-];
+const onSaleHeaders = ['상품명', '가격', '조회수', '좋아요', ''];
+const soldHeaders = ['상품명', '판매가격'];
 
-const headers = [
-  {
-    text: '상품명',
-    align: 'start',
-    value: 'product.title',
-    sortable: false,
-    class: 'header',
-  },
-  {
-    text: '판매가격',
-    align: 'start',
-    value: 'product.price',
-    sortable: false,
-    class: 'header',
-  },
-];
-
-@Component
+@Component({
+  components: { BaseTable },
+})
 export default class UserSellingTable extends Vue {
   private dialog: boolean = false;
   private show: boolean = false;
@@ -89,19 +40,21 @@ export default class UserSellingTable extends Vue {
   private soldList: any[] = [];
 
   private onSaleHeaders = onSaleHeaders;
-  private headers = headers;
+  private soldHeaders = soldHeaders;
 
   @userModule.Getter
   public getEmail!: string;
 
   async created() {
-    const { data } = await OrderAPI.fetchSalesOrder();
+    const {
+      data: { products },
+    } = await OrderAPI.fetchSalesOrder();
 
-    for (const p of data.products) {
-      if (p.product.sold) {
-        this.soldList.push(p);
+    for (const product of products) {
+      if (product.product.sold) {
+        this.soldList.push(product);
       } else {
-        this.onSaleList.push(p);
+        this.onSaleList.push(product);
       }
     }
   }
