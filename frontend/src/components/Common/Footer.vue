@@ -2,14 +2,13 @@
   <footer class="footer-container">
     <div class="button-wrapper">
       <button v-for="icon in icons" :key="icon">
-        <v-icon size="24px">{{ icon }}</v-icon>
+        <v-icon>{{ icon }}</v-icon>
       </button>
     </div>
 
-    <div class="footer-description">광운대학교 소프트웨어공학 Term 프로젝트 - 🧅 양파 마켓</div>
-
     <div class="footer-description">
-      <strong>vue.js & express.js</strong>
+      <strong>🧅 양파 마켓</strong>
+      <span>2020학년도 1학기 소프트웨어공학 프로젝트</span>
     </div>
   </footer>
 </template>
@@ -27,17 +26,28 @@ export default class Footer extends Vue {
 .footer-container {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  padding: 70px 0px;
   background-color: #ffab91;
   color: #ffffff;
 
   .button-wrapper {
     display: flex;
     justify-content: center;
+    margin-bottom: 20px;
+
+    button:nth-child(1) {
+      margin-right: 15px;
+    }
   }
 
   .footer-description {
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: 600;
   }
 }
 </style>

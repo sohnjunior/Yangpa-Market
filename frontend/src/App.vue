@@ -31,6 +31,7 @@ export default {
 @import './assets/scss/reset';
 
 main {
+  min-height: 1500px;
   padding-top: 130px;
   padding-left: 20px;
   padding-right: 20px;
