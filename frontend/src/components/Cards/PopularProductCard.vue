@@ -7,10 +7,7 @@
           <Chip :text="category" />
         </div>
 
-        <div class="card-subtitle">
-          <v-icon color="grey">mdi-eye-check-outline</v-icon>
-          <span>{{ hit }}</span>
-        </div>
+        <div class="card-subtitle">조회수 {{ hit }}</div>
       </div>
     </template>
     <template v-slot:card-body>
@@ -43,6 +40,8 @@ export default class PopularProductCard extends Vue {
 
 <style lang="scss" scoped>
 .card-title-wrapper {
+  margin-bottom: 5px;
+
   .card-title {
     font-size: 1.2rem;
     font-weight: 500;
@@ -50,7 +49,9 @@ export default class PopularProductCard extends Vue {
   }
 
   .card-subtitle {
-    color: grey;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #808080;
   }
 }
 
