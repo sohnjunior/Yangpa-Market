@@ -1,14 +1,18 @@
 <template>
   <BaseModal :isOpen="show">
     <template v-slot:modal-header>
-      <h1>Login</h1>
-      <button @click="closeModal">
-        <v-icon>mdi-close-circle</v-icon>
-      </button>
+      <div class="modal-header-wrapper">
+        <h1 class="modal-title">로그인</h1>
+        <button class="close-btn" @click="closeModal">
+          <v-icon>mdi-close-circle</v-icon>
+        </button>
+      </div>
     </template>
     <template v-slot:modal-content>
-      <LoginForm @submit-form="onSubmit" />
-      <span class="link" @click="moveToRegisterPage">Not registerd? Create an account</span>
+      <div class="modal-content-wrapper">
+        <LoginForm @submit-form="onSubmit" />
+        <span class="link" @click="moveToRegisterPage"> Not registerd? Create an account </span>
+      </div>
     </template>
   </BaseModal>
 </template>
@@ -53,9 +57,30 @@ export default class LoginModal extends Vue {
 }
 </script>
 
-<style scoped>
-.link:hover {
-  cursor: pointer;
-  text-decoration: underline;
+<style lang="scss" scoped>
+.modal-header-wrapper {
+  display: flex;
+  margin-bottom: 10px;
+
+  .modal-title {
+    font-size: 2rem;
+    font-weight: 700;
+  }
+
+  .close-btn {
+    margin-left: auto;
+    outline: none;
+  }
+}
+
+.modal-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .link:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
 }
 </style>

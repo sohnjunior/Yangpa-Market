@@ -19,7 +19,7 @@ export default class SubmitButton extends Vue {
 $submit-btn-color: #69db7c;
 
 .submit-btn {
-  @include button(150px, 60px);
+  @include button(250px, 45px);
   background-color: $submit-btn-color;
 }
 </style>

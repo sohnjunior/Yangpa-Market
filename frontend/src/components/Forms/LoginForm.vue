@@ -1,6 +1,6 @@
 <template>
-  <form @submit.prevent="onSubmit">
-    <fieldset>
+  <form class="login-form" @submit.prevent="onSubmit">
+    <fieldset class="input-wrapper">
       <input type="text" name="email" placeholder="이메일 주소" required v-model="email" />
       <input type="password" name="password" placeholder="비밀번호" required v-model="password" />
     </fieldset>
@@ -40,4 +40,26 @@ export default class LoginForm extends Vue {
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.login-form {
+  margin: 30px 0px;
+
+  .input-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+
+    input {
+      margin-bottom: 30px;
+      padding: 10px;
+      border-bottom: 1px solid #898989;
+      outline: none;
+
+      &::placeholder {
+        font-size: 1.1rem;
+        font-weight: 500;
+      }
+    }
+  }
+}
+</style>
