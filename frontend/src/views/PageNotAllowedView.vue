@@ -1,14 +1,15 @@
 <template>
-  <v-content>
-    <v-container>
-      <h1>403</h1>
-      <h2>Not this time, access forbidden!</h2>
-    </v-container>
-  </v-content>
+  <div>
+    <h1>403</h1>
+    <h2>Not this time, access forbidden!</h2>
+  </div>
 </template>
 
-<script>
-export default {};
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+
+@Component
+export default class PageNotAllowedView extends Vue {}
 </script>
 
-<style scoped></style>
+<style></style>
