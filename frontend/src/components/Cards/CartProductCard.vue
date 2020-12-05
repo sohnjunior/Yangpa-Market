@@ -52,6 +52,7 @@ export default class CartProductCard extends Vue {
   .product-image {
     height: 100px;
     width: 100px;
+    object-fit: cover;
   }
 
   .product-description {
