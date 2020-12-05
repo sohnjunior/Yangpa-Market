@@ -1,22 +1,24 @@
 <template>
   <header class="appbar-container">
     <div class="logo-wrapper">
-      <img class="logo__image" alt="양파마켓 로고이미지" src="/onion.svg" />
-      <h1 class="logo__title" @click="routeToHome">양파 마켓</h1>
+      <img class="logo-image" alt="양파마켓 로고이미지" src="/onion.svg" />
+      <router-link class="logo-link" to="/">양파 마켓</router-link>
     </div>
 
-    <SearchInput />
-    <router-link to="/review">상품 후기</router-link>
+    <div class="control-wrapper">
+      <SearchInput />
+      <router-link to="/review">상품 후기</router-link>
 
-    <DropdownMenu v-if="isLoggedIn" :items="dropdownItemMap">
-      <template v-slot:trigger>
-        <button>회원정보</button>
-      </template>
-    </DropdownMenu>
+      <DropdownMenu v-if="isLoggedIn" :items="dropdownItemMap">
+        <template v-slot:trigger>
+          <button>회원정보</button>
+        </template>
+      </DropdownMenu>
 
-    <div v-else class="button-wrapper">
-      <button @click="openModal">로그인</button>
-      <router-link to="/signup">회원가입</router-link>
+      <div v-else class="button-wrapper">
+        <button @click="openModal">로그인</button>
+        <router-link class="signup-link" to="/signup">회원가입</router-link>
+      </div>
     </div>
     <LoginModal :show="dialog" @close-modal="closeModal" />
   </header>
@@ -61,9 +63,6 @@ export default class AppBar extends Vue {
   public routeToDashboard(): void {
     this.$router.push('/dashboard/cart');
   }
-  public routeToHome(): void {
-    this.$router.push('/');
-  }
 }
 </script>
 
@@ -76,6 +75,7 @@ $logo-color: #ffab91;
   position: fixed;
   width: 100%;
   height: 100px;
+  padding: 0px 20px;
   border-bottom: 1px solid #e9ecef;
   background-color: #ffffff;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
@@ -84,31 +84,31 @@ $logo-color: #ffab91;
   .logo-wrapper {
     display: flex;
 
-    .logo__image {
+    .logo-image {
       width: 50px;
       height: 50px;
     }
 
-    .logo__title {
+    .logo-link {
+      margin-left: 10px;
       font-size: 2rem;
       font-weight: 700;
       color: $logo-color;
     }
   }
 
-  .button-wrapper {
+  .control-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: auto;
+    flex-basis: 50%;
+
+    .button-wrapper {
+      .signup-link {
+        margin-left: 20px;
+      }
+    }
   }
-}
-
-@font-face {
-  font-family: 'TmonMonsori';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/TmonMonsori.woff')
-    format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-
-.app-name {
-  font-family: 'TmonMonsori';
 }
 </style>

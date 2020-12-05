@@ -58,6 +58,7 @@ export default class PopularProductCard extends Vue {
 .product-image {
   width: 100%;
   height: 170px;
+  object-fit: cover;
 }
 
 .link-wrapper {

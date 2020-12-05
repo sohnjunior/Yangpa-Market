@@ -89,6 +89,7 @@ export default class ProductCard extends Vue {
     .product-image {
       height: 170px;
       margin: 20px 0px;
+      object-fit: cover;
     }
   }
 

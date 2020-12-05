@@ -25,10 +25,13 @@ export default class SearchInput extends Vue {
 
 <style lang="scss" scoped>
 .search-input {
-  height: 40px;
-  padding: 5px 10px;
+  height: 50px;
+  width: 300px;
+  padding: 10px 15px;
   border: 2px solid #dee2e6;
   border-radius: 20px;
+  font-size: 1rem;
+  font-weight: 600;
   outline: none;
 
   &::placeholder {
