@@ -12,3 +12,13 @@
   white-space: nowrap;
   overflow: hidden;
 }
+
+@mixin modal-title() {
+  font-size: 2rem;
+  font-weight: 500;
+}
+
+@mixin modal-close-btn() {
+  margin-left: auto;
+  outline: none;
+}

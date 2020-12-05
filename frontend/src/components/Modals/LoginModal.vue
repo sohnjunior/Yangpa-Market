@@ -58,18 +58,18 @@ export default class LoginModal extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/scss/mixins';
+
 .modal-header-wrapper {
   display: flex;
   margin-bottom: 10px;
 
   .modal-title {
-    font-size: 2rem;
-    font-weight: 700;
+    @include modal-title();
   }
 
   .close-btn {
-    margin-left: auto;
-    outline: none;
+    @include modal-close-btn();
   }
 }
 
