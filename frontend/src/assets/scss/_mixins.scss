@@ -1,6 +1,4 @@
-@mixin button($width, $height) {
-  width: $width;
-  height: $height;
+@mixin button() {
   border-radius: 10px;
   color: white;
   font-size: 1.1rem;

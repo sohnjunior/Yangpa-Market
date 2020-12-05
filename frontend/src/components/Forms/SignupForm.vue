@@ -1,8 +1,8 @@
 <template>
-  <form @submit.prevent="submitForm">
-    <h2>회원 가입</h2>
+  <form class="form-container" @submit.prevent="submitForm">
+    <h2 class="form-title">회원 가입</h2>
 
-    <fieldset>
+    <fieldset class="form-fieldset">
       <label>
         이메일 계정
         <input v-model="email" :rules="rulesMap.emailRules" required />
@@ -24,7 +24,7 @@
       </label>
 
       <label>
-        별명
+        닉네임
         <input v-model="nickname" required />
       </label>
 
@@ -32,18 +32,22 @@
         전화번호
         <input v-model="phone" :rules="rulesMap.phoneRules" />
       </label>
-    </fieldset>
 
-    <fieldset>
-      <legend>성별</legend>
-      <input type="radio" label="남" value="male" v-model="sex" />
-      <input type="radio" label="여" value="female" v-model="sex" />
-    </fieldset>
+      <label>
+        성별
+        <select v-model="sex">
+          <option value="male">남성</option>
+          <option value="female">여성</option>
+        </select>
+      </label>
 
-    <fieldset>
-      <legend>관리자 계정</legend>
-      <input type="radio" label="예" :value="true" v-model="isAdmin" />
-      <input type="radio" label="아니오" :value="false" v-model="isAdmin" />
+      <label>
+        관리자 계정이신가요?
+        <select v-model="isAdmin">
+          <option :value="true">예</option>
+          <option :value="false">아니요</option>
+        </select>
+      </label>
     </fieldset>
 
     <DatePicker @pick-date="onPickDate" />
@@ -118,4 +122,40 @@ export default class SignupForm extends Vue {
 }
 </script>
 
-<style></style>
+<style lang="scss">
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 500px;
+  padding: 0px 30px;
+
+  .form-title {
+    margin-bottom: 20px;
+    font-size: 2.8rem;
+    font-weight: 600;
+  }
+
+  .form-fieldset {
+    label {
+      display: flex;
+      flex-direction: column;
+      margin: 20px 0px;
+      font-size: 1.2rem;
+      font-weight: 500;
+
+      input,
+      select {
+        margin-top: 10px;
+        padding: 10px 15px;
+        border: 1px solid #808080;
+        border-radius: 5px;
+        outline: none;
+        background-color: #ffffff;
+        font-size: 1rem;
+        font-weight: 500;
+      }
+    }
+  }
+}
+</style>

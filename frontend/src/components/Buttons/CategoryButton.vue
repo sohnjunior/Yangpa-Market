@@ -36,7 +36,9 @@ export default class CategoryButton extends Vue {
 $category-btn-color: #8ce99a;
 
 .category-btn {
-  @include button(130px, 50px);
+  @include button();
+  width: 130px;
+  height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
