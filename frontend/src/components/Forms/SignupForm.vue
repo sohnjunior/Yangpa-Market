@@ -123,6 +123,8 @@ export default class SignupForm extends Vue {
 </script>
 
 <style lang="scss">
+@import '../../assets/scss/mixins';
+
 .form-container {
   display: flex;
   flex-direction: column;
@@ -138,22 +140,11 @@ export default class SignupForm extends Vue {
 
   .form-fieldset {
     label {
-      display: flex;
-      flex-direction: column;
-      margin: 20px 0px;
-      font-size: 1.2rem;
-      font-weight: 500;
+      @include form-label();
 
       input,
       select {
-        margin-top: 10px;
-        padding: 10px 15px;
-        border: 1px solid #808080;
-        border-radius: 5px;
-        outline: none;
-        background-color: #ffffff;
-        font-size: 1rem;
-        font-weight: 500;
+        @include form-inputs();
       }
     }
   }

@@ -24,7 +24,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { DashBoardAsideMenuItem } from '../types';
+import { DashBoardAsideMenuItem } from '../../types';
 
 @Component
 export default class DashBoardAsideMenu extends Vue {

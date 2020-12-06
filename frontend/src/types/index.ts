@@ -39,4 +39,9 @@ interface DashBoardAsideMenuItem {
   to: string;
 }
 
-export { Category, Product, User, Post, DashBoardAsideMenuItem, Review };
+interface CategoryOption {
+  text: string;
+  value: string;
+}
+
+export { Category, Product, User, Post, DashBoardAsideMenuItem, Review, CategoryOption };
