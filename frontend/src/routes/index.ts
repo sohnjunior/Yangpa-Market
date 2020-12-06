@@ -72,7 +72,7 @@ export const router = new VueRouter({
     },
     {
       path: '/product/new',
-      component: loadView('ProductCreateView'),
+      component: loadView('ProductRegisterView'),
       beforeEnter: (to, from, next) => {
         // 만약 로그인 상태라면
         if (store.state.email !== '' && store.state.token !== '') {

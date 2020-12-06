@@ -1,14 +1,12 @@
 <template>
-  <div class="text-center">
-    <v-dialog :value="show" width="500" @click:outside="closeDialog">
-      <v-card>
-        <v-card-title class="headline pt-7"> 후기 작성 </v-card-title>
-        <v-card-text>
-          <ReviewForm @submit-form="onSubmitForm" />
-        </v-card-text>
-      </v-card>
-    </v-dialog>
-  </div>
+  <BaseModal :isOpen="show">
+    <template v-slot:modal-header>
+      <h1>후기 작성</h1>
+    </template>
+    <template v-slot:modal-content>
+      <ReviewForm @submit-form="onSubmitForm" />
+    </template>
+  </BaseModal>
 </template>
 
 <script lang="ts">
@@ -16,11 +14,12 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import { ReviewAPI } from '../../api';
 import ReviewForm from '@components/Forms/ReviewForm.vue';
+import BaseModal from '@components/Modals/BaseModal.vue';
 
 const userModule = namespace('UserModule');
 
 @Component({
-  components: { ReviewForm },
+  components: { ReviewForm, BaseModal },
 })
 export default class ReviewCreateModal extends Vue {
   @Prop({ required: true, default: false }) readonly show!: boolean;

@@ -1,13 +1,13 @@
 <template>
   <v-app>
     <AppBar />
-    <v-content>
+    <main>
       <SnackModal />
       <transition name="fade">
         <router-view />
       </transition>
-    </v-content>
-    <Footer class="mt-10" />
+    </main>
+    <Footer />
   </v-app>
 </template>
 
@@ -26,8 +26,19 @@ export default {
   },
 };
 </script>
-<style>
-@font-face {
+
+<style lang="scss">
+@import './assets/scss/reset';
+
+main {
+  min-height: 1500px;
+  padding-top: 130px;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: #f9f9f9;
+}
+
+/* @font-face {
   font-family: 'BMHANNAAir';
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.0/BMHANNAAir.woff')
     format('woff');
@@ -81,7 +92,7 @@ export default {
     format('woff');
   font-weight: normal;
   font-style: normal;
-}
+} */
 
 .fade-enter-active,
 .fade-leave-active {

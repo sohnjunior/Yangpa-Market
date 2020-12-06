@@ -1,31 +1,25 @@
 <template>
-  <v-container>
-    <h2 class="sub-title">장바구니</h2>
+  <div>
+    <h2>장바구니</h2>
 
-    <v-container>
-      <ul v-for="product in picks" :key="product.id">
-        <li>
-          <CartProductCard
-            :id="product.id"
-            :name="product.title"
-            :price="product.price"
-            :image="product.image"
-            :status="product.sold"
-            @delete-product="removeFromCart"
-          />
-        </li>
-        <br />
-      </ul>
-    </v-container>
-    <v-divider width="70%" />
+    <ul>
+      <li v-for="product in picks" :key="product.id">
+        <CartProductCard
+          :id="product.id"
+          :name="product.title"
+          :price="product.price"
+          :image="product.image"
+          :status="product.sold"
+          @delete-product="removeFromCart"
+        />
+      </li>
+    </ul>
+
     <div>
-      <br />
-      <h2 class="price-tag">합계 : {{ totalPrice }} 원</h2>
-      <br />
-
-      <v-btn large color="success" @click="buyProducts"> 결제하기 </v-btn>
+      <span class="price-tag">합계 : {{ totalPrice }} 원</span>
+      <button @click="buyProducts">결제하기</button>
     </div>
-  </v-container>
+  </div>
 </template>
 
 <script lang="ts">
@@ -88,7 +82,7 @@ export default class UserCart extends Vue {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 h2 {
   margin: 10px 0px 10px 20px;
 }

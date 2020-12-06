@@ -1,31 +1,28 @@
 <template>
-  <div class="text-center">
-    <v-dialog :value="show" width="500" @click:outside="closeDialog">
-      <v-card>
-        <v-card-title>
-          <v-row>
-            <v-col class="ml-5">
-              <h2 class="font-weight-medium">{{ title }}</h2>
-            </v-col>
-            <v-col cols="2">
-              <v-btn icon color="grey" @click="closeDialog">
-                <v-icon>mdi-close-circle</v-icon>
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-card-title>
-
-        <v-card-text>
-          <v-subheader>포토리뷰</v-subheader>
-          <v-img width="250" height="200" :src="image" class="ml-6 mt-5" />
-
-          <v-subheader>작성자</v-subheader>
-          <div class="ml-8 font-weight-bold">
+  <BaseModal :isOpen="show">
+    <template v-slot:modal-header>
+      <div class="modal-header-wrapper">
+        <h1 class="modal-title">{{ title }}</h1>
+        <button class="close-btn" @click="closeDialog">
+          <v-icon>mdi-close-circle</v-icon>
+        </button>
+      </div>
+    </template>
+    <template v-slot:modal-content>
+      <div class="modal-content-wrapper">
+        <section>
+          <h2 class="subtitle">포토리뷰</h2>
+          <img class="review-image" alt="후기 이미지" :src="image" />
+        </section>
+        <section>
+          <h2 class="subtitle">작성자</h2>
+          <div>
             <v-icon small>mdi-account</v-icon>
             {{ writer }}
           </div>
-
-          <v-subheader>평점</v-subheader>
+        </section>
+        <section>
+          <h2 class="subtitle">평점</h2>
           <v-rating
             :value="rating"
             class="ml-8"
@@ -36,21 +33,25 @@
             readonly
             size="25"
           />
-
-          <v-subheader>상품평</v-subheader>
-          <div class="ml-8 mb-6 font-weight-regular">
+        </section>
+        <section>
+          <h2 class="subtitle">상품평</h2>
+          <p>
             {{ body }}
-          </div>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
-  </div>
+          </p>
+        </section>
+      </div>
+    </template>
+  </BaseModal>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import BaseModal from '@components/Modals/BaseModal.vue';
 
-@Component
+@Component({
+  components: { BaseModal },
+})
 export default class ReviewModal extends Vue {
   @Prop({ required: true }) readonly show!: boolean;
   @Prop({ required: true }) readonly title!: string;
@@ -66,4 +67,36 @@ export default class ReviewModal extends Vue {
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+@import '../../assets/scss/mixins';
+
+.modal-header-wrapper {
+  display: flex;
+
+  .modal-title {
+    @include modal-title();
+  }
+
+  .close-btn {
+    @include modal-close-btn();
+  }
+}
+
+.modal-content-wrapper {
+  section {
+    margin: 20px 0px;
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #808080;
+  }
+
+  .review-image {
+    width: 300px;
+    height: 200px;
+    object-fit: cover;
+  }
+}
+</style>

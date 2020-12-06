@@ -1,34 +1,32 @@
 <template>
-  <v-hover v-slot:default="{ hover }">
-    <v-card color="grey lighten-4" width="240" height="270">
-      <v-img :aspect-ratio="16 / 9" :src="image">
-        <v-expand-transition>
-          <div
-            v-if="hover"
-            class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal display-1 white--text"
-            style="height: 100%"
-          >
-            ₩{{ price }}
-          </div>
-        </v-expand-transition>
-      </v-img>
-      <v-card-text style="position: relative">
-        <v-btn absolute color="orange" class="white--text" fab normal right top @click="move">
+  <BaseCard>
+    <template v-slot:body>
+      <div>
+        <img alt="상품 이미지" :src="image" />
+        <em>₩{{ price }}</em>
+      </div>
+    </template>
+    <template v-slot:card-footer>
+      <div>
+        <button @click="move">
           <v-icon>mdi-cursor-default-click-outline</v-icon>
-        </v-btn>
-        <h3 class="font-weight-medium orange--text mb-2">{{ title }}</h3>
-        <div class="font-weight-regular mb-2 text-truncate">
+        </button>
+        <h3>{{ title }}</h3>
+        <p>
           {{ body }}
-        </div>
-      </v-card-text>
-    </v-card>
-  </v-hover>
+        </p>
+      </div>
+    </template>
+  </BaseCard>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import BaseCard from '@components/Cards/BaseCard.vue';
 
-@Component
+@Component({
+  components: { BaseCard },
+})
 export default class RelatedProductCard extends Vue {
   @Prop({ required: true }) readonly title!: string;
   @Prop({ required: true }) readonly image!: string;
@@ -44,13 +42,4 @@ export default class RelatedProductCard extends Vue {
 }
 </script>
 
-<style scoped>
-.v-card--reveal {
-  align-items: center;
-  bottom: 0;
-  justify-content: center;
-  opacity: 0.5;
-  position: absolute;
-  width: 100%;
-}
-</style>
+<style scoped></style>

@@ -1,61 +1,27 @@
 <template>
-  <v-container class="mb-6">
-    <v-data-table :headers="orderHeaders" :items="orderList" class="elevation-1">
-      <template v-slot:top>
-        <v-toolbar flat color="white">
-          <v-toolbar-title style="font-family: 'paybooc-Bold'">구매요청 알림</v-toolbar-title>
-        </v-toolbar>
+  <div>
+    <BaseTable :headers="orderHeaders" :items="orderList">
+      <template v-slot:table-name>
+        <h1>구매요청 알림</h1>
       </template>
-      <template v-slot:item.title="{ item }">
-        <span class="font-weight-medium">{{ productList[item.postId] }}</span>
+      <template v-slot:table-action="item">
+        <button @click="approve(item)">승인</button>
+        <button @click="remove(item)">삭제</button>
       </template>
-      <template v-slot:item.actions="{ item }">
-        <v-btn outlined color="success" depressed small @click="approve(item)"> 승인 </v-btn>
-        <v-btn outlined color="error" class="ml-3" depressed small @click="remove(item)">
-          삭제
-        </v-btn>
-      </template>
-    </v-data-table>
-  </v-container>
+    </BaseTable>
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import BaseTable from '@components/Tables/BaseTable.vue';
 import { OrderAPI } from '../../api';
 
-const orderHeaders = [
-  {
-    text: '주문번호',
-    align: 'start',
-    value: 'code',
-    sortable: false,
-    class: 'header',
-  },
-  {
-    text: '상품명',
-    align: 'start',
-    value: 'title',
-    sortable: false,
-    class: 'header',
-  },
-  {
-    text: '연락처',
-    align: 'start',
-    value: 'phone',
-    sortable: false,
-    class: 'header',
-  },
-  {
-    text: '구매자',
-    align: 'start',
-    value: 'user.nickname',
-    sortable: false,
-    class: 'header',
-  },
-  { align: 'middle', value: 'actions', sortable: false },
-];
+const orderHeaders = ['주문번호', '상품명', '연락처', '구매자', ''];
 
-@Component
+@Component({
+  components: { BaseTable },
+})
 export default class UserAlarmTable extends Vue {
   private dialog: boolean = false;
   private show: boolean = false;

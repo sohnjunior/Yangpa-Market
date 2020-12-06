@@ -1,0 +1,41 @@
+@mixin button() {
+  border-radius: 10px;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+@mixin text-shorthand() {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+@mixin modal-title() {
+  font-size: 2rem;
+  font-weight: 500;
+}
+
+@mixin modal-close-btn() {
+  margin-left: auto;
+  outline: none;
+}
+
+@mixin form-label() {
+  display: flex;
+  flex-direction: column;
+  margin: 20px 0px;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+@mixin form-inputs() {
+  margin-top: 10px;
+  padding: 10px 15px;
+  border: 1px solid #808080;
+  border-radius: 5px;
+  outline: none;
+  background-color: #ffffff;
+  font-size: 1rem;
+  font-weight: 500;
+}

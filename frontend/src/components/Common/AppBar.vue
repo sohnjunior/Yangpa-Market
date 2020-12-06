@@ -1,133 +1,114 @@
 <template>
-  <v-app-bar app color="white" class="elevation-3" height="100px">
-    <div class="d-flex align-center">
-      <v-img
-        alt="Vuetify Logo"
-        class="shrink mr-2"
-        contain
-        src="/onion.svg"
-        transition="scale-transition"
-        width="40"
-      />
-      <span class="title-text deep-orange--text text--lighten-3" text @click="comeBackHome">
-        <h2 class="transition-swing app-name ml-2 mt-2">양파 마켓</h2>
-      </span>
+  <header class="appbar-container">
+    <div class="logo-wrapper">
+      <img class="logo-image" alt="양파마켓 로고이미지" src="/onion.svg" />
+      <router-link class="logo-link" to="/">양파 마켓</router-link>
     </div>
 
-    <v-spacer />
+    <div class="control-wrapper">
+      <SearchInput />
+      <router-link to="/review">상품 후기</router-link>
 
-    <div>
-      <v-text-field
-        placeholder="상품명 검색"
-        rounded
-        outlined
-        single-line
-        append-icon="mdi-magnify"
-        v-model="keyword"
-        color="orange"
-        class="mt-7 mr-7"
-        style="width: 350px"
-        @keyup.enter="search"
-      />
+      <DropdownMenu v-if="isLoggedIn" :items="dropdownItemMap">
+        <template v-slot:trigger>
+          <button>회원정보</button>
+        </template>
+      </DropdownMenu>
+
+      <div v-else class="button-wrapper">
+        <button @click="openModal">로그인</button>
+        <router-link class="signup-link" to="/signup">회원가입</router-link>
+      </div>
     </div>
-    <v-btn class="mr-5 deep-orange--text text--lighten-3" text to="/review">
-      <h3>상품 후기</h3>
-    </v-btn>
-
-    <v-btn
-      class="mr-3 deep-orange--text text--lighten-3"
-      text
-      @click="loginClicked"
-      v-if="!isLoggedIn"
-    >
-      <h3>로그인</h3>
-    </v-btn>
-    <v-btn class="mr-3 deep-orange--text text--lighten-3" text to="/signup" v-if="!isLoggedIn">
-      <h3>회원가입</h3>
-    </v-btn>
-
-    <v-menu text bottom origin="center center" transition="scale-transition" v-if="isLoggedIn">
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn v-bind="attrs" v-on="on" class="mr-4 deep-orange--text text--lighten-3" text>
-          <h3>회원정보</h3>
-        </v-btn>
-      </template>
-
-      <v-list>
-        <v-list-item @click="routeToDashboard">
-          <v-list-item-title>대시보드</v-list-item-title>
-        </v-list-item>
-        <v-list-item @click="logoutClicked">
-          <v-list-item-title>로그아웃</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
-    <LoginModal :dialog="dialog" @close-modal="closeModal"></LoginModal>
-  </v-app-bar>
+    <LoginModal :show="dialog" @close-modal="closeModal" />
+  </header>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import LoginModal from '@components/Modals/LoginModal.vue';
+import DropdownMenu from '@components/Menu/DropdownMenu.vue';
+import SearchInput from '@components/Inputs/SearchInput.vue';
 import EventBus from '../../utils/bus';
 import { deleteCookie } from '../../utils/cookies';
 
 const userModule = namespace('UserModule');
 
 @Component({
-  components: { LoginModal },
+  components: { LoginModal, DropdownMenu, SearchInput },
 })
 export default class AppBar extends Vue {
-  private keyword: string = '';
   private dialog: boolean = false;
+  private dropdownItemMap = [
+    { text: '대시보드', action: this.routeToDashboard },
+    { text: '로그아웃', action: this.logoutClicked },
+  ];
 
   @userModule.Getter
   public isLoggedIn!: boolean;
 
-  public loginClicked(): void {
-    this.dialog = true;
-  }
   public logoutClicked(): void {
     deleteCookie('auth_email');
     deleteCookie('auth_token');
     EventBus.$emit('pop-up', '로그아웃 되었습니다.');
     this.$router.go(0);
   }
+  public openModal(): void {
+    this.dialog = true;
+  }
   public closeModal(): void {
     this.dialog = false;
-  }
-  public search(): void {
-    this.$router.push(`/search/${this.keyword}`);
-    this.keyword = '';
-    this.$router.go(0);
   }
   public routeToDashboard(): void {
     this.$router.push('/dashboard/cart');
   }
-  public comeBackHome(): void {
-    this.$router.push('/');
-  }
 }
 </script>
 
-<style scoped>
-.title-text:hover {
-  cursor: pointer;
-}
-.search-bar {
-  border: solid;
-}
+<style lang="scss" scoped>
+$logo-color: #ffab91;
 
-@font-face {
-  font-family: 'TmonMonsori';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/TmonMonsori.woff')
-    format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
+.appbar-container {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  width: 100%;
+  height: 100px;
+  padding: 0px 20px;
+  border-bottom: 1px solid #e9ecef;
+  background-color: #ffffff;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+  z-index: 90;
 
-.app-name {
-  font-family: 'TmonMonsori';
+  .logo-wrapper {
+    display: flex;
+
+    .logo-image {
+      width: 50px;
+      height: 50px;
+    }
+
+    .logo-link {
+      margin-left: 10px;
+      font-size: 2rem;
+      font-weight: 700;
+      color: $logo-color;
+    }
+  }
+
+  .control-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: auto;
+    flex-basis: 50%;
+
+    .button-wrapper {
+      .signup-link {
+        margin-left: 20px;
+      }
+    }
+  }
 }
 </style>

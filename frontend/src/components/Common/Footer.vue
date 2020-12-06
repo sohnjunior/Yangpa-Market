@@ -1,23 +1,16 @@
 <template>
-  <v-footer padless>
-    <v-card flat tile width="100%" class="deep-orange lighten-3 white--text text-center">
-      <v-card-text>
-        <v-btn v-for="icon in icons" :key="icon" class="mx-4 white--text" icon>
-          <v-icon size="24px">{{ icon }}</v-icon>
-        </v-btn>
-      </v-card-text>
+  <footer class="footer-container">
+    <div class="button-wrapper">
+      <button v-for="icon in icons" :key="icon">
+        <v-icon>{{ icon }}</v-icon>
+      </button>
+    </div>
 
-      <v-card-text class="white--text pt-0" style="width: 100%">
-        광운대학교 소프트웨어공학 Term 프로젝트 - 🧅 양파 마켓
-      </v-card-text>
-
-      <v-divider />
-
-      <v-card-text class="white--text">
-        {{ new Date().getFullYear() }} — <strong>vue.js & express.js</strong>
-      </v-card-text>
-    </v-card>
-  </v-footer>
+    <div class="footer-description">
+      <strong>🧅 양파 마켓</strong>
+      <span>2020학년도 1학기 소프트웨어공학 프로젝트</span>
+    </div>
+  </footer>
 </template>
 
 <script lang="ts">
@@ -29,4 +22,32 @@ export default class Footer extends Vue {
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.footer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 70px 0px;
+  background-color: #ffab91;
+  color: #ffffff;
+
+  .button-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+
+    button:nth-child(1) {
+      margin-right: 15px;
+    }
+  }
+
+  .footer-description {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+}
+</style>

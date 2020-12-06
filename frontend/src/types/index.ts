@@ -34,9 +34,14 @@ interface Review extends Post {
   rating: number;
 }
 
-interface DashBoardAsideMenu {
+interface DashBoardAsideMenuItem {
   title: string;
   to: string;
 }
 
-export { Category, Product, User, Post, DashBoardAsideMenu, Review };
+interface CategoryOption {
+  text: string;
+  value: string;
+}
+
+export { Category, Product, User, Post, DashBoardAsideMenuItem, Review, CategoryOption };
