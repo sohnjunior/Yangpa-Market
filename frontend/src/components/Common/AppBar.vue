@@ -9,11 +9,7 @@
       <SearchInput />
       <router-link to="/review">상품 후기</router-link>
 
-      <DropdownMenu v-if="isLoggedIn" :items="dropdownItemMap">
-        <template v-slot:trigger>
-          <button>회원정보</button>
-        </template>
-      </DropdownMenu>
+      <DropdownMenu v-if="isLoggedIn" :title="'회원정보'" :items="dropdownItemMap" />
 
       <div v-else class="button-wrapper">
         <button @click="openModal">로그인</button>
