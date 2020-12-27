@@ -38,11 +38,11 @@ export default class ReviewCreateModal extends Vue {
     formData.append('rating', rating);
 
     const { data } = await ReviewAPI.createReview(formData);
-    this.closeDialog();
+    this.closeModal();
   }
 
-  public closeDialog(): void {
-    this.$emit('close-dialog');
+  public closeModal(): void {
+    this.$emit('close');
   }
 }
 </script>
