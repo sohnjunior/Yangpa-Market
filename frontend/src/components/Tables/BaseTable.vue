@@ -1,18 +1,20 @@
 <template>
-  <table>
+  <div>
     <slot name="table-name"></slot>
-    <thead>
-      <tr>
-        <th v-for="(header, index) in headers" :key="index">{{ header }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="(item, index) in items" :key="index">
-        <td v-for="(cell, index) in item" :key="index">{{ cell }}</td>
-        <td><slot name="table-action" :item="item"></slot></td>
-      </tr>
-    </tbody>
-  </table>
+    <table>
+      <thead>
+        <tr>
+          <th v-for="(header, index) in headers" :key="index">{{ header }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(item, index) in items" :key="index">
+          <td v-for="(cell, index) in item" :key="index">{{ cell }}</td>
+          <td><slot name="table-action" :item="item"></slot></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <script lang="ts">
