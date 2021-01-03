@@ -7,13 +7,13 @@
         <router-view />
       </transition>
     </main>
-    <Footer />
+    <AppFooter />
   </v-app>
 </template>
 
 <script>
 import AppBar from '@components/Common/AppBar';
-import Footer from '@components/Common/Footer';
+import AppFooter from '@components/Common/AppFooter';
 import SnackModal from '@components/Modals/SnackModal';
 
 export default {
@@ -21,7 +21,7 @@ export default {
 
   components: {
     AppBar,
-    Footer,
+    AppFooter,
     SnackModal,
   },
 };
