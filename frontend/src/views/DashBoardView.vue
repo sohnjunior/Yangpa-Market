@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-view">
     <DashBoardAsideMenu />
-    <router-view />
+    <router-view class="dashboard-content" />
   </div>
 </template>
 
@@ -18,5 +18,10 @@ export default class DashBoardView extends Vue {}
 <style lang="scss">
 .dashboard-view {
   display: flex;
+
+  .dashboard-content {
+    width: 100%;
+    padding: 25px 100px;
+  }
 }
 </style>
