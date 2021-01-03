@@ -2,16 +2,16 @@
   <div>
     <BaseTable :headers="pendingTableHeaders" :items="pendingItems">
       <template v-slot:table-name>
-        <h1>구매 대기</h1>
+        <h1 class="table-title">구매 대기</h1>
       </template>
     </BaseTable>
 
     <BaseTable :headers="purchasedTableHeaders" :items="purchasedItems">
       <template v-slot:table-name>
-        <h1>구매 완료</h1>
+        <h1 class="table-title">구매 완료</h1>
       </template>
       <template v-slot:table-action>
-        <button @click="onShowModal">후기 등록</button>
+        <button class="register-button" @click="onShowModal">후기 등록</button>
       </template>
       <ReviewCreateModal :show="isOpenReviewModal" @close="onCloseModal" />
     </BaseTable>
@@ -40,8 +40,8 @@ function normalizePendingProduct(info: any): IPendingProductHistory {
   return {
     productName: info.title,
     price: info.price,
-    seller: info.user.nickname,
-    contactNumber: info.user.phone,
+    seller: info.post.user.nickname,
+    contactNumber: info.post.user.phone,
   };
 }
 
@@ -86,4 +86,19 @@ export default class UserBuyingTable extends Vue {
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+@import '../../assets/scss/mixins';
+
+.table-title {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.register-button {
+  @include button();
+  padding: 10px 15px;
+  background-color: #69db7c;
+  color: white;
+  font-size: 0.9rem;
+}
+</style>

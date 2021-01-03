@@ -2,7 +2,7 @@
   <div>
     <BaseTable :headers="onSaleHeaders" :items="onSaleItems">
       <template v-slot:table-name>
-        <h1>판매 중</h1>
+        <h1 class="table-title">판매 중</h1>
       </template>
       <template v-slot:table-action="item">
         <v-icon small @click="onUpdateItem(item)"> mdi-pencil </v-icon>
@@ -12,7 +12,7 @@
 
     <BaseTable :headers="soldHeaders" :items="soldItems">
       <template v-slot:table-name>
-        <h1>판매 완료</h1>
+        <h1 class="table-title">판매 완료</h1>
       </template>
     </BaseTable>
   </div>
@@ -50,7 +50,7 @@ export default class UserSellingTable extends Vue {
   private soldItems: ISalesProductHistory[] = [];
 
   private onSaleHeaders = ['상품명', '가격', '조회수', '좋아요', ''];
-  private soldHeaders = ['상품명', '판매가격'];
+  private soldHeaders = ['상품명', '판매가격', '조회수', '좋아요'];
 
   @userModule.Getter
   public getEmail!: string;
@@ -82,4 +82,9 @@ export default class UserSellingTable extends Vue {
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.table-title {
+  font-size: 2rem;
+  font-weight: 700;
+}
+</style>
