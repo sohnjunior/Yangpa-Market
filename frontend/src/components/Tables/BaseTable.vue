@@ -1,16 +1,21 @@
-<template>
+<template functional>
   <div class="table-container">
     <slot name="table-name" />
     <table class="table-wrapper">
       <thead>
         <tr class="table-header-row">
-          <th v-for="(header, index) in headers" :key="index">{{ header }}</th>
+          <th v-for="(header, index) in props.headers" :key="index">{{ header }}</th>
         </tr>
       </thead>
-      <tbody>
-        <tr class="table-content-row" v-for="(item, index) in items" :key="index">
+      <tbody v-if="props.items.length !== 0">
+        <tr class="table-content-row" v-for="(item, index) in props.items" :key="index">
           <td v-for="(cell, index) in item" :key="index">{{ cell }}</td>
           <td><slot name="table-action" :item="item" /></td>
+        </tr>
+      </tbody>
+      <tbody v-else>
+        <tr class="fallback-row">
+          <span>목록이 없습니다</span>
         </tr>
       </tbody>
     </table>
@@ -20,7 +25,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
-@Component
+@Component({})
 export default class BaseTable extends Vue {
   @Prop({ required: true }) readonly headers!: string[];
   @Prop({ required: true }) readonly items!: any[];
@@ -53,6 +58,10 @@ export default class BaseTable extends Vue {
         padding: 15px 0px;
         text-align: center;
       }
+    }
+
+    .fallback-row {
+      font-size: 1rem;
     }
   }
 }
