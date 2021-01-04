@@ -51,9 +51,6 @@ export default class UserSellingTable extends Vue {
   private onSaleHeaders = ['상품명', '가격', '조회수', '좋아요', ''];
   private soldHeaders = ['상품명', '판매가격', '조회수', '좋아요'];
 
-  @userModule.Getter
-  public getEmail!: string;
-
   async created() {
     const {
       data: { products },
