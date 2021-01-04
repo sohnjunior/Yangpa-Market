@@ -42,4 +42,4 @@ export default class RelatedProductCard extends Vue {
 }
 </script>
 
-<style scoped></style>
+<style></style>

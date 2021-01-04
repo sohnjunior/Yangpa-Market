@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <div>
     <section>
       <h1 class="subtitle">상품정보</h1>
       <DetailProductCard
@@ -15,7 +15,7 @@
     </section>
 
     <CommentTable :productID="productID" />
-  </main>
+  </div>
 </template>
 
 <script lang="ts">
@@ -75,4 +75,14 @@ export default class ProductDetailView extends Vue {
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.subtitle {
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  font-weight: 500;
+}
+
+section {
+  margin-bottom: 100px;
+}
+</style>

@@ -1,5 +1,5 @@
 <template>
-  <ul class="related-list-container">
+  <ul class="related-container">
     <RelatedProductCard
       v-for="[, info] in relatedProducts"
       :title="info.title"
@@ -40,4 +40,8 @@ export default class RelatedProductList extends Vue {
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.related-container {
+  display: flex;
+}
+</style>

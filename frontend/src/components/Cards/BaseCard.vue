@@ -23,13 +23,12 @@ export default class BaseCard extends Vue {}
 @import '../../assets/scss/mixins';
 
 .card-container {
+  @include card-border();
   display: flex;
   flex-direction: column;
   padding: 20px;
-  border: 1px solid rgb(238, 238, 238);
-  border-radius: 10px;
-  background-color: #ffffff;
   width: fit-content;
+  background-color: #ffffff;
 
   .card-title {
     @include text-shorthand();
