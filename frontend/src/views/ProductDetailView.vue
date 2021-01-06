@@ -14,7 +14,11 @@
       <RelatedProductList :productID="productID" />
     </section>
 
-    <CommentTable :productID="productID" />
+    <section>
+      <h1 class="subtitle">상품문의</h1>
+      <CommentInput :productID="productID" />
+      <CommentList :productID="productID" />
+    </section>
   </div>
 </template>
 
@@ -24,7 +28,8 @@ import { ProductAPI, RecommendationAPI, CartAPI } from '../api';
 import { namespace } from 'vuex-class';
 import DetailProductCard from '@components/Cards/DetailProductCard.vue';
 import RelatedProductList from '@components/Lists/RelatedProductList.vue';
-import CommentTable from '@components/Tables/CommentTable.vue';
+import CommentInput from '@components/Inputs/CommentInput.vue';
+import CommentList from '@components/Lists/CommentList.vue';
 import EventBus from '../utils/bus';
 
 const userModule = namespace('UserModule');
@@ -33,7 +38,8 @@ const userModule = namespace('UserModule');
   components: {
     DetailProductCard,
     RelatedProductList,
-    CommentTable,
+    CommentInput,
+    CommentList,
   },
 })
 export default class ProductDetailView extends Vue {
@@ -49,7 +55,7 @@ export default class ProductDetailView extends Vue {
     window.scrollTo(0, 0);
   }
 
-  public async onAddCart(): Promise<void> {
+  public async onAddCart() {
     if (!this.isLoggedIn) {
       alert('로그인이 필요한 서비스입니다.');
       return;
@@ -65,7 +71,7 @@ export default class ProductDetailView extends Vue {
     }
   }
 
-  public async onIncreaseLike(): Promise<void> {
+  public async onIncreaseLike() {
     try {
       await ProductAPI.likeProduct(this.productID);
     } catch (err) {
