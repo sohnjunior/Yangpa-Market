@@ -46,7 +46,6 @@
       <v-row>
         <ProductCard
           v-for="product in sorted"
-          id="product-card"
           :title="product.product.title"
           :image="product.product.image"
           :body="product.body"
@@ -148,10 +147,6 @@ export default class MainView extends Vue {
 </script>
 
 <style scoped>
-#product-card {
-  margin-right: 20px;
-  margin-top: 20px;
-}
 #carousel-product {
   width: 15%;
   height: 10%;

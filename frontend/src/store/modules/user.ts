@@ -13,11 +13,11 @@ export default class UserModule extends VuexModule {
   public email: string = getAuthEmailFromCookie() || '';
   public token: string = getAuthTokenFromCookie() || '';
 
-  get getEmail(): string {
+  get currentEmail(): string {
     return this.email;
   }
 
-  get getToken(): string {
+  get currentToken(): string {
     return this.token;
   }
 

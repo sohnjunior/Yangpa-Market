@@ -1,126 +1,80 @@
 <template>
-  <v-content class="pt-12">
-    <v-container style="height: 450px">
-      <div class="mb-5">
-        <h1 class="sub-title">상품정보</h1>
-      </div>
-      <v-row class="product-info">
-        <v-col>
-          <v-img :src="productIMG" class="product-image" width="200" height="300" />
-        </v-col>
-        <v-col cols="7">
-          <v-row class="mt-9">
-            <h2>{{ productTitle }}</h2>
-          </v-row>
-          <v-row class="mt-5">
-            <p>판매자 : {{ productSeller }}</p>
-          </v-row>
-          <v-row class="mt-4">
-            <p>{{ productBody }}</p>
-          </v-row>
-          <v-row class="mt-7">
-            <div id="price">₩ {{ productPrice }}</div>
-          </v-row>
-          <v-row class="mt-9">
-            <v-btn
-              tile
-              outlined
-              color="success"
-              large
-              depressed
-              :disabled="sold"
-              @click="onAddCart"
-              style="margin-right: 50px"
-            >
-              <v-icon v-if="!sold" left>mdi-cart</v-icon>
-              {{ sold ? '판매 완료' : '장바구니 담기' }}
-            </v-btn>
-            <v-btn tile outlined color="success" large depressed @click="onClickLikeButton">
-              <v-icon left>mdi-thumb-up</v-icon>
-              좋아요
-            </v-btn>
-          </v-row>
-        </v-col>
-      </v-row>
-    </v-container>
+  <div>
+    <section>
+      <h1 class="subtitle">상품정보</h1>
+      <DetailProductCard
+        v-if="isFetchFinished"
+        :productID="productID"
+        :productSeller="productSeller"
+        :productInfo="productInfo"
+        :productDescription="productDescription"
+        @add-cart="onAddCart"
+        @increase-like="onIncreaseLike"
+      />
+    </section>
 
-    <v-container style="height: 600px">
-      <v-content>
-        <h2 class="sub-title">이 상품도 함께 봤어요</h2>
-        <v-row>
-          <RelatedProductCard
-            v-for="product in related"
-            id="product-card"
-            :title="product[1].title"
-            :image="product[1].image"
-            :body="product[1].post.body"
-            :hit="product[1].post.hit"
-            :productID="product[1].post.title"
-            :price="product[1].price"
-            :key="product[1].id"
-          />
-        </v-row>
-      </v-content>
-    </v-container>
-    <v-spacer class="mt-11" />
-    <hr />
-    <CommentList :seller="isSeller" />
-  </v-content>
+    <section>
+      <h1 class="subtitle">이 상품도 함께 봤어요</h1>
+      <RelatedProductList :productID="productID" />
+    </section>
+
+    <section v-if="isFetchFinished">
+      <h1 class="subtitle">상품문의</h1>
+      <CommentInput :productID="productID" />
+      <CommentList :productID="productID" :seller="productSeller" />
+    </section>
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { ProductAPI, RecommendationAPI, CartAPI } from '../api';
 import { namespace } from 'vuex-class';
-import CommentList from '@components/Tables/CommentTable.vue';
-import RelatedProductCard from '@components/Cards/RelatedProductCard.vue';
+import DetailProductCard from '@components/Cards/DetailProductCard.vue';
+import RelatedProductList from '@components/Lists/RelatedProductList.vue';
+import CommentInput from '@components/Inputs/CommentInput.vue';
+import CommentList from '@components/Lists/CommentList.vue';
 import EventBus from '../utils/bus';
+import { IProductDetailInfo, IUserInfo } from '../types';
 
 const userModule = namespace('UserModule');
 
 @Component({
   components: {
+    DetailProductCard,
+    RelatedProductList,
+    CommentInput,
     CommentList,
-    RelatedProductCard,
   },
 })
 export default class ProductDetailView extends Vue {
-  private productID: string = '';
-  private productIMG: string = '';
-  private productSeller: string = '';
-  private productBody: string = '';
-  private productTitle: string = '';
-  private productPrice: string = '';
-  private related = [];
-  private isSeller: boolean = false;
-  private isSold: boolean = false;
+  private productID: string = this.$route.params.id;
+  private productSeller!: IUserInfo;
+  private productInfo!: IProductDetailInfo;
+  private productDescription!: string;
+  private isFetchFinished = false;
 
   @userModule.Getter
   public isLoggedIn!: boolean;
-  public getEmail!: string;
 
-  async created() {
-    this.productID = this.$route.params.id;
-    const {
-      data: { product, body, user },
-    } = await ProductAPI.fetchProduct(this.productID);
+  public async created() {
+    try {
+      const {
+        data: { product, body, user },
+      } = await ProductAPI.fetchProduct(this.productID);
 
-    this.productIMG = product.image;
-    this.productBody = body;
-    this.productSeller = user.nickname;
-    this.productTitle = product.title;
-    this.productPrice = product.price;
-    this.isSeller = user.email === this.getEmail;
-    this.isSold = product.sold;
+      this.productSeller = user;
+      this.productInfo = product;
+      this.productDescription = body;
+      this.isFetchFinished = true;
+    } catch (err) {
+      console.error(err);
+    }
 
-    const {
-      data: { result },
-    } = await RecommendationAPI.fetchRelatedProducts(this.productID);
-    this.related = result;
     window.scrollTo(0, 0);
   }
 
-  public async onAddCart(): Promise<void> {
+  public async onAddCart() {
     if (!this.isLoggedIn) {
       alert('로그인이 필요한 서비스입니다.');
       return;
@@ -136,7 +90,7 @@ export default class ProductDetailView extends Vue {
     }
   }
 
-  public async onClickLikeButton(): Promise<void> {
+  public async onIncreaseLike() {
     try {
       await ProductAPI.likeProduct(this.productID);
     } catch (err) {
@@ -146,24 +100,14 @@ export default class ProductDetailView extends Vue {
 }
 </script>
 
-<style scoped>
-.product-info {
-  width: 80%;
-  border: solid 1px;
-  border-radius: 20px;
-  border-color: gainsboro;
+<style lang="scss" scoped>
+.subtitle {
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  font-weight: 500;
 }
-.product-image {
-  width: 30%;
-  height: 50%;
-  margin: 30px 0px 0px 30px;
-}
-#product-card {
-  margin-right: 20px;
-  margin-top: 20px;
-}
-#price {
-  font-family: monospace;
-  font-size: 1.7rem;
+
+section {
+  margin-bottom: 100px;
 }
 </style>

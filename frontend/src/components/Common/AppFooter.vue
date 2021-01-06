@@ -17,7 +17,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 @Component
-export default class Footer extends Vue {
+export default class AppFooter extends Vue {
   private icons: string[] = ['mdi-github', 'mdi-youtube'];
 }
 </script>
