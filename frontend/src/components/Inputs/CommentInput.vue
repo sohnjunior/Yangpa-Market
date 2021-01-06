@@ -1,7 +1,7 @@
 <template>
   <div class="comment-input-container">
     <div class="input-wrapper">
-      <textarea class="comment-input" type="text" placeholder="상품문의 입력" v-model="inputText" />
+      <textarea class="comment-input" placeholder="상품문의 입력" v-model="inputText" />
     </div>
     <div class="control-wrapper">
       <label><input type="checkbox" name="secret" :checked="isSecret" />비밀댓글</label>
@@ -12,7 +12,10 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
 import { CommentAPI } from '../../api';
+
+const UserModule = namespace('UserModule');
 
 @Component({})
 export default class CommentInput extends Vue {
@@ -21,7 +24,14 @@ export default class CommentInput extends Vue {
   private inputText = '';
   private isSecret = false;
 
+  @UserModule.Getter
+  public isLoggedIn!: boolean;
+
   public async onSubmitComment() {
+    if (!this.isLoggedIn) {
+      alert('로그인이 필요한 서비스입니다.');
+      return;
+    }
     if (this.inputText === '') return;
 
     try {
@@ -46,8 +56,9 @@ export default class CommentInput extends Vue {
   flex-direction: column;
   margin-left: 10%;
   margin-right: 10%;
+  margin-bottom: 50px;
   width: 80%;
-  border: 1px solid rgb(238, 238, 238);
+  border: 2px solid rgb(238, 238, 238);
 
   .input-wrapper {
     padding: 30px;
