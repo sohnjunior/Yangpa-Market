@@ -18,10 +18,10 @@
       <RelatedProductList :productID="productID" />
     </section>
 
-    <section>
+    <section v-if="isFetchFinished">
       <h1 class="subtitle">상품문의</h1>
       <CommentInput :productID="productID" />
-      <CommentList :productID="productID" />
+      <CommentList :productID="productID" :seller="productSeller" />
     </section>
   </div>
 </template>
@@ -35,7 +35,7 @@ import RelatedProductList from '@components/Lists/RelatedProductList.vue';
 import CommentInput from '@components/Inputs/CommentInput.vue';
 import CommentList from '@components/Lists/CommentList.vue';
 import EventBus from '../utils/bus';
-import { IProductDetailInfo } from '../types';
+import { IProductDetailInfo, IUserInfo } from '../types';
 
 const userModule = namespace('UserModule');
 
@@ -49,7 +49,7 @@ const userModule = namespace('UserModule');
 })
 export default class ProductDetailView extends Vue {
   private productID: string = this.$route.params.id;
-  private productSeller!: any;
+  private productSeller!: IUserInfo;
   private productInfo!: IProductDetailInfo;
   private productDescription!: string;
   private isFetchFinished = false;

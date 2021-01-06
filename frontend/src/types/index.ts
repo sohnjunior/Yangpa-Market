@@ -52,6 +52,11 @@ interface IProductDetailInfo {
   sold: boolean;
 }
 
+interface IUserInfo {
+  email: string;
+  nickname: string;
+}
+
 export {
   Category,
   Product,
@@ -61,4 +66,5 @@ export {
   Review,
   CategoryOption,
   IProductDetailInfo,
+  IUserInfo,
 };

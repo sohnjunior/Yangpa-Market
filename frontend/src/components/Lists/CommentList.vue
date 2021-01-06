@@ -1,7 +1,10 @@
 <template>
   <ul class="comment-container">
     <li class="comment-item" v-for="(item, index) in commentItems" :key="item.id">
-      <h3 class="commentor">{{ item.commentor }}</h3>
+      <h3 class="commentor">
+        {{ item.commentor }}
+        <span v-if="isSeller(item.commentor)" class="flag">판매자</span>
+      </h3>
       <div>
         <textarea
           class="comment-edit"
@@ -29,6 +32,7 @@
 import { Component, Vue, Prop, Ref } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import { CommentAPI, UserAPI } from '../../api';
+import { IUserInfo } from '../../types';
 
 const UserModule = namespace('UserModule');
 
@@ -50,6 +54,7 @@ function normalize({ id, comment, user }): ICommentHistory {
 @Component({})
 export default class CommentList extends Vue {
   @Prop({ required: true }) readonly productID!: string;
+  @Prop({ required: true }) readonly seller!: IUserInfo;
 
   @Ref() readonly commentEditInput!: HTMLInputElement;
 
@@ -81,6 +86,10 @@ export default class CommentList extends Vue {
 
   public isEditMode(commentID: number): boolean {
     return this.editCommentID === commentID;
+  }
+
+  public isSeller(commentor: string): boolean {
+    return this.seller.nickname === commentor;
   }
 
   public onEditMode(commentID: number, index: number) {
@@ -123,6 +132,15 @@ export default class CommentList extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@mixin outlined-chip($color) {
+  padding: 2px 5px;
+  margin-left: 10px;
+  border: 1px solid $color;
+  border-radius: 10px;
+  font-size: 0.7rem;
+  color: $color;
+}
+
 .comment-container {
   padding: 0;
   margin-left: 10%;
@@ -131,14 +149,20 @@ export default class CommentList extends Vue {
   .comment-item {
     display: flex;
     flex-direction: column;
-    padding: 10px 20px;
+    padding: 20px 20px;
     border-bottom: 1px solid rgb(238, 238, 238);
 
     .commentor {
+      display: flex;
+      align-items: center;
       margin-bottom: 10px;
       font-size: 0.9rem;
       font-weight: 500;
       color: #888888;
+
+      .flag {
+        @include outlined-chip(#74c0fc);
+      }
     }
 
     .comment-edit {
