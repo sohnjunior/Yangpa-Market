@@ -1,14 +1,8 @@
 <template>
-  <div class="card-container">
-    <div class="card-title">
-      <slot name="card-title"></slot>
-    </div>
-    <div class="card-body">
-      <slot name="card-body"></slot>
-    </div>
-    <div class="card-footer">
-      <slot name="card-footer"></slot>
-    </div>
+  <div class="card-container" @click="onClickCard">
+    <slot name="card-title" />
+    <slot name="card-body" />
+    <slot name="card-footer" />
   </div>
 </template>
 
@@ -16,7 +10,11 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 @Component
-export default class BaseCard extends Vue {}
+export default class BaseCard extends Vue {
+  public onClickCard() {
+    this.$emit('click');
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -29,19 +27,6 @@ export default class BaseCard extends Vue {}
   padding: 20px;
   width: fit-content;
   background-color: #ffffff;
-
-  .card-title {
-    @include text-shorthand();
-    flex-basis: 20%;
-  }
-
-  .card-body {
-    @include text-shorthand();
-    flex-basis: 60%;
-  }
-
-  .card-footer {
-    flex-basis: 20%;
-  }
+  cursor: pointer;
 }
 </style>

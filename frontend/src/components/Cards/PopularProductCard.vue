@@ -39,10 +39,13 @@ export default class PopularProductCard extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/scss/mixins';
+
 .card-title-wrapper {
   margin-bottom: 5px;
 
   .card-title {
+    @include text-shorthand();
     font-size: 1.2rem;
     font-weight: 500;
     color: black;
