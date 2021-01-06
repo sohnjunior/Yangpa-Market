@@ -9,7 +9,7 @@
         <textarea class="comment-edit" v-if="isEditMode(item.id)" :value="item.commentText" />
         <p v-else class="comment-text">{{ item.commentText }}</p>
       </div>
-      <div class="control-wrapper">
+      <div class="control-wrapper" v-if="isEditable(item.commentorEmail)">
         <div v-if="isEditMode(item.id)">
           <button @click="onFinishEdit(index)">수정완료</button>
           <button @click="onCancelEdit">취소</button>
@@ -35,6 +35,7 @@ interface ICommentHistory {
   id: number;
   commentText: string;
   commentor: string;
+  commentorEmail: string;
 }
 
 function normalize({ id, comment, user }): ICommentHistory {
@@ -42,6 +43,7 @@ function normalize({ id, comment, user }): ICommentHistory {
     id: id,
     commentText: comment,
     commentor: user.nickname,
+    commentorEmail: user.email,
   };
 }
 
@@ -79,6 +81,10 @@ export default class CommentList extends Vue {
 
   public isEditMode(commentID: number): boolean {
     return this.editCommentID === commentID;
+  }
+
+  public isEditable(commentorEmail: string): boolean {
+    return this.currentEmail === commentorEmail;
   }
 
   public isSeller(commentor: string): boolean {

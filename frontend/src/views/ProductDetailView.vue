@@ -55,9 +55,6 @@ export default class ProductDetailView extends Vue {
   private isFetchFinished = false;
 
   @userModule.Getter
-  public currentEmail!: string;
-
-  @userModule.Getter
   public isLoggedIn!: boolean;
 
   public async created() {
