@@ -6,12 +6,7 @@
         <span v-if="isSeller(item.commentor)" class="flag">판매자</span>
       </h3>
       <div>
-        <textarea
-          class="comment-edit"
-          ref="commentEditInput"
-          v-if="isEditMode(item.id)"
-          :value="item.commentText"
-        />
+        <textarea class="comment-edit" v-if="isEditMode(item.id)" :value="item.commentText" />
         <p v-else class="comment-text">{{ item.commentText }}</p>
       </div>
       <div class="control-wrapper">
@@ -29,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Ref } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import { CommentAPI, UserAPI } from '../../api';
 import { IUserInfo } from '../../types';
@@ -55,8 +50,6 @@ function normalize({ id, comment, user }): ICommentHistory {
 export default class CommentList extends Vue {
   @Prop({ required: true }) readonly productID!: string;
   @Prop({ required: true }) readonly seller!: IUserInfo;
-
-  @Ref() readonly commentEditInput!: HTMLInputElement;
 
   private commentItems = [];
   private isAdmin = false;
@@ -95,13 +88,18 @@ export default class CommentList extends Vue {
   public onEditMode(commentID: number, index: number) {
     this.editCommentID = commentID;
     this.$nextTick(() => {
-      this.commentEditInput[index].focus();
+      const $li = this.$el.children[index];
+      const $textarea = $li.querySelector('.comment-edit') as HTMLInputElement;
+
+      $textarea.focus();
     });
   }
 
   public async onFinishEdit(index: number) {
     try {
-      const comment = this.commentEditInput[index].value;
+      const $li = this.$el.children[index];
+      const $textarea = $li.querySelector('.comment-edit') as HTMLInputElement;
+      const comment = $textarea.value;
 
       await CommentAPI.updateComment({
         commentID: this.editCommentID,
