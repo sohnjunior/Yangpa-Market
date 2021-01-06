@@ -43,5 +43,7 @@ export default class RelatedProductList extends Vue {
 <style lang="scss" scoped>
 .related-container {
   display: flex;
+  justify-content: space-between;
+  width: 90%;
 }
 </style>
