@@ -1,5 +1,5 @@
 <template>
-  <div class="info-container" v-if="isFetchFinished">
+  <div class="info-container">
     <img class="product-image" alt="상품 이미지" :src="productInfo.image" />
     <div class="info-wrapper">
       <div class="meta-wrapper">
@@ -26,38 +26,14 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { ProductAPI } from '../../api';
-
-interface IProductDetailInfo {
-  image: string;
-  title: string;
-  like: number;
-  price: number;
-  sold: boolean;
-}
+import { IProductDetailInfo } from '../../types';
 
 @Component({})
 export default class DetailProductCard extends Vue {
   @Prop({ required: true }) readonly productID!: string;
-
-  private productSeller!: any;
-  private productInfo!: IProductDetailInfo;
-  private productDescription!: string;
-  private isFetchFinished = false;
-
-  public async created() {
-    try {
-      const {
-        data: { product, body, user },
-      } = await ProductAPI.fetchProduct(this.productID);
-
-      this.productSeller = user;
-      this.productInfo = product;
-      this.productDescription = body;
-      this.isFetchFinished = true;
-    } catch (err) {
-      console.error(err);
-    }
-  }
+  @Prop({ required: true }) readonly productSeller!: any;
+  @Prop({ required: true }) readonly productInfo!: IProductDetailInfo;
+  @Prop({ required: true }) readonly productDescription!: string;
 
   public onClickAddCart() {
     this.$emit('add-cart');

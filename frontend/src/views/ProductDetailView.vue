@@ -3,7 +3,11 @@
     <section>
       <h1 class="subtitle">상품정보</h1>
       <DetailProductCard
+        v-if="isFetchFinished"
         :productID="productID"
+        :productSeller="productSeller"
+        :productInfo="productInfo"
+        :productDescription="productDescription"
         @add-cart="onAddCart"
         @increase-like="onIncreaseLike"
       />
@@ -31,6 +35,7 @@ import RelatedProductList from '@components/Lists/RelatedProductList.vue';
 import CommentInput from '@components/Inputs/CommentInput.vue';
 import CommentList from '@components/Lists/CommentList.vue';
 import EventBus from '../utils/bus';
+import { IProductDetailInfo } from '../types';
 
 const userModule = namespace('UserModule');
 
@@ -44,6 +49,10 @@ const userModule = namespace('UserModule');
 })
 export default class ProductDetailView extends Vue {
   private productID: string = this.$route.params.id;
+  private productSeller!: any;
+  private productInfo!: IProductDetailInfo;
+  private productDescription!: string;
+  private isFetchFinished = false;
 
   @userModule.Getter
   public currentEmail!: string;
@@ -51,7 +60,20 @@ export default class ProductDetailView extends Vue {
   @userModule.Getter
   public isLoggedIn!: boolean;
 
-  public created() {
+  public async created() {
+    try {
+      const {
+        data: { product, body, user },
+      } = await ProductAPI.fetchProduct(this.productID);
+
+      this.productSeller = user;
+      this.productInfo = product;
+      this.productDescription = body;
+      this.isFetchFinished = true;
+    } catch (err) {
+      console.error(err);
+    }
+
     window.scrollTo(0, 0);
   }
 

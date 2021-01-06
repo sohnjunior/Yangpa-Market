@@ -44,4 +44,21 @@ interface CategoryOption {
   value: string;
 }
 
-export { Category, Product, User, Post, DashBoardAsideMenuItem, Review, CategoryOption };
+interface IProductDetailInfo {
+  image: string;
+  title: string;
+  like: number;
+  price: number;
+  sold: boolean;
+}
+
+export {
+  Category,
+  Product,
+  User,
+  Post,
+  DashBoardAsideMenuItem,
+  Review,
+  CategoryOption,
+  IProductDetailInfo,
+};
