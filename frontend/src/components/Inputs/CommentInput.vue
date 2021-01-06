@@ -4,7 +4,7 @@
       <textarea class="comment-input" placeholder="상품문의 입력" v-model="inputText" />
     </div>
     <div class="control-wrapper">
-      <label><input type="checkbox" name="secret" :checked="isSecret" />비밀댓글</label>
+      <label><input type="checkbox" name="secret" v-model="isSecret" />비밀댓글</label>
       <button class="submit-btn" @click="onSubmitComment">등록</button>
     </div>
   </div>
@@ -79,7 +79,7 @@ export default class CommentInput extends Vue {
       @include button();
       margin-left: auto;
       padding: 5px 25px;
-      background-color: #a5d8ff;
+      background-color: #74c0fc;
       color: white;
     }
   }

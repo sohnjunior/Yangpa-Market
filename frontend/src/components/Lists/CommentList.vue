@@ -7,7 +7,13 @@
       </h3>
       <div>
         <textarea class="comment-edit" v-if="isEditMode(item.id)" :value="item.commentText" />
-        <p v-else class="comment-text">{{ item.commentText }}</p>
+        <p v-else class="comment-text">
+          {{
+            isAllowedForRead(item.isSecret, item.commentorEmail)
+              ? item.commentText
+              : '비밀 댓글입니다.'
+          }}
+        </p>
       </div>
       <div class="control-wrapper" v-if="isEditable(item.commentorEmail)">
         <div v-if="isEditMode(item.id)">
@@ -33,21 +39,22 @@ const UserModule = namespace('UserModule');
 
 interface ICommentHistory {
   id: number;
+  isSecret: boolean;
   commentText: string;
   commentor: string;
   commentorEmail: string;
 }
 
-function normalize({ id, comment, user }): ICommentHistory {
+function normalize({ id, secret, comment, user }): ICommentHistory {
   return {
     id: id,
+    isSecret: secret,
     commentText: comment,
     commentor: user.nickname,
     commentorEmail: user.email,
   };
 }
 
-// TODO: 비밀 댓글 기능 추가
 @Component({})
 export default class CommentList extends Vue {
   @Prop({ required: true }) readonly productID!: string;
@@ -89,6 +96,11 @@ export default class CommentList extends Vue {
 
   public isSeller(commentor: string): boolean {
     return this.seller.nickname === commentor;
+  }
+
+  public isAllowedForRead(isSecret: boolean, commentorEmail: string): boolean {
+    if (!isSecret) return true;
+    return this.isAdmin || this.currentEmail === commentorEmail;
   }
 
   public onEditMode(commentID: number, index: number) {
