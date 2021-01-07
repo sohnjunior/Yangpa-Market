@@ -1,5 +1,5 @@
 <template>
-  <BaseCard @onClick="move">
+  <BaseCard @click="onRedirect">
     <template v-slot:card-title>
       <div class="product-header-wrapper">
         <h1 class="product-name">{{ title }}</h1>
@@ -44,7 +44,7 @@ export default class ProductCard extends Vue {
   @Prop({ required: true }) price!: string;
   @Prop({ required: true }) productID!: string;
 
-  public move() {
+  public onRedirect() {
     this.$router.push(`/product/${this.productID}`);
   }
 }
@@ -87,8 +87,10 @@ export default class ProductCard extends Vue {
     justify-content: center;
 
     .product-image {
+      width: 100%;
       height: 170px;
       margin: 20px 0px;
+      border-radius: 10px;
       object-fit: cover;
     }
   }
