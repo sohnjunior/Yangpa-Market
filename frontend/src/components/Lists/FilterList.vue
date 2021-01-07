@@ -33,6 +33,7 @@ export default class FilterList extends Vue {
 <style lang="scss" scoped>
 .filter-container {
   display: flex;
+  margin-bottom: 20px;
 
   .filter {
     width: 100px;
