@@ -43,6 +43,7 @@ $category-btn-color: #8ce99a;
   justify-content: center;
   align-items: center;
   background-color: $category-btn-color;
+  color: white;
 
   &__image {
     width: 30px;
