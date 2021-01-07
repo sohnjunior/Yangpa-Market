@@ -1,10 +1,10 @@
-interface Category {
+interface ICategory {
   title: string;
 }
 
-interface Product {
+interface IProduct {
   title: string;
-  category: Category;
+  category: ICategory;
   image: string;
   like: number;
   price: number;
@@ -15,12 +15,12 @@ interface User {
   nickname: string;
 }
 
-interface Post {
+interface IPost {
   id: number;
   title: string;
   body: string;
   hit: number;
-  product: Product;
+  product: IProduct;
   user: User;
   userId: number;
   createdAt: string;
@@ -28,7 +28,7 @@ interface Post {
   deletedAt?: string;
 }
 
-interface Review extends Post {
+interface Review extends IPost {
   image: string;
   like: number;
   rating: number;
@@ -57,14 +57,18 @@ interface IUserInfo {
   nickname: string;
 }
 
+interface ICategoryMap {
+  [index: string]: string;
+}
+
 export {
-  Category,
-  Product,
+  IProduct,
   User,
-  Post,
+  IPost,
   DashBoardAsideMenuItem,
   Review,
   CategoryOption,
   IProductDetailInfo,
   IUserInfo,
+  ICategoryMap,
 };
