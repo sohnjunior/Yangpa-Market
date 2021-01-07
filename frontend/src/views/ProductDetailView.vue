@@ -34,7 +34,7 @@ import DetailProductCard from '@components/Cards/DetailProductCard.vue';
 import RelatedProductList from '@components/Lists/RelatedProductList.vue';
 import CommentInput from '@components/Inputs/CommentInput.vue';
 import CommentList from '@components/Lists/CommentList.vue';
-import EventBus from '../utils/bus';
+import ToastBus from '../bus/ToastBus';
 import { IProductDetailInfo, IUserInfo } from '../types';
 
 const userModule = namespace('UserModule');
@@ -84,7 +84,7 @@ export default class ProductDetailView extends Vue {
       await CartAPI.createCartProduct({
         productID: this.productID,
       });
-      EventBus.$emit('pop-up', '장바구니에 추가되었습니다.');
+      ToastBus.$emit('pop-up', '장바구니에 추가되었습니다.');
     } catch (err) {
       console.error(err);
     }

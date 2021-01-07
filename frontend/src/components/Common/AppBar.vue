@@ -26,7 +26,7 @@ import { namespace } from 'vuex-class';
 import LoginModal from '@components/Modals/LoginModal.vue';
 import DropdownMenu from '@components/Menu/DropdownMenu.vue';
 import SearchInput from '@components/Inputs/SearchInput.vue';
-import EventBus from '../../utils/bus';
+import ToastBus from '../../bus/ToastBus';
 import { deleteCookie } from '../../utils/cookies';
 
 const userModule = namespace('UserModule');
@@ -47,7 +47,7 @@ export default class AppBar extends Vue {
   public logoutClicked(): void {
     deleteCookie('auth_email');
     deleteCookie('auth_token');
-    EventBus.$emit('pop-up', '로그아웃 되었습니다.');
+    ToastBus.$emit('pop-up', '로그아웃 되었습니다.');
     this.$router.go(0);
   }
   public openModal(): void {
