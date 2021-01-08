@@ -1,5 +1,5 @@
 <template>
-  <BaseCard>
+  <BaseCard @click="onRedirect">
     <template v-slot:card-title>
       <div class="card-title-wrapper">
         <h1 class="card-title">{{ title }}</h1>
@@ -12,11 +12,6 @@
     </template>
     <template v-slot:card-body>
       <img class="product-image" alt="상품 이미지" :src="image" />
-    </template>
-    <template v-slot:card-footer>
-      <div class="link-wrapper">
-        <router-link :to="`/product/${productID}`"> 보러가기 </router-link>
-      </div>
     </template>
   </BaseCard>
 </template>
@@ -35,6 +30,10 @@ export default class PopularProductCard extends Vue {
   @Prop({ required: true }) readonly hit!: number;
   @Prop({ required: true }) readonly category!: string;
   @Prop({ required: true }) readonly productID!: string;
+
+  public onRedirect() {
+    this.$router.push(`/product/${this.productID}`);
+  }
 }
 </script>
 
@@ -42,6 +41,7 @@ export default class PopularProductCard extends Vue {
 @import '../../assets/scss/mixins';
 
 .card-title-wrapper {
+  width: 125px;
   margin-bottom: 5px;
 
   .card-title {
@@ -52,7 +52,7 @@ export default class PopularProductCard extends Vue {
   }
 
   .card-subtitle {
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 500;
     color: #808080;
   }
@@ -61,6 +61,7 @@ export default class PopularProductCard extends Vue {
 .product-image {
   width: 100%;
   height: 170px;
+  border-radius: 10px;
   object-fit: cover;
 }
 
