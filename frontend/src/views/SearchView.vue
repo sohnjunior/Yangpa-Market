@@ -24,7 +24,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { Post } from '../types';
+import { IPost } from '../types';
 import { ProductAPI } from '../api';
 import ProductCard from '@components/Cards/ProductCard.vue';
 
@@ -33,7 +33,7 @@ import ProductCard from '@components/Cards/ProductCard.vue';
 })
 export default class SearchView extends Vue {
   private keyword: string = '';
-  private products: Post[] = [];
+  private products: IPost[] = [];
 
   async created() {
     this.keyword = this.$route.params.keyword;
