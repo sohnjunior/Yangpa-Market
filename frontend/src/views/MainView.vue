@@ -1,17 +1,19 @@
 <template>
   <div>
-    <section class="category-section">
-      <CategoryList @select="onSelectCategory" />
-    </section>
     <section class="popular-section">
       <h1 class="subtitle">방금 올라온 상품이에요</h1>
-      <ProductCarousel />
+      <ProductCarousel v-if="!isMobileBrowser" />
+      <ProductSlideList v-else />
+    </section>
+
+    <section class="category-section">
+      <CategoryList @select="onSelectCategory" />
     </section>
 
     <section class="list-section">
       <h1 class="subtitle">{{ selectedCategory }}</h1>
       <FilterList @change="onChangeFilter" />
-      <ProductGridList v-if="sortedProducts.length !== 0" :products="sortedProducts" />
+      <ProductGridList v-if="isProductsExist" :products="sortedProducts" />
       <div v-else>상품이 없어요</div>
     </section>
     <FloatingButton />
@@ -20,13 +22,17 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
 import { ProductAPI } from '../api';
-import ProductCarousel from '@components/Lists/ProductCarousel.vue';
+import ProductCarousel from '@components/Carousels/ProductCarousel.vue';
 import CategoryList from '@components/Lists/CategoryList.vue';
 import FilterList from '@components/Lists/FilterList.vue';
 import ProductGridList from '@components/Lists/ProductGridList.vue';
+import ProductSlideList from '@components/Lists/ProductSlideList.vue';
 import FloatingButton from '@components/Buttons/FloatingButton.vue';
 import { IPost, IProduct, ICategoryMap } from '../types';
+
+const SettingModule = namespace('SettingModule');
 
 @Component({
   components: {
@@ -34,6 +40,7 @@ import { IPost, IProduct, ICategoryMap } from '../types';
     FilterList,
     ProductCarousel,
     ProductGridList,
+    ProductSlideList,
     FloatingButton,
   },
 })
@@ -49,6 +56,9 @@ export default class MainView extends Vue {
     기타: 'others',
   };
 
+  @SettingModule.Getter
+  public isMobileBrowser!: boolean;
+
   get sortedProducts() {
     const categorized = this.fetchedProducts.filter(
       ({ product }) => product.category.title === this.categoryMap[this.selectedCategory]
@@ -56,6 +66,10 @@ export default class MainView extends Vue {
     const sorted = [...categorized].sort(this.compareFunction);
 
     return sorted;
+  }
+
+  get isProductsExist() {
+    return this.sortedProducts.length !== 0;
   }
 
   private compareFunction(a: IPost, b: IPost) {
