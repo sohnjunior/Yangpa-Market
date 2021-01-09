@@ -18,9 +18,9 @@
     <template v-slot:card-footer>
       <div class="footer-wrapper">
         <em>{{ price }} 원</em>
-        <div class="like">
-          <v-icon color="pink">mdi-heart</v-icon>
-          {{ like }}
+        <div class="like-wrapper">
+          <Icon filename="heart" width="15" height="15" />
+          <span class="like-count">{{ like }}</span>
         </div>
       </div>
     </template>
@@ -29,10 +29,11 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import Icon from '@components/Common/Icon.vue';
 import BaseCard from '@components/Cards/BaseCard.vue';
 
 @Component({
-  components: { BaseCard },
+  components: { Icon, BaseCard },
 })
 export default class ProductCard extends Vue {
   @Prop({ required: true }) title!: string;
@@ -70,7 +71,7 @@ export default class ProductCard extends Vue {
   }
 
   .product-meta {
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 500;
     color: #808080;
   }
@@ -103,8 +104,15 @@ export default class ProductCard extends Vue {
 .footer-wrapper {
   display: flex;
 
-  .like {
+  .like-wrapper {
+    display: flex;
+    align-items: center;
     margin-left: auto;
+
+    .like-count {
+      margin-left: 5px;
+      font-size: 0.9rem;
+    }
   }
 }
 </style>
