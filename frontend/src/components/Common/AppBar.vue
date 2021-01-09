@@ -7,7 +7,7 @@
 
     <div class="control-wrapper">
       <SearchInput />
-      <router-link to="/review">상품 후기</router-link>
+      <router-link class="review-link" to="/review">상품 후기</router-link>
 
       <DropdownMenu v-if="isLoggedIn" :title="'회원정보'" :items="dropdownItemMap" />
       <div v-else class="button-wrapper">
@@ -15,7 +15,7 @@
         <router-link class="signup-link" to="/signup">회원가입</router-link>
       </div>
     </div>
-    <LoginModal :show="dialog" @close-modal="onCloseModal" />
+    <LoginModal :show="showModal" @close-modal="onCloseModal" />
   </header>
 </template>
 
@@ -100,9 +100,14 @@ $logo-color: #ffab91;
     margin-left: auto;
     flex-basis: 50%;
 
+    .review-link {
+      color: #202020;
+    }
+
     .button-wrapper {
       .signup-link {
         margin-left: 20px;
+        color: #202020;
       }
     }
   }
