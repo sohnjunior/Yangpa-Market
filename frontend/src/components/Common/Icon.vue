@@ -1,5 +1,5 @@
 <template>
-  <span class="icon" :style="style" />
+  <span class="icon" :style="style" @click="onClick" />
 </template>
 
 <script lang="ts">
@@ -22,6 +22,10 @@ export default class Icon extends Vue {
 
   get imagePath() {
     return `url(${require(`../../assets/images/${this.filename}.${this.extension}`)})`;
+  }
+
+  public onClick() {
+    this.$emit('click');
   }
 }
 </script>

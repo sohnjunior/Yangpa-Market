@@ -5,8 +5,8 @@
         <h1 class="table-title">판매 중</h1>
       </template>
       <template v-slot:table-action="item">
-        <v-icon small @click="onUpdateItem(item)"> mdi-pencil </v-icon>
-        <v-icon small @click="onDeleteItem(item)"> mdi-delete </v-icon>
+        <Icon filename="edit" width="15" height="15" @click="onUpdateItem(item)" />
+        <Icon filename="delete" width="15" height="15" @click="onDeleteItem(item)" />
       </template>
     </BaseTable>
 
@@ -21,6 +21,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
+import Icon from '@components/Common/Icon.vue';
 import BaseTable from '@components/Tables/BaseTable.vue';
 import { OrderAPI, ProductAPI } from '../../api';
 
@@ -43,7 +44,7 @@ function normalize({ product, hit }: any): ISalesProductHistory {
 }
 
 @Component({
-  components: { BaseTable },
+  components: { Icon, BaseTable },
 })
 export default class UserSellingTable extends Vue {
   private onSaleItems: ISalesProductHistory[] = [];
