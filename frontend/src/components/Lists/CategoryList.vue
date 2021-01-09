@@ -4,6 +4,7 @@
       v-for="category in categories"
       :key="category"
       :name="category"
+      :filename="categoryMap[category]"
       @click="onSelectCategory"
     />
   </div>
