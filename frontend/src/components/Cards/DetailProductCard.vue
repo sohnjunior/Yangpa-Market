@@ -5,18 +5,21 @@
       <div class="meta-wrapper">
         <h2 class="product-title">{{ productInfo.title }}</h2>
         <span class="product-seller">판매자 : {{ productSeller.nickname }}</span>
+
+        <Chip :text="productInfo.sold ? '판매 완료' : '판매 중'" />
+
         <em class="product-price">₩ {{ productInfo.price }}</em>
         <p class="product-description">{{ productDescription }}</p>
       </div>
 
-      <div class="button-wrapper">
-        <button class="cart-button" :disabled="productInfo.sold" @click="onClickAddCart">
-          <v-icon v-if="!productInfo.sold">mdi-cart</v-icon>
-          {{ productInfo.sold ? '판매 완료' : '장바구니 담기' }}
+      <div class="button-wrapper" v-if="!productInfo.sold">
+        <button class="cart-button" @click="onClickAddCart">
+          <Icon filename="cart" width="17" height="17" />
+          <span class="button-description">장바구니 담기</span>
         </button>
         <button class="like-button" @click="onClickLike">
-          <v-icon>mdi-thumb-up</v-icon>
-          좋아요
+          <Icon filename="like" width="17" height="17" />
+          <span class="button-description">좋아요</span>
         </button>
       </div>
     </div>
@@ -26,9 +29,13 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { ProductAPI } from '../../api';
+import Icon from '@components/Common/Icon.vue';
+import Chip from '@components/Common/Chip.vue';
 import { IProductDetailInfo } from '../../types';
 
-@Component({})
+@Component({
+  components: { Icon, Chip },
+})
 export default class DetailProductCard extends Vue {
   @Prop({ required: true }) readonly productID!: string;
   @Prop({ required: true }) readonly productSeller!: any;
@@ -96,21 +103,31 @@ export default class DetailProductCard extends Vue {
     }
 
     .button-wrapper {
+      display: flex;
       margin-top: 20px;
 
-      .cart-button {
+      .cart-button,
+      .like-button {
         @include button();
-        margin-right: 30px;
+        display: flex;
+        align-items: center;
         padding: 10px 15px;
-        background-color: #8ce99a;
+        font-size: 0.9rem;
+        font-weight: 600;
         color: #ffffff;
       }
 
+      .cart-button {
+        margin-right: 30px;
+        background-color: #8ce99a;
+      }
+
       .like-button {
-        @include button();
-        padding: 10px 15px;
         background-color: #ffa8a8;
-        color: #ffffff;
+      }
+
+      .button-description {
+        margin-left: 7px;
       }
     }
   }
