@@ -2,7 +2,7 @@
   <footer class="footer-container">
     <div class="button-wrapper">
       <button v-for="icon in icons" :key="icon">
-        <v-icon>{{ icon }}</v-icon>
+        <Icon :filename="icon" width="20" height="20" />
       </button>
     </div>
 
@@ -15,10 +15,13 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import Icon from '@components/Common/Icon.vue';
 
-@Component
+@Component({
+  components: { Icon },
+})
 export default class AppFooter extends Vue {
-  private icons: string[] = ['mdi-github', 'mdi-youtube'];
+  private icons: string[] = ['github', 'youtube'];
 }
 </script>
 
