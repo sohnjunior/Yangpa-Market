@@ -1,28 +1,28 @@
 <template>
   <header class="appbar-container">
-    <div class="logo-wrapper">
-      <img class="logo-image" alt="양파마켓 로고이미지" src="/onion.svg" />
-      <router-link class="logo-link" to="/">양파 마켓</router-link>
-    </div>
+    <router-link class="logo-wrapper" to="/">
+      <Icon filename="onion" width="45" height="45" />
+      <h1 class="logo-title">양파 마켓</h1>
+    </router-link>
 
     <div class="control-wrapper">
       <SearchInput />
       <router-link to="/review">상품 후기</router-link>
 
       <DropdownMenu v-if="isLoggedIn" :title="'회원정보'" :items="dropdownItemMap" />
-
       <div v-else class="button-wrapper">
-        <button @click="openModal">로그인</button>
+        <button @click="onOpenModal">로그인</button>
         <router-link class="signup-link" to="/signup">회원가입</router-link>
       </div>
     </div>
-    <LoginModal :show="dialog" @close-modal="closeModal" />
+    <LoginModal :show="dialog" @close-modal="onCloseModal" />
   </header>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
+import Icon from '@components/Common/Icon.vue';
 import LoginModal from '@components/Modals/LoginModal.vue';
 import DropdownMenu from '@components/Menu/DropdownMenu.vue';
 import SearchInput from '@components/Inputs/SearchInput.vue';
@@ -32,31 +32,34 @@ import { deleteCookie } from '../../utils/cookies';
 const userModule = namespace('UserModule');
 
 @Component({
-  components: { LoginModal, DropdownMenu, SearchInput },
+  components: { Icon, LoginModal, DropdownMenu, SearchInput },
 })
 export default class AppBar extends Vue {
-  private dialog: boolean = false;
+  private showModal = false;
   private dropdownItemMap = [
-    { text: '대시보드', action: this.routeToDashboard },
-    { text: '로그아웃', action: this.logoutClicked },
+    { text: '대시보드', action: this.onRedirectDashboard },
+    { text: '로그아웃', action: this.onLogout },
   ];
 
   @userModule.Getter
   public isLoggedIn!: boolean;
 
-  public logoutClicked(): void {
+  public onOpenModal() {
+    this.showModal = true;
+  }
+
+  public onCloseModal() {
+    this.showModal = false;
+  }
+
+  public onLogout() {
     deleteCookie('auth_email');
     deleteCookie('auth_token');
     ToastBus.$emit('pop-up', '로그아웃 되었습니다.');
     this.$router.go(0);
   }
-  public openModal(): void {
-    this.dialog = true;
-  }
-  public closeModal(): void {
-    this.dialog = false;
-  }
-  public routeToDashboard(): void {
+
+  public onRedirectDashboard() {
     this.$router.push('/dashboard/cart');
   }
 }
@@ -79,17 +82,14 @@ $logo-color: #ffab91;
 
   .logo-wrapper {
     display: flex;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: 700;
+    color: $logo-color;
+    cursor: pointer;
 
-    .logo-image {
-      width: 50px;
-      height: 50px;
-    }
-
-    .logo-link {
-      margin-left: 10px;
-      font-size: 2rem;
-      font-weight: 700;
-      color: $logo-color;
+    .logo-title {
+      margin-left: 5px;
     }
   }
 
