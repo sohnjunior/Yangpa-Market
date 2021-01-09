@@ -4,7 +4,7 @@
     <main>
       <ToastModal />
       <transition name="fade">
-        <router-view />
+        <router-view :key="$route.fullPath" />
       </transition>
     </main>
     <AppFooter />

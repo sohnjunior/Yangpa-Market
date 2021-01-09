@@ -35,7 +35,7 @@ export default class SearchView extends Vue {
   private keyword: string = '';
   private products: IPost[] = [];
 
-  async created() {
+  public async created() {
     this.keyword = this.$route.params.keyword;
     const {
       data: { result },
