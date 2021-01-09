@@ -6,7 +6,10 @@
         <h2 class="product-title">{{ productInfo.title }}</h2>
         <span class="product-seller">판매자 : {{ productSeller.nickname }}</span>
 
-        <Chip :text="productInfo.sold ? '판매 완료' : '판매 중'" />
+        <Chip
+          :text="productInfo.sold ? '판매 완료' : '판매 중'"
+          :color="productInfo.sold ? '#ff6b6b' : '#40c057'"
+        />
 
         <em class="product-price">₩ {{ productInfo.price }}</em>
         <p class="product-description">{{ productDescription }}</p>
