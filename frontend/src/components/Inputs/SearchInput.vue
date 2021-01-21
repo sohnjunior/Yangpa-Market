@@ -45,4 +45,10 @@ export default class SearchInput extends Vue {
     color: #e9ecef;
   }
 }
+
+@media screen and (max-width: 400px) {
+  .search-input {
+    width: 190px;
+  }
+}
 </style>

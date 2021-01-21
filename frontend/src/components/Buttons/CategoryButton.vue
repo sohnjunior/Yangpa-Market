@@ -39,6 +39,24 @@ $category-btn-color: #8ce99a;
 
   .name {
     margin-left: 7px;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .category-btn {
+    display: flex;
+    flex-direction: column;
+    width: 60px;
+    height: 60px;
+
+    .name {
+      margin-top: 3px;
+      margin-left: 0px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
   }
 }
 </style>
