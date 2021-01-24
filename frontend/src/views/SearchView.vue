@@ -1,25 +1,35 @@
 <template>
-  <div>
-    <h1>&quot;{{ keyword }}&quot; 에 대한 검색 결과</h1>
+  <div class="search-view">
+    <SearchInput v-if="isMobileBrowser" />
 
-    <ProductGridList v-if="isProductsExist" :products="products" />
-    <div v-else>검색 결과에 해당하는 상품이 없어요</div>
+    <div v-if="isLoading">로딩중</div>
+    <div v-else>
+      <ProductList v-if="isProductsExist" :products="products" />
+      <div v-else>해당하는 상품이 없어요</div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
 import { ProductAPI } from '../api';
-import ProductGridList from '@components/Lists/ProductGridList.vue';
-import { IPost } from '../types';
+import SearchInput from '@components/Inputs/SearchInput.vue';
+import ProductList from '@components/Lists/ProductList.vue';
+import { IProductSearchResult } from '../types';
 
-// FIXME: 현재 검색 결과로 넘어오는 데이터의 속성값이 IPost 인터페이스와 일치하지 않음(API 를 변경하는 방향으로 수정)
+const SettingModule = namespace('SettingModule');
+
 @Component({
-  components: { ProductGridList },
+  components: { SearchInput, ProductList },
 })
 export default class SearchView extends Vue {
-  private keyword = this.$route.params.keyword;
-  private products: IPost[] = [];
+  private keyword!: string;
+  private products: IProductSearchResult[] = [];
+  private isLoading = true;
+
+  @SettingModule.Getter
+  public isMobileBrowser!: boolean;
 
   get isProductsExist() {
     return this.products.length !== 0;
@@ -27,11 +37,13 @@ export default class SearchView extends Vue {
 
   public async created() {
     try {
+      this.keyword = this.$route.params?.keyword;
       const {
         data: { result },
       } = await ProductAPI.searchProduct(this.keyword);
 
       this.products = result;
+      this.isLoading = false;
     } catch (err) {
       console.error(err);
     }
@@ -39,4 +51,8 @@ export default class SearchView extends Vue {
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.search-view {
+  padding: 0px 5px;
+}
+</style>
