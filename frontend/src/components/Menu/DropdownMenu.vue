@@ -1,6 +1,8 @@
 <template>
   <div class="dropdown-container">
-    <button class="dropdown-trigger" @click="onToggle">{{ title }}</button>
+    <button class="dropdown-trigger" @click="onToggle">
+      <slot name="trigger"></slot>
+    </button>
     <ul v-show="show" class="dropdown-wrapper">
       <li class="dropdown-item" v-for="(item, index) in items" :key="index" @click="onClick(index)">
         {{ item.text }}
@@ -19,7 +21,6 @@ interface DropdownMenuItem {
 
 @Component
 export default class DropdownMenu extends Vue {
-  @Prop({ required: true }) readonly title!: string;
   @Prop({ required: true, default: [] }) readonly items!: DropdownMenuItem[];
 
   private show = false;

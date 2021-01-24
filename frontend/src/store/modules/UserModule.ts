@@ -4,6 +4,7 @@ import {
   getAuthTokenFromCookie,
   saveAuthTokenToCookie,
   saveAuthEmailToCookie,
+  deleteCookie,
 } from '../../utils/cookies';
 import { UserAPI } from '../../api';
 import { User } from '../../types';
@@ -36,7 +37,7 @@ export default class UserModule extends VuexModule {
   }
 
   @Action
-  public async login(userData: User): Promise<boolean> {
+  public async login(userData: User) {
     try {
       const { data } = await UserAPI.signinUser(userData);
       this.context.commit('setEmail', data.email);
@@ -47,5 +48,14 @@ export default class UserModule extends VuexModule {
     } catch (err) {
       return false;
     }
+  }
+
+  @Action
+  public logout() {
+    return new Promise((resolve) => {
+      deleteCookie('auth_email');
+      deleteCookie('auth_token');
+      resolve(true);
+    });
   }
 }

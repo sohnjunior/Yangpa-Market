@@ -1,10 +1,13 @@
 <template>
   <div class="comment-input-container">
     <div class="input-wrapper">
-      <textarea class="comment-input" placeholder="상품문의 입력" v-model="inputText" />
+      <textarea class="comment-input" placeholder="문의를 남겨주세요" v-model="inputText" />
     </div>
     <div class="control-wrapper">
-      <label><input type="checkbox" name="secret" v-model="isSecret" />비밀댓글</label>
+      <div class="secret-control">
+        <ToggleButton class="trigger-btn" :width="45" :height="25" @toggle="onToggleSecret" />
+        비밀댓글
+      </div>
       <button class="submit-btn" @click="onSubmitComment">등록</button>
     </div>
   </div>
@@ -14,10 +17,13 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import { CommentAPI } from '../../api';
+import ToggleButton from '@components/Buttons/ToggleButton.vue';
 
 const UserModule = namespace('UserModule');
 
-@Component({})
+@Component({
+  components: { ToggleButton },
+})
 export default class CommentInput extends Vue {
   @Prop({ required: true }) productID!: string;
 
@@ -44,6 +50,10 @@ export default class CommentInput extends Vue {
     } catch (err) {
       console.error(err);
     }
+  }
+
+  public onToggleSecret(isSecret: boolean) {
+    this.isSecret = isSecret;
   }
 }
 </script>
@@ -74,6 +84,17 @@ export default class CommentInput extends Vue {
     display: flex;
     padding: 15px;
     border-top: inherit;
+
+    .secret-control {
+      display: flex;
+      align-items: center;
+      font-size: 0.9rem;
+      font-weight: 500;
+
+      .trigger-btn {
+        margin-right: 10px;
+      }
+    }
 
     .submit-btn {
       @include button();

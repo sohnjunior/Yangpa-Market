@@ -1,30 +1,22 @@
 <template>
-  <button class="category-btn" @click="onClick">
-    <img class="category-btn__image" :src="imageSrcMap[name]" />
-    <span> {{ name }} </span>
+  <button class="category-btn" @click="onClickCategory">
+    <Icon :filename="filename" width="25" height="25" />
+    <span class="name"> {{ name }} </span>
   </button>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import Icon from '@components/Common/Icon.vue';
 
-declare const require;
-
-const imageSrcMap = {
-  원룸: require('@/assets/images/room.svg'),
-  전공서적: require('@/assets/images/study.svg'),
-  회원권: require('@/assets/images/ticket.svg'),
-  의류: require('@/assets/images/clothes.svg'),
-  기타: require('@/assets/images/box.svg'),
-};
-
-@Component
+@Component({
+  components: { Icon },
+})
 export default class CategoryButton extends Vue {
   @Prop({ required: true }) readonly name!: string;
+  @Prop({ required: true }) readonly filename!: string;
 
-  private imageSrcMap = imageSrcMap;
-
-  public onClick() {
+  public onClickCategory() {
     this.$emit('click', this.name);
   }
 }
@@ -37,18 +29,34 @@ $category-btn-color: #8ce99a;
 
 .category-btn {
   @include button();
-  width: 130px;
-  height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 130px;
+  height: 50px;
   background-color: $category-btn-color;
   color: white;
 
-  &__image {
-    width: 30px;
-    height: 30px;
-    margin-right: 6px;
+  .name {
+    margin-left: 7px;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .category-btn {
+    display: flex;
+    flex-direction: column;
+    width: 60px;
+    height: 60px;
+
+    .name {
+      margin-top: 3px;
+      margin-left: 0px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
   }
 }
 </style>

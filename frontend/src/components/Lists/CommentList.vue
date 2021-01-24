@@ -2,8 +2,8 @@
   <ul class="comment-container">
     <li class="comment-item" v-for="(item, index) in commentItems" :key="item.id">
       <h3 class="commentor">
-        {{ item.commentor }}
-        <span v-if="isSeller(item.commentor)" class="flag">판매자</span>
+        <span class="name">{{ item.commentor }}</span>
+        <Chip v-if="isSeller(item.commentor)" text="판매자" color="#74c0fc" width="45" />
       </h3>
       <div>
         <textarea class="comment-edit" v-if="isEditMode(item.id)" :value="item.commentText" />
@@ -33,6 +33,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import { CommentAPI, UserAPI } from '../../api';
+import Chip from '@components/Common/Chip.vue';
 import { IUserInfo } from '../../types';
 
 const UserModule = namespace('UserModule');
@@ -55,7 +56,9 @@ function normalize({ id, secret, comment, user }): ICommentHistory {
   };
 }
 
-@Component({})
+@Component({
+  components: { Chip },
+})
 export default class CommentList extends Vue {
   @Prop({ required: true }) readonly productID!: string;
   @Prop({ required: true }) readonly seller!: IUserInfo;
@@ -148,15 +151,6 @@ export default class CommentList extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@mixin outlined-chip($color) {
-  padding: 2px 5px;
-  margin-left: 10px;
-  border: 1px solid $color;
-  border-radius: 10px;
-  font-size: 0.7rem;
-  color: $color;
-}
-
 .comment-container {
   padding: 0;
   margin-left: 10%;
@@ -176,8 +170,8 @@ export default class CommentList extends Vue {
       font-weight: 500;
       color: #888888;
 
-      .flag {
-        @include outlined-chip(#74c0fc);
+      .name {
+        margin-right: 7px;
       }
     }
 

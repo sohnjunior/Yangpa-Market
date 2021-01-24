@@ -1,21 +1,37 @@
 <template>
   <header class="appbar-container">
     <router-link class="logo-wrapper" to="/">
-      <Icon filename="onion" width="45" height="45" />
+      <Icon filename="onion" width="40" height="40" />
       <h1 class="logo-title">양파 마켓</h1>
     </router-link>
 
     <div class="control-wrapper">
-      <SearchInput />
-      <router-link to="/review">상품 후기</router-link>
+      <router-link v-if="isMobileBrowser" to="/search">
+        <Icon filename="search" width="23" height="23" />
+      </router-link>
+      <SearchInput v-else />
+      <!-- <router-link class="review-link" to="/review">상품 후기</router-link> -->
 
-      <DropdownMenu v-if="isLoggedIn" :title="'회원정보'" :items="dropdownItemMap" />
-      <div v-else class="button-wrapper">
+      <SideNavigationMenu class="user-menu" v-if="isLoggedIn && isMobileBrowser">
+        <template v-slot:trigger>
+          <Icon filename="user" width="35" height="35" />
+        </template>
+      </SideNavigationMenu>
+      <DropdownMenu
+        class="user-menu"
+        v-if="isLoggedIn && !isMobileBrowser"
+        :items="dropdownItemMap"
+      >
+        <template v-slot:trigger>
+          <Icon filename="user" width="35" height="35" />
+        </template>
+      </DropdownMenu>
+      <div v-if="!isLoggedIn" class="button-wrapper">
         <button @click="onOpenModal">로그인</button>
         <router-link class="signup-link" to="/signup">회원가입</router-link>
       </div>
     </div>
-    <LoginModal :show="dialog" @close-modal="onCloseModal" />
+    <LoginModal :show="showModal" @close-modal="onCloseModal" />
   </header>
 </template>
 
@@ -24,15 +40,16 @@ import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import Icon from '@components/Common/Icon.vue';
 import LoginModal from '@components/Modals/LoginModal.vue';
+import SideNavigationMenu from '@components/Menu/SideNavigationMenu.vue';
 import DropdownMenu from '@components/Menu/DropdownMenu.vue';
 import SearchInput from '@components/Inputs/SearchInput.vue';
 import ToastBus from '../../bus/ToastBus';
-import { deleteCookie } from '../../utils/cookies';
 
-const userModule = namespace('UserModule');
+const UserModule = namespace('UserModule');
+const SettingModule = namespace('SettingModule');
 
 @Component({
-  components: { Icon, LoginModal, DropdownMenu, SearchInput },
+  components: { Icon, LoginModal, SideNavigationMenu, DropdownMenu, SearchInput },
 })
 export default class AppBar extends Vue {
   private showModal = false;
@@ -41,8 +58,14 @@ export default class AppBar extends Vue {
     { text: '로그아웃', action: this.onLogout },
   ];
 
-  @userModule.Getter
+  @UserModule.Getter
   public isLoggedIn!: boolean;
+
+  @SettingModule.Getter
+  public isMobileBrowser!: boolean;
+
+  @UserModule.Action
+  public logout!: () => Promise<boolean>;
 
   public onOpenModal() {
     this.showModal = true;
@@ -53,8 +76,7 @@ export default class AppBar extends Vue {
   }
 
   public onLogout() {
-    deleteCookie('auth_email');
-    deleteCookie('auth_token');
+    this.logout();
     ToastBus.$emit('pop-up', '로그아웃 되었습니다.');
     this.$router.go(0);
   }
@@ -73,7 +95,7 @@ $logo-color: #ffab91;
   align-items: center;
   position: fixed;
   width: 100%;
-  height: 100px;
+  height: 80px;
   padding: 0px 20px;
   border-bottom: 1px solid #e9ecef;
   background-color: #ffffff;
@@ -89,20 +111,30 @@ $logo-color: #ffab91;
     cursor: pointer;
 
     .logo-title {
-      margin-left: 5px;
+      margin-left: 7px;
+    }
+
+    @media screen and (max-width: 400px) {
+      .logo-title {
+        font-size: 1.4rem;
+      }
     }
   }
 
   .control-wrapper {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     margin-left: auto;
-    flex-basis: 50%;
+
+    .user-menu {
+      margin-right: 10px;
+      margin-left: 20px;
+    }
 
     .button-wrapper {
       .signup-link {
         margin-left: 20px;
+        color: #202020;
       }
     }
   }

@@ -10,6 +10,15 @@ interface IProduct {
   price: number;
 }
 
+interface IProductSearchResult extends IProduct {
+  id: number;
+  sold: boolean;
+  post: { title: string; body: string; hit: number };
+  createdAt: string;
+  updatedAt: string;
+  deletedAt?: string;
+}
+
 interface User {
   email: string;
   nickname: string;
@@ -63,6 +72,7 @@ interface ICategoryMap {
 
 export {
   IProduct,
+  IProductSearchResult,
   User,
   IPost,
   DashBoardAsideMenuItem,

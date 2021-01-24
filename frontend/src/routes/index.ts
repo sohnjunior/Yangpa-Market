@@ -91,7 +91,7 @@ export const router = new VueRouter({
       component: loadView('ProductUpdateView'),
     },
     {
-      path: '/search/:keyword',
+      path: '/search/:keyword?',
       component: loadView('SearchView'),
     },
     {

@@ -4,6 +4,7 @@
       v-for="category in categories"
       :key="category"
       :name="category"
+      :filename="categoryMap[category]"
       @click="onSelectCategory"
     />
   </div>
@@ -40,8 +41,6 @@ export default class CategoryList extends Vue {
 .category-container {
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
-  margin-left: 10%;
-  margin-right: 10%;
+  align-items: center;
 }
 </style>

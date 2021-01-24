@@ -1,53 +1,58 @@
 <template>
-  <v-container>
-    <h1 class="mt-6 mb-4 sub-title">&quot;{{ keyword }}&quot; 에 대한 검색 결과</h1>
+  <div class="search-view">
+    <SearchInput v-if="isMobileBrowser" />
 
-    <v-container>
-      <v-row>
-        <ProductCard
-          v-for="(product, i) in products"
-          id="product-card"
-          :title="product.title"
-          :image="product.image"
-          :price="product.price"
-          :body="''"
-          :hit="product.post.hit"
-          :writer="''"
-          :like="product.like"
-          :productID="product.post.title"
-          :key="i"
-        />
-      </v-row>
-    </v-container>
-  </v-container>
+    <div v-if="isLoading">로딩중</div>
+    <div v-else>
+      <ProductList v-if="isProductsExist" :products="products" />
+      <div v-else>해당하는 상품이 없어요</div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { IPost } from '../types';
+import { namespace } from 'vuex-class';
 import { ProductAPI } from '../api';
-import ProductCard from '@components/Cards/ProductCard.vue';
+import SearchInput from '@components/Inputs/SearchInput.vue';
+import ProductList from '@components/Lists/ProductList.vue';
+import { IProductSearchResult } from '../types';
+
+const SettingModule = namespace('SettingModule');
 
 @Component({
-  components: { ProductCard },
+  components: { SearchInput, ProductList },
 })
 export default class SearchView extends Vue {
-  private keyword: string = '';
-  private products: IPost[] = [];
+  private keyword!: string;
+  private products: IProductSearchResult[] = [];
+  private isLoading = true;
 
-  async created() {
-    this.keyword = this.$route.params.keyword;
-    const {
-      data: { result },
-    } = await ProductAPI.searchProduct(this.keyword);
-    this.products = result;
+  @SettingModule.Getter
+  public isMobileBrowser!: boolean;
+
+  get isProductsExist() {
+    return this.products.length !== 0;
+  }
+
+  public async created() {
+    try {
+      this.keyword = this.$route.params?.keyword;
+      const {
+        data: { result },
+      } = await ProductAPI.searchProduct(this.keyword);
+
+      this.products = result;
+      this.isLoading = false;
+    } catch (err) {
+      console.error(err);
+    }
   }
 }
 </script>
 
-<style scoped>
-#product-card {
-  margin-right: 20px;
-  margin-top: 20px;
+<style lang="scss" scoped>
+.search-view {
+  padding: 0px 5px;
 }
 </style>

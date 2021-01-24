@@ -4,7 +4,7 @@
       <div class="card-title-wrapper">
         <h1 class="card-title">{{ title }}</h1>
         <div class="card-subtitle">
-          <Chip :text="category" />
+          <Chip :text="category" color="#40c057" width="55" />
         </div>
 
         <div class="card-subtitle">조회수 {{ hit }}</div>
@@ -52,7 +52,7 @@ export default class PopularProductCard extends Vue {
   }
 
   .card-subtitle {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     font-weight: 500;
     color: #808080;
   }

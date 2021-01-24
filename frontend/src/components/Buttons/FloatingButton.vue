@@ -1,7 +1,7 @@
 <template>
   <div class="floating-container">
     <router-link to="/product/new">
-      <v-icon>mdi-plus</v-icon>
+      <span class="plus">&#43;</span>
     </router-link>
     <div class="tooltip">새로운 상품을 등록해보세요!</div>
   </div>
@@ -19,11 +19,23 @@ export default class FloatingButton extends Vue {}
   position: fixed;
   bottom: 15px;
   right: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
   padding: 20px;
   background-color: #e64980;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
   border-radius: 50%;
   border: none;
+
+  .plus {
+    display: inline-block;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: white;
+  }
 
   .tooltip {
     display: none;
