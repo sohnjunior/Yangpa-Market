@@ -1,3 +1,4 @@
+import AuthAPI from './auth';
 import UserAPI from './user';
 import ProductAPI from './product';
 import CommentAPI from './comment';
@@ -7,6 +8,7 @@ import CartAPI from './cart';
 import ReviewAPI from './review';
 
 export {
+  AuthAPI,
   UserAPI,
   ProductAPI,
   CommentAPI,

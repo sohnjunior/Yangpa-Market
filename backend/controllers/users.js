@@ -104,20 +104,6 @@ const signin = async (req, res, next) => {
   })(req, res, next);
 };
 
-const checkAdmin = async (req, res, next) => {
-  try {
-    const { id: userID } = req.decoded;
-
-    const isAdmin = await UserService.checkAdminPerm(userID);
-
-    res
-      .status(200)
-      .json({ status: 'ok', message: '관리자 권한 체크', isAdmin });
-  } catch (err) {
-    next(err);
-  }
-};
-
 module.exports = {
   getUsers,
   getUser,
@@ -125,5 +111,4 @@ module.exports = {
   updateUser,
   deleteUser,
   signin,
-  checkAdmin,
 };
