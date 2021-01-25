@@ -1,49 +1,59 @@
 import { VuexModule, Module, Mutation, Action } from 'vuex-module-decorators';
 import {
-  getAuthEmailFromCookie,
-  getAuthTokenFromCookie,
-  saveAuthTokenToCookie,
-  saveAuthEmailToCookie,
-  deleteCookie,
-} from '../../utils/cookies';
+  saveToLocalStorage,
+  readFromLocalStorage,
+  removeLocalStorageItem,
+} from '../../utils/storages';
 import { UserAPI } from '../../api';
 import { User } from '../../types';
 
 @Module({ namespaced: true })
 export default class UserModule extends VuexModule {
-  public email: string = getAuthEmailFromCookie() || '';
-  public token: string = getAuthTokenFromCookie() || '';
+  public email: string = readFromLocalStorage('email') || '';
+  public accessToken: string = readFromLocalStorage('accessToken') || '';
+  public refreshToken: string = readFromLocalStorage('refreshToken') || '';
 
   get currentEmail(): string {
     return this.email;
   }
 
   get currentToken(): string {
-    return this.token;
+    return this.accessToken;
   }
 
   get isLoggedIn(): boolean {
-    return this.token !== '';
+    return this.accessToken !== '';
   }
 
   @Mutation
-  public setEmail(email: string): void {
+  public setEmail(email: string) {
     this.email = email;
   }
 
   @Mutation
-  public setToken(token: string): void {
-    this.token = token;
+  public setAccessToken(token: string) {
+    this.accessToken = token;
+  }
+
+  @Mutation
+  public setRefreshToken(token: string) {
+    this.refreshToken = token;
   }
 
   @Action
   public async login(userData: User) {
     try {
-      const { data } = await UserAPI.signinUser(userData);
-      this.context.commit('setEmail', data.email);
-      this.context.commit('setToken', data.token);
-      saveAuthEmailToCookie(data.email);
-      saveAuthTokenToCookie(data.token);
+      const {
+        data: { email, accessToken, refreshToken },
+      } = await UserAPI.signinUser(userData);
+
+      this.context.commit('setEmail', email);
+      this.context.commit('setAccessToken', accessToken);
+      this.context.commit('setRefreshToken', refreshToken);
+
+      saveToLocalStorage('email', email);
+      saveToLocalStorage('accessToken', accessToken);
+      saveToLocalStorage('refreshToken', refreshToken);
       return true;
     } catch (err) {
       return false;
@@ -53,8 +63,9 @@ export default class UserModule extends VuexModule {
   @Action
   public logout() {
     return new Promise((resolve) => {
-      deleteCookie('auth_email');
-      deleteCookie('auth_token');
+      removeLocalStorageItem('email');
+      removeLocalStorageItem('accessToken');
+      removeLocalStorageItem('refreshToken');
       resolve(true);
     });
   }
