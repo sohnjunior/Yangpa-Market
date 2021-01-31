@@ -1,6 +1,7 @@
 const localStrategy = require('passport-local').Strategy;
 const jwt = require('jsonwebtoken');
 const { User } = require('../models');
+const redisClient = require('../redis');
 
 const options = {
   usernameField: 'email',
@@ -26,11 +27,24 @@ module.exports = (passport) => {
           });
         }
 
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-          expiresIn: '50m',
-        });
+        const accessToken = jwt.sign(
+          { id: user.id },
+          process.env.ACCESS_TOKEN_SECRET,
+          {
+            expiresIn: '1m',
+          }
+        );
+        const refreshToken = jwt.sign(
+          { id: user.id },
+          process.env.REFRESH_TOKEN_SECRET,
+          {
+            expiresIn: '20m',
+          }
+        );
 
-        return done(null, { token, email });
+        redisClient.setValue(user.id, refreshToken);
+
+        return done(null, { email, accessToken, refreshToken });
       } catch (err) {
         done(err);
       }
