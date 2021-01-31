@@ -28,16 +28,19 @@ export default class UserModule extends VuexModule {
   @Mutation
   public setEmail(email: string) {
     this.email = email;
+    saveToLocalStorage('email', email);
   }
 
   @Mutation
   public setAccessToken(token: string) {
     this.accessToken = token;
+    saveToLocalStorage('accessToken', token);
   }
 
   @Mutation
   public setRefreshToken(token: string) {
     this.refreshToken = token;
+    saveToLocalStorage('refreshToken', token);
   }
 
   @Action
@@ -50,10 +53,6 @@ export default class UserModule extends VuexModule {
       this.context.commit('setEmail', email);
       this.context.commit('setAccessToken', accessToken);
       this.context.commit('setRefreshToken', refreshToken);
-
-      saveToLocalStorage('email', email);
-      saveToLocalStorage('accessToken', accessToken);
-      saveToLocalStorage('refreshToken', refreshToken);
       return true;
     } catch (err) {
       return false;
