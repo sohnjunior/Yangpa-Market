@@ -38,7 +38,7 @@ export function setInterceptors(instance) {
           originalRequestConfig.headers.Authorization = getBearerAccessToken();
           return instance.request(originalRequestConfig);
         } catch (err) {
-          // TODO: 로그인 페이지로 리다이렉션
+          // FIXME: 로그인 페이지로 리다이렉션
           console.log('refresh 토큰 만료', err);
         }
       }

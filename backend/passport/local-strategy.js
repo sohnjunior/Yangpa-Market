@@ -31,14 +31,15 @@ module.exports = (passport) => {
           { id: user.id },
           process.env.ACCESS_TOKEN_SECRET,
           {
-            expiresIn: '1m',
+            expiresIn: '10m',
           }
         );
         const refreshToken = jwt.sign(
           { id: user.id },
           process.env.REFRESH_TOKEN_SECRET,
           {
-            expiresIn: '20m',
+            // FIXME: 로그인 페이지 구현 후 1 day로 변경
+            expiresIn: '60m',
           }
         );
 
