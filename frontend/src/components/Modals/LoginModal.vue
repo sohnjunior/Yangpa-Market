@@ -21,7 +21,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import { User } from '../../types';
-import EventBus from '../../utils/bus';
+import ToastBus from '../../bus/ToastBus';
 import LoginForm from '@components/Forms/LoginForm.vue';
 import BaseModal from '@components/Modals/BaseModal.vue';
 
@@ -45,7 +45,7 @@ export default class LoginModal extends Vue {
   public async onSubmit(userData: User): Promise<void> {
     const success = await this.login(userData);
     if (success) {
-      EventBus.$emit('pop-up', '로그인 되었습니다.');
+      ToastBus.$emit('pop-up', '로그인 되었습니다.');
       this.closeModal();
     } else {
       alert('이메일 혹은 비밀번호를 확인해주세요');

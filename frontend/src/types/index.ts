@@ -1,13 +1,22 @@
-interface Category {
+interface ICategory {
   title: string;
 }
 
-interface Product {
+interface IProduct {
   title: string;
-  category: Category;
+  category: ICategory;
   image: string;
   like: number;
   price: number;
+}
+
+interface IProductSearchResult extends IProduct {
+  id: number;
+  sold: boolean;
+  post: { title: string; body: string; hit: number };
+  createdAt: string;
+  updatedAt: string;
+  deletedAt?: string;
 }
 
 interface User {
@@ -15,12 +24,12 @@ interface User {
   nickname: string;
 }
 
-interface Post {
+interface IPost {
   id: number;
   title: string;
   body: string;
   hit: number;
-  product: Product;
+  product: IProduct;
   user: User;
   userId: number;
   createdAt: string;
@@ -28,7 +37,7 @@ interface Post {
   deletedAt?: string;
 }
 
-interface Review extends Post {
+interface Review extends IPost {
   image: string;
   like: number;
   rating: number;
@@ -44,4 +53,32 @@ interface CategoryOption {
   value: string;
 }
 
-export { Category, Product, User, Post, DashBoardAsideMenuItem, Review, CategoryOption };
+interface IProductDetailInfo {
+  image: string;
+  title: string;
+  like: number;
+  price: number;
+  sold: boolean;
+}
+
+interface IUserInfo {
+  email: string;
+  nickname: string;
+}
+
+interface ICategoryMap {
+  [index: string]: string;
+}
+
+export {
+  IProduct,
+  IProductSearchResult,
+  User,
+  IPost,
+  DashBoardAsideMenuItem,
+  Review,
+  CategoryOption,
+  IProductDetailInfo,
+  IUserInfo,
+  ICategoryMap,
+};

@@ -2,27 +2,27 @@
   <v-app>
     <AppBar />
     <main>
-      <SnackModal />
+      <ToastModal />
       <transition name="fade">
-        <router-view />
+        <router-view :key="$route.fullPath" />
       </transition>
     </main>
-    <Footer />
+    <AppFooter />
   </v-app>
 </template>
 
 <script>
 import AppBar from '@components/Common/AppBar';
-import Footer from '@components/Common/Footer';
-import SnackModal from '@components/Modals/SnackModal';
+import AppFooter from '@components/Common/AppFooter';
+import ToastModal from '@components/Modals/ToastModal';
 
 export default {
   name: 'App',
 
   components: {
     AppBar,
-    Footer,
-    SnackModal,
+    AppFooter,
+    ToastModal,
   },
 };
 </script>
@@ -31,7 +31,7 @@ export default {
 @import './assets/scss/reset';
 
 main {
-  min-height: 1500px;
+  min-height: 800px;
   padding-top: 130px;
   padding-left: 20px;
   padding-right: 20px;

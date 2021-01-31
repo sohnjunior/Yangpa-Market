@@ -1,159 +1,118 @@
 <template>
-  <v-container>
-    <v-container style="height: 10px">
-      <v-row class="text-center mt-5">
-        <v-col v-for="category in ['전공서적', '원룸', '회원권', '의류', '기타']" :key="category">
-          <CategoryButton :name="category" @click="onSelectCategory" />
-        </v-col>
-      </v-row>
-    </v-container>
-    <v-content>
-      <v-row class="mt-3">
-        <v-col>
-          <h1 class="sub-title">실시간 TOP 10</h1>
-        </v-col>
-      </v-row>
+  <div>
+    <section class="popular-section">
+      <h1 class="subtitle">방금 올라온 상품이에요</h1>
+      <ProductCarousel v-if="!isMobileBrowser" />
+      <ProductSlideList v-else />
+    </section>
 
-      <v-row class="mt-7">
-        <v-carousel cycle height="400" dark hide-delimiter-background show-arrows-on-hover>
-          <v-carousel-item v-for="n in 2" :key="n">
-            <v-row>
-              <PopularProductCard
-                v-for="(product, i) in populars.slice(5 * (n - 1), 5 * n)"
-                id="carousel-product"
-                class="ml-10"
-                :title="product.title"
-                :image="product.image"
-                :hit="product.post.hit"
-                :category="product.category.title"
-                :productID="product.post.title"
-                :key="i"
-              />
-            </v-row>
-          </v-carousel-item>
-        </v-carousel>
-      </v-row>
+    <section class="category-section">
+      <CategoryList @select="onSelectCategory" />
+    </section>
 
-      <v-row>
-        <v-col cols="2">
-          <h1 class="sub-title">{{ category }}</h1>
-        </v-col>
-        <v-col cols="2">
-          <v-select :items="items" label="정렬기준" outlined v-model="pivot" />
-        </v-col>
-      </v-row>
-
-      <v-row>
-        <ProductCard
-          v-for="product in sorted"
-          id="product-card"
-          :title="product.product.title"
-          :image="product.product.image"
-          :body="product.body"
-          :hit="product.hit"
-          :writer="product.user.nickname"
-          :like="product.product.like"
-          :productID="product.title"
-          :price="product.product.price"
-          :key="product.id"
-        />
-      </v-row>
-    </v-content>
-    <v-tooltip top>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          v-bind="attrs"
-          v-on="on"
-          fab
-          dark
-          large
-          color="pink"
-          fixed
-          right
-          bottom
-          to="/product/new"
-        >
-          <v-icon>mdi-plus</v-icon>
-        </v-btn>
-      </template>
-      <span>새로운 상품을 등록해보세요!</span>
-    </v-tooltip>
-  </v-container>
+    <section class="list-section">
+      <h1 class="subtitle">{{ selectedCategory }}</h1>
+      <FilterList @change="onChangeFilter" />
+      <ProductGridList v-if="isProductsExist" :products="sortedProducts" />
+      <div v-else>상품이 없어요</div>
+    </section>
+    <FloatingButton />
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { ProductAPI, RecommendationAPI } from '../api';
-import { Post, Product } from '../types';
-import CategoryButton from '@components/Buttons/CategoryButton.vue';
-import ProductCard from '@components/Cards/ProductCard.vue';
-import PopularProductCard from '@components/Cards/PopularProductCard.vue';
+import { namespace } from 'vuex-class';
+import { ProductAPI } from '../api';
+import ProductCarousel from '@components/Carousels/ProductCarousel.vue';
+import CategoryList from '@components/Lists/CategoryList.vue';
+import FilterList from '@components/Lists/FilterList.vue';
+import ProductGridList from '@components/Lists/ProductGridList.vue';
+import ProductSlideList from '@components/Lists/ProductSlideList.vue';
+import FloatingButton from '@components/Buttons/FloatingButton.vue';
+import { IPost, IProduct, ICategoryMap } from '../types';
 
-enum categoryMap {
-  전공서적 = 'books',
-  원룸 = 'rooms',
-  회원권 = 'tickets',
-  의류 = 'clothes',
-  기타 = 'others',
-}
+const SettingModule = namespace('SettingModule');
 
 @Component({
   components: {
-    CategoryButton,
-    ProductCard,
-    PopularProductCard,
+    CategoryList,
+    FilterList,
+    ProductCarousel,
+    ProductGridList,
+    ProductSlideList,
+    FloatingButton,
   },
 })
 export default class MainView extends Vue {
-  private pivot: string = '';
-  private category: string = '';
-  private products: Post[] = [];
-  private populars: Post[] = [];
-  private items: string[] = ['등록일순', '조회순', '가격순'];
+  private fetchedProducts: IPost[] = [];
+  private selectedCategory = '전공서적';
+  private selectedFilter = '등록일';
+  private categoryMap: ICategoryMap = {
+    전공서적: 'books',
+    원룸: 'rooms',
+    회원권: 'tickets',
+    의류: 'clothes',
+    기타: 'others',
+  };
 
-  get categorized() {
-    return this.products.filter(
-      ({ product }) => product.category.title === categoryMap[this.category]
+  @SettingModule.Getter
+  public isMobileBrowser!: boolean;
+
+  get sortedProducts() {
+    const categorized = this.fetchedProducts.filter(
+      ({ product }) => product.category.title === this.categoryMap[this.selectedCategory]
     );
+    const sorted = [...categorized].sort(this.compareFunction);
+
+    return sorted;
   }
 
-  get sorted() {
-    return [...this.categorized].sort((a: Post, b: Post) => {
-      if (this.pivot === '등록일순')
-        return new Date(a.createdAt).getTime() - new Date(a.createdAt).getTime();
-      else if (this.pivot === '조회순') return b.hit - a.hit;
-      else return a.product.price - b.product.price;
-    });
+  get isProductsExist() {
+    return this.sortedProducts.length !== 0;
   }
 
-  async created(): Promise<void> {
-    this.category = '전공서적';
-    this.pivot = '등록일순';
-
-    // 전체 상품 조회 API 호출 (날짜순으로 정렬된 상태)
-    const { data }: { data: Post[] } = await ProductAPI.fetchAllProducts();
-    this.products = data;
-
-    // 인기 상품 조회
-    const {
-      data: { result },
-    }: { data: { result: Post[] } } = await RecommendationAPI.fetchPopularProducts();
-    this.populars = result.length > 4 ? result.slice(0, 10) : result;
+  private compareFunction(a: IPost, b: IPost) {
+    if (this.selectedFilter === '등록일') {
+      return new Date(a.createdAt).getTime() - new Date(a.createdAt).getTime();
+    } else if (this.selectedFilter === '조회수') {
+      return b.hit - a.hit;
+    } else {
+      return a.product.price - b.product.price;
+    }
   }
 
-  public onSelectCategory(category: string): void {
-    this.category = category;
+  public async created() {
+    /** 전체 상품 조회 (등록일순) */
+    try {
+      const { data }: { data: IPost[] } = await ProductAPI.fetchAllProducts();
+
+      this.fetchedProducts = data;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  public onSelectCategory(category: string) {
+    this.selectedCategory = category;
+  }
+
+  public onChangeFilter(filter: string) {
+    this.selectedFilter = filter;
   }
 }
 </script>
 
-<style scoped>
-#product-card {
-  margin-right: 20px;
-  margin-top: 20px;
+<style lang="scss" scoped>
+.subtitle {
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  font-weight: 500;
 }
-#carousel-product {
-  width: 15%;
-  height: 10%;
+
+.category-section,
+.popular-section,
+.list-section {
+  margin-bottom: 50px;
 }
 </style>

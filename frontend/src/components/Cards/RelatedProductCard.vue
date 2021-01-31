@@ -1,20 +1,13 @@
 <template>
-  <BaseCard>
-    <template v-slot:body>
-      <div>
-        <img alt="상품 이미지" :src="image" />
-        <em>₩{{ price }}</em>
-      </div>
+  <BaseCard class="related-product-container" @click="onRedirect">
+    <template v-slot:card-body>
+      <img class="product-image" alt="상품이미지" :src="image" />
     </template>
     <template v-slot:card-footer>
       <div>
-        <button @click="move">
-          <v-icon>mdi-cursor-default-click-outline</v-icon>
-        </button>
-        <h3>{{ title }}</h3>
-        <p>
-          {{ body }}
-        </p>
+        <h2 class="product-title">{{ title }}</h2>
+        <em class="product-price">₩{{ price }}</em>
+        <p class="product-description">{{ body }}</p>
       </div>
     </template>
   </BaseCard>
@@ -35,11 +28,41 @@ export default class RelatedProductCard extends Vue {
   @Prop({ required: true }) readonly price!: string;
   @Prop({ required: true }) readonly productID!: string;
 
-  public move(): void {
+  public onRedirect() {
     this.$router.push(`/product/${this.productID}`);
     this.$router.go(0);
   }
 }
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+@import '../../assets/scss/mixins';
+
+.related-product-container {
+  width: 22%;
+
+  .product-image {
+    width: 100%;
+    height: 70%;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+
+  .product-title {
+    @include text-shorthand();
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+
+  .product-price {
+    font-size: 0.9rem;
+  }
+
+  .product-description {
+    @include text-shorthand();
+    margin-top: 5px;
+    font-size: 0.9rem;
+  }
+}
+</style>

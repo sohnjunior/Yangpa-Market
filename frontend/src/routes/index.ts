@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 
 // import store for navigation gurad
 import store from '../store';
-import { UserAPI } from '../api';
+import { AuthAPI } from '../api';
 
 Vue.use(VueRouter);
 
@@ -31,9 +31,10 @@ export const router = new VueRouter({
       component: loadView('AdminView'),
       beforeEnter: async (to, from, next) => {
         const {
-          data: { isAdmin },
-        } = await UserAPI.isAdminUser();
-        if (isAdmin) {
+          data: { role },
+        } = await AuthAPI.fetchPermission();
+
+        if (role === 'admin') {
           return next();
         }
 
@@ -91,7 +92,7 @@ export const router = new VueRouter({
       component: loadView('ProductUpdateView'),
     },
     {
-      path: '/search/:keyword',
+      path: '/search/:keyword?',
       component: loadView('SearchView'),
     },
     {

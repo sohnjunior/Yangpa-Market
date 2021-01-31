@@ -1,18 +1,18 @@
 <template>
   <div>
-    <BaseTable :headers="onSaleHeaders" :items="onSaleList">
+    <BaseTable :headers="onSaleHeaders" :items="onSaleItems">
       <template v-slot:table-name>
-        <h1>판매 중</h1>
+        <h1 class="table-title">판매 중</h1>
       </template>
       <template v-slot:table-action="item">
-        <v-icon small @click="updateItem(item)"> mdi-pencil </v-icon>
-        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+        <Icon filename="edit" width="15" height="15" @click="onUpdateItem(item)" />
+        <Icon filename="delete" width="15" height="15" @click="onDeleteItem(item)" />
       </template>
     </BaseTable>
 
-    <BaseTable :headers="soldHeaders" :items="soldList">
+    <BaseTable :headers="soldHeaders" :items="soldItems">
       <template v-slot:table-name>
-        <h1>판매 완료</h1>
+        <h1 class="table-title">판매 완료</h1>
       </template>
     </BaseTable>
   </div>
@@ -21,29 +21,36 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
+import Icon from '@components/Common/Icon.vue';
 import BaseTable from '@components/Tables/BaseTable.vue';
 import { OrderAPI, ProductAPI } from '../../api';
 
 const userModule = namespace('UserModule');
 
-const onSaleHeaders = ['상품명', '가격', '조회수', '좋아요', ''];
-const soldHeaders = ['상품명', '판매가격'];
+interface ISalesProductHistory {
+  productName: string;
+  price: number;
+  hit: number;
+  like: number;
+}
+
+function normalize({ product, hit }: any): ISalesProductHistory {
+  return {
+    productName: product.title,
+    price: product.price,
+    hit: hit,
+    like: product.like,
+  };
+}
 
 @Component({
-  components: { BaseTable },
+  components: { Icon, BaseTable },
 })
 export default class UserSellingTable extends Vue {
-  private dialog: boolean = false;
-  private show: boolean = false;
-
-  private onSaleList: any[] = [];
-  private soldList: any[] = [];
-
-  private onSaleHeaders = onSaleHeaders;
-  private soldHeaders = soldHeaders;
-
-  @userModule.Getter
-  public getEmail!: string;
+  private onSaleItems: ISalesProductHistory[] = [];
+  private soldItems: ISalesProductHistory[] = [];
+  private onSaleHeaders = ['상품명', '가격', '조회수', '좋아요', ''];
+  private soldHeaders = ['상품명', '판매가격', '조회수', '좋아요'];
 
   async created() {
     const {
@@ -52,26 +59,18 @@ export default class UserSellingTable extends Vue {
 
     for (const product of products) {
       if (product.product.sold) {
-        this.soldList.push(product);
+        this.soldItems.push(normalize(product));
       } else {
-        this.onSaleList.push(product);
+        this.onSaleItems.push(normalize(product));
       }
     }
   }
 
-  public showReviewModal(): void {
-    this.show = true;
-  }
-
-  public closeDialog(): void {
-    this.show = false;
-  }
-
-  public updateItem(item): void {
+  public onUpdateItem(item) {
     this.$router.push(`/product/update/${item.title}`);
   }
 
-  public async deleteItem(item): Promise<void> {
+  public async onDeleteItem(item) {
     const allow = confirm('<' + item.product.title + '> 판매글을 정말로 삭제하시겠습니까?');
     if (allow) {
       await ProductAPI.deletePost(item.title);
@@ -80,4 +79,9 @@ export default class UserSellingTable extends Vue {
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.table-title {
+  font-size: 2rem;
+  font-weight: 700;
+}
+</style>

@@ -25,24 +25,24 @@ export default class ReviewCreateModal extends Vue {
   @Prop({ required: true, default: false }) readonly show!: boolean;
 
   @userModule.Getter
-  public getEmail!: string;
+  public currentEmail!: string;
 
   public async onSubmitForm(payload): Promise<void> {
     const { title, body, rating, image } = payload;
 
     const formData = new FormData();
-    formData.append('email', this.getEmail);
+    formData.append('email', this.currentEmail);
     formData.append('title', title);
     formData.append('image', image);
     formData.append('body', body);
     formData.append('rating', rating);
 
     const { data } = await ReviewAPI.createReview(formData);
-    this.closeDialog();
+    this.closeModal();
   }
 
-  public closeDialog(): void {
-    this.$emit('close-dialog');
+  public closeModal(): void {
+    this.$emit('close');
   }
 }
 </script>

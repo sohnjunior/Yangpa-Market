@@ -1,6 +1,6 @@
-/*
-    유틸리티 함수들을 정의합니다.
-*/
+/**
+ * 쿠키 사용관련 유틸리티 함수들을 정의합니다.
+ */
 
 // 쿠키에 email 정보 저장
 function saveAuthEmailToCookie(email: string): void {

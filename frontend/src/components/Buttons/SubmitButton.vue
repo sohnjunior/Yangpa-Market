@@ -23,5 +23,6 @@ $submit-btn-color: #69db7c;
   width: 100%;
   height: 50px;
   background-color: $submit-btn-color;
+  color: white;
 }
 </style>

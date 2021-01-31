@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h2>장바구니</h2>
+    <h2 class="list-title">장바구니</h2>
 
-    <ul>
+    <ul class="list-content-wrapper">
       <li v-for="product in picks" :key="product.id">
         <CartProductCard
           :id="product.id"
@@ -15,9 +15,9 @@
       </li>
     </ul>
 
-    <div>
-      <span class="price-tag">합계 : {{ totalPrice }} 원</span>
-      <button @click="buyProducts">결제하기</button>
+    <div class="cart-footer-wrapper">
+      <em class="price">합계 : {{ totalPrice }} 원</em>
+      <button class="payment-button" @click="buyProducts">결제하기</button>
     </div>
   </div>
 </template>
@@ -83,10 +83,36 @@ export default class UserCart extends Vue {
 </script>
 
 <style lang="scss" scoped>
-h2 {
-  margin: 10px 0px 10px 20px;
+@import '../../assets/scss/mixins';
+
+.list-title {
+  margin-bottom: 20px;
+  font-size: 2rem;
+  font-weight: 700;
 }
-ul {
+
+.list-content-wrapper {
   list-style: none;
+}
+
+.cart-footer-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+
+  .price {
+    font-size: 1.4rem;
+    font-weight: 500;
+  }
+
+  .payment-button {
+    @include button();
+    margin-top: 20px;
+    padding: 10px 15px;
+    background-color: #69db7c;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
 }
 </style>

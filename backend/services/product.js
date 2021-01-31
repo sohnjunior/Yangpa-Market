@@ -146,10 +146,16 @@ const searchProductsWithKeyword = async (keywords) => {
             [Op.like]: `%${keyword}%`,
           },
         },
-        include: {
-          model: Post,
-          attributes: ['title', 'hit'],
-        },
+        include: [
+          {
+            model: Post,
+            attributes: ['title', 'body', 'hit'],
+          },
+          {
+            model: Category,
+            attributes: ['title'],
+          },
+        ],
       });
 
       for (let product of result) {
