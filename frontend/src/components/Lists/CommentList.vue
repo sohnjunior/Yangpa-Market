@@ -32,7 +32,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import { CommentAPI, UserAPI } from '../../api';
+import { CommentAPI, AuthAPI } from '../../api';
 import Chip from '@components/Common/Chip.vue';
 import { IUserInfo } from '../../types';
 
@@ -82,10 +82,10 @@ export default class CommentList extends Vue {
 
     if (this.isLoggedIn) {
       const {
-        data: { isAdmin },
-      } = await UserAPI.isAdminUser();
+        data: { role },
+      } = await AuthAPI.fetchPermission();
 
-      this.isAdmin = isAdmin;
+      this.isAdmin = role === 'admin';
     }
   }
 

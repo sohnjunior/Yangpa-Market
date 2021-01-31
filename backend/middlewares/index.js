@@ -19,19 +19,24 @@ const imageUpload = (dirname) =>
     }),
   });
 
+// 토큰오류 확인방법 : https://github.com/mikenicholson/passport-jwt/issues/75
 const verifyToken = (req, res, next) => {
-  passport.authenticate('jwt', { session: false }, (err, user) => {
-    if (user) {
-      req.decoded = user;
-      next();
-    } else {
-      if (err.name === 'TokenExpiredError') {
-        next(new HTTP419Error('토큰이 만료되었습니다'));
+  passport.authenticate(
+    'access-token',
+    { session: false },
+    (err, user, info) => {
+      if (user) {
+        req.decoded = user;
+        return next();
+      }
+
+      if (info.name === 'TokenExpiredError') {
+        return next(new HTTP419Error('토큰이 만료되었습니다'));
       }
 
       next(new HTTP401Error('유효하지 않은 토큰입니다'));
     }
-  })(req, res, next);
+  )(req, res, next);
 };
 
 module.exports = {

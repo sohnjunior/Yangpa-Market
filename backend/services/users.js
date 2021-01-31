@@ -75,7 +75,7 @@ const deleteUser = async (userID) => {
   }
 };
 
-const checkAdminPerm = async (userID) => {
+const checkPermission = async (userID) => {
   try {
     const user = await User.findOne({ where: { id: userID } });
     const isAdmin = user.admin;
@@ -92,5 +92,5 @@ module.exports = {
   createUser,
   updateUserInfo,
   deleteUser,
-  checkAdminPerm,
+  checkPermission,
 };

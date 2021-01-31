@@ -9,7 +9,6 @@ const registerUser = (payload) => instance.post('/users', payload);
 const signinUser = (payload) => instance.post('/users/signin', payload);
 const updateUser = (payload) => instance.put('/users/self', payload);
 const deleteUser = () => instance.delete('/users/self');
-const isAdminUser = () => instance.get(`/users/admin/check`);
 
 export default {
   fetchAllUser,
@@ -18,5 +17,4 @@ export default {
   signinUser,
   updateUser,
   deleteUser,
-  isAdminUser,
 };
