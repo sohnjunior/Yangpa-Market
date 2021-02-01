@@ -3,18 +3,20 @@ const path = require('path');
 const { HTTP401Error, HTTP419Error } = require('../utils/errors');
 const passport = require('passport');
 
-const imageUpload = (dirname) =>
+const uploadImage = (dirname) =>
   multer({
     storage: multer.diskStorage({
       destination(req, file, cb) {
         cb(null, `public/images/${dirname}/`);
       },
+
       filename(req, file, cb) {
         const ext = path.extname(file.originalname);
-        cb(
-          null,
-          path.basename(file.originalname, ext) + '-' + Date.now() + ext
-        );
+        const base = path.basename(file.originalname, ext);
+        const currentDate = Date.now();
+        const filename = base + '-' + currentDate + ext;
+
+        cb(null, filename);
       },
     }),
   });
@@ -40,6 +42,6 @@ const verifyToken = (req, res, next) => {
 };
 
 module.exports = {
-  imageUpload,
+  uploadImage,
   verifyToken,
 };
