@@ -114,6 +114,10 @@ const getProduct = async (orderHash) => {
         {
           model: Product,
           attributes: ['title', 'image', 'price', 'like', 'sold'],
+          include: {
+            model: Category,
+            attributes: ['title'],
+          },
         },
       ],
     });
