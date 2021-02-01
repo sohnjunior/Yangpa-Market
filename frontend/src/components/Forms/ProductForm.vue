@@ -4,14 +4,14 @@
       <section>
         <label>
           상품명
-          <input type="text" v-model="title" placeholder="어떤 상품인가요?" />
+          <input type="text" v-model="formData.title" placeholder="어떤 상품인가요?" />
         </label>
       </section>
 
       <section>
         <label>
           상품 카테고리
-          <select v-model="category">
+          <select v-model="formData.category">
             <option v-for="(option, index) in categoryOptions" :key="index" :value="option.value">
               {{ option.text }}
             </option>
@@ -29,14 +29,14 @@
       <section>
         <label>
           희망 가격
-          <input type="text" v-model="price" placeholder="상품 가격" />
+          <input type="text" v-model="formData.price" placeholder="상품 가격" />
         </label>
       </section>
 
       <section>
         <label>
           상품 설명
-          <textarea class="" v-model="body" placeholder="상품 내용입력" />
+          <textarea class="" v-model="formData.description" placeholder="상품 내용입력" />
         </label>
       </section>
     </fieldset>
@@ -47,7 +47,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { CategoryOption } from '../../types';
+import { IProductForm, ICategoryOption } from '../../types';
 import { ProductAPI } from '../../api';
 import SubmitButton from '@components/Buttons/SubmitButton.vue';
 
@@ -62,14 +62,16 @@ const ruleMap = {
 @Component({
   components: { SubmitButton },
 })
-export default class ProductRegisterForm extends Vue {
-  private isValid: boolean = true; // TODO: form 유효성 검사 기능 추가하기
-  private title: string = '';
-  private image: string = '';
-  private category: string = '';
-  private price: string = '';
-  private body: string = '';
-  private categoryOptions: CategoryOption[] = [
+export default class ProductForm extends Vue {
+  private isValid = true; // TODO: form 유효성 검사 기능 추가하기
+  private formData: IProductForm = {
+    title: '',
+    image: new Blob(),
+    category: '',
+    price: '',
+    description: '',
+  };
+  private categoryOptions: ICategoryOption[] = [
     { text: '회원권', value: 'tick' },
     { text: '원룸', value: 'rooms' },
     { text: '전공서적', value: 'books' },
@@ -78,24 +80,17 @@ export default class ProductRegisterForm extends Vue {
   ];
   private rules = ruleMap;
 
-  async onSubmit() {
-    const formData = new FormData();
-    formData.append('title', this.title);
-    formData.append('image', this.image);
-    formData.append('category', this.category);
-    formData.append('body', this.body);
-    formData.append('price', this.price);
+  public onSelectFile(e: Event) {
+    const $target = e.target as HTMLInputElement;
+    const files = $target.files || [];
 
-    try {
-      await ProductAPI.createNewProduct(formData);
-      this.$router.push('/');
-    } catch (err) {
-      console.log(err);
-    }
+    if (!files.length) return;
+
+    this.formData.image = files[0];
   }
 
-  public onSelectFile(file) {
-    this.image = file;
+  async onSubmit() {
+    this.$emit('submit', this.formData);
   }
 }
 </script>
