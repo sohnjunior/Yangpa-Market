@@ -88,8 +88,8 @@ export const router = new VueRouter({
       component: loadView('ProductDetailView'),
     },
     {
-      path: '/product/update/:id',
-      component: loadView('ProductUpdateView'),
+      path: '/product/edit/:id',
+      component: loadView('ProductEditView'),
     },
     {
       path: '/search/:keyword?',
