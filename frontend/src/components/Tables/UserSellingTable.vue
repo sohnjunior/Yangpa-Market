@@ -5,8 +5,8 @@
         <h1 class="table-title">판매 중</h1>
       </template>
       <template v-slot:table-action="item">
-        <Icon filename="edit" width="15" height="15" @click="onUpdateItem(item)" />
-        <Icon filename="delete" width="15" height="15" @click="onDeleteItem(item)" />
+        <Icon class="icon" filename="edit" width="18" height="18" @click="onEditItem(item)" />
+        <Icon class="icon" filename="delete" width="18" height="18" @click="onDeleteItem(item)" />
       </template>
     </BaseTable>
 
@@ -28,14 +28,16 @@ import { OrderAPI, ProductAPI } from '../../api';
 const userModule = namespace('UserModule');
 
 interface ISalesProductHistory {
+  id: number;
   productName: string;
   price: number;
   hit: number;
   like: number;
 }
 
-function normalize({ product, hit }: any): ISalesProductHistory {
+function normalize({ id, product, hit }): ISalesProductHistory {
   return {
+    id: id,
     productName: product.title,
     price: product.price,
     hit: hit,
@@ -49,8 +51,9 @@ function normalize({ product, hit }: any): ISalesProductHistory {
 export default class UserSellingTable extends Vue {
   private onSaleItems: ISalesProductHistory[] = [];
   private soldItems: ISalesProductHistory[] = [];
-  private onSaleHeaders = ['상품명', '가격', '조회수', '좋아요', ''];
-  private soldHeaders = ['상품명', '판매가격', '조회수', '좋아요'];
+  private orderHashMap = new Map<number, string>();
+  private onSaleHeaders = ['상품번호', '상품명', '가격', '조회수', '좋아요', ''];
+  private soldHeaders = ['상품번호', '상품명', '판매가격', '조회수', '좋아요'];
 
   async created() {
     const {
@@ -61,19 +64,28 @@ export default class UserSellingTable extends Vue {
       if (product.product.sold) {
         this.soldItems.push(normalize(product));
       } else {
+        this.orderHashMap.set(product.id, product.title);
         this.onSaleItems.push(normalize(product));
       }
     }
   }
 
-  public onUpdateItem(item) {
-    this.$router.push(`/product/update/${item.title}`);
+  public onEditItem({ item }: { item: ISalesProductHistory }) {
+    const orderHash = this.orderHashMap.get(item.id);
+
+    this.$router.push(`/product/edit/${orderHash}`);
   }
 
-  public async onDeleteItem(item) {
-    const allow = confirm('<' + item.product.title + '> 판매글을 정말로 삭제하시겠습니까?');
-    if (allow) {
-      await ProductAPI.deletePost(item.title);
+  public async onDeleteItem({ item }: { item: ISalesProductHistory }) {
+    const allow = confirm('<' + item.productName + '> 판매글을 정말로 삭제하시겠습니까?');
+    const orderHash = this.orderHashMap.get(item.id);
+
+    if (!allow || !orderHash) return;
+
+    try {
+      await ProductAPI.deletePost(orderHash);
+    } catch (err) {
+      console.error(err);
     }
   }
 }
@@ -83,5 +95,9 @@ export default class UserSellingTable extends Vue {
 .table-title {
   font-size: 2rem;
   font-weight: 700;
+}
+
+.icon:first-child {
+  margin-right: 15px;
 }
 </style>
