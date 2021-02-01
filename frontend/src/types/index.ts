@@ -19,6 +19,15 @@ interface IProductSearchResult extends IProduct {
   deletedAt?: string;
 }
 
+interface IProductForm {
+  [index: string]: string | Blob;
+  title: string;
+  image: Blob;
+  category: string;
+  price: string;
+  description: string;
+}
+
 interface User {
   email: string;
   nickname: string;
@@ -48,7 +57,7 @@ interface DashBoardAsideMenuItem {
   to: string;
 }
 
-interface CategoryOption {
+interface ICategoryOption {
   text: string;
   value: string;
 }
@@ -73,11 +82,12 @@ interface ICategoryMap {
 export {
   IProduct,
   IProductSearchResult,
+  IProductForm,
   User,
   IPost,
   DashBoardAsideMenuItem,
   Review,
-  CategoryOption,
+  ICategoryOption,
   IProductDetailInfo,
   IUserInfo,
   ICategoryMap,

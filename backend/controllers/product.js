@@ -4,14 +4,14 @@ const { HTTP404Error } = require('../utils/errors');
 const postProduct = async (req, res, next) => {
   try {
     const { id: userID } = req.decoded;
-    const { category, title, body, price } = req.body;
+    const { category, title, description, price } = req.body;
     const { filename } = req.file;
 
     await ProductService.createProduct(
       userID,
       category,
       title,
-      body,
+      description,
       price,
       filename
     );

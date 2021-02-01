@@ -3,20 +3,46 @@
     <h1 class="register-view-title">새로운 중고상품 등록</h1>
 
     <div class="register-form-wrapper">
-      <ProductRegisterForm />
+      <ProductForm @submit="onSubmit" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { IProductForm } from '../types';
 import { ProductAPI } from '../api';
-import ProductRegisterForm from '@components/Forms/ProductRegisterForm.vue';
+import ProductForm from '@components/Forms/ProductForm.vue';
+
+interface IformDataPayload {
+  [index: string]: string | Blob;
+}
+
+function createFormDataWithObject(payload: IformDataPayload) {
+  const formData = new FormData();
+
+  for (const [key, value] of Object.entries(payload)) {
+    formData.set(key, value);
+  }
+
+  return formData;
+}
 
 @Component({
-  components: { ProductRegisterForm },
+  components: { ProductForm },
 })
-export default class ProductCreateView extends Vue {}
+export default class ProductRegisterView extends Vue {
+  public async onSubmit(payload: IProductForm) {
+    try {
+      const formData = createFormDataWithObject(payload);
+
+      await ProductAPI.registerProduct(formData);
+      this.$router.push('/');
+    } catch (err) {
+      console.log(err);
+    }
+  }
+}
 </script>
 
 <style lang="scss">
