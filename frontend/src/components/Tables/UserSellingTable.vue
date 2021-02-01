@@ -97,7 +97,10 @@ export default class UserSellingTable extends Vue {
   font-weight: 700;
 }
 
-.icon:first-child {
-  margin-right: 15px;
+.icon {
+  cursor: pointer;
+  &:first-child {
+    margin-right: 15px;
+  }
 }
 </style>
