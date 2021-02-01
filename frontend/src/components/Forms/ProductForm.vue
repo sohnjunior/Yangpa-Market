@@ -46,7 +46,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import { IProductForm, ICategoryOption } from '../../types';
 import { ProductAPI } from '../../api';
 import SubmitButton from '@components/Buttons/SubmitButton.vue';
@@ -59,11 +59,17 @@ const ruleMap = {
   fileRules: [(v) => !!v || '상품 사진이 필요해요'],
 };
 
+// TODO: 1. form 유효성 검사 기능 추가
+// TODO: 2. 상품 이미지 미리보기 기능 추가
+
 @Component({
   components: { SubmitButton },
 })
 export default class ProductForm extends Vue {
-  private isValid = true; // TODO: form 유효성 검사 기능 추가하기
+  @Prop({ required: false, default: false }) readonly isEditMode!: boolean;
+  @Prop({ required: false }) readonly initalFormData!: IProductForm;
+
+  private isValid = true;
   private formData: IProductForm = {
     title: '',
     image: new Blob(),
@@ -79,6 +85,15 @@ export default class ProductForm extends Vue {
     { text: '기타', value: 'others' },
   ];
   private rules = ruleMap;
+
+  public created() {
+    if (!this.isEditMode) return;
+    this.initFormData();
+  }
+
+  private initFormData() {
+    this.formData = this.initalFormData;
+  }
 
   public onSelectFile(e: Event) {
     const $target = e.target as HTMLInputElement;
