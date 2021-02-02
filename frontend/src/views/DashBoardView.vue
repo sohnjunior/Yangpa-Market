@@ -22,12 +22,20 @@ export default class DashBoardView extends Vue {
 </script>
 
 <style lang="scss">
+@import '../assets/scss/variables';
+
 .dashboard-view {
   display: flex;
 
   .dashboard-content {
     width: 100%;
     padding: 25px 100px;
+  }
+
+  @media screen and (max-width: $mobile-width) {
+    .dashboard-content {
+      padding: 0px;
+    }
   }
 }
 </style>
