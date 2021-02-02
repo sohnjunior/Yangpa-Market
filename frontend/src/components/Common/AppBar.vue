@@ -88,7 +88,7 @@ export default class AppBar extends Vue {
 </script>
 
 <style lang="scss" scoped>
-$logo-color: #ffab91;
+@import '../../assets/scss/variables';
 
 .appbar-container {
   display: flex;
@@ -114,7 +114,7 @@ $logo-color: #ffab91;
       margin-left: 7px;
     }
 
-    @media screen and (max-width: 400px) {
+    @media screen and (max-width: $mobile-width) {
       .logo-title {
         font-size: 1.4rem;
       }
