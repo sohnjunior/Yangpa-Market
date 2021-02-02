@@ -116,6 +116,10 @@ export default class UserCart extends Vue {
 
 .list-content-wrapper {
   list-style: none;
+
+  li + li {
+    margin-top: 20px;
+  }
 }
 
 .cart-footer-wrapper {
@@ -132,6 +136,7 @@ export default class UserCart extends Vue {
     @include button();
     margin-top: 20px;
     padding: 10px 15px;
+    max-width: 700px;
     background-color: #69db7c;
     color: white;
     font-size: 1.2rem;
