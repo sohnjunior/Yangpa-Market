@@ -3,8 +3,14 @@
     <template v-slot:card-title>
       <div class="product-header-wrapper">
         <h1 class="product-name">{{ title }}</h1>
-        <h2 class="product-seller">{{ writer }}</h2>
-        <h2 class="product-meta">조회수 {{ hit }}</h2>
+        <h2 class="product-seller">
+          <Icon class="icon" filename="user" width="20" height="20" />
+          {{ writer }}
+        </h2>
+        <h2 class="product-meta">
+          <Icon class="icon" filename="glasses" width="20" height="20" />
+          {{ hit }}
+        </h2>
       </div>
     </template>
     <template v-slot:card-body>
@@ -61,6 +67,16 @@ export default class ProductCard extends Vue {
     @include text-shorthand();
     font-size: 1.3rem;
     font-weight: 600;
+  }
+
+  .product-seller,
+  .product-meta {
+    display: flex;
+    align-items: center;
+
+    .icon {
+      margin-right: 5px;
+    }
   }
 
   .product-seller {
