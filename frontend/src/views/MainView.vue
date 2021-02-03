@@ -11,7 +11,15 @@
     </section>
 
     <section class="list-section">
-      <h1 class="subtitle">{{ selectedCategory }}</h1>
+      <div class="category-title-wrapper">
+        <Icon
+          class="category-icon"
+          :filename="categoryMap[selectedCategory]"
+          width="35"
+          height="35"
+        />
+        <h1>{{ selectedCategory }}</h1>
+      </div>
       <FilterList @change="onChangeFilter" />
       <ProductGridList v-if="isProductsExist" :products="sortedProducts" />
       <div v-else>상품이 없어요</div>
@@ -30,6 +38,7 @@ import FilterList from '@components/Lists/FilterList.vue';
 import ProductGridList from '@components/Lists/ProductGridList.vue';
 import ProductSlideList from '@components/Lists/ProductSlideList.vue';
 import FloatingButton from '@components/Buttons/FloatingButton.vue';
+import Icon from '@components/Common/Icon.vue';
 import { IPost, IProduct, ICategoryMap } from '../types';
 
 const SettingModule = namespace('SettingModule');
@@ -42,6 +51,7 @@ const SettingModule = namespace('SettingModule');
     ProductGridList,
     ProductSlideList,
     FloatingButton,
+    Icon,
   },
 })
 export default class MainView extends Vue {
@@ -124,6 +134,18 @@ export default class MainView extends Vue {
   .category-section {
     display: flex;
     justify-content: center;
+  }
+
+  .category-title-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    font-weight: 700;
+
+    .category-icon {
+      margin-right: 10px;
+    }
   }
 
   @media screen and (max-width: $mobile-width) {
