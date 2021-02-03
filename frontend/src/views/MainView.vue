@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main-view-container">
     <section class="popular-section">
       <h1 class="subtitle">방금 올라온 상품이에요</h1>
       <ProductCarousel v-if="!isMobileBrowser" />
@@ -104,15 +104,34 @@ export default class MainView extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.subtitle {
-  margin-bottom: 20px;
-  font-size: 1.8rem;
-  font-weight: 500;
-}
+@import '../assets/scss/variables';
 
-.category-section,
-.popular-section,
-.list-section {
-  margin-bottom: 50px;
+.main-view-container {
+  padding: 20px 50px;
+
+  .subtitle {
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    font-weight: 600;
+  }
+
+  .category-section,
+  .popular-section,
+  .list-section {
+    margin-bottom: 50px;
+  }
+
+  .category-section {
+    display: flex;
+    justify-content: center;
+  }
+
+  @media screen and (max-width: $mobile-width) {
+    padding: 10px 20px;
+
+    .subtitle {
+      font-size: 1.5rem;
+    }
+  }
 }
 </style>
