@@ -1,88 +1,73 @@
 <template>
-  <div>
-    <button @click="onOpenMenu">
-      <slot name="trigger"></slot>
-    </button>
-    <div @click="onCloseMenu">
-      <div class="navigation-overlay" v-if="showNavigation" @click="onCloseMenu" />
-      <transition name="slide" appear>
-        <div ref="navigationContainer" class="navigation-container" v-if="showNavigation">
-          <section class="profile-section">
-            <div class="control-wrapper">
-              <Icon filename="close" width="25" height="25" @click="onCloseMenu" />
-              <router-link to="/dashboard/alarm">
-                <Icon filename="alarm" width="25" height="25" />
-              </router-link>
+  <BaseSideNavigationMenu>
+    <template v-slot:trigger>
+      <slot name="trigger" />
+    </template>
+    <template v-slot:content>
+      <div class="content-wrapper">
+        <section class="profile-section">
+          <div class="control-wrapper">
+            <router-link class="alarm" to="/dashboard/alarm">
+              <Icon filename="alarm" width="25" height="25" />
+            </router-link>
+          </div>
+          <div class="profile-edit-wrapper">
+            <div class="profile-wrapper">
+              <Icon class="profile-icon" filename="user" width="25" height="25" />
+              {{ currentEmail }}
             </div>
-            <div class="profile-edit-wrapper">
-              <div class="profile-wrapper">
-                <Icon filename="user" width="25" height="25" />
-                {{ currentEmail }}
-              </div>
-              <router-link class="profile-edit-btn" to="/dashboard/profile">
-                프로필 수정
+            <router-link class="profile-edit-btn" to="/dashboard/profile">
+              프로필 수정
+            </router-link>
+          </div>
+        </section>
+        <section class="list-section">
+          <ul>
+            <li>
+              <router-link to="/dashboard/cart">
+                <Icon class="icon" filename="cart" width="20" height="20" />장바구니
               </router-link>
-            </div>
-          </section>
-          <section class="list-section">
-            <ul>
-              <li>
-                <router-link to="/dashboard/cart">
-                  <Icon class="icon" filename="cart" width="20" height="20" />장바구니
-                </router-link>
-              </li>
-              <li>
-                <router-link to="/dashboard/buying">
-                  <Icon class="icon" filename="shopping-bag" width="20" height="20" />구매내역
-                </router-link>
-              </li>
-              <li>
-                <router-link to="/dashboard/selling">
-                  <Icon class="icon" filename="dollar" width="20" height="20" />판매내역
-                </router-link>
-              </li>
-              <li>
-                <span @click="onLogout">
-                  <Icon class="icon" filename="logout" width="20" height="20" />로그아웃
-                </span>
-              </li>
-            </ul>
-          </section>
-        </div>
-      </transition>
-    </div>
-  </div>
+            </li>
+            <li>
+              <router-link to="/dashboard/buying">
+                <Icon class="icon" filename="shopping-bag" width="20" height="20" />구매내역
+              </router-link>
+            </li>
+            <li>
+              <router-link to="/dashboard/selling">
+                <Icon class="icon" filename="dollar" width="20" height="20" />판매내역
+              </router-link>
+            </li>
+            <li>
+              <span @click="onLogout">
+                <Icon class="icon" filename="logout" width="20" height="20" />로그아웃
+              </span>
+            </li>
+          </ul>
+        </section>
+      </div>
+    </template>
+  </BaseSideNavigationMenu>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Ref } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import Icon from '@components/Common/Icon.vue';
+import BaseSideNavigationMenu from '@components/Menus/BaseSideNavigationMenu.vue';
 import ToastBus from '../../bus/ToastBus';
 
 const UserModule = namespace('UserModule');
 
 @Component({
-  components: { Icon },
+  components: { Icon, BaseSideNavigationMenu },
 })
 export default class SideNavigationMenu extends Vue {
-  private showNavigation = false;
-
-  @Ref() navigationContainer!: HTMLElement;
-
   @UserModule.Getter
   public currentEmail!: string;
 
   @UserModule.Action
   public logout!: () => Promise<boolean>;
-
-  public onOpenMenu() {
-    this.showNavigation = true;
-  }
-
-  public onCloseMenu() {
-    this.showNavigation = false;
-  }
 
   public onLogout() {
     this.logout();
@@ -93,22 +78,7 @@ export default class SideNavigationMenu extends Vue {
 </script>
 
 <style lang="scss">
-.navigation-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
-}
-.navigation-container {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 250px;
-  height: 100%;
-  background-color: white;
-
+.content-wrapper {
   .profile-section {
     padding: 15px;
 
@@ -116,12 +86,22 @@ export default class SideNavigationMenu extends Vue {
       display: flex;
       justify-content: space-between;
       margin-bottom: 20px;
+
+      .alarm {
+        margin-left: auto;
+      }
     }
 
     .profile-edit-wrapper {
       .profile-wrapper {
         display: flex;
         align-items: center;
+        font-size: 0.9rem;
+        font-weight: 500;
+
+        .profile-icon {
+          margin-right: 15px;
+        }
       }
 
       .profile-edit-btn {
@@ -158,20 +138,5 @@ export default class SideNavigationMenu extends Vue {
       }
     }
   }
-}
-
-.slide-enter,
-.slide-leave-to {
-  transform: translateX(250px);
-}
-
-.slide-enter-to,
-.slide-leave {
-  transform: translateX(0px);
-}
-
-.slide-enter-active,
-.slide-leave-active {
-  transition: transform 0.3s ease;
 }
 </style>
