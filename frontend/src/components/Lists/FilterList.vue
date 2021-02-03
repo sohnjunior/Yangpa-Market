@@ -31,6 +31,8 @@ export default class FilterList extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/scss/variables';
+
 .filter-container {
   display: flex;
   margin-bottom: 20px;
@@ -48,6 +50,13 @@ export default class FilterList extends Vue {
 
     input[type='radio'] {
       display: none;
+    }
+
+    @media screen and (max-width: $mobile-width) {
+      & {
+        padding: 5px 10px;
+        font-size: 1rem;
+      }
     }
   }
 
