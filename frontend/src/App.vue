@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <div>
     <AppBar />
     <main>
       <ToastModal />
@@ -8,7 +8,7 @@
       </transition>
     </main>
     <AppFooter />
-  </v-app>
+  </div>
 </template>
 
 <script>
