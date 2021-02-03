@@ -62,7 +62,7 @@ const UserModule = namespace('UserModule');
 @Component({
   components: { Icon, BaseSideNavigationMenu },
 })
-export default class SideNavigationMenu extends Vue {
+export default class HistorySideNavigationMenu extends Vue {
   @UserModule.Getter
   public currentEmail!: string;
 

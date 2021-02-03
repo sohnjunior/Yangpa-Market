@@ -19,7 +19,7 @@ interface DropdownMenuItem {
   action(): void;
 }
 
-@Component
+@Component({})
 export default class DropdownMenu extends Vue {
   @Prop({ required: true, default: [] }) readonly items!: DropdownMenuItem[];
 
