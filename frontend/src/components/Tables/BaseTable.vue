@@ -33,6 +33,8 @@ export default class BaseTable extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/scss/variables';
+
 .table-container {
   margin-bottom: 80px;
 
@@ -57,6 +59,10 @@ export default class BaseTable extends Vue {
         flex-basis: 10%;
         padding: 15px 0px;
         text-align: center;
+      }
+
+      @media screen and (max-width: $mobile-width) {
+        font-size: 0.9rem;
       }
     }
 

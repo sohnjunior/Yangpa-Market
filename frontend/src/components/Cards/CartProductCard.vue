@@ -4,12 +4,13 @@
       <div class="body-container">
         <img class="product-image" alt="상품 이미지" :src="image" />
         <div class="product-description">
-          <b :style="[status ? soldOut : onSale]">{{ statusMessage }} </b>
-          <span class="product-name">{{ name }}</span>
-          <em>₩ {{ price }} </em>
+          <em :style="[status ? soldOutStyle : onSaleStyle]">{{ statusMessage }}</em>
+          <output>₩ {{ price }} </output>
+          <h2 class="product-name">{{ name }}</h2>
         </div>
         <div class="button-wrapper">
-          <button @click="deleteProduct">삭제</button>
+          <button class="desktop" @click="onRemoveProduct">삭제</button>
+          <Icon class="mobile" filename="close" width="25" height="25" @click="onRemoveProduct" />
         </div>
       </div>
     </template>
@@ -19,9 +20,10 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import BaseCard from '@components/Cards/BaseCard.vue';
+import Icon from '@components/Common/Icon.vue';
 
 @Component({
-  components: { BaseCard },
+  components: { BaseCard, Icon },
 })
 export default class CartProductCard extends Vue {
   @Prop({ required: true }) readonly id!: string;
@@ -30,14 +32,14 @@ export default class CartProductCard extends Vue {
   @Prop({ required: true }) readonly image!: string;
   @Prop({ required: true }) readonly status!: string;
 
-  private onSale = { color: 'darkseagreen' };
-  private soldOut = { color: 'tomato' };
+  private onSaleStyle = { color: 'darkseagreen' };
+  private soldOutStyle = { color: 'tomato' };
 
-  get statusMessage(): string {
+  get statusMessage() {
     return this.status ? '판매완료' : '판매중';
   }
 
-  public deleteProduct(): void {
+  public onRemoveProduct() {
     this.$emit('delete-product', this.id);
     this.$router.go(0);
   }
@@ -45,7 +47,11 @@ export default class CartProductCard extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/scss/mixins';
+@import '../../assets/scss/variables';
+
 .body-container {
+  position: relative;
   display: flex;
   width: 600px;
 
@@ -66,12 +72,25 @@ export default class CartProductCard extends Vue {
     }
   }
 
+  @media screen and (max-width: $mobile-width) {
+    .product-description {
+      .product-name {
+        font-size: 0.9rem;
+      }
+    }
+
+    & {
+      width: 250px;
+    }
+  }
+
   .button-wrapper {
     display: flex;
     flex-direction: column;
     justify-content: center;
 
-    button {
+    .desktop,
+    .mobile {
       width: 70px;
       height: 30px;
       border-radius: 10px;
@@ -79,6 +98,26 @@ export default class CartProductCard extends Vue {
       font-size: 1rem;
       font-weight: 500;
       color: #ffffff;
+    }
+
+    .mobile {
+      display: none;
+    }
+
+    @media screen and (max-width: $mobile-width) {
+      .mobile {
+        display: block;
+        background-color: black;
+      }
+
+      .desktop {
+        display: none;
+      }
+
+      & {
+        position: absolute;
+        right: 0px;
+      }
     }
   }
 }

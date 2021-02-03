@@ -40,8 +40,8 @@ import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import Icon from '@components/Common/Icon.vue';
 import LoginModal from '@components/Modals/LoginModal.vue';
-import SideNavigationMenu from '@components/Menu/SideNavigationMenu.vue';
-import DropdownMenu from '@components/Menu/DropdownMenu.vue';
+import SideNavigationMenu from '@components/Menus/SideNavigationMenu.vue';
+import DropdownMenu from '@components/Menus/DropdownMenu.vue';
 import SearchInput from '@components/Inputs/SearchInput.vue';
 import ToastBus from '../../bus/ToastBus';
 
@@ -88,7 +88,7 @@ export default class AppBar extends Vue {
 </script>
 
 <style lang="scss" scoped>
-$logo-color: #ffab91;
+@import '../../assets/scss/variables';
 
 .appbar-container {
   display: flex;
@@ -114,7 +114,7 @@ $logo-color: #ffab91;
       margin-left: 7px;
     }
 
-    @media screen and (max-width: 400px) {
+    @media screen and (max-width: $mobile-width) {
       .logo-title {
         font-size: 1.4rem;
       }

@@ -36,10 +36,12 @@ export default class RelatedProductCard extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/scss/variables';
 @import '../../assets/scss/mixins';
 
 .related-product-container {
-  width: 22%;
+  width: 250px;
+  margin-right: 15px;
 
   .product-image {
     width: 100%;
@@ -63,6 +65,12 @@ export default class RelatedProductCard extends Vue {
     @include text-shorthand();
     margin-top: 5px;
     font-size: 0.9rem;
+  }
+}
+
+@media screen and (max-width: $mobile-width) {
+  .related-product-container {
+    width: 200px;
   }
 }
 </style>

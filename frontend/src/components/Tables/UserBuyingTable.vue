@@ -87,6 +87,7 @@ export default class UserBuyingTable extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/scss/variables';
 @import '../../assets/scss/mixins';
 
 .table-title {
@@ -100,5 +101,10 @@ export default class UserBuyingTable extends Vue {
   background-color: #69db7c;
   color: white;
   font-size: 0.9rem;
+
+  @media screen and (max-width: $mobile-width) {
+    padding: 8px 10px;
+    font-size: 0.8rem;
+  }
 }
 </style>
