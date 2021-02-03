@@ -21,10 +21,10 @@
 ## 사용 기술
 
 - Vue 2.x & Typescript
+- Scss
 - Express.js
 - Redis
 - Sequelize ORM(MySQL)
-- Vuetify (scss로 마이그레이션 진행중)
 
 ## 팀원 소개
 
@@ -67,3 +67,4 @@ Backend: [박민춘](https://github.com/sprical408) & [손정현](https://github
 - 2020-11-09 : Vue + Typescript 적용
 - 2021-01-02 : Vuetify 의존성 제거 진행
 - 2021-01-31 : JWT 토큰 인증 방식 변경 (refresh 토큰 추가)
+- 2021-02-04 : Vuetify -> Scss 마이그레이션 & 모바일 반응형 웹 적용
