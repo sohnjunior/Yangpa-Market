@@ -14,6 +14,10 @@
     </section>
 
     <section>
+      <SellerInfoCard :user="productSeller" />
+    </section>
+
+    <section>
       <h1 class="subtitle">이 상품도 함께 봤어요</h1>
       <RelatedProductList :productID="productID" />
     </section>
@@ -31,6 +35,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { ProductAPI, RecommendationAPI, CartAPI } from '../api';
 import { namespace } from 'vuex-class';
 import DetailProductCard from '@components/Cards/DetailProductCard.vue';
+import SellerInfoCard from '@components/Cards/SellerInfoCard.vue';
 import RelatedProductList from '@components/Lists/RelatedProductList.vue';
 import CommentInput from '@components/Inputs/CommentInput.vue';
 import CommentList from '@components/Lists/CommentList.vue';
@@ -42,6 +47,7 @@ const userModule = namespace('UserModule');
 @Component({
   components: {
     DetailProductCard,
+    SellerInfoCard,
     RelatedProductList,
     CommentInput,
     CommentList,

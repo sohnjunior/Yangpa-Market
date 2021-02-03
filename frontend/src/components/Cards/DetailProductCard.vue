@@ -4,7 +4,6 @@
     <div class="info-wrapper">
       <div class="meta-wrapper">
         <h2 class="product-title">{{ productInfo.title }}</h2>
-        <span class="product-seller">판매자 : {{ productSeller.nickname }}</span>
 
         <Chip
           :text="productInfo.sold ? '판매 완료' : '판매 중'"
@@ -85,12 +84,6 @@ export default class DetailProductCard extends Vue {
       .product-title {
         font-size: 1.4rem;
         font-weight: 600;
-      }
-
-      .product-seller {
-        font-size: 1rem;
-        font-weight: 500;
-        color: #808080;
       }
 
       .product-price {
