@@ -5,7 +5,6 @@
       <DetailProductCard
         v-if="isFetchFinished"
         :productID="productID"
-        :productSeller="productSeller"
         :productInfo="productInfo"
         :productDescription="productDescription"
         @add-cart="onAddCart"
@@ -14,7 +13,7 @@
     </section>
 
     <section>
-      <SellerInfoCard :user="productSeller" />
+      <SellerInfoCard v-if="isFetchFinished" :user="productSeller" />
     </section>
 
     <section>

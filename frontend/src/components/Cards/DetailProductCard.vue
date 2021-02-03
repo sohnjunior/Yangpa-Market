@@ -40,7 +40,6 @@ import { IProductDetailInfo } from '../../types';
 })
 export default class DetailProductCard extends Vue {
   @Prop({ required: true }) readonly productID!: string;
-  @Prop({ required: true }) readonly productSeller!: any;
   @Prop({ required: true }) readonly productInfo!: IProductDetailInfo;
   @Prop({ required: true }) readonly productDescription!: string;
 
@@ -55,6 +54,7 @@ export default class DetailProductCard extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/scss/variables';
 @import '../../assets/scss/mixins';
 
 .info-container {
@@ -124,6 +124,41 @@ export default class DetailProductCard extends Vue {
 
       .button-description {
         margin-left: 7px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $mobile-width) {
+  .info-container {
+    flex-direction: column;
+    width: 100%;
+    padding: 25px;
+
+    .product-image {
+      width: 100%;
+    }
+
+    .info-wrapper {
+      margin-left: 0px;
+
+      .meta-wrapper {
+        margin-top: 20px;
+      }
+
+      .button-wrapper {
+        display: flex;
+        flex-direction: column;
+
+        .cart-button,
+        .like-button {
+          justify-content: center;
+        }
+
+        .cart-button {
+          margin-right: 0px;
+          margin-bottom: 10px;
+        }
       }
     }
   }
