@@ -8,7 +8,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import DashBoardAsideMenu from '@components/Menu/DashBoardAsideMenu.vue';
+import DashBoardAsideMenu from '@components/Menus/DashBoardAsideMenu.vue';
 
 const SettingModule = namespace('SettingModule');
 

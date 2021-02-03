@@ -40,8 +40,8 @@ import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import Icon from '@components/Common/Icon.vue';
 import LoginModal from '@components/Modals/LoginModal.vue';
-import SideNavigationMenu from '@components/Menu/SideNavigationMenu.vue';
-import DropdownMenu from '@components/Menu/DropdownMenu.vue';
+import SideNavigationMenu from '@components/Menus/SideNavigationMenu.vue';
+import DropdownMenu from '@components/Menus/DropdownMenu.vue';
 import SearchInput from '@components/Inputs/SearchInput.vue';
 import ToastBus from '../../bus/ToastBus';
 

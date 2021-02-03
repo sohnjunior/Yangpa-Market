@@ -13,7 +13,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import Icon from '@components/Common/Icon.vue';
 import BaseCard from '@components/Cards/BaseCard.vue';
-import { IUserInfo } from '../types';
+import { IUserInfo } from '../../types';
 
 @Component({
   components: { Icon, BaseCard },
