@@ -61,7 +61,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { UserAPI } from '../../api';
 import { validateEmail, validatePassword, validatePhoneNum } from '../../utils/validators';
 import SubmitButton from '@components/Buttons/SubmitButton.vue';
-import DatePicker from '@components/Menus/DatePicker.vue';
+import DatePicker from '@components/Inputs/DatePicker.vue';
 
 const rulesMap = {
   emailRules: [

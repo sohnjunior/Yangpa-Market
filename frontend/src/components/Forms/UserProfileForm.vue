@@ -42,7 +42,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import DatePicker from '@components/Menus/DatePicker.vue';
+import DatePicker from '@components/Inputs/DatePicker.vue';
 import { UserAPI } from '../../api';
 
 @Component({
