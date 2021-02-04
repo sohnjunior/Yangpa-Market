@@ -135,11 +135,11 @@ export default class UserCart extends Vue {
   .payment-button {
     @include button();
     margin-top: 20px;
-    padding: 10px 15px;
+    padding: 12px 0px;
     max-width: 700px;
-    background-color: #69db7c;
+    background-color: #8ce99a;
     color: white;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 600;
   }
 }

@@ -17,7 +17,7 @@
               {{ currentEmail }}
             </div>
             <router-link class="profile-edit-btn" to="/dashboard/profile">
-              프로필 수정
+              프로필 설정
             </router-link>
           </div>
         </section>
