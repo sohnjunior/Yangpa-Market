@@ -3,15 +3,14 @@
     <template v-slot:modal-header>
       <div class="modal-header-wrapper">
         <h1 class="modal-title">로그인</h1>
-        <button class="close-btn" @click="closeModal">
-          <v-icon>mdi-close-circle</v-icon>
-        </button>
+        <Icon class="close-btn" filename="close" width="25" height="25" @click="closeModal" />
       </div>
     </template>
     <template v-slot:modal-content>
       <div class="modal-content-wrapper">
         <LoginForm @submit-form="onSubmit" />
-        <span class="link" @click="moveToRegisterPage"> Not registerd? Create an account </span>
+        <span> 아직 계정이 없나요? </span>
+        <span class="link" @click="moveToRegisterPage">회원가입하기</span>
       </div>
     </template>
   </BaseModal>
@@ -24,11 +23,12 @@ import { User } from '../../types';
 import ToastBus from '../../bus/ToastBus';
 import LoginForm from '@components/Forms/LoginForm.vue';
 import BaseModal from '@components/Modals/BaseModal.vue';
+import Icon from '@components/Common/Icon.vue';
 
 const userModule = namespace('UserModule');
 
 @Component({
-  components: { LoginForm, BaseModal },
+  components: { LoginForm, BaseModal, Icon },
 })
 export default class LoginModal extends Vue {
   @Prop({ required: true, default: false }) readonly show!: boolean;
@@ -62,6 +62,7 @@ export default class LoginModal extends Vue {
 
 .modal-header-wrapper {
   display: flex;
+  width: 250px;
   margin-bottom: 10px;
 
   .modal-title {

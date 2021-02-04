@@ -1,6 +1,7 @@
 <template>
   <div class="category-container">
     <CategoryButton
+      class="category-btn"
       v-for="category in categories"
       :key="category"
       :name="category"
@@ -38,9 +39,23 @@ export default class CategoryList extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/scss/variables';
+
 .category-container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+
+  .category-btn {
+    margin: 0px 10px;
+  }
+
+  @media screen and (max-width: $mobile-width) {
+    & {
+      overflow-x: scroll;
+    }
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 }
 </style>

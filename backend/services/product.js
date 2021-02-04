@@ -7,7 +7,7 @@ const createProduct = async (
   userID,
   category,
   title,
-  body,
+  description,
   price,
   filename
 ) => {
@@ -20,7 +20,7 @@ const createProduct = async (
     // post 생성 (주문번호를 현재 시간을 통해 생성한다)
     const post = await Post.create({
       title: String(Date.now()),
-      body: body,
+      body: description,
       userId: userID,
     });
 
@@ -91,9 +91,9 @@ const getAllProducts = async () => {
 
     // 이미지 파일을 읽어 바이너리 형태로 전송해줌
     posts.forEach((post) => {
-      const filename = post.product.dataValues.image;
+      const filename = post.product.image;
       const base64Encode = readImageToBase64('product', filename);
-      post.product.dataValues.image = base64Encode;
+      post.product.image = base64Encode;
     });
 
     return posts;
@@ -114,6 +114,10 @@ const getProduct = async (orderHash) => {
         {
           model: Product,
           attributes: ['title', 'image', 'price', 'like', 'sold'],
+          include: {
+            model: Category,
+            attributes: ['title'],
+          },
         },
       ],
     });

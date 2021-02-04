@@ -43,6 +43,7 @@ export default class LoginForm extends Vue {
 <style lang="scss" scoped>
 .login-form {
   margin: 30px 0px;
+  width: 90%;
 
   .input-wrapper {
     display: flex;
@@ -56,7 +57,7 @@ export default class LoginForm extends Vue {
       outline: none;
 
       &::placeholder {
-        font-size: 1.1rem;
+        font-size: 1rem;
         font-weight: 500;
       }
     }

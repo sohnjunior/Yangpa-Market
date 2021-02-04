@@ -59,6 +59,7 @@ export default class CommentInput extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/scss/variables';
 @import '../../assets/scss/mixins';
 
 .comment-input-container {
@@ -67,7 +68,6 @@ export default class CommentInput extends Vue {
   margin-left: 10%;
   margin-right: 10%;
   margin-bottom: 50px;
-  width: 80%;
   border: 2px solid rgb(238, 238, 238);
 
   .input-wrapper {
@@ -103,6 +103,13 @@ export default class CommentInput extends Vue {
       background-color: #74c0fc;
       color: white;
     }
+  }
+}
+
+@media screen and (max-width: $mobile-width) {
+  .comment-input-container {
+    margin-left: 3%;
+    margin-right: 3%;
   }
 }
 </style>

@@ -7,31 +7,30 @@
 
     <div class="control-wrapper">
       <router-link v-if="isMobileBrowser" to="/search">
-        <Icon filename="search" width="23" height="23" />
+        <Icon class="search-icon" filename="search" width="25" height="25" />
       </router-link>
       <SearchInput v-else />
-      <!-- <router-link class="review-link" to="/review">상품 후기</router-link> -->
 
-      <SideNavigationMenu class="user-menu" v-if="isLoggedIn && isMobileBrowser">
+      <HistorySideNavigationMenu class="user-menu" v-if="isLoggedIn">
         <template v-slot:trigger>
-          <Icon filename="user" width="35" height="35" />
+          <Icon filename="user" width="25" height="25" />
         </template>
-      </SideNavigationMenu>
-      <DropdownMenu
-        class="user-menu"
-        v-if="isLoggedIn && !isMobileBrowser"
-        :items="dropdownItemMap"
-      >
-        <template v-slot:trigger>
-          <Icon filename="user" width="35" height="35" />
-        </template>
-      </DropdownMenu>
-      <div v-if="!isLoggedIn" class="button-wrapper">
-        <button @click="onOpenModal">로그인</button>
-        <router-link class="signup-link" to="/signup">회원가입</router-link>
+      </HistorySideNavigationMenu>
+      <div v-else>
+        <div v-if="isMobileBrowser">
+          <AuthSideNavigationMenu @sign-in="onOpenSignInModal">
+            <template v-slot:trigger>
+              <Icon filename="hamburger" width="25" height="25" />
+            </template>
+          </AuthSideNavigationMenu>
+        </div>
+        <div v-else class="button-wrapper">
+          <button class="signin-btn" @click="onOpenSignInModal">로그인</button>
+          <router-link class="signup-btn" to="/signup">회원가입</router-link>
+        </div>
       </div>
     </div>
-    <LoginModal :show="showModal" @close-modal="onCloseModal" />
+    <LoginModal :show="showModal" @close-modal="onCloseSignInModal" />
   </header>
 </template>
 
@@ -40,8 +39,9 @@ import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import Icon from '@components/Common/Icon.vue';
 import LoginModal from '@components/Modals/LoginModal.vue';
-import SideNavigationMenu from '@components/Menu/SideNavigationMenu.vue';
-import DropdownMenu from '@components/Menu/DropdownMenu.vue';
+import HistorySideNavigationMenu from '@components/Menus/HistorySideNavigationMenu.vue';
+import AuthSideNavigationMenu from '@components/Menus/AuthSideNavigationMenu.vue';
+import DropdownMenu from '@components/Menus/DropdownMenu.vue';
 import SearchInput from '@components/Inputs/SearchInput.vue';
 import ToastBus from '../../bus/ToastBus';
 
@@ -49,7 +49,14 @@ const UserModule = namespace('UserModule');
 const SettingModule = namespace('SettingModule');
 
 @Component({
-  components: { Icon, LoginModal, SideNavigationMenu, DropdownMenu, SearchInput },
+  components: {
+    Icon,
+    LoginModal,
+    HistorySideNavigationMenu,
+    AuthSideNavigationMenu,
+    DropdownMenu,
+    SearchInput,
+  },
 })
 export default class AppBar extends Vue {
   private showModal = false;
@@ -67,11 +74,11 @@ export default class AppBar extends Vue {
   @UserModule.Action
   public logout!: () => Promise<boolean>;
 
-  public onOpenModal() {
+  public onOpenSignInModal() {
     this.showModal = true;
   }
 
-  public onCloseModal() {
+  public onCloseSignInModal() {
     this.showModal = false;
   }
 
@@ -88,7 +95,7 @@ export default class AppBar extends Vue {
 </script>
 
 <style lang="scss" scoped>
-$logo-color: #ffab91;
+@import '../../assets/scss/variables';
 
 .appbar-container {
   display: flex;
@@ -114,7 +121,7 @@ $logo-color: #ffab91;
       margin-left: 7px;
     }
 
-    @media screen and (max-width: 400px) {
+    @media screen and (max-width: $mobile-width) {
       .logo-title {
         font-size: 1.4rem;
       }
@@ -126,15 +133,35 @@ $logo-color: #ffab91;
     align-items: center;
     margin-left: auto;
 
+    .search-icon {
+      margin-right: 10px;
+    }
+
     .user-menu {
       margin-right: 10px;
-      margin-left: 20px;
     }
 
     .button-wrapper {
-      .signup-link {
+      display: flex;
+      align-items: center;
+      margin-left: 50px;
+
+      .signin-btn,
+      .signup-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100px;
+        height: 35px;
+        border: 1px solid #ffab91;
+        border-radius: 3px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: #ffab91;
+      }
+
+      .signup-btn {
         margin-left: 20px;
-        color: #202020;
       }
     }
   }

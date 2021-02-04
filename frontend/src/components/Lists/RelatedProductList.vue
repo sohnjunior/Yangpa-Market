@@ -41,9 +41,21 @@ export default class RelatedProductList extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/scss/variables';
+
 .related-container {
   display: flex;
-  justify-content: space-between;
-  width: 90%;
+  width: 100%;
+  padding: 0;
+}
+
+@media screen and (max-width: $mobile-width) {
+  .related-container {
+    overflow-x: scroll;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 }
 </style>

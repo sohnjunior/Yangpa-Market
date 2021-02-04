@@ -38,7 +38,7 @@ export default class BaseModal extends Vue {
   }
 
   .modal {
-    padding: 40px;
+    padding: 30px;
     border-radius: 10px;
     background-color: #ffffff;
     z-index: 99;

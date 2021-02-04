@@ -11,16 +11,14 @@
         <h1 class="table-title">구매 완료</h1>
       </template>
       <template v-slot:table-action>
-        <button class="register-button" @click="onShowModal">후기 등록</button>
+        <button class="register-button" @click="onShowModal">거래후기 등록</button>
       </template>
-      <ReviewCreateModal :show="isOpenReviewModal" @close="onCloseModal" />
     </BaseTable>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import ReviewCreateModal from '@components/Modals/ReviewCreateModal.vue';
 import BaseTable from '@components/Tables/BaseTable.vue';
 import { OrderAPI } from '../../api';
 
@@ -53,7 +51,7 @@ function normalizeBoughtProduct(info: any): IBoughtProductHistory {
 }
 
 @Component({
-  components: { ReviewCreateModal, BaseTable },
+  components: { BaseTable },
 })
 export default class UserBuyingTable extends Vue {
   private isOpenReviewModal = false;
@@ -76,7 +74,7 @@ export default class UserBuyingTable extends Vue {
   }
 
   public onShowModal() {
-    // FIXME: 선택된 상품에 대한 리뷰를 남기도록 해야함
+    // FIXME: 구매한 상품의 판매자에 대한 리뷰 남길 수 있도록 하기
     this.isOpenReviewModal = true;
   }
 
@@ -87,6 +85,7 @@ export default class UserBuyingTable extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/scss/variables';
 @import '../../assets/scss/mixins';
 
 .table-title {
@@ -100,5 +99,11 @@ export default class UserBuyingTable extends Vue {
   background-color: #69db7c;
   color: white;
   font-size: 0.9rem;
+
+  @media screen and (max-width: $mobile-width) {
+    padding: 6px 8px;
+    font-size: 0.7rem;
+    font-weight: 600;
+  }
 }
 </style>

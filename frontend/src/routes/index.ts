@@ -88,16 +88,12 @@ export const router = new VueRouter({
       component: loadView('ProductDetailView'),
     },
     {
-      path: '/product/update/:id',
-      component: loadView('ProductUpdateView'),
+      path: '/product/edit/:id',
+      component: loadView('ProductEditView'),
     },
     {
       path: '/search/:keyword?',
       component: loadView('SearchView'),
-    },
-    {
-      path: '/review',
-      component: loadView('ReviewBoardView'),
     },
     {
       path: '/no-permission',

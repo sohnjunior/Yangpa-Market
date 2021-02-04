@@ -25,6 +25,7 @@ export default class ProductSlideList extends Mixins(PopularProductMixin) {}
 
 <style lang="scss" scoped>
 .slide-list-container {
+  padding: 0;
   display: flex;
   overflow-x: scroll;
 
