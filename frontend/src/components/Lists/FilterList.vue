@@ -45,7 +45,7 @@ export default class FilterList extends Vue {
     border-radius: 20px;
     text-align: center;
     font-size: 1.1rem;
-    font-weight: 500;
+    font-weight: 600;
     color: #ffab91;
 
     input[type='radio'] {
@@ -55,7 +55,7 @@ export default class FilterList extends Vue {
     @media screen and (max-width: $mobile-width) {
       & {
         padding: 5px 10px;
-        font-size: 1rem;
+        font-size: 0.9rem;
       }
     }
   }

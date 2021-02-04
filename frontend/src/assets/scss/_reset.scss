@@ -80,6 +80,12 @@ body {
   line-height: 1;
 }
 
+input,
+textarea {
+  border: none;
+  background-color: transparent;
+}
+
 ol,
 ul {
   list-style: none;

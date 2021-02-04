@@ -3,9 +3,7 @@
     <template v-slot:modal-header>
       <div class="modal-header-wrapper">
         <h1 class="modal-title">로그인</h1>
-        <button class="close-btn" @click="closeModal">
-          <Icon filename="close" width="25" height="25" />
-        </button>
+        <Icon class="close-btn" filename="close" width="25" height="25" @click="closeModal" />
       </div>
     </template>
     <template v-slot:modal-content>
