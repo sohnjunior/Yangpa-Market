@@ -47,6 +47,7 @@ $category-btn-color: #8ce99a;
 @media screen and (max-width: 400px) {
   .category-btn {
     display: flex;
+    flex: 0 0 auto;
     flex-direction: column;
     width: 60px;
     height: 60px;

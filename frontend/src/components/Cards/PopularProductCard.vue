@@ -7,7 +7,10 @@
           <Chip :text="category" color="#40c057" width="55" />
         </div>
 
-        <div class="card-subtitle">조회수 {{ hit }}</div>
+        <div class="card-subtitle">
+          <Icon class="icon" filename="glasses" width="20" height="20" />
+          {{ hit }}
+        </div>
       </div>
     </template>
     <template v-slot:card-body>
@@ -20,9 +23,10 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import BaseCard from '@components/Cards/BaseCard.vue';
 import Chip from '@components/Common/Chip.vue';
+import Icon from '@components/Common/Icon.vue';
 
 @Component({
-  components: { BaseCard, Chip },
+  components: { BaseCard, Chip, Icon },
 })
 export default class PopularProductCard extends Vue {
   @Prop({ required: true }) readonly title!: string;
@@ -52,9 +56,15 @@ export default class PopularProductCard extends Vue {
   }
 
   .card-subtitle {
+    display: flex;
+    align-items: center;
     font-size: 0.8rem;
     font-weight: 500;
     color: #808080;
+
+    .icon {
+      margin-right: 5px;
+    }
   }
 }
 

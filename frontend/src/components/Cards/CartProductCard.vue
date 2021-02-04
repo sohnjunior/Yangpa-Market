@@ -93,6 +93,7 @@ export default class CartProductCard extends Vue {
     .mobile {
       width: 70px;
       height: 30px;
+      border: none;
       border-radius: 10px;
       background-color: #ff6b6b;
       font-size: 1rem;

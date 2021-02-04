@@ -151,6 +151,8 @@ export default class CommentList extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/scss/variables';
+
 .comment-container {
   padding: 0;
   margin-left: 10%;
@@ -192,6 +194,11 @@ export default class CommentList extends Vue {
         margin-right: 15px;
       }
     }
+  }
+
+  @media screen and (max-width: $mobile-width) {
+    margin-left: 5%;
+    margin-right: 5%;
   }
 }
 </style>

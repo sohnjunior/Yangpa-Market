@@ -40,8 +40,9 @@ export default class RelatedProductCard extends Vue {
 @import '../../assets/scss/mixins';
 
 .related-product-container {
-  width: 250px;
-  margin-right: 15px;
+  flex: 0 0 auto;
+  width: 230px;
+  margin-right: 50px;
 
   .product-image {
     width: 100%;
@@ -70,7 +71,8 @@ export default class RelatedProductCard extends Vue {
 
 @media screen and (max-width: $mobile-width) {
   .related-product-container {
-    width: 200px;
+    width: 180px;
+    margin-right: 20px;
   }
 }
 </style>

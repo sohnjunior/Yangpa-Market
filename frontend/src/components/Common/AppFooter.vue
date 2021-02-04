@@ -1,9 +1,7 @@
 <template>
   <footer class="footer-container">
     <div class="button-wrapper">
-      <button v-for="icon in icons" :key="icon">
-        <Icon :filename="icon" width="20" height="20" />
-      </button>
+      <Icon :filename="icon" width="20" height="20" v-for="icon in icons" :key="icon" />
     </div>
 
     <div class="footer-description">
@@ -36,7 +34,8 @@ export default class AppFooter extends Vue {
 
   .button-wrapper {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    width: 50px;
     margin-bottom: 20px;
 
     button:nth-child(1) {

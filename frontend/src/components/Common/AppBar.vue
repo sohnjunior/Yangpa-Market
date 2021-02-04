@@ -13,7 +13,7 @@
 
       <HistorySideNavigationMenu class="user-menu" v-if="isLoggedIn">
         <template v-slot:trigger>
-          <Icon filename="user" width="35" height="35" />
+          <Icon filename="user" width="25" height="25" />
         </template>
       </HistorySideNavigationMenu>
       <div v-else>
@@ -134,12 +134,11 @@ export default class AppBar extends Vue {
     margin-left: auto;
 
     .search-icon {
-      margin-right: 15px;
+      margin-right: 10px;
     }
 
     .user-menu {
       margin-right: 10px;
-      margin-left: 20px;
     }
 
     .button-wrapper {

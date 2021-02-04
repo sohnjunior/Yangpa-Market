@@ -40,6 +40,7 @@ export default class AuthSideNavigationMenu extends Vue {
     padding: 12px 20px;
     border: 1px solid $logo-color;
     border-radius: 3px;
+    background-color: white;
     font-size: 1rem;
     font-weight: 600;
     text-align: center;

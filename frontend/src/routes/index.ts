@@ -96,10 +96,6 @@ export const router = new VueRouter({
       component: loadView('SearchView'),
     },
     {
-      path: '/review',
-      component: loadView('ReviewBoardView'),
-    },
-    {
       path: '/no-permission',
       component: loadView('PageNotAllowedView'),
     },

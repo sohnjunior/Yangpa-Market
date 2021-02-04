@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button @click="onOpenMenu">
+    <button class="trigger-btn" @click="onOpenMenu">
       <slot name="trigger" />
     </button>
     <div @click="onCloseMenu">
@@ -31,7 +31,15 @@ export default class BaseSideNavigationMenu extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.trigger-btn {
+  width: 35px;
+  height: 35px;
+  border: none;
+  border-radius: 50%;
+  background-color: transparent;
+}
+
 .navigation-overlay {
   position: fixed;
   top: 0;
