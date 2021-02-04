@@ -18,22 +18,17 @@
         <input placeholder="전화번호" v-model="phone" />
       </label>
 
-      <button class="submit-btn" type="submit" @click="submitForm">변경하기</button>
+      <button class="submit-btn" type="submit" @click="onEditProfile">변경하기</button>
     </fieldset>
 
     <fieldset>
       <legend>비밀번호 변경</legend>
 
-      <input type="password" placeholder="현재 비밀번호" />
-      <input type="password" placeholder="새 비밀번호" v-model="password" :rules="passwordRules" />
-      <input
-        type="password"
-        placeholder="새 비밀번호 확인"
-        v-model="confirmpassword"
-        :rules="confirmPasswordRules.concat(passwordConfirmationRule)"
-      />
+      <input type="password" placeholder="현재 비밀번호" v-model="oldPassword" />
+      <input type="password" placeholder="새 비밀번호" v-model="newPassword" />
+      <input type="password" placeholder="새 비밀번호 확인" v-model="confirmPassword" />
 
-      <button class="submit-btn" type="submit" @click="submitForm">변경하기</button>
+      <button class="submit-btn" type="submit" @click="onEditPassword">변경하기</button>
     </fieldset>
 
     <fieldset>
@@ -48,68 +43,84 @@
         <input type="radio" value="female" v-model="sex" />
       </label>
 
-      <button class="submit-btn" type="submit" @click="submitForm">변경하기</button>
+      <button class="submit-btn" type="submit" @click="onEditSex">변경하기</button>
     </fieldset>
 
+    <!-- TODO: DatePicker 컴포넌트 구현 후 적용 -->
     <!-- <DatePicker @pick-date="onPickDate" /> -->
   </form>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import DatePicker from '@components/Inputs/DatePicker.vue';
+// import DatePicker from '@components/Inputs/DatePicker.vue';
 import { UserAPI } from '../../api';
 
-@Component({
-  components: { DatePicker },
-})
+function parseBirthday(date: string) {
+  return date.substr(0, 10);
+}
+
+@Component({})
 export default class UserProfileForm extends Vue {
-  private email: string = '';
-  private password: string = '';
-  private confirmpassword: string = '';
-  private nickname: string = '';
-  private phone: string = '';
-  private sex: string = '';
-  private birthday: string = '';
-  private date: string = '';
-  private menu: boolean = false;
+  private email = '';
+  private oldPassword = '';
+  private newPassword = '';
+  private confirmPassword = '';
+  private nickname = '';
+  private phone = '';
+  private sex = '';
+  private birthday = '';
+
   private passwordRules = [(v) => !!v || 'Password is required'];
   private confirmPasswordRules = [(v) => !!v || 'Confirm password'];
 
   get passwordConfirmationRule(): () => boolean | string {
-    return () => this.password === this.confirmpassword || '비밀번호가 일치하지 않습니다';
+    return () => this.newPassword === this.confirmPassword || '비밀번호가 일치하지 않습니다';
   }
 
-  async created() {
-    const { data } = await UserAPI.fetchUser();
-    this.email = data.result.email;
-    this.password = data.result.password;
-    this.confirmpassword = data.result.password;
-    this.nickname = data.result.nickname;
-    this.phone = data.result.phone;
-    this.sex = data.result.sex;
-    this.birthday = data.result.birthday.substr(0, 10);
+  public async created() {
+    const {
+      data: { result: userInfo },
+    } = await UserAPI.fetchUser();
+
+    this.email = userInfo.email;
+    this.nickname = userInfo.nickname;
+    this.phone = userInfo.phone;
+    this.sex = userInfo.sex;
+    this.birthday = parseBirthday(userInfo.birthday);
   }
 
-  public async submitForm(): Promise<void> {
-    const userData = {
-      email: this.email,
-      password: this.password,
-      nickname: this.nickname,
-      phone: this.phone,
-      sex: this.sex,
-      birthday: this.birthday,
-    };
+  // public async onSubmitForm() {
+  //   const userData = {
+  //     email: this.email,
+  //     password: this.password,
+  //     nickname: this.nickname,
+  //     phone: this.phone,
+  //     sex: this.sex,
+  //     birthday: this.birthday,
+  //   };
 
-    try {
-      const { data } = await UserAPI.updateUser(userData);
-      this.$router.go(0);
-    } catch (error) {
-      console.log(error);
-    }
+  //   try {
+  //     const { data } = await UserAPI.updateUser(userData);
+  //     this.$router.go(0);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
+  public onEditProfile() {
+    // TODO: 프로필 수정 api 구현
   }
 
-  public onPickDate(date): void {
+  public onEditPassword() {
+    // TODO: 비밀번호 수정 api 구현
+  }
+
+  public onEditSex() {
+    // TODO: 성별 수정 api 구현
+  }
+
+  public onPickDate(date) {
     this.birthday = date;
   }
 }
