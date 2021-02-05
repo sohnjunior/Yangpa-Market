@@ -190,6 +190,13 @@ export default class CommentList extends Vue {
       font-size: 0.8rem;
       font-weight: 500;
 
+      button {
+        margin-top: 10px;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+      }
+
       button:first-child {
         margin-right: 15px;
       }
