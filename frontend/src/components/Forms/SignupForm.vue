@@ -1,56 +1,26 @@
 <template>
   <form class="form-container" @submit.prevent="submitForm">
-    <h2 class="form-title">회원 가입</h2>
+    <h2 class="form-title">✍️ 회원 가입</h2>
 
     <fieldset class="form-fieldset">
-      <label>
-        이메일 계정
-        <input v-model="email" :rules="rulesMap.emailRules" required />
-      </label>
+      <input v-model="email" placeholder="이메일 주소" />
 
-      <label>
-        비밀번호 (8~15자, 적어도 하나의 특수문자와 숫자 포함)
-        <input v-model="password" :rules="rulesMap.passwordRules" type="password" required />
-      </label>
+      <input v-model="password" type="password" placeholder="비밀번호" />
+      <span class="password-help">8~15자, 적어도 하나의 특수문자와 숫자 포함</span>
 
-      <label>
-        비밀번호 확인
-        <input
-          v-model="confirmpassword"
-          :rules="rulesMap.confirmPasswordRules"
-          type="password"
-          required
-        />
-      </label>
+      <input v-model="confirmpassword" type="password" placeholder="비밀번호 확인" />
 
-      <label>
-        닉네임
-        <input v-model="nickname" required />
-      </label>
+      <input v-model="nickname" placeholder="별명" />
 
-      <label>
-        전화번호
-        <input v-model="phone" :rules="rulesMap.phoneRules" />
-      </label>
+      <input v-model="phone" placeholder="연락처" />
 
-      <label>
-        성별
-        <select v-model="sex">
-          <option value="male">남성</option>
-          <option value="female">여성</option>
-        </select>
-      </label>
-
-      <label>
-        관리자 계정이신가요?
-        <select v-model="isAdmin">
-          <option :value="true">예</option>
-          <option :value="false">아니요</option>
-        </select>
-      </label>
+      <select v-model="sex">
+        <option value="male">남성</option>
+        <option value="female">여성</option>
+      </select>
     </fieldset>
 
-    <DatePicker @pick-date="onPickDate" />
+    <!-- <DatePicker @pick-date="onPickDate" /> -->
 
     <SubmitButton :isValid="isValid">가입하기</SubmitButton>
   </form>
@@ -61,7 +31,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { UserAPI } from '../../api';
 import { validateEmail, validatePassword, validatePhoneNum } from '../../utils/validators';
 import SubmitButton from '@components/Buttons/SubmitButton.vue';
-import DatePicker from '@components/Inputs/DatePicker.vue';
+// import DatePicker from '@components/Inputs/DatePicker.vue';
 
 const rulesMap = {
   emailRules: [
@@ -83,7 +53,7 @@ const rulesMap = {
 };
 
 @Component({
-  components: { SubmitButton, DatePicker },
+  components: { SubmitButton },
 })
 export default class SignupForm extends Vue {
   private email: string = '';
@@ -97,7 +67,7 @@ export default class SignupForm extends Vue {
   private isValid: boolean = false;
   private rulesMap = rulesMap;
 
-  public async submitForm(): Promise<void> {
+  public async submitForm() {
     const userData = {
       email: this.email,
       password: this.password,
@@ -116,7 +86,7 @@ export default class SignupForm extends Vue {
     }
   }
 
-  public onPickDate(date): void {
+  public onPickDate(date) {
     this.birthday = date;
   }
 }
@@ -134,17 +104,31 @@ export default class SignupForm extends Vue {
 
   .form-title {
     margin-bottom: 20px;
-    font-size: 2.8rem;
-    font-weight: 600;
+    font-size: 2rem;
+    font-weight: 700;
   }
 
   .form-fieldset {
-    label {
-      @include form-label();
+    margin-bottom: 30px;
 
-      input,
-      select {
-        @include form-inputs();
+    .password-help {
+      font-size: 1rem;
+    }
+
+    input,
+    select {
+      width: 100%;
+      margin: 5px 0px;
+      padding: 15px 20px;
+      border: 1px solid #efefef;
+      border-radius: 5px;
+      background-color: white;
+      font-size: 1rem;
+      font-weight: 500;
+
+      &::placeholder {
+        font-size: 1rem;
+        font-weight: 500;
       }
     }
   }
