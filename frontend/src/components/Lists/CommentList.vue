@@ -179,7 +179,6 @@ export default class CommentList extends Vue {
 
     .comment-edit {
       width: 100%;
-      resize: none;
     }
 
     .comment-text {
