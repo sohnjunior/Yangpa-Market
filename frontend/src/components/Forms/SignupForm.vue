@@ -3,27 +3,27 @@
     <h2 class="form-title">✍️ 회원 가입</h2>
 
     <fieldset class="form-fieldset">
-      <input v-model="email" type="email" placeholder="이메일 주소" />
+      <input type="email" v-model="email" placeholder="이메일 주소" />
       <span class="error" v-show="!validation.email.isValid">
         {{ validation.email.message }}
       </span>
 
-      <input v-model="password" type="password" placeholder="비밀번호" />
+      <input type="password" v-model="password" placeholder="비밀번호" />
       <span class="error" v-show="!validation.password.isValid">
         {{ validation.password.message }}
       </span>
 
-      <input v-model="confirmPassword" type="password" placeholder="비밀번호 확인" />
+      <input type="password" v-model="confirmPassword" placeholder="비밀번호 확인" />
       <span class="error" v-show="!validation.confirmPassword.isValid">
         {{ validation.confirmPassword.message }}
       </span>
 
-      <input v-model="nickname" placeholder="별명" />
+      <input type="text" v-model="nickname" placeholder="별명" />
       <span class="error" v-show="!validation.nickname.isValid">
         {{ validation.nickname.message }}
       </span>
 
-      <input v-model="phone" type="tel" placeholder="연락처" />
+      <input type="tel" v-model="phone" placeholder="연락처" />
       <span class="error" v-show="!validation.phone.isValid">
         {{ validation.phone.message }}
       </span>
@@ -72,7 +72,6 @@ export default class SignupForm extends Vue {
   private sex = 'male';
   private birthday = ''; // TODO: DatePicker 컴포넌트 구현 후 적용
   private isAdmin = false; // TODO: 회원가입 api 에서 isAdmin 제거
-  // private rulesMap = rulesMap;
 
   private validation: ISigninValidation = {
     email: { isValid: false, message: '' },
@@ -153,7 +152,7 @@ export default class SignupForm extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '../../assets/scss/mixins';
 
 .form-container {
