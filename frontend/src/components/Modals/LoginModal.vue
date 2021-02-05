@@ -9,8 +9,10 @@
     <template v-slot:modal-content>
       <div class="modal-content-wrapper">
         <LoginForm @submit-form="onSubmit" />
-        <span> 아직 계정이 없나요? </span>
-        <span class="link" @click="moveToRegisterPage">회원가입하기</span>
+        <div class="signup-guide-wrapper">
+          <span> 아직 계정이 없으신가요? </span>
+          <span class="signup-link" @click="moveToRegisterPage">회원가입하기</span>
+        </div>
       </div>
     </template>
   </BaseModal>
@@ -58,6 +60,7 @@ export default class LoginModal extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/scss/variables';
 @import '../../assets/scss/mixins';
 
 .modal-header-wrapper {
@@ -79,9 +82,21 @@ export default class LoginModal extends Vue {
   flex-direction: column;
   align-items: center;
 
-  .link:hover {
-    cursor: pointer;
-    text-decoration: underline;
+  .signup-guide-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.8rem;
+
+    .signup-link {
+      margin-top: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .signup-link:hover {
+      color: $logo-color;
+    }
   }
 }
 </style>
