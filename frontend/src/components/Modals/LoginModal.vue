@@ -9,15 +9,17 @@
     <template v-slot:modal-content>
       <div class="modal-content-wrapper">
         <LoginForm @submit-form="onSubmit" />
-        <span> 아직 계정이 없나요? </span>
-        <span class="link" @click="moveToRegisterPage">회원가입하기</span>
+        <div class="signup-guide-wrapper">
+          <span> 아직 계정이 없으신가요? </span>
+          <span class="signup-link" @click="onRedirect">회원가입하기</span>
+        </div>
       </div>
     </template>
   </BaseModal>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import { User } from '../../types';
 import ToastBus from '../../bus/ToastBus';
@@ -25,7 +27,7 @@ import LoginForm from '@components/Forms/LoginForm.vue';
 import BaseModal from '@components/Modals/BaseModal.vue';
 import Icon from '@components/Common/Icon.vue';
 
-const userModule = namespace('UserModule');
+const UserModule = namespace('UserModule');
 
 @Component({
   components: { LoginForm, BaseModal, Icon },
@@ -33,16 +35,19 @@ const userModule = namespace('UserModule');
 export default class LoginModal extends Vue {
   @Prop({ required: true, default: false }) readonly show!: boolean;
 
-  public closeModal(): void {
+  @UserModule.Action
+  public login!: (userData: User) => Promise<boolean>;
+
+  public closeModal() {
     this.$emit('close-modal');
   }
 
-  public moveToRegisterPage(): void {
+  public onRedirect() {
     this.closeModal();
     this.$router.push('/signup');
   }
 
-  public async onSubmit(userData: User): Promise<void> {
+  public async onSubmit(userData: User) {
     const success = await this.login(userData);
     if (success) {
       ToastBus.$emit('pop-up', '로그인 되었습니다.');
@@ -51,13 +56,11 @@ export default class LoginModal extends Vue {
       alert('이메일 혹은 비밀번호를 확인해주세요');
     }
   }
-
-  @userModule.Action
-  public login!: (userData: User) => Promise<boolean>;
 }
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/scss/variables';
 @import '../../assets/scss/mixins';
 
 .modal-header-wrapper {
@@ -79,9 +82,21 @@ export default class LoginModal extends Vue {
   flex-direction: column;
   align-items: center;
 
-  .link:hover {
-    cursor: pointer;
-    text-decoration: underline;
+  .signup-guide-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.8rem;
+
+    .signup-link {
+      margin-top: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .signup-link:hover {
+      color: $logo-color;
+    }
   }
 }
 </style>

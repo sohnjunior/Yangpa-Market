@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="app-container">
     <AppBar />
-    <main>
+    <main class="main-container">
       <ToastModal />
       <transition name="fade">
         <router-view :key="$route.fullPath" />
@@ -30,12 +30,15 @@ export default {
 <style lang="scss">
 @import './assets/scss/reset';
 
-main {
-  min-height: 800px;
-  padding-top: 130px;
-  padding-left: 20px;
-  padding-right: 20px;
+.app-container {
   background-color: #f9f9f9;
+
+  .main-container {
+    min-height: 800px;
+    padding-top: 130px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
 }
 
 .fade-enter-active,

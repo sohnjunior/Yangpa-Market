@@ -76,7 +76,6 @@ export default class CommentInput extends Vue {
     .comment-input {
       width: 100%;
       outline: none;
-      resize: none;
     }
   }
 

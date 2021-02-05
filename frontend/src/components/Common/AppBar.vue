@@ -155,6 +155,7 @@ export default class AppBar extends Vue {
         height: 35px;
         border: 1px solid #ffab91;
         border-radius: 3px;
+        background-color: white;
         font-size: 0.9rem;
         font-weight: 700;
         color: #ffab91;
