@@ -20,9 +20,9 @@ function validatePassword(password: string) {
 /**
  * 전화번호 검증
  */
-function validatePhoneNum(phone: string) {
+function validatePhone(phone: string) {
   const re = /^[0-9]{2,3}[-]+[0-9]{4}[-]+[0-9]{4}$/;
   return re.test(phone);
 }
 
-export { validateEmail, validatePassword, validatePhoneNum };
+export { validateEmail, validatePassword, validatePhone };

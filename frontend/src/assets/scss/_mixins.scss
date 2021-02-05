@@ -46,3 +46,10 @@
   border-radius: 10px;
   background-color: #ffffff;
 }
+
+@mixin error-message() {
+  margin-bottom: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #ff6b6b;
+}

@@ -1,7 +1,7 @@
 <template>
   <form class="login-form" @submit.prevent="onSubmit">
     <fieldset class="input-wrapper">
-      <input type="text" name="email" placeholder="이메일 주소" v-model="email" />
+      <input type="email" name="email" placeholder="이메일 주소" v-model="email" />
       <span class="error" v-show="!validation.email.isValid">
         {{ validation.email.message }}
       </span>
@@ -65,7 +65,7 @@ export default class LoginForm extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '../../assets/scss/variables';
+@import '../../assets/scss/mixins';
 
 .login-form {
   margin: 30px 0px;
@@ -89,10 +89,7 @@ export default class LoginForm extends Vue {
     }
 
     .error {
-      margin-bottom: 20px;
-      font-size: 0.75rem;
-      font-weight: 500;
-      color: $error-color;
+      @include error-message();
     }
   }
 }
