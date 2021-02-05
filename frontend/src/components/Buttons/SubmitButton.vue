@@ -14,7 +14,7 @@ export default class SubmitButton extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '../../assets/scss/_mixins';
+@import '../../assets/scss/mixins';
 
 $submit-btn-color: #69db7c;
 
@@ -24,5 +24,10 @@ $submit-btn-color: #69db7c;
   height: 50px;
   background-color: $submit-btn-color;
   color: white;
+  transition: background-color 0.3s ease;
+
+  &:disabled {
+    background-color: #efefef;
+  }
 }
 </style>
