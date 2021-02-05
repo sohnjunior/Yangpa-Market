@@ -1,46 +1,72 @@
 <template>
   <form class="login-form" @submit.prevent="onSubmit">
     <fieldset class="input-wrapper">
-      <input type="text" name="email" placeholder="이메일 주소" required v-model="email" />
-      <input type="password" name="password" placeholder="비밀번호" required v-model="password" />
+      <input type="email" name="email" placeholder="이메일 주소" v-model="email" />
+      <span class="error" v-show="!validation.email.isValid">
+        {{ validation.email.message }}
+      </span>
+
+      <input type="password" name="password" placeholder="비밀번호" v-model="password" />
+      <span class="error" v-show="!validation.password.isValid">
+        {{ validation.password.message }}
+      </span>
     </fieldset>
 
-    <SubmitButton :isValid="isValid"> 로그인하기 </SubmitButton>
+    <SubmitButton :isValid="isFormValid"> 로그인하기 </SubmitButton>
   </form>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { validateEmail } from '../../utils/validators';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import SubmitButton from '@components/Buttons/SubmitButton.vue';
+import { validateEmail, validatePassword } from '../../utils/validators';
+
+interface ILoginValidation {
+  email: { isValid: boolean; message: string };
+  password: { isValid: boolean; message: string };
+}
 
 @Component({
   components: { SubmitButton },
 })
 export default class LoginForm extends Vue {
-  private isValid = true; // FIXME: 입력 값에 따라 valid 유무 판단 로직 추가
   private email = '';
   private password = '';
-  private emailRules = [
-    (v) => !!v || 'email을 입력하세요',
-    (v) => validateEmail(v) || '올바른 email 형식이 아닙니다',
-  ];
-  private passwordRules = [
-    (v) => !!v || '비밀번호를 입력하세요',
-    //v => validatePassword(v) || '올바른 비밀번호 형식이 아닙니다',
-  ];
 
-  public click() {
-    console.log('ah');
+  private validation: ILoginValidation = {
+    email: { isValid: false, message: '' },
+    password: { isValid: false, message: '' },
+  };
+
+  get isFormValid() {
+    return Object.values(this.validation).every((v) => v.isValid);
   }
 
   public onSubmit() {
     this.$emit('submit-form', { email: this.email, password: this.password });
   }
+
+  @Watch('email')
+  public onWatchEmail(value: string) {
+    const isValid = validateEmail(value);
+
+    this.validation.email.isValid = isValid;
+    this.validation.email.message = isValid ? '' : '이메일 형식을 확인해주세요';
+  }
+
+  @Watch('password')
+  public onWatchPassword(value: string) {
+    const isValid = validatePassword(value);
+
+    this.validation.password.isValid = isValid;
+    this.validation.password.message = isValid ? '' : '비밀번호 형식을 확인해주세요';
+  }
 }
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/scss/mixins';
+
 .login-form {
   margin: 30px 0px;
   width: 90%;
@@ -51,7 +77,7 @@ export default class LoginForm extends Vue {
     margin-bottom: 10px;
 
     input {
-      margin-bottom: 30px;
+      margin-bottom: 10px;
       padding: 10px;
       border-bottom: 1px solid #898989;
       outline: none;
@@ -60,6 +86,10 @@ export default class LoginForm extends Vue {
         font-size: 1rem;
         font-weight: 500;
       }
+    }
+
+    .error {
+      @include error-message();
     }
   }
 }

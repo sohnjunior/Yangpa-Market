@@ -1,22 +1,33 @@
 <template>
   <form class="form-container">
-    <h1 class="form-title">프로필 설정</h1>
+    <h1 class="form-title">⚙️ 프로필 설정</h1>
 
     <fieldset>
       <legend>나의 프로필</legend>
 
       <label>
         <span class="label">이메일</span>
-        <input type="email" placeholder="이메일 계정" v-model="email" />
+        <input type="email" v-model="email" placeholder="이메일 계정" />
       </label>
+      <span class="error" v-show="!validation.email.isValid">
+        {{ validation.email.message }}
+      </span>
+
       <label>
         <span class="label">닉네임</span>
-        <input placeholder="별명" v-model="nickname" required />
+        <input type="text" v-model="nickname" placeholder="별명" />
       </label>
+      <span class="error" v-show="!validation.nickname.isValid">
+        {{ validation.nickname.message }}
+      </span>
+
       <label>
         <span class="label">연락처</span>
-        <input placeholder="전화번호" v-model="phone" />
+        <input type="tel" v-model="phone" placeholder="전화번호" />
       </label>
+      <span class="error" v-show="!validation.phone.isValid">
+        {{ validation.phone.message }}
+      </span>
 
       <button class="submit-btn" type="submit" @click="onEditProfile">변경하기</button>
     </fieldset>
@@ -24,9 +35,20 @@
     <fieldset>
       <legend>비밀번호 변경</legend>
 
-      <input type="password" placeholder="현재 비밀번호" v-model="oldPassword" />
-      <input type="password" placeholder="새 비밀번호" v-model="newPassword" />
-      <input type="password" placeholder="새 비밀번호 확인" v-model="confirmPassword" />
+      <input type="password" v-model="oldPassword" placeholder="현재 비밀번호" />
+      <span class="error" v-show="!validation.oldPassword.isValid">
+        {{ validation.oldPassword.message }}
+      </span>
+
+      <input type="password" v-model="newPassword" placeholder="새 비밀번호" />
+      <span class="error" v-show="!validation.newPassword.isValid">
+        {{ validation.newPassword.message }}
+      </span>
+
+      <input type="password" v-model="confirmPassword" placeholder="새 비밀번호 확인" />
+      <span class="error" v-show="!validation.confirmPassword.isValid">
+        {{ validation.confirmPassword.message }}
+      </span>
 
       <button class="submit-btn" type="submit" @click="onEditPassword">변경하기</button>
     </fieldset>
@@ -52,9 +74,24 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-// import DatePicker from '@components/Inputs/DatePicker.vue';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import { UserAPI } from '../../api';
+import { validateEmail, validatePassword, validatePhone } from '../../utils/validators';
+// import DatePicker from '@components/Inputs/DatePicker.vue';
+
+interface IValidation {
+  isValid: boolean;
+  message: string;
+}
+
+interface IProfileValidation {
+  email: IValidation;
+  oldPassword: IValidation;
+  newPassword: IValidation;
+  confirmPassword: IValidation;
+  nickname: IValidation;
+  phone: IValidation;
+}
 
 function parseBirthday(date: string) {
   return date.substr(0, 10);
@@ -71,12 +108,14 @@ export default class UserProfileForm extends Vue {
   private sex = '';
   private birthday = '';
 
-  private passwordRules = [(v) => !!v || 'Password is required'];
-  private confirmPasswordRules = [(v) => !!v || 'Confirm password'];
-
-  get passwordConfirmationRule(): () => boolean | string {
-    return () => this.newPassword === this.confirmPassword || '비밀번호가 일치하지 않습니다';
-  }
+  private validation: IProfileValidation = {
+    email: { isValid: false, message: '' },
+    oldPassword: { isValid: false, message: '' },
+    newPassword: { isValid: false, message: '' },
+    confirmPassword: { isValid: false, message: '' },
+    nickname: { isValid: false, message: '' },
+    phone: { isValid: false, message: '' },
+  };
 
   public async created() {
     const {
@@ -89,24 +128,6 @@ export default class UserProfileForm extends Vue {
     this.sex = userInfo.sex;
     this.birthday = parseBirthday(userInfo.birthday);
   }
-
-  // public async onSubmitForm() {
-  //   const userData = {
-  //     email: this.email,
-  //     password: this.password,
-  //     nickname: this.nickname,
-  //     phone: this.phone,
-  //     sex: this.sex,
-  //     birthday: this.birthday,
-  //   };
-
-  //   try {
-  //     const { data } = await UserAPI.updateUser(userData);
-  //     this.$router.go(0);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
 
   public onEditProfile() {
     // TODO: 프로필 수정 api 구현
@@ -123,10 +144,64 @@ export default class UserProfileForm extends Vue {
   public onPickDate(date) {
     this.birthday = date;
   }
+
+  @Watch('email')
+  public onWatchEmail(value: string) {
+    const isValid = validateEmail(value);
+
+    this.validation.email.isValid = isValid;
+    this.validation.email.message = isValid ? '' : '이메일 형식을 확인해주세요';
+  }
+
+  @Watch('nickname')
+  public onWatchNickname(value: string) {
+    const isValid = value !== '';
+
+    this.validation.nickname.isValid = isValid;
+    this.validation.nickname.message = isValid ? '' : '별명을 확인해주세요';
+  }
+
+  @Watch('phone')
+  public onWatchPhone(value: string) {
+    const isValid = validatePhone(value);
+
+    this.validation.phone.isValid = isValid;
+    this.validation.phone.message = isValid ? '' : '연락처 형식을 확인해주세요(- 포함)';
+  }
+
+  @Watch('oldPassword')
+  public onWatchOldPassword(value: string) {
+    const isValid = validatePassword(value);
+
+    this.validation.oldPassword.isValid = isValid;
+    this.validation.oldPassword.message = isValid
+      ? ''
+      : '비밀번호 형식을 확인해주세요(8~15자 적어도 하나의 특수문자 및 숫자 포함)';
+  }
+
+  @Watch('newPassword')
+  public onWatchNewPassword(value: string) {
+    const isValid = validatePassword(value);
+
+    this.validation.oldPassword.isValid = isValid;
+    this.validation.oldPassword.message = isValid
+      ? ''
+      : '비밀번호 형식을 확인해주세요(8~15자 적어도 하나의 특수문자 및 숫자 포함)';
+  }
+
+  @Watch('confirmPassword')
+  public onWatchConrifmPassword(value: string) {
+    const isValid = this.newPassword === value;
+
+    this.validation.confirmPassword.isValid = isValid;
+    this.validation.confirmPassword.message = isValid ? '' : '비밀번호가 일치하지 않아요';
+  }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+@import '../../assets/scss/mixins';
+
 .form-container {
   display: flex;
   flex-direction: column;
@@ -153,6 +228,10 @@ export default class UserProfileForm extends Vue {
     .label {
       margin-right: 20px;
       font-weight: 500;
+    }
+
+    .error {
+      @include error-message();
     }
 
     input {
