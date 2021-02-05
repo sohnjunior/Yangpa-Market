@@ -1,6 +1,6 @@
 <template>
   <div class="product-register-view">
-    <h1 class="register-view-title">새로운 중고상품 등록</h1>
+    <h1 class="register-view-title">중고상품 등록</h1>
 
     <div class="register-form-wrapper">
       <ProductForm @submit="onSubmit" />
@@ -14,11 +14,11 @@ import { IProductForm } from '../types';
 import { ProductAPI } from '../api';
 import ProductForm from '@components/Forms/ProductForm.vue';
 
-interface IformDataPayload {
+interface IFormDataPayload {
   [index: string]: string | Blob;
 }
 
-function createFormDataWithObject(payload: IformDataPayload) {
+function createFormDataWithObject(payload: IFormDataPayload) {
   const formData = new FormData();
 
   for (const [key, value] of Object.entries(payload)) {
@@ -51,11 +51,12 @@ export default class ProductRegisterView extends Vue {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 30px 50px;
+  padding: 20px;
+  margin-bottom: 50px;
 
   .register-view-title {
     font-size: 2rem;
-    font-weight: 500;
+    font-weight: 700;
   }
 
   .register-form-wrapper {
