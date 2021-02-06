@@ -4,7 +4,7 @@
 const fs = require('fs');
 
 ['product', 'review'].forEach((dirname) =>
-  fs.readdir(`public/images/${dirname}`, (err) => {
+  fs.readdir(`public/images/${dirname}`, (err: any) => {
     if (err) {
       console.error(`public/images/${dirname} 디렉토리가 없어서 생성합니다.`);
       fs.mkdirSync(`public/images/${dirname}`);
@@ -45,7 +45,7 @@ server.on('listening', onListening);
  * Normalize a port into a number, string, or false.
  */
 
-function normalizePort(val) {
+function normalizePort(val: any) {
   const port = parseInt(val, 10);
 
   if (isNaN(port)) {
@@ -65,7 +65,7 @@ function normalizePort(val) {
  * Event listener for HTTP server "error" event.
  */
 
-function onError(error) {
+function onError(error: any) {
   if (error.syscall !== 'listen') {
     throw error;
   }
