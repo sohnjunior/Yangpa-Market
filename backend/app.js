@@ -2,7 +2,6 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const flash = require('connect-flash');
 const cors = require('cors');
 const passport = require('passport');
 const passportConfig = require('./passport');
@@ -28,7 +27,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -40,6 +38,7 @@ app.use((req, res, next) => {
 });
 
 /** exception handler */
-app.use(handleErrors);
+// TODO: app.ts 로 전환 후 주석 제거
+// app.use(handleErrors);
 
 module.exports = app;
