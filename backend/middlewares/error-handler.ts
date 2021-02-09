@@ -1,8 +1,20 @@
-const { BaseError } = require('../utils/errors');
+import { Request, Response, NextFunction } from 'express';
+import { BaseError } from '../utils/errors';
 
-const handleErrors = (err, req, res, next) => {
+interface IErrorMessage {
+  status: string;
+  message: string;
+}
+
+function handleErrors(
+  err: any,
+  req: Request,
+  res: Response<IErrorMessage>,
+  next: NextFunction
+) {
   if (err instanceof BaseError) {
     const httpCode = err.getStatusCode();
+
     return res.status(httpCode).json({
       status: 'error',
       message: err.message,
@@ -15,6 +27,6 @@ const handleErrors = (err, req, res, next) => {
     status: 'error',
     message: err.message,
   });
-};
+}
 
-module.exports = handleErrors;
+export default handleErrors;

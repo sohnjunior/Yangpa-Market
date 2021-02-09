@@ -1,10 +1,11 @@
-const multer = require('multer');
-const path = require('path');
-const { HTTP401Error, HTTP419Error } = require('../utils/errors');
-const passport = require('passport');
+import { Request, Response, NextFunction } from 'express';
+import multer from 'multer';
+import path from 'path';
+import passport from 'passport';
+import { HTTP401Error, HTTP419Error } from '../utils/errors';
 
-const uploadImage = (dirname) =>
-  multer({
+function uploadImage(dirname: string) {
+  return multer({
     storage: multer.diskStorage({
       destination(req, file, cb) {
         cb(null, `public/images/${dirname}/`);
@@ -20,9 +21,10 @@ const uploadImage = (dirname) =>
       },
     }),
   });
+}
 
 // 토큰오류 확인방법 : https://github.com/mikenicholson/passport-jwt/issues/75
-const verifyToken = (req, res, next) => {
+function verifyToken(req: Request, res: Response, next: NextFunction) {
   passport.authenticate(
     'access-token',
     { session: false },
@@ -39,9 +41,6 @@ const verifyToken = (req, res, next) => {
       next(new HTTP401Error('유효하지 않은 토큰입니다'));
     }
   )(req, res, next);
-};
+}
 
-module.exports = {
-  uploadImage,
-  verifyToken,
-};
+export { uploadImage, verifyToken };

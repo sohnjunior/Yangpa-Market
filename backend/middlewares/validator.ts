@@ -1,7 +1,9 @@
-const { HTTP400Error } = require('../utils/errors');
+import { Request, Response, NextFunction } from 'express';
+import { HTTP400Error } from '../utils/errors';
 
-const checkBodyNull = (req, res, next) => {
+function checkBodyNull(req: Request, res: Response, next: NextFunction) {
   let valid = true;
+
   for (const field in req.body) {
     if (!req.body[field]) {
       valid = false;
@@ -11,6 +13,6 @@ const checkBodyNull = (req, res, next) => {
 
   if (!valid) next(new HTTP400Error('요청 인자가 부족합니다'));
   next();
-};
+}
 
-module.exports = { checkBodyNull };
+export { checkBodyNull };
