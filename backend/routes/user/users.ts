@@ -1,7 +1,7 @@
-const express = require('express');
-const UserController = require('../../controllers/users');
-const { verifyToken } = require('../../middlewares');
-const { checkBodyNull } = require('../../middlewares/validator');
+import express from 'express';
+import * as UserController from '../../controllers/users';
+import { verifyToken } from '../../middlewares';
+import { checkBodyNull } from '../../middlewares/validator';
 require('dotenv').config();
 
 const router = express.Router();
@@ -13,4 +13,4 @@ router.post('/', checkBodyNull, UserController.createUser); // 회원 생성
 router.put('/self', verifyToken, checkBodyNull, UserController.updateUser); // 회원 정보 수정
 router.delete('/self', verifyToken, UserController.deleteUser); // 회원 정보 삭제
 
-module.exports = router;
+export default router;

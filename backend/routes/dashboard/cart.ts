@@ -1,7 +1,7 @@
-const express = require('express');
-const CartController = require('../../controllers/cart');
-const { verifyToken } = require('../../middlewares');
-const { checkBodyNull } = require('../../middlewares/validator');
+import express from 'express';
+import * as CartController from '../../controllers/cart';
+import { verifyToken } from '../../middlewares';
+import { checkBodyNull } from '../../middlewares/validator';
 
 const router = express.Router();
 
@@ -20,4 +20,4 @@ router.post(
 ); // 장바구니 상품 구매 처리
 router.delete('/self/products/:id', verifyToken, CartController.deleteProduct); // 장바구니 상품 삭제
 
-module.exports = router;
+export default router;

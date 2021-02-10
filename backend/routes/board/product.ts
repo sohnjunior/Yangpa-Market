@@ -1,7 +1,7 @@
-const express = require('express');
-const ProductController = require('../../controllers/product');
-const { uploadImage, verifyToken } = require('../../middlewares');
-const { checkBodyNull } = require('../../middlewares/validator');
+import express from 'express';
+import * as ProductController from '../../controllers/product';
+import { uploadImage, verifyToken } from '../../middlewares';
+import { checkBodyNull } from '../../middlewares/validator';
 
 const router = express.Router();
 
@@ -21,4 +21,4 @@ router.put('/:id/like', verifyToken, ProductController.updateLikeOfProduct); // 
 router.put('/:id', verifyToken, checkBodyNull, ProductController.updateProduct); // 상품 정보 수정
 router.delete('/:id', verifyToken, ProductController.deleteProduct); // 상품 게시글 삭제
 
-module.exports = router;
+export default router;
