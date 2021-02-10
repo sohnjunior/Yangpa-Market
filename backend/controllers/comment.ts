@@ -1,6 +1,7 @@
-const CommentService = require('../services/comment');
+import { Request, Response, NextFunction } from 'express';
+import * as CommentService from '../services/comment';
 
-const postComment = async (req, res, next) => {
+async function postComment(req: Request, res: Response, next: NextFunction) {
   try {
     const { id: userID } = req.decoded;
     const { postId, comment, secret } = req.body;
@@ -11,9 +12,9 @@ const postComment = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+}
 
-const deleteComment = async (req, res, next) => {
+async function deleteComment(req: Request, res: Response, next: NextFunction) {
   try {
     const { id: commentID } = req.params;
 
@@ -23,9 +24,9 @@ const deleteComment = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+}
 
-const updateComment = async (req, res, next) => {
+async function updateComment(req: Request, res: Response, next: NextFunction) {
   try {
     const { id: commentID } = req.params;
     const { comment: commentText } = req.body;
@@ -36,9 +37,9 @@ const updateComment = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+}
 
-const getComment = async (req, res, next) => {
+async function getComment(req: Request, res: Response, next: NextFunction) {
   try {
     const { id: postID } = req.params;
 
@@ -50,6 +51,6 @@ const getComment = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+}
 
-module.exports = { postComment, deleteComment, updateComment, getComment };
+export { postComment, deleteComment, updateComment, getComment };

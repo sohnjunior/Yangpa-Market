@@ -1,8 +1,9 @@
-const passport = require('passport');
-const UserService = require('../services/users');
-const { HTTP400Error, HTTP401Error } = require('../utils/errors');
+import { Request, Response, NextFunction } from 'express';
+import passport from 'passport';
+import * as UserService from '../services/users';
+import { HTTP400Error, HTTP401Error } from '../utils/errors';
 
-const getUsers = async (req, res, next) => {
+async function getUsers(req: Request, res: Response, next: NextFunction) {
   try {
     const users = await UserService.getAllUserExceptAdmin();
 
@@ -14,12 +15,11 @@ const getUsers = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+}
 
-const getUser = async (req, res, next) => {
+async function getUser(req: Request, res: Response, next: NextFunction) {
   try {
     const { id: userID } = req.decoded;
-
     const user = await UserService.getUserInfo(userID);
 
     res
@@ -28,12 +28,11 @@ const getUser = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+}
 
-const createUser = async (req, res, next) => {
+async function createUser(req: Request, res: Response, next: NextFunction) {
   try {
     const { email, password, nickname, phone, sex, birthday, admin } = req.body;
-
     const isValid = await UserService.createUser(
       email,
       password,
@@ -52,12 +51,11 @@ const createUser = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+}
 
-const updateUser = async (req, res, next) => {
+async function updateUser(req: Request, res: Response, next: NextFunction) {
   try {
     const { email, password, nickname, phone, sex, birthday } = req.body;
-
     const user = UserService.updateUserInfo(
       email,
       password,
@@ -75,9 +73,9 @@ const updateUser = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+}
 
-const deleteUser = async (req, res, next) => {
+async function deleteUser(req: Request, res: Response, next: NextFunction) {
   try {
     const { id: userID } = req.decoded;
 
@@ -89,9 +87,9 @@ const deleteUser = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+}
 
-const signin = async (req, res, next) => {
+async function signin(req: Request, res: Response, next: NextFunction) {
   passport.authenticate('signin', async (err, data, info) => {
     if (err) return next(err);
     if (info) {
@@ -102,13 +100,6 @@ const signin = async (req, res, next) => {
       .status(200)
       .json({ status: 'ok', message: '로그인 되었습니다', ...data });
   })(req, res, next);
-};
+}
 
-module.exports = {
-  getUsers,
-  getUser,
-  createUser,
-  updateUser,
-  deleteUser,
-  signin,
-};
+export { getUsers, getUser, createUser, updateUser, deleteUser, signin };

@@ -1,21 +1,22 @@
-const passport = require('passport');
-const jwt = require('jsonwebtoken');
-const UserService = require('../services/users');
+import { Request, Response, NextFunction } from 'express';
+import passport from 'passport';
+import jwt from 'jsonwebtoken';
+// import * as UserService from '../services/users';
 const { HTTP401Error, HTTP419Error } = require('../utils/errors');
 
-const getPermission = async (req, res, next) => {
+async function getPermission(req: Request, res: Response, next: NextFunction) {
   try {
     const { id: userID } = req.decoded;
-    const isAdmin = await UserService.checkPermission(userID);
-    const role = isAdmin ? 'admin' : 'normal';
+    // const isAdmin = await UserService.checkPermission(userID);
+    // const role = isAdmin ? 'admin' : 'normal';
 
-    res.status(200).json({ status: 200, message: '권한 조회', role });
+    // res.status(200).json({ status: 200, message: '권한 조회', role });
   } catch (err) {
     next(err);
   }
-};
+}
 
-const getRefreshToken = (req, res, next) => {
+function getRefreshToken(req: Request, res: Response, next: NextFunction) {
   passport.authenticate(
     'refresh-token',
     { session: false },
@@ -23,7 +24,7 @@ const getRefreshToken = (req, res, next) => {
       if (userID !== -1) {
         const accessToken = jwt.sign(
           { id: userID },
-          process.env.ACCESS_TOKEN_SECRET,
+          process.env.ACCESS_TOKEN_SECRET as string,
           {
             expiresIn: '10m',
           }
@@ -41,6 +42,6 @@ const getRefreshToken = (req, res, next) => {
       next(new HTTP401Error('유효하지 않은 토큰입니다'));
     }
   )(req, res, next);
-};
+}
 
-module.exports = { getPermission, getRefreshToken };
+export { getPermission, getRefreshToken };

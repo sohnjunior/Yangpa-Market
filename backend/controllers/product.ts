@@ -1,7 +1,8 @@
-const ProductService = require('../services/product');
-const { HTTP404Error } = require('../utils/errors');
+import { Request, Response, NextFunction } from 'express';
+import * as ProductService from '../services/product';
+import { HTTP404Error } from '../utils/errors';
 
-const postProduct = async (req, res, next) => {
+async function postProduct(req: Request, res: Response, next: NextFunction) {
   try {
     const { id: userID } = req.decoded;
     const { category, title, description, price } = req.body;
@@ -19,9 +20,9 @@ const postProduct = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+}
 
-const updateProduct = async (req, res, next) => {
+async function updateProduct(req: Request, res: Response, next: NextFunction) {
   try {
     const { productId, title, price, body } = req.body;
 
@@ -33,9 +34,9 @@ const updateProduct = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+}
 
-const deleteProduct = async (req, res, next) => {
+async function deleteProduct(req: Request, res: Response, next: NextFunction) {
   try {
     const { id: orderHash } = req.params;
 
@@ -45,9 +46,9 @@ const deleteProduct = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+}
 
-const getProducts = async (req, res, next) => {
+async function getProducts(req: Request, res: Response, next: NextFunction) {
   try {
     const posts = await ProductService.getAllProducts();
 
@@ -55,9 +56,9 @@ const getProducts = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+}
 
-const getProduct = async (req, res, next) => {
+async function getProduct(req: Request, res: Response, next: NextFunction) {
   try {
     const { id: orderHash } = req.params;
 
@@ -68,9 +69,9 @@ const getProduct = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+}
 
-const searchProducts = async (req, res, next) => {
+async function searchProducts(req: Request, res: Response, next: NextFunction) {
   try {
     let { keyword } = req.query;
     keyword = keyword.trim().replace(/\s\s+/gi, ' '); // 앞뒤 공백문자 제거
@@ -86,9 +87,13 @@ const searchProducts = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+}
 
-const updateLikeOfProduct = async (req, res, next) => {
+async function updateLikeOfProduct(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   try {
     const { id: orderHash } = req.params;
 
@@ -100,9 +105,9 @@ const updateLikeOfProduct = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+}
 
-module.exports = {
+export {
   postProduct,
   updateProduct,
   deleteProduct,

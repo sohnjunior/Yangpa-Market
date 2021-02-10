@@ -1,6 +1,7 @@
-const CartService = require('../services/cart');
+import { Request, Response, NextFunction } from 'express';
+import * as CartService from '../services/cart';
 
-const postProduct = async (req, res, next) => {
+async function postProduct(req: Request, res: Response, next: NextFunction) {
   try {
     const { id: userID } = req.decoded;
     const { productID } = req.body;
@@ -11,9 +12,9 @@ const postProduct = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+}
 
-const getProducts = async (req, res, next) => {
+async function getProducts(req: Request, res: Response, next: NextFunction) {
   try {
     const { id: userID } = req.decoded;
 
@@ -27,9 +28,9 @@ const getProducts = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+}
 
-const deleteProduct = async (req, res, next) => {
+async function deleteProduct(req: Request, res: Response, next: NextFunction) {
   try {
     const { id: userID } = req.decoded;
     const { id: productID } = req.params;
@@ -40,9 +41,13 @@ const deleteProduct = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+}
 
-const purchaseProduct = async (req, res, next) => {
+async function purchaseProduct(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   try {
     const { id: userID } = req.decoded;
     const { postID, productID, phone } = req.body;
@@ -53,6 +58,6 @@ const purchaseProduct = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+}
 
-module.exports = { postProduct, getProducts, deleteProduct, purchaseProduct };
+export { postProduct, getProducts, deleteProduct, purchaseProduct };

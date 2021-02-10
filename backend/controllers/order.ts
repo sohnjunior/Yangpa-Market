@@ -1,7 +1,12 @@
-const OrderService = require('../services/order');
-const { HTTP400Error } = require('../utils/errors');
+import { Request, Response, NextFunction } from 'express';
+import * as OrderService from '../services/order';
+import { HTTP400Error } from '../utils/errors';
 
-const getOrderHistory = async (req, res, next) => {
+async function getOrderHistory(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   try {
     const { status } = req.query;
     const { id: userID } = req.decoded;
@@ -32,9 +37,9 @@ const getOrderHistory = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+}
 
-const approveOrder = async (req, res, next) => {
+async function approveOrder(req: Request, res: Response, next: NextFunction) {
   try {
     const { id: orderID } = req.params;
     await OrderService.approveOrder(orderID);
@@ -43,9 +48,9 @@ const approveOrder = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+}
 
-const rejectOrder = async (req, res, next) => {
+async function rejectOrder(req: Request, res: Response, next: NextFunction) {
   try {
     const { id: orderID } = req.params;
     await OrderService.rejectOrder(orderID);
@@ -54,10 +59,6 @@ const rejectOrder = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+}
 
-module.exports = {
-  getOrderHistory,
-  approveOrder,
-  rejectOrder,
-};
+export { getOrderHistory, approveOrder, rejectOrder };
