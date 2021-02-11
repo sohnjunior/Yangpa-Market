@@ -22,7 +22,6 @@ createConnection()
 
 const app = express();
 
-// sequelize.sync();
 passportConfig(passport);
 
 /** view engine setup */
@@ -40,7 +39,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 app.use(passport.session());
 
-// app.use('/api', apiRouter);
+app.use('/api', apiRouter);
 
 /** catch 404 and forward to exception handler */
 app.use((req, res, next) => {
@@ -48,7 +47,6 @@ app.use((req, res, next) => {
 });
 
 /** exception handler */
-// TODO: app.ts 로 전환 후 주석 제거
-// app.use(handleErrors);
+app.use(handleErrors);
 
 module.exports = app;
