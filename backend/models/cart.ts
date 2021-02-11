@@ -14,7 +14,7 @@ export class Cart {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @OneToOne(() => User)
+  @OneToOne(() => User, { cascade: true })
   @JoinColumn()
   owner!: User;
 
