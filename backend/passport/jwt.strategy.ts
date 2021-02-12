@@ -1,11 +1,13 @@
-const JWTStrategy = require('passport-jwt').Strategy;
-const ExtractJWT = require('passport-jwt').ExtractJwt;
-const { User } = require('../models');
-const redisClient = require('../redis');
+import { getRepository } from 'typeorm';
+import { PassportStatic } from 'passport';
+import passportJWT from 'passport-jwt';
+import redisClient from '../redis';
+import { User } from '../models/user';
 
-require('dotenv').config();
+const JWTStrategy = passportJWT.Strategy;
+const ExtractJWT = passportJWT.ExtractJwt;
 
-function createOptions(mode) {
+function createOptions(mode: 'refresh' | 'access') {
   const isRefreshMode = mode === 'refresh';
 
   return {
@@ -18,12 +20,14 @@ function createOptions(mode) {
   };
 }
 
-module.exports = (passport) => {
+export default (passport: PassportStatic) => {
   passport.use(
     'access-token',
     new JWTStrategy(createOptions('access'), async (jwtPayload, done) => {
       try {
-        const user = await User.findOne({ where: { id: jwtPayload.id } });
+        const userRepository = getRepository(User);
+        const user = await userRepository.findOne({ id: jwtPayload.id });
+
         if (user) return done(null, user);
         done(null, false);
       } catch (err) {
@@ -35,10 +39,10 @@ module.exports = (passport) => {
   passport.use(
     'refresh-token',
     new JWTStrategy(createOptions('refresh'), async (jwtPayload, done) => {
-      const { id: userID } = jwtPayload;
-      const refreshToken = await redisClient.getValue(userID);
+      const { id: userId } = jwtPayload;
+      const refreshToken = await redisClient.getValue(userId);
 
-      if (refreshToken) return done(null, userID);
+      if (refreshToken) return done(null, userId);
       return done(null, -1);
     })
   );
