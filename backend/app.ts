@@ -1,5 +1,6 @@
 import 'reflect-metadata';
-import express from 'express';
+import express, { Application } from 'express';
+import * as dotenv from 'dotenv';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
@@ -9,8 +10,9 @@ import passportConfig from './passport';
 import apiRouter from './routes';
 import handleErrors from './middlewares/error-handler';
 import { HTTP404Error } from './utils/errors';
-// import { sequelize } from './models'
 import { createConnection } from 'typeorm';
+
+dotenv.config();
 
 createConnection()
   .then(() => {
@@ -20,7 +22,7 @@ createConnection()
     console.error('⚠️ 데이터베이스 연결 시 에러가 발생했습니다.', err);
   });
 
-const app = express();
+const app: Application = express();
 
 passportConfig(passport);
 
@@ -49,4 +51,4 @@ app.use((req, res, next) => {
 /** exception handler */
 app.use(handleErrors);
 
-module.exports = app;
+export default app;

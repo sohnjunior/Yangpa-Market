@@ -16,7 +16,7 @@ const fs = require('fs');
  * Module dependencies.
  */
 
-const app = require('../app');
+import app from '../app';
 const debug = require('debug')('backend:server');
 const http = require('http');
 
