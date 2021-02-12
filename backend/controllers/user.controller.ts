@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import passport from 'passport';
-import * as UserService from '../services/users';
+import * as UserService from '../services/user.service';
 import { HTTP400Error, HTTP401Error } from '../utils/errors';
 
 async function createUser(req: Request, res: Response, next: NextFunction) {

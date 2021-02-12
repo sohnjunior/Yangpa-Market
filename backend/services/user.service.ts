@@ -1,7 +1,7 @@
 import { User } from '../models/user';
 import { Cart } from '../models/cart';
 import { getRepository, getCustomRepository } from 'typeorm';
-import { UserRepository } from './../repository/UserRepository';
+import { UserRepository } from '../repository/UserRepository';
 
 const createUser = async (
   email: string,
@@ -39,7 +39,7 @@ const createUser = async (
 const getAllUserExceptAdmin = async () => {
   try {
     const userRepository = getRepository(User);
-    const users = await userRepository.find({ isAdmin: false });
+    const users = await userRepository.findOneOrFail({ isAdmin: false });
 
     return users;
   } catch (err) {
@@ -47,10 +47,10 @@ const getAllUserExceptAdmin = async () => {
   }
 };
 
-const getUserInfo = async (userID: number) => {
+const getUserInfo = async (userId: number) => {
   try {
     const userRepository = getRepository(User);
-    const user = await userRepository.findOne({ id: userID });
+    const user = await userRepository.findOneOrFail({ id: userId });
 
     return user;
   } catch (err) {
@@ -58,31 +58,13 @@ const getUserInfo = async (userID: number) => {
   }
 };
 
-const deleteUser = async (userID: number) => {
+const deleteUser = async (userId: number) => {
   try {
     const userRepository = getRepository(User);
-    await userRepository.softDelete(userID);
+    await userRepository.softDelete(userId);
   } catch (err) {
     throw err;
   }
 };
 
-const checkPermission = async (userID: number) => {
-  try {
-    const userRepository = getRepository(User);
-    const user = await userRepository.findOne({ id: userID });
-    const isAdmin = user?.isAdmin;
-
-    return isAdmin;
-  } catch (err) {
-    throw err;
-  }
-};
-
-export {
-  getAllUserExceptAdmin,
-  getUserInfo,
-  createUser,
-  deleteUser,
-  checkPermission,
-};
+export { getAllUserExceptAdmin, getUserInfo, createUser, deleteUser };

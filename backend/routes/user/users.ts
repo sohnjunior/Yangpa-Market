@@ -1,5 +1,5 @@
 import express from 'express';
-import * as UserController from '../../controllers/users';
+import * as UserController from '../../controllers/user.controller';
 import { verifyToken } from '../../middlewares';
 import { checkBodyNull } from '../../middlewares/validator';
 
