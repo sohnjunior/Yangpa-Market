@@ -31,6 +31,10 @@ interface IProduct {
   updatedAt: Date;
 }
 
+interface IRelatedProduct extends IProduct {
+  score: number;
+}
+
 interface IProductForm {
   [index: string]: string | Blob;
   title: string;
@@ -74,14 +78,6 @@ interface ICategoryOption {
   value: string;
 }
 
-interface IProductDetailInfo {
-  image: string;
-  title: string;
-  like: number;
-  price: number;
-  sold: boolean;
-}
-
 interface IUserInfo {
   email: string;
   nickname: string;
@@ -93,13 +89,14 @@ interface ICategoryMap {
 
 export {
   IProduct,
+  IRelatedProduct,
   IProductForm,
   User,
+  ISeller,
   IPost,
   DashBoardAsideMenuItem,
   Review,
   ICategoryOption,
-  IProductDetailInfo,
   IUserInfo,
   ICategoryMap,
 };

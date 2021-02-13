@@ -66,8 +66,6 @@ export default class CommentList extends Vue {
       data: { comments },
     } = await CommentAPI.fetchComment(this.productID);
 
-    console.log(comments);
-
     this.commentItems = comments;
 
     if (this.isLoggedIn) {

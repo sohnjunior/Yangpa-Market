@@ -3,8 +3,8 @@
     <template v-slot:card-body>
       <h1 class="card-title">판매자 정보</h1>
       <Icon filename="user" width="35" height="35" />
-      <span class="contact">닉네임 : {{ user.nickname }}</span>
-      <span class="contact">이메일 : {{ user.email }}</span>
+      <span class="contact">닉네임 : {{ seller.nickname }}</span>
+      <span class="contact">이메일 : {{ seller.email }}</span>
     </template>
   </BaseCard>
 </template>
@@ -13,13 +13,13 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import Icon from '@components/Common/Icon.vue';
 import BaseCard from '@components/Cards/BaseCard.vue';
-import { IUserInfo } from '../../types';
+import { ISeller } from '../../types';
 
 @Component({
   components: { Icon, BaseCard },
 })
 export default class SellerInfoCard extends Vue {
-  @Prop({ required: true }) readonly user!: IUserInfo;
+  @Prop({ required: true }) readonly seller!: ISeller;
 }
 </script>
 
