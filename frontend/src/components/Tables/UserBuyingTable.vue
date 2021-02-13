@@ -21,6 +21,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import BaseTable from '@components/Tables/BaseTable.vue';
 import { OrderAPI } from '../../api';
+import { IProduct } from '../../types';
 
 interface IPendingProductHistory {
   productName: string;
@@ -34,22 +35,33 @@ interface IBoughtProductHistory {
   price: number;
 }
 
-function normalizePendingProduct(info: any): IPendingProductHistory {
+interface IOrder {
+  id: number;
+  isApproved: boolean;
+  buyerId: number;
+  productId: number;
+  product: IProduct;
+  createdAt: Date;
+  deletedAt: Date;
+}
+
+function normalizePendingProduct(order: IOrder): IPendingProductHistory {
   return {
-    productName: info.title,
-    price: info.price,
-    seller: info.post.user.nickname,
-    contactNumber: info.post.user.phone,
+    productName: order.product.name,
+    price: order.product.price,
+    seller: order.product.seller.nickname,
+    contactNumber: order.product.seller.contact,
   };
 }
 
-function normalizeBoughtProduct(info: any): IBoughtProductHistory {
+function normalizeBoughtProduct(order: IOrder): IBoughtProductHistory {
   return {
-    productName: info.title,
-    price: info.price,
+    productName: order.product.name,
+    price: order.product.price,
   };
 }
 
+// TODO: 주문 취소하기 기능 추가
 @Component({
   components: { BaseTable },
 })
@@ -60,17 +72,13 @@ export default class UserBuyingTable extends Vue {
   private pendingTableHeaders = ['상품명', '가격', '판매자', '판매자 연락처'];
   private purchasedTableHeaders = ['상품명', '가격', ''];
 
-  async created() {
+  public async created() {
     const {
       data: { infos },
     } = await OrderAPI.fetchPurchasedOrder();
 
-    for (const info of infos) {
-      const isOrdered = info[1];
-
-      if (isOrdered) this.purchasedItems.push(normalizeBoughtProduct(info[0]));
-      else this.pendingItems.push(normalizePendingProduct(info[0]));
-    }
+    this.pendingItems = infos.pendingOrders.map((order) => normalizePendingProduct(order));
+    this.purchasedItems = infos.approvedOrders.map((order) => normalizeBoughtProduct(order));
   }
 
   public onShowModal() {

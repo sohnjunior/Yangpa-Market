@@ -17,6 +17,8 @@ interface ISeller {
   birthday: Date;
 }
 
+interface IBuyer extends ISeller {}
+
 interface IProduct {
   id: number;
   name: string;
@@ -63,12 +65,6 @@ interface IPost {
   deletedAt?: string;
 }
 
-interface Review extends IPost {
-  image: string;
-  like: number;
-  rating: number;
-}
-
 interface DashBoardAsideMenuItem {
   title: string;
   to: string;
@@ -92,11 +88,10 @@ export {
   IProduct,
   IRelatedProduct,
   IProductForm,
-  User,
   ISeller,
-  IPost,
+  IBuyer,
+  User,
   DashBoardAsideMenuItem,
-  Review,
   ICategoryOption,
   IUserInfo,
   ICategoryMap,

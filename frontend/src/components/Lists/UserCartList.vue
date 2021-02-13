@@ -24,13 +24,16 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
 import CartProductCard from '@components/Cards/CartProductCard.vue';
-import { CartAPI } from '../../api';
+import { CartAPI, OrderAPI } from '../../api';
 import { IProduct } from '../../types';
 
 // TODO: 핸드폰 번호 입력창 UX/UI 보완하기 (정해진 형식에 맞게 입력하기 쉽도록)
 // TODO: 장바구니 비어있을 시 예외처리 Toast 팝업으로 변경
 // TODO: 장바구니 상품 클릭 시 해당 상품 디테일 화면으로 이동
+
+const UserModule = namespace('UserModule');
 
 @Component({
   components: { CartProductCard },
@@ -38,6 +41,10 @@ import { IProduct } from '../../types';
 export default class UserCart extends Vue {
   private wishItems: IProduct[] = [];
   private onSaleItems: IProduct[] = []; // 내가 찜한 상품중 현재 판매중인것들
+  private orderTargetItemIds: number[] = []; // TODO: 내가 선택한 주문할 상품 목록을 토글 형식으로 (computed 속성으로 변경 예정)
+
+  @UserModule.Getter
+  public currentEmail!: string;
 
   get totalPrice() {
     return this.onSaleItems.reduce((acc, item) => acc + item.price, 0);
@@ -51,6 +58,7 @@ export default class UserCart extends Vue {
 
       this.wishItems = products;
       this.onSaleItems = this.wishItems.filter((item) => !item.isSold);
+      this.orderTargetItemIds = this.onSaleItems.map((item) => item.id);
     } catch (err) {
       console.error(err);
     }
@@ -74,7 +82,6 @@ export default class UserCart extends Vue {
     }
 
     // TODO: 상품 구매 API 연동
-    // const phone = prompt('핀매자와 연락할 수 있는 연락처를 남겨주세요!');
 
     // if (phone) {
     //   /** 장바구니 모든 상품들에 대해 구매 요청 전송 */
@@ -88,6 +95,14 @@ export default class UserCart extends Vue {
 
     //   await Promise.all(promises);
     // }
+    try {
+      await OrderAPI.createOrder({
+        requestIds: this.orderTargetItemIds,
+        buyerEmail: this.currentEmail,
+      });
+    } catch (err) {
+      console.error(err);
+    }
   }
 }
 </script>

@@ -16,28 +16,22 @@
 import { Component, Vue } from 'vue-property-decorator';
 import BaseTable from '@components/Tables/BaseTable.vue';
 import { OrderAPI } from '../../api';
+import { IBuyer, IProduct } from '../../types';
 
 interface IAlarmHistory {
   id: number;
-  postId: number;
-  data: {
-    orderNumber: string;
-    productName: string;
-    buyer: string;
-    contactNumber: string;
-  };
+  buyer: IBuyer;
+  product: IProduct;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-function normalize(products: any[], order: any) {
+function normalize(alarm: IAlarmHistory) {
   return {
-    id: order.id,
-    postId: order.postId,
-    data: {
-      orderNumber: order.code,
-      productName: products[order.postId],
-      buyer: order.user.nickname,
-      contactNumber: order.phone,
-    },
+    id: alarm.id,
+    productName: alarm.product.name,
+    buyer: alarm.buyer.nickname,
+    contactNumber: alarm.buyer.contact,
   };
 }
 
@@ -45,28 +39,23 @@ function normalize(products: any[], order: any) {
   components: { BaseTable },
 })
 export default class UserAlarmTable extends Vue {
-  private alarmHeaders = ['주문번호', '상품명', '구매자', '연락처', ''];
-  private orderAlarms: IAlarmHistory[] = [];
+  private alarmHeaders = ['상품명', '구매자', '연락처', ''];
+  private alarmItems: any[] = [];
 
-  // FIXME: products 받아올 필요 없도록 API 수정
   public async created() {
     const {
-      data: { products, orders },
+      data: { infos },
     } = await OrderAPI.fetchPendingOrder();
 
-    this.orderAlarms = orders.map((order) => normalize(products, order));
+    this.alarmItems = infos.map((info: IAlarmHistory) => normalize(info));
   }
 
-  get alarmItems() {
-    return this.orderAlarms.map((alarms) => alarms.data);
+  public onApprove({ item }) {
+    OrderAPI.approveOrder(item.id);
   }
 
-  public onApprove(order: IAlarmHistory) {
-    OrderAPI.approveOrder({ postID: order.postId }); // FIXME: postId 대신 order.id 로 삭제하도록 API 변경
-  }
-
-  public onReject(order: IAlarmHistory) {
-    OrderAPI.rejectOrder(order.id);
+  public onReject({ item }) {
+    OrderAPI.rejectOrder(item.id);
   }
 }
 </script>
