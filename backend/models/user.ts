@@ -22,7 +22,7 @@ export class User {
   @Column({ length: 50, unique: true })
   nickname!: string;
 
-  @Column()
+  @Column({ select: false })
   password!: string;
 
   @Column()
@@ -34,13 +34,13 @@ export class User {
   @Column({ default: false })
   isAdmin!: boolean;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ select: false })
   createdAt!: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ select: false })
   updatedAt!: Date;
 
-  @DeleteDateColumn()
+  @DeleteDateColumn({ select: false })
   deletedAt!: Date;
 
   @OneToMany(() => Comment, (comment) => comment.author)

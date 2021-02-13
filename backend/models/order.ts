@@ -30,6 +30,12 @@ export class Order {
   @ManyToOne(() => Product, (product) => product.id)
   product!: Product;
 
+  @Column()
+  productId!: number;
+
   @ManyToOne(() => User, (user) => user.id)
   buyer!: User;
+
+  @Column()
+  buyerId!: number;
 }

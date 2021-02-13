@@ -21,18 +21,24 @@ export class Comment {
   @Column({ default: false })
   isSecret!: boolean;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ select: false })
   createdAt!: Date;
 
   @UpdateDateColumn()
   updatedAt!: Date;
 
-  @DeleteDateColumn()
+  @DeleteDateColumn({ select: false })
   deletedAt!: Date;
 
   @ManyToOne(() => Product, (product) => product.id)
   product!: Product;
 
+  @Column()
+  productId!: number;
+
   @ManyToOne(() => User, (user) => user.id)
   author!: User;
+
+  @Column()
+  authorId!: number;
 }

@@ -5,6 +5,7 @@ import {
   ManyToMany,
   JoinColumn,
   JoinTable,
+  Column,
 } from 'typeorm';
 import { User } from './user';
 import { Product } from './product';
@@ -13,6 +14,9 @@ import { Product } from './product';
 export class Cart {
   @PrimaryGeneratedColumn()
   id!: number;
+
+  @Column()
+  ownerId!: number;
 
   @OneToOne(() => User, { cascade: true })
   @JoinColumn()

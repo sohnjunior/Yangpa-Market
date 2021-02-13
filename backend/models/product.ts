@@ -12,6 +12,7 @@ import { Photo } from './photo';
 import { Comment } from './comment';
 import { User } from './user';
 import { Order } from './order';
+import { Category } from './category';
 
 @Entity()
 export class Product {
@@ -42,10 +43,10 @@ export class Product {
   @UpdateDateColumn()
   updatedAt!: Date;
 
-  @DeleteDateColumn()
+  @DeleteDateColumn({ select: false })
   deletedAt!: Date;
 
-  @OneToMany(() => Photo, (photo) => photo.product)
+  @OneToMany(() => Photo, (photo) => photo.product, { cascade: true })
   photos!: Photo[];
 
   @OneToMany(() => Comment, (comment) => comment.product)
@@ -54,6 +55,15 @@ export class Product {
   @OneToMany(() => Order, (order) => order.product)
   orders!: Order[];
 
+  @ManyToOne(() => Category, (category) => category.id)
+  category!: Category;
+
+  @Column({ select: false })
+  categoryId!: number;
+
   @ManyToOne(() => User, (user) => user.id)
   seller!: User;
+
+  @Column({ select: false })
+  sellerId!: number;
 }
