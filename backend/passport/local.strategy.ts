@@ -21,7 +21,10 @@ export default (passport: PassportStatic) => {
       async (email: string, password: string, done) => {
         try {
           const userRepository = getRepository(User);
-          const user = await userRepository.findOne({ email });
+          const user = await userRepository.findOne({
+            select: ['id', 'email', 'password'],
+            where: { email },
+          });
 
           if (!user) {
             return done(null, false, {

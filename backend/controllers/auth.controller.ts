@@ -1,16 +1,16 @@
 import { Request, Response, NextFunction } from 'express';
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
-// import * as UserService from '../services/users';
-const { HTTP401Error, HTTP419Error } = require('../utils/errors');
+import * as AuthService from '../services/auth.service';
+import { HTTP401Error, HTTP419Error } from '../utils/errors';
 
 async function getPermission(req: Request, res: Response, next: NextFunction) {
   try {
-    const { id: userID } = req.decoded;
-    // const isAdmin = await UserService.checkPermission(userID);
-    // const role = isAdmin ? 'admin' : 'normal';
+    const { id: userId } = req.decoded;
+    const isAdmin = await AuthService.checkPermission(userId);
+    const role = isAdmin ? 'admin' : 'normal';
 
-    // res.status(200).json({ status: 200, message: '권한 조회', role });
+    res.status(200).json({ status: 200, message: '권한 조회', role });
   } catch (err) {
     next(err);
   }
