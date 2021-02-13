@@ -2,20 +2,18 @@
   <ul class="comment-container">
     <li class="comment-item" v-for="(item, index) in commentItems" :key="item.id">
       <h3 class="commentor">
-        <span class="name">{{ item.commentor }}</span>
-        <Chip v-if="isSeller(item.commentor)" text="판매자" color="#74c0fc" width="45" />
+        <span class="name">{{ item.author.nickname }}</span>
+        <Chip v-if="isSeller(item.author)" text="판매자" color="#74c0fc" width="45" />
       </h3>
       <div>
-        <textarea class="comment-edit" v-if="isEditMode(item.id)" :value="item.commentText" />
+        <textarea class="comment-edit" v-if="isEditMode(item.id)" :value="item.content" />
         <p v-else class="comment-text">
           {{
-            isAllowedForRead(item.isSecret, item.commentorEmail)
-              ? item.commentText
-              : '비밀 댓글입니다.'
+            isAllowedForRead(item.isSecret, item.author.email) ? item.content : '비밀 댓글입니다.'
           }}
         </p>
       </div>
-      <div class="control-wrapper" v-if="isEditable(item.commentorEmail)">
+      <div class="control-wrapper" v-if="isEditable(item.author.email)">
         <div v-if="isEditMode(item.id)">
           <button @click="onFinishEdit(index)">수정완료</button>
           <button @click="onCancelEdit">취소</button>
@@ -38,22 +36,12 @@ import { IUserInfo } from '../../types';
 
 const UserModule = namespace('UserModule');
 
-interface ICommentHistory {
+interface IAuthor {
   id: number;
-  isSecret: boolean;
-  commentText: string;
-  commentor: string;
-  commentorEmail: string;
-}
-
-function normalize({ id, secret, comment, user }): ICommentHistory {
-  return {
-    id: id,
-    isSecret: secret,
-    commentText: comment,
-    commentor: user.nickname,
-    commentorEmail: user.email,
-  };
+  email: string;
+  nickname: string;
+  contact: string;
+  isAdmin: boolean;
 }
 
 @Component({
@@ -78,7 +66,9 @@ export default class CommentList extends Vue {
       data: { comments },
     } = await CommentAPI.fetchComment(this.productID);
 
-    this.commentItems = comments.map((comment) => normalize(comment));
+    console.log(comments);
+
+    this.commentItems = comments;
 
     if (this.isLoggedIn) {
       const {
@@ -89,21 +79,21 @@ export default class CommentList extends Vue {
     }
   }
 
-  public isEditMode(commentID: number): boolean {
+  public isEditMode(commentID: number) {
     return this.editCommentID === commentID;
   }
 
-  public isEditable(commentorEmail: string): boolean {
-    return this.currentEmail === commentorEmail;
+  public isEditable(authorEmail: string) {
+    return this.currentEmail === authorEmail;
   }
 
-  public isSeller(commentor: string): boolean {
-    return this.seller.nickname === commentor;
+  public isSeller(author: IAuthor) {
+    return this.seller.nickname === author.nickname;
   }
 
-  public isAllowedForRead(isSecret: boolean, commentorEmail: string): boolean {
+  public isAllowedForRead(isSecret: boolean, authorEmail: string) {
     if (!isSecret) return true;
-    return this.isAdmin || this.currentEmail === commentorEmail;
+    return this.isAdmin || this.currentEmail === authorEmail;
   }
 
   public onEditMode(commentID: number, index: number) {
@@ -137,7 +127,7 @@ export default class CommentList extends Vue {
   }
 
   public async onRemoveComment(commentID: number) {
-    const isAllow: boolean = confirm('해당 댓글을 삭제하시겠습니까?');
+    const isAllow = confirm('해당 댓글을 삭제하시겠습니까?');
     if (!isAllow) return;
 
     try {
