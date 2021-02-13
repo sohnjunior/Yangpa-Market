@@ -40,7 +40,7 @@ interface IRelatedProduct extends IProduct {
 
 interface IProductForm {
   [index: string]: string | Blob;
-  title: string;
+  name: string;
   image: Blob;
   category: string;
   price: string;

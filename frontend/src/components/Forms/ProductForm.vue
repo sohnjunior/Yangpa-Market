@@ -11,10 +11,10 @@
       <section>
         <label>
           상품명
-          <input type="text" v-model="formData.title" placeholder="어떤 상품인가요?" />
+          <input type="text" v-model="formData.name" placeholder="어떤 상품인가요?" />
         </label>
-        <span class="error" v-show="!validation.title.isValid">
-          {{ validation.title.message }}
+        <span class="error" v-show="!validation.name.isValid">
+          {{ validation.name.message }}
         </span>
       </section>
 
@@ -66,7 +66,7 @@ interface IValidation {
 }
 
 interface IProductValidation {
-  title: IValidation;
+  name: IValidation;
   price: IValidation;
   description: IValidation;
 }
@@ -82,7 +82,7 @@ export default class ProductForm extends Vue {
 
   private formData: IProductForm = {
     image: new Blob(),
-    title: '',
+    name: '',
     category: '',
     price: '',
     description: '',
@@ -95,7 +95,7 @@ export default class ProductForm extends Vue {
     { text: '기타', value: 'others' },
   ];
   private validation: IProductValidation = {
-    title: { isValid: false, message: '' },
+    name: { isValid: false, message: '' },
     price: { isValid: false, message: '' },
     description: { isValid: false, message: '' },
   };
@@ -126,12 +126,12 @@ export default class ProductForm extends Vue {
     this.$emit('submit', this.formData);
   }
 
-  @Watch('formData.title')
-  public onWatchTitle(value: string) {
+  @Watch('formData.name')
+  public onWatchName(value: string) {
     const isValid = validateTextMinLength(value, 1);
 
-    this.validation.title.isValid = isValid;
-    this.validation.title.message = isValid ? '' : '상품명을 확인해주세요';
+    this.validation.name.isValid = isValid;
+    this.validation.name.message = isValid ? '' : '상품명을 확인해주세요';
   }
 
   @Watch('formData.price')

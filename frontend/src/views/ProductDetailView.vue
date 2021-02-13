@@ -40,7 +40,7 @@ import CommentList from '@components/Lists/CommentList.vue';
 import ToastBus from '../bus/ToastBus';
 import { IProduct, IUserInfo } from '../types';
 
-const userModule = namespace('UserModule');
+const UserModule = namespace('UserModule');
 
 @Component({
   components: {
@@ -57,16 +57,18 @@ export default class ProductDetailView extends Vue {
   private productInfo!: Partial<IProduct>;
   private isFetchFinished = false;
 
-  @userModule.Getter
+  @UserModule.Getter
   public isLoggedIn!: boolean;
 
   public async created() {
     try {
       const {
-        data: { seller: sellerInfo, ...productInfo },
+        data: {
+          product: { seller, ...productInfo },
+        },
       } = await ProductAPI.fetchProduct(this.productID);
 
-      this.productSeller = sellerInfo;
+      this.productSeller = seller;
       this.productInfo = productInfo;
       this.isFetchFinished = true;
     } catch (err) {

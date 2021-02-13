@@ -39,10 +39,10 @@ export default class SearchView extends Vue {
     try {
       this.keyword = this.$route.params?.keyword;
       const {
-        data: { result },
+        data: { products },
       } = await ProductAPI.searchProduct(this.keyword);
 
-      this.products = result;
+      this.products = products;
       this.isLoading = false;
     } catch (err) {
       console.error(err);

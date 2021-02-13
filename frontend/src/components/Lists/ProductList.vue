@@ -4,22 +4,22 @@
       class="list-item"
       v-for="product in products"
       :key="product.id"
-      @click="onRedirect(product.post.title)"
+      @click="onRedirect(product.id)"
     >
-      <img class="thumbnail" alt="상품 이미지" :src="product.image" />
+      <img class="thumbnail" alt="상품 이미지" :src="product.photos[0]" />
       <div class="detail">
         <h1 class="name">{{ product.title }}</h1>
         <h2 class="price">{{ product.price }} 원</h2>
-        <p class="description">{{ product.post.body }}</p>
+        <p class="description">{{ product.description }}</p>
         <!-- TODO: 지난 일수 계산 후 출력하기 <span>{{ product.updatedAt }}</span> -->
         <div class="meta">
           <span class="like">
             <Icon filename="like" width="13" height="13" />
-            {{ product.like }}
+            {{ product.likes }}
           </span>
           <span class="hit">
             <Icon filename="glasses" width="13" height="13" />
-            {{ product.post.hit }}
+            {{ product.views }}
           </span>
         </div>
       </div>

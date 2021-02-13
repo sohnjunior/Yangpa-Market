@@ -95,9 +95,11 @@ export default class MainView extends Vue {
   public async created() {
     /** 전체 상품 조회 (등록일순) */
     try {
-      const { data }: { data: IProduct[] } = await ProductAPI.fetchAllProducts();
+      const {
+        data: { products },
+      } = await ProductAPI.fetchAllProducts();
 
-      this.fetchedProducts = data;
+      this.fetchedProducts = products;
     } catch (err) {
       console.error(err);
     }
