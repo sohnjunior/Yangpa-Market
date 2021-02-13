@@ -1,7 +1,7 @@
 <template>
   <div class="comment-input-container">
     <div class="input-wrapper">
-      <textarea class="comment-input" placeholder="문의를 남겨주세요" v-model="inputText" />
+      <textarea class="comment-input" placeholder="문의를 남겨주세요" v-model="content" />
     </div>
     <div class="control-wrapper">
       <div class="secret-control">
@@ -27,7 +27,7 @@ const UserModule = namespace('UserModule');
 export default class CommentInput extends Vue {
   @Prop({ required: true }) productID!: string;
 
-  private inputText = '';
+  private content = '';
   private isSecret = false;
 
   @UserModule.Getter
@@ -38,13 +38,13 @@ export default class CommentInput extends Vue {
       alert('로그인이 필요한 서비스입니다.');
       return;
     }
-    if (this.inputText === '') return;
+    if (this.content === '') return;
 
     try {
       await CommentAPI.createComment({
-        postId: this.productID,
-        comment: this.inputText,
-        secret: this.isSecret,
+        productId: this.productID,
+        content: this.content,
+        isSecret: this.isSecret,
       });
       this.$router.go(0);
     } catch (err) {

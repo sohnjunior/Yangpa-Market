@@ -4,6 +4,7 @@ Icon?
 ._*
 public
 .env
+dist
 
 # Windows
 Thumbs.db

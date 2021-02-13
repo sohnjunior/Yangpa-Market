@@ -20,7 +20,7 @@ function validatePassword(password: string) {
 /**
  * 전화번호 검증
  */
-function validatePhone(phone: string) {
+function validateContact(phone: string) {
   const regexp = /^[0-9]{2,3}[-]+[0-9]{4}[-]+[0-9]{4}$/;
   return regexp.test(phone);
 }
@@ -41,4 +41,4 @@ function validatePrice(num: string) {
   return regexp.test(num);
 }
 
-export { validateEmail, validatePassword, validatePhone, validateTextMinLength, validatePrice };
+export { validateEmail, validatePassword, validateContact, validateTextMinLength, validatePrice };

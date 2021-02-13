@@ -6,14 +6,13 @@
         v-if="isFetchFinished"
         :productID="productID"
         :productInfo="productInfo"
-        :productDescription="productDescription"
         @add-cart="onAddCart"
         @increase-like="onIncreaseLike"
       />
     </section>
 
     <section>
-      <SellerInfoCard v-if="isFetchFinished" :user="productSeller" />
+      <SellerInfoCard v-if="isFetchFinished" :seller="productSeller" />
     </section>
 
     <section>
@@ -31,7 +30,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { ProductAPI, RecommendationAPI, CartAPI } from '../api';
+import { ProductAPI, CartAPI } from '../api';
 import { namespace } from 'vuex-class';
 import DetailProductCard from '@components/Cards/DetailProductCard.vue';
 import SellerInfoCard from '@components/Cards/SellerInfoCard.vue';
@@ -39,9 +38,9 @@ import RelatedProductList from '@components/Lists/RelatedProductList.vue';
 import CommentInput from '@components/Inputs/CommentInput.vue';
 import CommentList from '@components/Lists/CommentList.vue';
 import ToastBus from '../bus/ToastBus';
-import { IProductDetailInfo, IUserInfo } from '../types';
+import { IProduct, IUserInfo } from '../types';
 
-const userModule = namespace('UserModule');
+const UserModule = namespace('UserModule');
 
 @Component({
   components: {
@@ -55,22 +54,22 @@ const userModule = namespace('UserModule');
 export default class ProductDetailView extends Vue {
   private productID: string = this.$route.params.id;
   private productSeller!: IUserInfo;
-  private productInfo!: IProductDetailInfo;
-  private productDescription!: string;
+  private productInfo!: Partial<IProduct>;
   private isFetchFinished = false;
 
-  @userModule.Getter
+  @UserModule.Getter
   public isLoggedIn!: boolean;
 
   public async created() {
     try {
       const {
-        data: { product, body, user },
+        data: {
+          product: { seller, ...productInfo },
+        },
       } = await ProductAPI.fetchProduct(this.productID);
 
-      this.productSeller = user;
-      this.productInfo = product;
-      this.productDescription = body;
+      this.productSeller = seller;
+      this.productInfo = productInfo;
       this.isFetchFinished = true;
     } catch (err) {
       console.error(err);

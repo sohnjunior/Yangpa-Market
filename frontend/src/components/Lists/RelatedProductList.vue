@@ -1,14 +1,14 @@
 <template>
   <ul class="related-container">
     <RelatedProductCard
-      v-for="[, info] in relatedProducts"
-      :title="info.title"
-      :image="info.image"
-      :body="info.post.body"
-      :hit="info.post.hit"
-      :productID="info.post.title"
-      :price="info.price"
-      :key="info.id"
+      v-for="{ product } in relatedProductsWithScore"
+      :title="product.name"
+      :image="product.photos[0]"
+      :body="product.description"
+      :hit="product.views"
+      :productID="product.id"
+      :price="product.price"
+      :key="product.id"
     />
   </ul>
 </template>
@@ -17,6 +17,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { RecommendationAPI } from '../../api';
 import RelatedProductCard from '@components/Cards/RelatedProductCard.vue';
+import { IRelatedProduct } from '../../types';
 
 @Component({
   components: { RelatedProductCard },
@@ -24,15 +25,15 @@ import RelatedProductCard from '@components/Cards/RelatedProductCard.vue';
 export default class RelatedProductList extends Vue {
   @Prop({ required: true }) readonly productID!: number;
 
-  private relatedProducts: any[] = [];
+  private relatedProductsWithScore: IRelatedProduct[] = [];
 
   public async created() {
     try {
       const {
-        data: { result },
+        data: { products },
       } = await RecommendationAPI.fetchRelatedProducts(this.productID);
 
-      this.relatedProducts = result;
+      this.relatedProductsWithScore = products;
     } catch (err) {
       console.error(err);
     }
