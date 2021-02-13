@@ -17,7 +17,7 @@ import ProductForm from '@components/Forms/ProductForm.vue';
   components: { ProductForm },
 })
 export default class ProductEditView extends Vue {
-  private orderHash = '';
+  private productID!: string;
   private initalFormData: IProductForm = {
     title: '',
     image: new Blob(),
@@ -27,7 +27,7 @@ export default class ProductEditView extends Vue {
   };
 
   public async created() {
-    this.orderHash = this.$route.params.id;
+    this.productID = this.$route.params.id;
     await this.fetchInitalFormData();
   }
 
@@ -35,7 +35,7 @@ export default class ProductEditView extends Vue {
     try {
       const {
         data: { product, body },
-      } = await ProductAPI.fetchProduct(this.orderHash);
+      } = await ProductAPI.fetchProduct(this.productID);
 
       this.initalFormData.title = product.title;
       this.initalFormData.image = product.image;
@@ -49,7 +49,7 @@ export default class ProductEditView extends Vue {
 
   public async onSubmit(payload: IProductForm) {
     try {
-      await ProductAPI.editProduct(this.orderHash, payload);
+      await ProductAPI.editProduct(this.productID, payload);
     } catch (err) {
       console.log(err);
     }

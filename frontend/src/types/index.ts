@@ -18,6 +18,7 @@ interface ISeller {
 }
 
 interface IProduct {
+  id: number;
   name: string;
   photos: IPhoto[];
   price: number;

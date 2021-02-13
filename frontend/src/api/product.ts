@@ -30,8 +30,8 @@ function likeProduct(productID: string) {
   return instance.put(`/products/${productID}/like`);
 }
 
-function deletePost(orderHash: string) {
-  return instance.delete(`/products/${orderHash}`);
+function deletePost(productID: string) {
+  return instance.delete(`/products/${productID}`);
 }
 
 export default {
