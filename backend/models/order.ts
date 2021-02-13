@@ -24,18 +24,18 @@ export class Order {
   @UpdateDateColumn()
   updatedAt!: Date;
 
-  @DeleteDateColumn()
+  @DeleteDateColumn({ select: false })
   deletedAt!: Date;
 
   @ManyToOne(() => Product, (product) => product.id)
   product!: Product;
 
-  @Column()
+  @Column({ select: false })
   productId!: number;
 
   @ManyToOne(() => User, (user) => user.id)
   buyer!: User;
 
-  @Column()
+  @Column({ select: false })
   buyerId!: number;
 }

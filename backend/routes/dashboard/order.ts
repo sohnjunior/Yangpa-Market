@@ -5,7 +5,9 @@ import { verifyToken } from '../middlewares';
 const router = express.Router();
 
 router.get('/', verifyToken, OrderController.getOrderHistory);
+router.post('/', verifyToken, OrderController.createOrder);
 router.put('/:id/approve', verifyToken, OrderController.approveOrder);
-router.delete('/:id/reject', verifyToken, OrderController.rejectOrder);
+router.put('/:id/reject', verifyToken, OrderController.rejectOrder);
+router.delete(':id', verifyToken, OrderController.deleteOrder);
 
 export default router;
