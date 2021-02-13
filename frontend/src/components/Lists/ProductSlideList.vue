@@ -2,11 +2,11 @@
   <ul class="slide-list-container">
     <li class="item" v-for="item in popularItems" :key="item.id">
       <PopularProductCard
-        :title="item.title"
-        :image="item.image"
-        :hit="item.post.hit"
-        :category="item.category.title"
-        :productID="item.post.title"
+        :title="item.name"
+        :image="item.photos[0]"
+        :hit="item.views"
+        :category="item.category.type"
+        :productID="item.id"
       />
     </li>
   </ul>

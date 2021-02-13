@@ -23,10 +23,10 @@
 
       <label>
         <span class="label">연락처</span>
-        <input type="tel" v-model="phone" placeholder="전화번호" />
+        <input type="tel" v-model="contact" placeholder="전화번호" />
       </label>
-      <span class="error" v-show="!validation.phone.isValid">
-        {{ validation.phone.message }}
+      <span class="error" v-show="!validation.contact.isValid">
+        {{ validation.contact.message }}
       </span>
 
       <button class="submit-btn" type="submit" @click="onEditProfile">변경하기</button>
@@ -53,21 +53,6 @@
       <button class="submit-btn" type="submit" @click="onEditPassword">변경하기</button>
     </fieldset>
 
-    <fieldset>
-      <legend>성별</legend>
-
-      <label>
-        남성
-        <input type="radio" value="male" v-model="sex" />
-      </label>
-      <label>
-        여성
-        <input type="radio" value="female" v-model="sex" />
-      </label>
-
-      <button class="submit-btn" type="submit" @click="onEditSex">변경하기</button>
-    </fieldset>
-
     <!-- TODO: DatePicker 컴포넌트 구현 후 적용 -->
     <!-- <DatePicker @pick-date="onPickDate" /> -->
   </form>
@@ -76,7 +61,7 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { UserAPI } from '../../api';
-import { validateEmail, validatePassword, validatePhone } from '../../utils/validators';
+import { validateEmail, validatePassword, validateContact } from '../../utils/validators';
 // import DatePicker from '@components/Inputs/DatePicker.vue';
 
 interface IValidation {
@@ -90,7 +75,7 @@ interface IProfileValidation {
   newPassword: IValidation;
   confirmPassword: IValidation;
   nickname: IValidation;
-  phone: IValidation;
+  contact: IValidation;
 }
 
 function parseBirthday(date: string) {
@@ -104,8 +89,7 @@ export default class UserProfileForm extends Vue {
   private newPassword = '';
   private confirmPassword = '';
   private nickname = '';
-  private phone = '';
-  private sex = '';
+  private contact = '';
   private birthday = '';
 
   private validation: IProfileValidation = {
@@ -114,18 +98,17 @@ export default class UserProfileForm extends Vue {
     newPassword: { isValid: false, message: '' },
     confirmPassword: { isValid: false, message: '' },
     nickname: { isValid: false, message: '' },
-    phone: { isValid: false, message: '' },
+    contact: { isValid: false, message: '' },
   };
 
   public async created() {
     const {
-      data: { result: userInfo },
+      data: { user: userInfo },
     } = await UserAPI.fetchUser();
 
     this.email = userInfo.email;
     this.nickname = userInfo.nickname;
-    this.phone = userInfo.phone;
-    this.sex = userInfo.sex;
+    this.contact = userInfo.contact;
     this.birthday = parseBirthday(userInfo.birthday);
   }
 
@@ -135,10 +118,6 @@ export default class UserProfileForm extends Vue {
 
   public onEditPassword() {
     // TODO: 비밀번호 수정 api 구현
-  }
-
-  public onEditSex() {
-    // TODO: 성별 수정 api 구현
   }
 
   public onPickDate(date) {
@@ -161,12 +140,12 @@ export default class UserProfileForm extends Vue {
     this.validation.nickname.message = isValid ? '' : '별명을 확인해주세요';
   }
 
-  @Watch('phone')
-  public onWatchPhone(value: string) {
-    const isValid = validatePhone(value);
+  @Watch('contact')
+  public onWatchContact(value: string) {
+    const isValid = validateContact(value);
 
-    this.validation.phone.isValid = isValid;
-    this.validation.phone.message = isValid ? '' : '연락처 형식을 확인해주세요(- 포함)';
+    this.validation.contact.isValid = isValid;
+    this.validation.contact.message = isValid ? '' : '연락처 형식을 확인해주세요(- 포함)';
   }
 
   @Watch('oldPassword')

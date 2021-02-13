@@ -23,9 +23,9 @@
         {{ validation.nickname.message }}
       </span>
 
-      <input type="tel" v-model="phone" placeholder="연락처" />
-      <span class="error" v-show="!validation.phone.isValid">
-        {{ validation.phone.message }}
+      <input type="tel" v-model="contact" placeholder="연락처" />
+      <span class="error" v-show="!validation.contact.isValid">
+        {{ validation.contact.message }}
       </span>
 
       <select v-model="sex">
@@ -43,7 +43,7 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { UserAPI } from '../../api';
-import { validateEmail, validatePassword, validatePhone } from '../../utils/validators';
+import { validateEmail, validatePassword, validateContact } from '../../utils/validators';
 import SubmitButton from '@components/Buttons/SubmitButton.vue';
 // import DatePicker from '@components/Inputs/DatePicker.vue';
 
@@ -57,7 +57,7 @@ interface ISigninValidation {
   password: IValidation;
   confirmPassword: IValidation;
   nickname: IValidation;
-  phone: IValidation;
+  contact: IValidation;
 }
 
 @Component({
@@ -68,9 +68,9 @@ export default class SignupForm extends Vue {
   private password = '';
   private confirmPassword = '';
   private nickname = '';
-  private phone = '';
+  private contact = '';
   private sex = 'male';
-  private birthday = ''; // TODO: DatePicker 컴포넌트 구현 후 적용
+  private birthday = '2020-10-10'; // TODO: DatePicker 컴포넌트 구현 후 적용
   private isAdmin = false; // TODO: 회원가입 api 에서 isAdmin 제거
 
   private validation: ISigninValidation = {
@@ -78,7 +78,7 @@ export default class SignupForm extends Vue {
     password: { isValid: false, message: '' },
     confirmPassword: { isValid: false, message: '' },
     nickname: { isValid: false, message: '' },
-    phone: { isValid: false, message: '' },
+    contact: { isValid: false, message: '' },
   };
 
   get isFormValid() {
@@ -88,12 +88,10 @@ export default class SignupForm extends Vue {
   public async onSubmit() {
     const userData = {
       email: this.email,
-      password: this.password,
       nickname: this.nickname,
-      phone: this.phone,
-      sex: this.sex,
+      password: this.password,
+      contact: this.contact,
       birthday: this.birthday,
-      admin: this.isAdmin,
     };
 
     try {
@@ -142,12 +140,12 @@ export default class SignupForm extends Vue {
     this.validation.nickname.message = isValid ? '' : '별명을 확인해주세요';
   }
 
-  @Watch('phone')
-  public onWatchPhone(value: string) {
-    const isValid = validatePhone(value);
+  @Watch('contact')
+  public onWatchContact(value: string) {
+    const isValid = validateContact(value);
 
-    this.validation.phone.isValid = isValid;
-    this.validation.phone.message = isValid ? '' : '연락처 형식을 확인해주세요(- 포함)';
+    this.validation.contact.isValid = isValid;
+    this.validation.contact.message = isValid ? '' : '연락처 형식을 확인해주세요(- 포함)';
   }
 }
 </script>

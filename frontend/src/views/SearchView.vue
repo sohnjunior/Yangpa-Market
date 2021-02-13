@@ -16,7 +16,7 @@ import { namespace } from 'vuex-class';
 import { ProductAPI } from '../api';
 import SearchInput from '@components/Inputs/SearchInput.vue';
 import ProductList from '@components/Lists/ProductList.vue';
-import { IProductSearchResult } from '../types';
+// import { IProductSearchResult } from '../types';
 
 const SettingModule = namespace('SettingModule');
 
@@ -25,7 +25,7 @@ const SettingModule = namespace('SettingModule');
 })
 export default class SearchView extends Vue {
   private keyword!: string;
-  private products: IProductSearchResult[] = [];
+  private products: any[] = [];
   private isLoading = true;
 
   @SettingModule.Getter
@@ -39,10 +39,10 @@ export default class SearchView extends Vue {
     try {
       this.keyword = this.$route.params?.keyword;
       const {
-        data: { result },
+        data: { products },
       } = await ProductAPI.searchProduct(this.keyword);
 
-      this.products = result;
+      this.products = products;
       this.isLoading = false;
     } catch (err) {
       console.error(err);

@@ -4,11 +4,11 @@
       <ul class="item-wrapper" :key="currentPage">
         <li class="item" v-for="product in getItemsByPage(currentPage)" :key="product.id">
           <PopularProductCard
-            :title="product.title"
-            :image="product.image"
-            :hit="product.post.hit"
-            :category="product.category.title"
-            :productID="product.post.title"
+            :title="product.name"
+            :image="product.photos[0].path"
+            :hit="product.views"
+            :category="product.category.type"
+            :productID="product.id"
           />
         </li>
       </ul>
@@ -20,7 +20,7 @@
 import { Component, Vue, Mixins } from 'vue-property-decorator';
 import PopularProductMixin from '../../mixins/PopularProductMixin';
 import PopularProductCard from '@components/Cards/PopularProductCard.vue';
-import { IPost } from '../../types';
+import { IProduct } from '../../types';
 
 const MAX_ITEM_AMOUNT = 10; // mixin 내부 상수값과 동일함
 const MAX_ITEMS_PER_PAGE = 5;
@@ -42,7 +42,7 @@ export default class ProductCarousel extends Mixins(PopularProductMixin) {
     clearInterval(this.timerID);
   }
 
-  public getItemsByPage(page: number): IPost[] {
+  public getItemsByPage(page: number): IProduct[] {
     const items = this.popularItems.slice(
       MAX_ITEMS_PER_PAGE * page,
       MAX_ITEMS_PER_PAGE * (page + 1)

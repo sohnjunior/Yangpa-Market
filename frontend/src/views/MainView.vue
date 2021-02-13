@@ -39,7 +39,7 @@ import ProductGridList from '@components/Lists/ProductGridList.vue';
 import ProductSlideList from '@components/Lists/ProductSlideList.vue';
 import FloatingButton from '@components/Buttons/FloatingButton.vue';
 import Icon from '@components/Common/Icon.vue';
-import { IPost, IProduct, ICategoryMap } from '../types';
+import { IProduct, ICategoryMap } from '../types';
 
 const SettingModule = namespace('SettingModule');
 
@@ -55,7 +55,7 @@ const SettingModule = namespace('SettingModule');
   },
 })
 export default class MainView extends Vue {
-  private fetchedProducts: IPost[] = [];
+  private fetchedProducts: IProduct[] = [];
   private selectedCategory = '전공서적';
   private selectedFilter = '등록일';
   private categoryMap: ICategoryMap = {
@@ -71,7 +71,7 @@ export default class MainView extends Vue {
 
   get sortedProducts() {
     const categorized = this.fetchedProducts.filter(
-      ({ product }) => product.category.title === this.categoryMap[this.selectedCategory]
+      (product) => product.category.type === this.categoryMap[this.selectedCategory]
     );
     const sorted = [...categorized].sort(this.compareFunction);
 
@@ -82,22 +82,24 @@ export default class MainView extends Vue {
     return this.sortedProducts.length !== 0;
   }
 
-  private compareFunction(a: IPost, b: IPost) {
+  private compareFunction(a: IProduct, b: IProduct) {
     if (this.selectedFilter === '등록일') {
       return new Date(a.createdAt).getTime() - new Date(a.createdAt).getTime();
     } else if (this.selectedFilter === '조회수') {
-      return b.hit - a.hit;
+      return b.views - a.views;
     } else {
-      return a.product.price - b.product.price;
+      return a.price - b.price;
     }
   }
 
   public async created() {
     /** 전체 상품 조회 (등록일순) */
     try {
-      const { data }: { data: IPost[] } = await ProductAPI.fetchAllProducts();
+      const {
+        data: { products },
+      } = await ProductAPI.fetchAllProducts();
 
-      this.fetchedProducts = data;
+      this.fetchedProducts = products;
     } catch (err) {
       console.error(err);
     }

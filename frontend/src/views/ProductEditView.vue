@@ -17,9 +17,9 @@ import ProductForm from '@components/Forms/ProductForm.vue';
   components: { ProductForm },
 })
 export default class ProductEditView extends Vue {
-  private orderHash = '';
+  private productID!: string;
   private initalFormData: IProductForm = {
-    title: '',
+    name: '',
     image: new Blob(),
     category: '',
     price: '',
@@ -27,21 +27,21 @@ export default class ProductEditView extends Vue {
   };
 
   public async created() {
-    this.orderHash = this.$route.params.id;
+    this.productID = this.$route.params.id;
     await this.fetchInitalFormData();
   }
 
   private async fetchInitalFormData() {
     try {
       const {
-        data: { product, body },
-      } = await ProductAPI.fetchProduct(this.orderHash);
+        data: { product },
+      } = await ProductAPI.fetchProduct(this.productID);
 
-      this.initalFormData.title = product.title;
-      this.initalFormData.image = product.image;
-      this.initalFormData.category = product.category.title;
+      this.initalFormData.name = product.name;
+      this.initalFormData.image = product.photos[0];
+      this.initalFormData.category = product.category.type;
       this.initalFormData.price = product.price;
-      this.initalFormData.description = body;
+      this.initalFormData.description = product.description;
     } catch (err) {
       console.error(err);
     }
@@ -49,7 +49,7 @@ export default class ProductEditView extends Vue {
 
   public async onSubmit(payload: IProductForm) {
     try {
-      await ProductAPI.editProduct(this.orderHash, payload);
+      await ProductAPI.editProduct(this.productID, payload);
     } catch (err) {
       console.log(err);
     }

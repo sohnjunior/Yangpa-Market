@@ -20,28 +20,26 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
 import Icon from '@components/Common/Icon.vue';
 import BaseTable from '@components/Tables/BaseTable.vue';
 import { OrderAPI, ProductAPI } from '../../api';
-
-const userModule = namespace('UserModule');
+import { IProduct } from '../../types';
 
 interface ISalesProductHistory {
   id: number;
   productName: string;
   price: number;
-  hit: number;
-  like: number;
+  views: number;
+  likes: number;
 }
 
-function normalize({ id, product, hit }): ISalesProductHistory {
+function normalize(product: IProduct): ISalesProductHistory {
   return {
-    id: id,
-    productName: product.title,
+    id: product.id,
+    productName: product.name,
     price: product.price,
-    hit: hit,
-    like: product.like,
+    views: product.views,
+    likes: product.likes,
   };
 }
 
@@ -51,39 +49,37 @@ function normalize({ id, product, hit }): ISalesProductHistory {
 export default class UserSellingTable extends Vue {
   private onSaleItems: ISalesProductHistory[] = [];
   private soldItems: ISalesProductHistory[] = [];
-  private orderHashMap = new Map<number, string>();
   private onSaleHeaders = ['상품번호', '상품명', '가격', '조회수', '좋아요', ''];
   private soldHeaders = ['상품번호', '상품명', '판매가격', '조회수', '좋아요'];
 
   async created() {
     const {
-      data: { products },
+      data: { infos },
     } = await OrderAPI.fetchSalesOrder();
 
-    for (const product of products) {
-      if (product.product.sold) {
+    for (const product of infos) {
+      if (product.isSold) {
         this.soldItems.push(normalize(product));
       } else {
-        this.orderHashMap.set(product.id, product.title);
         this.onSaleItems.push(normalize(product));
       }
     }
   }
 
   public onEditItem({ item }: { item: ISalesProductHistory }) {
-    const orderHash = this.orderHashMap.get(item.id);
+    const productID = `${item.id}`;
 
-    this.$router.push(`/product/edit/${orderHash}`);
+    this.$router.push(`/product/edit/${productID}`);
   }
 
   public async onDeleteItem({ item }: { item: ISalesProductHistory }) {
     const allow = confirm('<' + item.productName + '> 판매글을 정말로 삭제하시겠습니까?');
-    const orderHash = this.orderHashMap.get(item.id);
+    const productID = `${item.id}`;
 
-    if (!allow || !orderHash) return;
+    if (!allow || !productID) return;
 
     try {
-      await ProductAPI.deletePost(orderHash);
+      await ProductAPI.deletePost(productID);
     } catch (err) {
       console.error(err);
     }

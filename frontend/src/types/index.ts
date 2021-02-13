@@ -1,27 +1,46 @@
-interface ICategory {
-  title: string;
+interface IPhoto {
+  id: number;
+  paht: string;
 }
+
+interface ICategory {
+  id: number;
+  type: string;
+}
+
+interface ISeller {
+  id: number;
+  email: string;
+  nickname: string;
+  isAdmin: boolean;
+  contact: string;
+  birthday: Date;
+}
+
+interface IBuyer extends ISeller {}
 
 interface IProduct {
-  title: string;
-  category: ICategory;
-  image: string;
-  like: number;
+  id: number;
+  name: string;
+  photos: IPhoto[];
   price: number;
+  likes: number;
+  views: number;
+  seller: ISeller;
+  description: string;
+  category: ICategory;
+  isSold: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-interface IProductSearchResult extends IProduct {
-  id: number;
-  sold: boolean;
-  post: { title: string; body: string; hit: number };
-  createdAt: string;
-  updatedAt: string;
-  deletedAt?: string;
+interface IRelatedProduct extends IProduct {
+  score: number;
 }
 
 interface IProductForm {
   [index: string]: string | Blob;
-  title: string;
+  name: string;
   image: Blob;
   category: string;
   price: string;
@@ -46,12 +65,6 @@ interface IPost {
   deletedAt?: string;
 }
 
-interface Review extends IPost {
-  image: string;
-  like: number;
-  rating: number;
-}
-
 interface DashBoardAsideMenuItem {
   title: string;
   to: string;
@@ -60,14 +73,6 @@ interface DashBoardAsideMenuItem {
 interface ICategoryOption {
   text: string;
   value: string;
-}
-
-interface IProductDetailInfo {
-  image: string;
-  title: string;
-  like: number;
-  price: number;
-  sold: boolean;
 }
 
 interface IUserInfo {
@@ -81,14 +86,13 @@ interface ICategoryMap {
 
 export {
   IProduct,
-  IProductSearchResult,
+  IRelatedProduct,
   IProductForm,
+  ISeller,
+  IBuyer,
   User,
-  IPost,
   DashBoardAsideMenuItem,
-  Review,
   ICategoryOption,
-  IProductDetailInfo,
   IUserInfo,
   ICategoryMap,
 };

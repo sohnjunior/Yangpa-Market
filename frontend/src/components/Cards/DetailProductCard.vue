@@ -11,7 +11,7 @@
         />
 
         <em class="product-price">₩ {{ productInfo.price }}</em>
-        <p class="product-description">{{ productDescription }}</p>
+        <p class="product-description">{{ productInfo.description }}</p>
       </div>
 
       <div class="button-wrapper" v-if="!productInfo.sold">
@@ -30,18 +30,16 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { ProductAPI } from '../../api';
 import Icon from '@components/Common/Icon.vue';
 import Chip from '@components/Common/Chip.vue';
-import { IProductDetailInfo } from '../../types';
+import { IProduct } from '../../types';
 
 @Component({
   components: { Icon, Chip },
 })
 export default class DetailProductCard extends Vue {
   @Prop({ required: true }) readonly productID!: string;
-  @Prop({ required: true }) readonly productInfo!: IProductDetailInfo;
-  @Prop({ required: true }) readonly productDescription!: string;
+  @Prop({ required: true }) readonly productInfo!: Partial<IProduct>;
 
   public onClickAddCart() {
     this.$emit('add-cart');
