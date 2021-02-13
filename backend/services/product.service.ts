@@ -70,23 +70,23 @@ const getProduct = async (productId: number) => {
 };
 
 const updateProduct = async (
-  productID: number,
-  options: { productName: string; price: number; description: string }
+  productId: number,
+  options: { name: string; price: number; description: string }
 ) => {
   try {
     const productRepository = getRepository(Product);
 
-    await productRepository.update(productID, options);
+    await productRepository.update(productId, options);
   } catch (err) {
     throw err;
   }
 };
 
-const deleteProduct = async (productID: number) => {
+const deleteProduct = async (productId: number) => {
   try {
     const productRepository = getRepository(Product);
 
-    await productRepository.softDelete(productID);
+    await productRepository.softDelete(productId);
   } catch (err) {
     throw err;
   }

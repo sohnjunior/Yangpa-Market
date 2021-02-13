@@ -25,10 +25,11 @@ async function createProduct(req: Request, res: Response, next: NextFunction) {
 
 async function updateProduct(req: Request, res: Response, next: NextFunction) {
   try {
-    const { productId, title, price, body } = req.body;
-    const updateOptions = { productName: title, price, description: body };
+    const { id: productId } = req.params;
+    const { name, price, description } = req.body;
+    const updateOptions = { name, price, description };
 
-    await ProductService.updateProduct(productId, updateOptions);
+    await ProductService.updateProduct(+productId, updateOptions);
 
     res
       .status(200)
@@ -52,9 +53,13 @@ async function deleteProduct(req: Request, res: Response, next: NextFunction) {
 
 async function getAllProducts(req: Request, res: Response, next: NextFunction) {
   try {
-    const posts = await ProductService.getAllProducts();
+    const products = await ProductService.getAllProducts();
 
-    res.status(200).json(posts);
+    res.status(200).json({
+      status: 'ok',
+      message: '모든 상품 정보 조회에 성공했습니다.',
+      products,
+    });
   } catch (err) {
     next(err);
   }
@@ -63,11 +68,13 @@ async function getAllProducts(req: Request, res: Response, next: NextFunction) {
 async function getProduct(req: Request, res: Response, next: NextFunction) {
   try {
     const { id: productId } = req.params;
-    const post = await ProductService.getProduct(+productId);
+    const product = await ProductService.getProduct(+productId);
 
-    if (!post) return next(new HTTP404Error('상품 정보를 찾을 수 없습니다'));
+    if (!product) return next(new HTTP404Error('상품 정보를 찾을 수 없습니다'));
 
-    res.status(200).json(post);
+    res
+      .status(200)
+      .json({ status: 'ok', message: '상품조회에 성공했습니다.', product });
   } catch (err) {
     next(err);
   }
@@ -87,7 +94,7 @@ async function searchProducts(req: Request, res: Response, next: NextFunction) {
     res.status(200).json({
       status: 'ok',
       message: '조회가 성공적으로 이루어졌습니다',
-      result: products,
+      products,
     });
   } catch (err) {
     next(err);
