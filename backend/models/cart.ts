@@ -23,6 +23,6 @@ export class Cart {
   owner!: User;
 
   @ManyToMany(() => Product)
-  @JoinTable()
+  @JoinTable({ name: 'cart_products' })
   products!: Product[];
 }

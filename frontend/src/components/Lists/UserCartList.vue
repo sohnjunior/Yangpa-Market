@@ -26,45 +26,31 @@
 import { Component, Vue } from 'vue-property-decorator';
 import CartProductCard from '@components/Cards/CartProductCard.vue';
 import { CartAPI } from '../../api';
+import { IProduct } from '../../types';
 
 // TODO: 핸드폰 번호 입력창 UX/UI 보완하기 (정해진 형식에 맞게 입력하기 쉽도록)
 // TODO: 장바구니 비어있을 시 예외처리 Toast 팝업으로 변경
 // TODO: 장바구니 상품 클릭 시 해당 상품 디테일 화면으로 이동
 
-interface ICartProduct {
-  id: number;
-  CartProduct: { cardId: number; productId: number; createdAt: Date; updatedAt: Date };
-  categoryId: number;
-  postId: number;
-  image: string;
-  like: number;
-  price: number;
-  sold: boolean;
-  title: string;
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt?: Date;
-}
-
 @Component({
   components: { CartProductCard },
 })
 export default class UserCart extends Vue {
-  private wishItems: ICartProduct[] = [];
-  private onSaleItems: ICartProduct[] = []; // 내가 찜한 상품중 현재 판매중인것들
+  private wishItems: IProduct[] = [];
+  private onSaleItems: IProduct[] = []; // 내가 찜한 상품중 현재 판매중인것들
 
   get totalPrice() {
-    return this.onSaleItems.reduce((acc, pick) => acc + pick.price, 0);
+    return this.onSaleItems.reduce((acc, item) => acc + item.price, 0);
   }
 
   public async created() {
     try {
       const {
-        data: { result },
+        data: { products },
       } = await CartAPI.fetchAllCartProducts();
 
-      this.wishItems = result;
-      this.onSaleItems = this.wishItems.filter((pick) => !pick.sold);
+      this.wishItems = products;
+      this.onSaleItems = this.wishItems.filter((item) => !item.isSold);
     } catch (err) {
       console.error(err);
     }
@@ -87,20 +73,21 @@ export default class UserCart extends Vue {
       return;
     }
 
-    const phone = prompt('핀매자와 연락할 수 있는 연락처를 남겨주세요!');
+    // TODO: 상품 구매 API 연동
+    // const phone = prompt('핀매자와 연락할 수 있는 연락처를 남겨주세요!');
 
-    if (phone) {
-      /** 장바구니 모든 상품들에 대해 구매 요청 전송 */
-      const promises = this.onSaleItems.map((product) => {
-        CartAPI.purchaseCartProduct({
-          postID: product.postId,
-          productID: product.id,
-          phone: phone,
-        });
-      });
+    // if (phone) {
+    //   /** 장바구니 모든 상품들에 대해 구매 요청 전송 */
+    //   const promises = this.onSaleItems.map((product) => {
+    //     CartAPI.purchaseCartProduct({
+    //       postID: product.postId,
+    //       productID: product.id,
+    //       phone: phone,
+    //     });
+    //   });
 
-      await Promise.all(promises);
-    }
+    //   await Promise.all(promises);
+    // }
   }
 }
 </script>
