@@ -3,14 +3,14 @@
     <ProductCard
       class="grid-content"
       v-for="product in products"
-      :title="product.product.title"
-      :image="product.product.image"
-      :body="product.body"
-      :hit="product.hit"
-      :writer="product.user.nickname"
-      :like="product.product.like"
-      :productID="product.title"
-      :price="product.product.price"
+      :title="product.name"
+      :image="product.photos[0]"
+      :body="product.description"
+      :hit="product.views"
+      :writer="product.seller.nickname"
+      :like="product.likes"
+      :productID="product.id"
+      :price="product.price"
       :key="product.id"
     />
   </div>
@@ -19,13 +19,13 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import ProductCard from '@components/Cards/ProductCard.vue';
-import { IPost } from '../../types';
+import { IProduct } from '../../types';
 
 @Component({
   components: { ProductCard },
 })
 export default class ProductGridList extends Vue {
-  @Prop({ required: true }) readonly products!: IPost[];
+  @Prop({ required: true }) readonly products!: IProduct[];
 }
 </script>
 

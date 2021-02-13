@@ -1,22 +1,34 @@
+interface IPhoto {
+  id: number;
+  paht: string;
+}
+
 interface ICategory {
-  title: string;
+  id: number;
+  type: string;
+}
+
+interface ISeller {
+  id: number;
+  email: string;
+  nickname: string;
+  isAdmin: boolean;
+  contact: string;
+  birthday: Date;
 }
 
 interface IProduct {
-  title: string;
-  category: ICategory;
-  image: string;
-  like: number;
+  name: string;
+  photos: IPhoto[];
   price: number;
-}
-
-interface IProductSearchResult extends IProduct {
-  id: number;
-  sold: boolean;
-  post: { title: string; body: string; hit: number };
-  createdAt: string;
-  updatedAt: string;
-  deletedAt?: string;
+  likes: number;
+  views: number;
+  seller: ISeller;
+  description: string;
+  category: ICategory;
+  isSold: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 interface IProductForm {
@@ -81,7 +93,6 @@ interface ICategoryMap {
 
 export {
   IProduct,
-  IProductSearchResult,
   IProductForm,
   User,
   IPost,

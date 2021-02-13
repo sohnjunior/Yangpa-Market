@@ -88,7 +88,7 @@ export default class ProductForm extends Vue {
     description: '',
   };
   private categoryOptions: ICategoryOption[] = [
-    { text: '회원권', value: 'tick' },
+    { text: '회원권', value: 'tickets' },
     { text: '원룸', value: 'rooms' },
     { text: '전공서적', value: 'books' },
     { text: '의류', value: 'clothes' },
