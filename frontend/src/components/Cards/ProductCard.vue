@@ -5,11 +5,11 @@
         <h1 class="product-name">{{ title }}</h1>
         <h2 class="product-seller">
           <Icon class="icon" filename="user" width="20" height="20" />
-          {{ writer }}
+          {{ seller }}
         </h2>
         <h2 class="product-meta">
           <Icon class="icon" filename="glasses" width="20" height="20" />
-          {{ hit }}
+          {{ views }}
         </h2>
       </div>
     </template>
@@ -26,7 +26,7 @@
         <em>{{ price }} 원</em>
         <div class="like-wrapper">
           <Icon filename="heart" width="15" height="15" />
-          <span class="like-count">{{ like }}</span>
+          <span class="like-count">{{ likes }}</span>
         </div>
       </div>
     </template>
@@ -45,9 +45,9 @@ export default class ProductCard extends Vue {
   @Prop({ required: true }) title!: string;
   @Prop({ required: true }) image!: string;
   @Prop({ required: true }) body!: string;
-  @Prop({ required: true }) hit!: number;
-  @Prop({ required: true }) writer!: string;
-  @Prop({ required: true }) like!: number;
+  @Prop({ required: true }) views!: number;
+  @Prop({ required: true }) seller!: string;
+  @Prop({ required: true }) likes!: number;
   @Prop({ required: true }) price!: string;
   @Prop({ required: true }) productID!: string;
 
