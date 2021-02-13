@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import * as RecommendService from '../services/recommend';
+import * as RecommendationService from '../services/recommendation.service';
 
 async function getPopularProducts(
   req: Request,
@@ -7,12 +7,12 @@ async function getPopularProducts(
   next: NextFunction
 ) {
   try {
-    const popularProducts = await RecommendService.getPopularProducts();
+    const popularProducts = await RecommendationService.getPopularProducts();
 
     res.status(200).json({
       status: 'ok',
       message: '실시간 인기 상품 조회 성공',
-      result: popularProducts,
+      products: popularProducts,
     });
   } catch (err) {
     next(err);
@@ -25,16 +25,15 @@ async function getRelatedProducts(
   next: NextFunction
 ) {
   try {
-    const { id: productID } = req.params;
-
-    const relatedProducts = await RecommendService.getRelatedProducts(
-      productID
+    const { id: productId } = req.params;
+    const relatedProducts = await RecommendationService.getRelatedProducts(
+      +productId
     );
 
     res.status(200).json({
       status: 'ok',
       message: '연관 상품 조회 성공',
-      result: relatedProducts,
+      products: relatedProducts,
     });
   } catch (err) {
     next(err);
