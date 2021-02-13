@@ -8,7 +8,7 @@ import cors from 'cors';
 import passport from 'passport';
 import passportConfig from './passport';
 import apiRouter from './routes';
-import handleErrors from './middlewares/error-handler';
+import handleErrors from './routes/middlewares/error-handler';
 import { HTTP404Error } from './utils/errors';
 import { createConnection } from 'typeorm';
 

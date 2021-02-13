@@ -1,7 +1,7 @@
 import express from 'express';
 import * as UserController from '../../controllers/user.controller';
-import { verifyToken } from '../../middlewares';
-import { checkBodyNull } from '../../middlewares/validator';
+import { verifyToken } from '../middlewares';
+import { checkBodyNull } from '../middlewares/validator';
 
 const router = express.Router();
 

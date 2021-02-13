@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import multer from 'multer';
 import path from 'path';
 import passport from 'passport';
-import { HTTP401Error, HTTP419Error } from '../utils/errors';
+import { HTTP401Error, HTTP419Error } from '../../utils/errors';
 
 function uploadImage(dirname: string) {
   return multer({

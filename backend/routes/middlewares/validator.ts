@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { HTTP400Error } from '../utils/errors';
+import { HTTP400Error } from '../../utils/errors';
 
 function checkBodyNull(req: Request, res: Response, next: NextFunction) {
   let valid = true;
