@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import * as ProductService from '../services/product';
-import { HTTP404Error } from '../utils/errors';
+import * as ProductService from '../services/product.service';
+import { HTTP400Error, HTTP404Error } from '../utils/errors';
 
-async function postProduct(req: Request, res: Response, next: NextFunction) {
+async function createProduct(req: Request, res: Response, next: NextFunction) {
   try {
     const { id: userID } = req.decoded;
     const { category, title, description, price } = req.body;
@@ -14,8 +14,9 @@ async function postProduct(req: Request, res: Response, next: NextFunction) {
       title,
       description,
       price,
-      filename
+      [filename]
     );
+
     res.status(201).json({ status: 'ok', message: '상품이 추가되었습니다' });
   } catch (err) {
     next(err);
@@ -25,8 +26,9 @@ async function postProduct(req: Request, res: Response, next: NextFunction) {
 async function updateProduct(req: Request, res: Response, next: NextFunction) {
   try {
     const { productId, title, price, body } = req.body;
+    const updateOptions = { productName: title, price, description: body };
 
-    await ProductService.updateProductInfo(productId, title, price, body);
+    await ProductService.updateProduct(productId, updateOptions);
 
     res
       .status(200)
@@ -38,9 +40,9 @@ async function updateProduct(req: Request, res: Response, next: NextFunction) {
 
 async function deleteProduct(req: Request, res: Response, next: NextFunction) {
   try {
-    const { id: orderHash } = req.params;
+    const { id: productId } = req.params;
 
-    await ProductService.deleteProduct(orderHash);
+    await ProductService.deleteProduct(+productId);
 
     res.status(200).json({ status: 'ok', message: '상품이 삭제되었습니다' });
   } catch (err) {
@@ -48,7 +50,7 @@ async function deleteProduct(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-async function getProducts(req: Request, res: Response, next: NextFunction) {
+async function getAllProducts(req: Request, res: Response, next: NextFunction) {
   try {
     const posts = await ProductService.getAllProducts();
 
@@ -60,10 +62,10 @@ async function getProducts(req: Request, res: Response, next: NextFunction) {
 
 async function getProduct(req: Request, res: Response, next: NextFunction) {
   try {
-    const { id: orderHash } = req.params;
+    const { id: productId } = req.params;
+    const post = await ProductService.getProduct(+productId);
 
-    const post = await ProductService.getProduct(orderHash);
-    if (!post) next(new HTTP404Error('상품 정보를 찾을 수 없습니다'));
+    if (!post) return next(new HTTP404Error('상품 정보를 찾을 수 없습니다'));
 
     res.status(200).json(post);
   } catch (err) {
@@ -74,9 +76,12 @@ async function getProduct(req: Request, res: Response, next: NextFunction) {
 async function searchProducts(req: Request, res: Response, next: NextFunction) {
   try {
     let { keyword } = req.query;
-    keyword = keyword.trim().replace(/\s\s+/gi, ' '); // 앞뒤 공백문자 제거
-    const keywords = keyword.split(' '); // 띄어쓰기 기준으로 한 단어라도 들어있으면 결과 찾아서 반환
 
+    if (!keyword) return next(new HTTP400Error('잘못된 입력입니다'));
+
+    keyword = (keyword as string).trim().replace(/\s\s+/gi, ' '); // 앞뒤 공백문자 제거
+
+    const keywords = keyword.split(' '); // 띄어쓰기 기준으로 한 단어라도 들어있으면 결과 찾아서 반환
     const products = await ProductService.searchProductsWithKeyword(keywords);
 
     res.status(200).json({
@@ -95,10 +100,9 @@ async function updateLikeOfProduct(
   next: NextFunction
 ) {
   try {
-    const { id: orderHash } = req.params;
+    const { id: productId } = req.params;
 
-    await ProductService.increaseLikeOfProduct(orderHash);
-
+    await ProductService.increaseLikeOfProduct(+productId);
     res
       .status(200)
       .json({ status: 'ok', message: '상품 좋아요가 증가했습니다' });
@@ -108,10 +112,10 @@ async function updateLikeOfProduct(
 }
 
 export {
-  postProduct,
+  createProduct,
   updateProduct,
   deleteProduct,
-  getProducts,
+  getAllProducts,
   getProduct,
   searchProducts,
   updateLikeOfProduct,
