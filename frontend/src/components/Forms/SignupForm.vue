@@ -27,11 +27,6 @@
       <span class="error" v-show="!validation.contact.isValid">
         {{ validation.contact.message }}
       </span>
-
-      <select v-model="sex">
-        <option value="male">남성</option>
-        <option value="female">여성</option>
-      </select>
     </fieldset>
 
     <!-- <DatePicker @pick-date="onPickDate" /> -->
@@ -69,9 +64,7 @@ export default class SignupForm extends Vue {
   private confirmPassword = '';
   private nickname = '';
   private contact = '';
-  private sex = 'male';
   private birthday = '2020-10-10'; // TODO: DatePicker 컴포넌트 구현 후 적용
-  private isAdmin = false; // TODO: 회원가입 api 에서 isAdmin 제거
 
   private validation: ISigninValidation = {
     email: { isValid: false, message: '' },
