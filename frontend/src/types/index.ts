@@ -47,25 +47,7 @@ interface IProductForm {
   description: string;
 }
 
-interface User {
-  email: string;
-  nickname: string;
-}
-
-interface IPost {
-  id: number;
-  title: string;
-  body: string;
-  hit: number;
-  product: IProduct;
-  user: User;
-  userId: number;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt?: string;
-}
-
-interface DashBoardAsideMenuItem {
+interface IDashBoardAsideMenuItem {
   title: string;
   to: string;
 }
@@ -90,8 +72,7 @@ export {
   IProductForm,
   ISeller,
   IBuyer,
-  User,
-  DashBoardAsideMenuItem,
+  IDashBoardAsideMenuItem,
   ICategoryOption,
   IUserInfo,
   ICategoryMap,

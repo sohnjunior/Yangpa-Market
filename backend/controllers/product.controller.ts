@@ -5,13 +5,13 @@ import { HTTP400Error, HTTP404Error } from '../utils/errors';
 async function createProduct(req: Request, res: Response, next: NextFunction) {
   try {
     const { id: userID } = req.decoded;
-    const { category, title, description, price } = req.body;
+    const { category, name, description, price } = req.body;
     const { filename } = req.file;
 
     await ProductService.createProduct(
       userID,
       category,
-      title,
+      name,
       description,
       price,
       [filename]

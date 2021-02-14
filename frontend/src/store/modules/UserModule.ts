@@ -5,7 +5,6 @@ import {
   removeLocalStorageItem,
 } from '../../utils/storages';
 import { UserAPI } from '../../api';
-import { User } from '../../types';
 
 @Module({ namespaced: true })
 export default class UserModule extends VuexModule {
@@ -44,7 +43,7 @@ export default class UserModule extends VuexModule {
   }
 
   @Action
-  public async login(userData: User) {
+  public async login(userData: { email: string; password: string }) {
     try {
       const {
         data: { email, accessToken, refreshToken },

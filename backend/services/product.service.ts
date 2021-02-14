@@ -10,7 +10,7 @@ const createProduct = async (
   productName: string,
   description: string,
   price: number,
-  images: string[]
+  photoNames: string[]
 ) => {
   try {
     const categoryRepository = getRepository(Category);
@@ -21,7 +21,7 @@ const createProduct = async (
       type: categoryType,
     });
     const seller = await userRepository.findOneOrFail({ id: userID });
-    const productPhotos = PhotoService.createPhotos(images);
+    const productPhotos = PhotoService.createPhotos(photoNames);
     const product = productRepository.create({
       name: productName,
       description,

@@ -40,8 +40,8 @@ async function getAllUser(req: Request, res: Response, next: NextFunction) {
 
 async function getUser(req: Request, res: Response, next: NextFunction) {
   try {
-    const { id: userID } = req.decoded;
-    const user = await UserService.getUserInfo(userID);
+    const { id: userId } = req.decoded;
+    const user = await UserService.getUserInfo(userId);
 
     res.status(200).json({ status: 'ok', message: '유저 정보 조회', user });
   } catch (err) {
@@ -49,24 +49,46 @@ async function getUser(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-/**
- * @deprecated
- */
-async function updateUser(req: Request, res: Response, next: NextFunction) {
+async function updateUserProfile(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   try {
-    // const { email, password, nickname, phone, sex, birthday } = req.body;
-    // const user = UserService.updateUserInfo(
-    //   email,
-    //   password,
-    //   nickname,
-    //   phone,
-    //   sex,
-    //   birthday
-    // );
+    const { id: userId } = req.decoded;
+    const { email, nickname, contact } = req.body;
+
+    const updatedInfo = await UserService.updateUserProfile(
+      userId,
+      email,
+      nickname,
+      contact
+    );
 
     res.status(200).json({
       status: 'ok',
-      message: '계정이 성공적으로 생성되었습니다',
+      message: '프로필 정보가 변경되었습니다.',
+      updatedInfo,
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function updateUserPassword(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { id: userId } = req.decoded;
+    const { oldPassword, newPassword } = req.body;
+
+    await UserService.updateUserPassword(userId, oldPassword, newPassword);
+
+    res.status(200).json({
+      status: 'ok',
+      message: '비밀번호가 변경되었습니다.',
     });
   } catch (err) {
     next(err);
@@ -75,9 +97,9 @@ async function updateUser(req: Request, res: Response, next: NextFunction) {
 
 async function deleteUser(req: Request, res: Response, next: NextFunction) {
   try {
-    const { id: userID } = req.decoded;
+    const { id: userId } = req.decoded;
 
-    await UserService.deleteUser(userID);
+    await UserService.deleteUser(userId);
 
     res
       .status(200)
@@ -100,4 +122,12 @@ async function signin(req: Request, res: Response, next: NextFunction) {
   })(req, res, next);
 }
 
-export { getAllUser, getUser, createUser, updateUser, deleteUser, signin };
+export {
+  getAllUser,
+  getUser,
+  createUser,
+  updateUserProfile,
+  updateUserPassword,
+  deleteUser,
+  signin,
+};

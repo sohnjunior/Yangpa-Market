@@ -1,9 +1,9 @@
 <template>
   <div class="info-container">
-    <img class="product-image" alt="상품 이미지" :src="productInfo.image" />
+    <img class="product-image" alt="상품 이미지" :src="productInfo.photos[0].path" />
     <div class="info-wrapper">
       <div class="meta-wrapper">
-        <h2 class="product-title">{{ productInfo.title }}</h2>
+        <h2 class="product-title">{{ productInfo.name }}</h2>
 
         <Chip
           :text="productInfo.sold ? '판매 완료' : '판매 중'"
@@ -14,7 +14,7 @@
         <p class="product-description">{{ productInfo.description }}</p>
       </div>
 
-      <div class="button-wrapper" v-if="!productInfo.sold">
+      <div class="button-wrapper" v-if="!productInfo.isSold">
         <button class="cart-button" @click="onClickAddCart">
           <Icon filename="cart" width="17" height="17" />
           <span class="button-description">장바구니 담기</span>

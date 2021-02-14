@@ -3,6 +3,7 @@ import { getRepository } from 'typeorm';
 import { Photo } from '../models/photo';
 
 const IMAGE_BASE_PATH = 'public/images';
+const BASE_URL = 'http://localhost:3000';
 
 const convertBufferToBase64 = (dirname: string, fllename: string) => {
   const data = fs.readFileSync(`${IMAGE_BASE_PATH}/${dirname}/${fllename}`);
@@ -12,10 +13,10 @@ const convertBufferToBase64 = (dirname: string, fllename: string) => {
   return base64Encode;
 };
 
-const createPhotos = (imagePaths: string[]) => {
+const createPhotos = (photoNames: string[]) => {
   const photoRepository = getRepository(Photo);
-  const photos = imagePaths.map((imagePath) =>
-    photoRepository.create({ path: imagePath })
+  const photos = photoNames.map((photoName) =>
+    photoRepository.create({ path: `${BASE_URL}/images/product/${photoName}` })
   );
 
   photoRepository.save(photos);

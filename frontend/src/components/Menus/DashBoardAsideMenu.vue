@@ -24,11 +24,11 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { DashBoardAsideMenuItem } from '../../types';
+import { IDashBoardAsideMenuItem } from '../../types';
 
 @Component
 export default class DashBoardAsideMenu extends Vue {
-  private orders: DashBoardAsideMenuItem[] = [
+  private orders: IDashBoardAsideMenuItem[] = [
     {
       title: '장바구니',
       to: 'cart',
@@ -46,7 +46,7 @@ export default class DashBoardAsideMenu extends Vue {
       to: 'alarm',
     },
   ];
-  private profiles: DashBoardAsideMenuItem[] = [
+  private profiles: IDashBoardAsideMenuItem[] = [
     {
       title: '프로필 설정',
       to: 'profile',
