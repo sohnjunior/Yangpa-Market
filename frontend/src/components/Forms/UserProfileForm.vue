@@ -112,12 +112,42 @@ export default class UserProfileForm extends Vue {
     this.birthday = parseBirthday(userInfo.birthday);
   }
 
-  public onEditProfile() {
-    // TODO: 프로필 수정 api 구현
+  public async onEditProfile() {
+    // TODO: 달력 컴포넌트 구현 후 생일도 변경 가능하도록 수정
+    try {
+      const {
+        data: { updatedInfo },
+      } = await UserAPI.updateUserProfile({
+        email: this.email,
+        nickname: this.nickname,
+        contact: this.contact,
+      });
+
+      this.email = updatedInfo.email;
+      this.nickname = updatedInfo.nickname;
+      this.contact = updatedInfo.contact;
+
+      // TODO: 변경되었다고 팝업 띄우기
+    } catch (err) {
+      console.error(err);
+    }
   }
 
-  public onEditPassword() {
-    // TODO: 비밀번호 수정 api 구현
+  public async onEditPassword() {
+    try {
+      await UserAPI.updateUserPassword({
+        oldPassword: this.oldPassword,
+        newPassword: this.newPassword,
+      });
+
+      this.oldPassword = '';
+      this.newPassword = '';
+      this.confirmPassword = '';
+
+      // TODO: 변경되었다고 팝업 띄우기
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   public onPickDate(date) {
@@ -162,8 +192,8 @@ export default class UserProfileForm extends Vue {
   public onWatchNewPassword(value: string) {
     const isValid = validatePassword(value);
 
-    this.validation.oldPassword.isValid = isValid;
-    this.validation.oldPassword.message = isValid
+    this.validation.newPassword.isValid = isValid;
+    this.validation.newPassword.message = isValid
       ? ''
       : '비밀번호 형식을 확인해주세요(8~15자 적어도 하나의 특수문자 및 숫자 포함)';
   }
