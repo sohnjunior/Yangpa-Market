@@ -20,7 +20,7 @@ export default class ProductEditView extends Vue {
   private productID!: string;
   private initalFormData: IProductForm = {
     name: '',
-    image: new Blob(),
+    images: [],
     category: '',
     price: '',
     description: '',

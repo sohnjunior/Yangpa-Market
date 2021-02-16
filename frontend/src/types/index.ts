@@ -39,9 +39,9 @@ interface IRelatedProduct extends IProduct {
 }
 
 interface IProductForm {
-  [index: string]: string | Blob;
+  [index: string]: string | File[];
   name: string;
-  image: Blob;
+  images: File[];
   category: string;
   price: string;
   description: string;
