@@ -38,7 +38,7 @@ export default class ProductEditView extends Vue {
       } = await ProductAPI.fetchProduct(this.productID);
 
       this.initalFormData.name = product.name;
-      this.initalFormData.image = product.photos[0];
+      this.initalFormData.images = product.photos;
       this.initalFormData.category = product.category.type;
       this.initalFormData.price = product.price;
       this.initalFormData.description = product.description;

@@ -42,7 +42,7 @@ export default class ImageInput extends Vue {
   }
 
   public onUploadFile(e: Event) {
-    const files = (e.target as HTMLInputElement).files;
+    const files = (e.target as HTMLInputElement).files || [];
 
     for (let i = 0, len = files.length; i < len; i++) {
       const filename = files[i].name;

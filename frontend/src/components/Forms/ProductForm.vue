@@ -2,10 +2,6 @@
   <form class="form-container" @submit.prevent="onSubmit">
     <fieldset class="form-fieldset">
       <section>
-        <!-- <label>
-          사진
-          <input type="file" @change="onSelectFile" />
-        </label> -->
         <ImageInput @change="onChangeFile" />
         <span class="error" v-show="!validation.images.isValid">
           {{ validation.images.message }}
@@ -123,15 +119,6 @@ export default class ProductForm extends Vue {
   public onChangeFile(files: File[]) {
     this.formData.images = files;
   }
-
-  // public onSelectFile(e: Event) {
-  //   const $target = e.target as HTMLInputElement;
-  //   const files = $target.files || [];
-
-  //   if (!files.length) return;
-
-  //   this.formData.image = files[0];
-  // }
 
   public onSubmit() {
     this.$emit('submit', this.formData);
