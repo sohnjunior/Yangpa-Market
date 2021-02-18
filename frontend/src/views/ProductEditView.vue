@@ -1,7 +1,7 @@
 <template>
   <div class="product-edit-view">
     <h1 class="view-title">상품 정보수정</h1>
-    <div>
+    <div class="edit-form-wrapper">
       <ProductForm :isEditMode="true" :initalFormData="initalFormData" @submit="onSubmit" />
     </div>
   </div>
@@ -20,7 +20,7 @@ export default class ProductEditView extends Vue {
   private productID!: string;
   private initalFormData: IProductForm = {
     name: '',
-    image: new Blob(),
+    images: [],
     category: '',
     price: '',
     description: '',
@@ -38,7 +38,7 @@ export default class ProductEditView extends Vue {
       } = await ProductAPI.fetchProduct(this.productID);
 
       this.initalFormData.name = product.name;
-      this.initalFormData.image = product.photos[0];
+      this.initalFormData.images = product.photos;
       this.initalFormData.category = product.category.type;
       this.initalFormData.price = product.price;
       this.initalFormData.description = product.description;
@@ -68,6 +68,10 @@ export default class ProductEditView extends Vue {
   .view-title {
     font-size: 2rem;
     font-weight: 500;
+  }
+
+  .edit-form-wrapper {
+    margin-top: 30px;
   }
 }
 </style>

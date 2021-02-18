@@ -2,10 +2,10 @@
   <form class="form-container" @submit.prevent="onSubmit">
     <fieldset class="form-fieldset">
       <section>
-        <label>
-          사진
-          <input type="file" @change="onSelectFile" />
-        </label>
+        <ImageInput @change="onChangeFile" />
+        <span class="error" v-show="!validation.images.isValid">
+          {{ validation.images.message }}
+        </span>
       </section>
 
       <section>
@@ -56,6 +56,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import ImageInput from '@components/Inputs/ImageInput.vue';
 import SubmitButton from '@components/Buttons/SubmitButton.vue';
 import { IProductForm, ICategoryOption } from '../../types';
 import { validateTextMinLength, validatePrice } from '../../utils/validators';
@@ -66,6 +67,7 @@ interface IValidation {
 }
 
 interface IProductValidation {
+  images: IValidation;
   name: IValidation;
   price: IValidation;
   description: IValidation;
@@ -74,14 +76,14 @@ interface IProductValidation {
 // TODO: 상품 이미지 미리보기 기능 추가
 
 @Component({
-  components: { SubmitButton },
+  components: { ImageInput, SubmitButton },
 })
 export default class ProductForm extends Vue {
   @Prop({ required: false, default: false }) readonly isEditMode!: boolean;
   @Prop({ required: false }) readonly initalFormData!: IProductForm;
 
   private formData: IProductForm = {
-    image: new Blob(),
+    images: [],
     name: '',
     category: '',
     price: '',
@@ -95,6 +97,7 @@ export default class ProductForm extends Vue {
     { text: '기타', value: 'others' },
   ];
   private validation: IProductValidation = {
+    images: { isValid: false, message: '' },
     name: { isValid: false, message: '' },
     price: { isValid: false, message: '' },
     description: { isValid: false, message: '' },
@@ -113,17 +116,20 @@ export default class ProductForm extends Vue {
     this.formData = this.initalFormData;
   }
 
-  public onSelectFile(e: Event) {
-    const $target = e.target as HTMLInputElement;
-    const files = $target.files || [];
-
-    if (!files.length) return;
-
-    this.formData.image = files[0];
+  public onChangeFile(files: File[]) {
+    this.formData.images = files;
   }
 
   public onSubmit() {
     this.$emit('submit', this.formData);
+  }
+
+  @Watch('formData.images')
+  public onWatchImages(images: File[]) {
+    const isValid = images.length > 0;
+
+    this.validation.images.isValid = isValid;
+    this.validation.images.message = isValid ? '' : '최소 1개의 상품 이미지가 필요합니다.';
   }
 
   @Watch('formData.name')
@@ -159,8 +165,10 @@ export default class ProductForm extends Vue {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 
   .form-fieldset {
+    width: inherit;
     margin-bottom: 50px;
 
     label {
@@ -169,7 +177,7 @@ export default class ProductForm extends Vue {
       input,
       select,
       textarea {
-        width: 100%;
+        width: inherit;
         margin: 10px 0px;
         padding: 15px 20px;
         border: 1px solid #efefef;

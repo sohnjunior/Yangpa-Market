@@ -31,7 +31,7 @@ const createProduct = async (
       photos: productPhotos,
     });
 
-    productRepository.save(product);
+    await productRepository.save(product);
   } catch (err) {
     throw err;
   }

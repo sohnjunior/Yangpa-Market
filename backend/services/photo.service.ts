@@ -14,12 +14,11 @@ const convertBufferToBase64 = (dirname: string, fllename: string) => {
 };
 
 const createPhotos = (photoNames: string[]) => {
+  /** ⚠️ Photo 의 경우 cascade 로 지정되어 있기 때문에 종속된 테이블에서 save 해줘야 함 */
   const photoRepository = getRepository(Photo);
-  const photos = photoNames.map((photoName) =>
+  const photos = photoNames.map((photoName: string) =>
     photoRepository.create({ path: `${BASE_URL}/images/product/${photoName}` })
   );
-
-  photoRepository.save(photos);
 
   return photos;
 };

@@ -1,7 +1,6 @@
 <template>
   <div>
-    <section>
-      <h1 class="subtitle">상품정보</h1>
+    <section class="info-section">
       <DetailProductCard
         v-if="isFetchFinished"
         :productID="productID"
@@ -113,5 +112,10 @@ export default class ProductDetailView extends Vue {
 
 section {
   margin-bottom: 100px;
+}
+
+.info-section {
+  display: flex;
+  justify-content: center;
 }
 </style>

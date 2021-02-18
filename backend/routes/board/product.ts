@@ -13,7 +13,7 @@ router.post(
   '/',
   verifyToken,
   checkBodyNull,
-  uploadImage('product').single('image'),
+  uploadImage('product').array('images'),
   ProductController.createProduct
 );
 
