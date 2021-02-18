@@ -9,7 +9,8 @@ const createUser = async (
   nickname: string,
   password: string,
   contact: string,
-  birthday: string
+  birthday: string,
+  avatar: string | undefined
 ) => {
   try {
     const userRepository = getCustomRepository(UserRepository);
@@ -24,6 +25,7 @@ const createUser = async (
       nickname,
       contact,
       birthday,
+      avatar,
     });
     const cart = await cartRepository.create({
       owner: user,

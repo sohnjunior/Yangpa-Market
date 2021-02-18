@@ -1,17 +1,23 @@
 import { Request, Response, NextFunction } from 'express';
 import passport from 'passport';
 import * as UserService from '../services/user.service';
+import * as PhotoService from '../services/photo.service';
 import { HTTP400Error, HTTP401Error } from '../utils/errors';
 
 async function createUser(req: Request, res: Response, next: NextFunction) {
   try {
     const { email, password, nickname, contact, birthday } = req.body;
+    const avatar = req.file
+      ? PhotoService.createAvatarImagePath(req.file.filename)
+      : undefined;
+
     const isValid = await UserService.createUser(
       email,
       nickname,
       password,
       contact,
-      birthday
+      birthday,
+      avatar
     );
 
     if (!isValid) {

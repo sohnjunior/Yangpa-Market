@@ -23,4 +23,8 @@ const createPhotos = (photoNames: string[]) => {
   return photos;
 };
 
-export { createPhotos };
+const createAvatarImagePath = (photoname: string) => {
+  return `${BASE_URL}/images/profile/${photoname}`;
+};
+
+export { createPhotos, createAvatarImagePath };

@@ -1,6 +1,6 @@
 import express from 'express';
 import * as UserController from '../../controllers/user.controller';
-import { verifyToken } from '../middlewares';
+import { uploadImage, verifyToken } from '../middlewares';
 import { checkBodyNull } from '../middlewares/validator';
 
 const router = express.Router();
@@ -8,7 +8,11 @@ const router = express.Router();
 router.get('/', UserController.getAllUser);
 router.get('/self', verifyToken, UserController.getUser);
 router.post('/signin', checkBodyNull, UserController.signin);
-router.post('/', checkBodyNull, UserController.createUser);
+router.post(
+  '/',
+  uploadImage('profile').single('avatar'),
+  UserController.createUser
+);
 router.put(
   '/self/profile',
   verifyToken,

@@ -18,7 +18,7 @@ export class Cart {
   @Column()
   ownerId!: number;
 
-  @OneToOne(() => User, { cascade: true })
+  @OneToOne(() => User, { cascade: true, onDelete: 'CASCADE' })
   @JoinColumn()
   owner!: User;
 
