@@ -1,10 +1,10 @@
 <template>
   <div class="image-input-container">
-    <label class="input-label" for="file-upload" @click="onClickLabel">
+    <label class="input-label" for="file-upload">
       <Icon filename="upload" width="45" height="45" />
       <span class="label-text">사진 업로드</span>
     </label>
-    <input ref="fileInput" type="file" @change="onUploadFile" multiple />
+    <input id="file-upload" ref="fileInput" type="file" @change="onUploadFile" multiple />
 
     <ul class="image-preview-wrapper">
       <li class="image-wrapper" v-for="[key, file] in imageURLMap.entries()" :key="key">
@@ -35,10 +35,6 @@ export default class ImageInput extends Vue {
 
   public convertToURL(file: File) {
     return URL.createObjectURL(file);
-  }
-
-  public onClickLabel() {
-    this.fileInput.click();
   }
 
   public onUploadFile(e: Event) {
