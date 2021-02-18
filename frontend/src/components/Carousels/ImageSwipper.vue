@@ -10,7 +10,7 @@
         @mousemove="onDrag"
         @touchend="onDragEnd"
         @mouseup="onDragEnd"
-        @mouseleave="onDragOut"
+        @mouseleave="onDragEnd"
       >
         <a class="image-link" href="#" v-for="image in images" :key="image.id" draggable="false">
           <img class="product-image" alt="상품 이미지" :src="image.path" draggable="false" />
@@ -64,8 +64,9 @@ export default class ImageSwipper extends Vue {
 
   public onDragStart(e: TouchEvent | MouseEvent) {
     const curClientX = this.getClientX(e);
-    this.retouchedClientX = curClientX - this.offset;
+
     this.initClientX = curClientX;
+    this.retouchedClientX = curClientX - this.offset;
     this.animationStart = true;
     this.imageSwipContainer.classList.remove('ease');
   }
@@ -76,14 +77,13 @@ export default class ImageSwipper extends Vue {
     const curClientX = this.getClientX(e);
     const diff = curClientX - this.retouchedClientX;
 
-    this.imageSwipContainer.style.transform = `translateX(${diff}px)`;
+    this.animateImageMove({ diff, ease: false });
     this.prevClientX = curClientX;
-    this.offset = diff;
   }
 
-  private animateImageMove(diff: number) {
+  private animateImageMove({ diff, ease }: { diff: number; ease: boolean }) {
     requestAnimationFrame(() => {
-      this.imageSwipContainer.classList.add('ease');
+      if (ease) this.imageSwipContainer.classList.add('ease');
       this.imageSwipContainer.style.transform = `translateX(${diff}px)`;
       this.offset = diff;
     });
@@ -91,24 +91,26 @@ export default class ImageSwipper extends Vue {
 
   private animateRollback(offset: number) {
     const diff = this.offset + offset;
-    this.animateImageMove(diff);
+    this.animateImageMove({ diff, ease: true });
   }
 
   private animateMoveNext(offset = 0) {
     const diff = this.offset - (this.initContainerWidth - offset);
 
-    this.animateImageMove(diff);
+    this.animateImageMove({ diff, ease: true });
     this.pivotImageIndex++;
   }
 
   private animateMovePrev(offset = 0) {
     const diff = this.offset + (this.initContainerWidth - offset);
 
-    this.animateImageMove(diff);
+    this.animateImageMove({ diff, ease: true });
     this.pivotImageIndex--;
   }
 
   public onDragEnd() {
+    if (!this.animationStart) return;
+
     const pureOffset = this.initClientX - this.prevClientX;
     const offset = Math.abs(pureOffset);
 
@@ -129,10 +131,6 @@ export default class ImageSwipper extends Vue {
     }
 
     this.animationStart = false;
-  }
-
-  public onDragOut() {
-    if (this.animationStart) this.onDragEnd();
   }
 
   public onMoveNext() {
