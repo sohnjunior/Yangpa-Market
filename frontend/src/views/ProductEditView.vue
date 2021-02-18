@@ -1,7 +1,7 @@
 <template>
   <div class="product-edit-view">
     <h1 class="view-title">상품 정보수정</h1>
-    <div>
+    <div class="edit-form-wrapper">
       <ProductForm :isEditMode="true" :initalFormData="initalFormData" @submit="onSubmit" />
     </div>
   </div>
@@ -68,6 +68,10 @@ export default class ProductEditView extends Vue {
   .view-title {
     font-size: 2rem;
     font-weight: 500;
+  }
+
+  .edit-form-wrapper {
+    margin-top: 30px;
   }
 }
 </style>
