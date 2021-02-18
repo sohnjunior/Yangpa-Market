@@ -4,7 +4,7 @@ import { instance } from './common';
  * @purpose 상품 게시글 API
  */
 
-function registerProduct(payload) {
+function registerProduct(payload: FormData) {
   return instance.post('/products', payload, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
