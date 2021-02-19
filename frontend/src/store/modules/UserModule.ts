@@ -25,21 +25,36 @@ export default class UserModule extends VuexModule {
   }
 
   @Mutation
-  public setEmail(email: string) {
-    this.email = email;
-    saveToLocalStorage('email', email);
+  public setEmail(email?: string) {
+    if (email === undefined) {
+      this.email = '';
+      removeLocalStorageItem('email');
+    } else {
+      this.email = email;
+      saveToLocalStorage('email', email);
+    }
   }
 
   @Mutation
-  public setAccessToken(token: string) {
-    this.accessToken = token;
-    saveToLocalStorage('accessToken', token);
+  public setAccessToken(token?: string) {
+    if (token === undefined) {
+      this.accessToken = '';
+      removeLocalStorageItem('accessToken');
+    } else {
+      this.accessToken = token;
+      saveToLocalStorage('accessToken', token);
+    }
   }
 
   @Mutation
-  public setRefreshToken(token: string) {
-    this.refreshToken = token;
-    saveToLocalStorage('refreshToken', token);
+  public setRefreshToken(token?: string) {
+    if (token === undefined) {
+      this.refreshToken = '';
+      removeLocalStorageItem('refreshToken');
+    } else {
+      this.refreshToken = token;
+      saveToLocalStorage('refreshToken', token);
+    }
   }
 
   @Action
@@ -61,9 +76,9 @@ export default class UserModule extends VuexModule {
   @Action
   public logout() {
     return new Promise((resolve) => {
-      removeLocalStorageItem('email');
-      removeLocalStorageItem('accessToken');
-      removeLocalStorageItem('refreshToken');
+      this.context.commit('setEmail');
+      this.context.commit('setAccessToken');
+      this.context.commit('setRefreshToken');
       resolve(true);
     });
   }
