@@ -13,13 +13,14 @@
 }
 
 @mixin modal-title() {
-  font-size: 2rem;
-  font-weight: 500;
+  font-size: 1.8rem;
+  font-weight: 600;
 }
 
 @mixin modal-close-btn() {
   margin-left: auto;
   outline: none;
+  cursor: pointer;
 }
 
 @mixin form-label() {

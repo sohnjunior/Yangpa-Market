@@ -3,6 +3,7 @@
     <AppBar />
     <main class="main-container">
       <ToastModal />
+      <AlertModal />
       <transition name="fade">
         <router-view :key="$route.fullPath" />
       </transition>
@@ -15,6 +16,7 @@
 import AppBar from '@components/Common/AppBar';
 import AppFooter from '@components/Common/AppFooter';
 import ToastModal from '@components/Modals/ToastModal';
+import AlertModal from '@components/Modals/AlertModal';
 
 export default {
   name: 'App',
@@ -23,6 +25,7 @@ export default {
     AppBar,
     AppFooter,
     ToastModal,
+    AlertModal,
   },
 };
 </script>
