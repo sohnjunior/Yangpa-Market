@@ -47,6 +47,16 @@ interface IProductForm {
   description: string;
 }
 
+interface IUserSignupForm {
+  email: string;
+  nickname: string;
+  password: string;
+  confirmPassword: string;
+  contact: string;
+  avatar: File | null;
+  birthday: string;
+}
+
 interface IDashBoardAsideMenuItem {
   title: string;
   to: string;
@@ -70,6 +80,7 @@ export {
   IProduct,
   IRelatedProduct,
   IProductForm,
+  IUserSignupForm,
   ISeller,
   IBuyer,
   IDashBoardAsideMenuItem,

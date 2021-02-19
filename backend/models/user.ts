@@ -31,6 +31,9 @@ export class User {
   @Column()
   birthday!: Date;
 
+  @Column({ nullable: true })
+  avatar!: string;
+
   @Column({ default: false })
   isAdmin!: boolean;
 

@@ -11,14 +11,10 @@ function fetchUser() {
   return instance.get('/users/self');
 }
 
-function registerUser(payload: {
-  email: string;
-  nickname: string;
-  password: string;
-  contact: string;
-  birthday: string;
-}) {
-  return instance.post('/users', payload);
+function registerUser(payload: FormData) {
+  return instance.post('/users', payload, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
 }
 
 function signinUser(payload: { email: string; password: string }) {
