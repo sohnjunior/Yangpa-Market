@@ -17,12 +17,14 @@ import Icon from '@components/Common/Icon.vue';
 export default class AvatarInput extends Vue {
   @Ref() avatarPreview!: HTMLLabelElement;
 
-  public onChangeAvatar(e: Event) {
-    const file = (e.target as HTMLInputElement).files[0];
-    const imageURL = URL.createObjectURL(file);
+  public onChangeAvatar(e: InputEvent) {
+    const files = (e.target as HTMLInputElement).files;
+    if (!files) return;
+
+    const imageURL = URL.createObjectURL(files[0]);
 
     this.avatarPreview.style.backgroundImage = `url(${imageURL})`;
-    this.$emit('change', file);
+    this.$emit('change', files[0]);
   }
 }
 </script>
