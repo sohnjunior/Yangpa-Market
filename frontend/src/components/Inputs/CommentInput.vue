@@ -18,6 +18,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import { CommentAPI } from '../../api';
 import ToggleButton from '@components/Buttons/ToggleButton.vue';
+import AlertBus from '../../bus/AlertBus';
 
 const UserModule = namespace('UserModule');
 
@@ -35,7 +36,13 @@ export default class CommentInput extends Vue {
 
   public async onSubmitComment() {
     if (!this.isLoggedIn) {
-      alert('로그인이 필요한 서비스입니다.');
+      const message = '로그인이 필요한 서비스입니다.\n 로그인 하시겠습니까?';
+      AlertBus.$emit(
+        'alert-on',
+        message,
+        () => AlertBus.$emit('login-request'),
+        () => console.log('TODO: 댓글 로그인 안한 상태로 등록하려고 할 시 시나리오')
+      );
       return;
     }
     if (this.content === '') return;

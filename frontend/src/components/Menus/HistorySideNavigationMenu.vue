@@ -69,10 +69,9 @@ export default class HistorySideNavigationMenu extends Vue {
   @UserModule.Action
   public logout!: () => Promise<boolean>;
 
-  public onLogout() {
-    this.logout();
+  public async onLogout() {
+    await this.logout();
     ToastBus.$emit('pop-up', '로그아웃 되었습니다.');
-    this.$router.go(0);
   }
 }
 </script>

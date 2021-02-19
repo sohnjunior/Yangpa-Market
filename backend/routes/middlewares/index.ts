@@ -29,13 +29,15 @@ function verifyToken(req: Request, res: Response, next: NextFunction) {
     'access-token',
     { session: false },
     (err, user, info) => {
+      if (err) return next(err);
+
       if (user) {
         req.decoded = user;
         return next();
       }
 
-      if (info.name === 'TokenExpiredError') {
-        return next(new HTTP419Error('토큰이 만료되었습니다'));
+      if (info && info.name === 'TokenExpiredError') {
+        return next(new HTTP419Error('access 토큰이 만료되었습니다.'));
       }
 
       next(new HTTP401Error('유효하지 않은 토큰입니다'));

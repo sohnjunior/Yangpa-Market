@@ -7,7 +7,7 @@ interface IErrorMessage {
 }
 
 function handleErrors(
-  err: any,
+  err: Error,
   req: Request,
   res: Response<IErrorMessage>,
   next: NextFunction
