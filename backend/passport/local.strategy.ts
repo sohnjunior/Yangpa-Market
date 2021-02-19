@@ -49,7 +49,6 @@ export default (passport: PassportStatic) => {
             { id: user.id },
             process.env.REFRESH_TOKEN_SECRET as string,
             {
-              // FIXME: 로그인 페이지 구현 후 1 day로 변경
               expiresIn: '60m',
             }
           );

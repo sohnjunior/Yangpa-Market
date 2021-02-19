@@ -2,7 +2,8 @@ const HTTP_STATUS_CODE = {
   BAD_REQUEST: 400,
   UNAUTHORIZED: 401,
   NOT_FOUND: 404,
-  TOKEN_EXPIRED: 419,
+  REFRESH_TOKEN_EXPIRED: 418,
+  ACCESS_TOKEN_EXPIRED: 419,
 };
 
 class BaseError extends Error {
@@ -45,10 +46,33 @@ class HTTP404Error extends BaseError {
   }
 }
 
-class HTTP419Error extends BaseError {
+class HTTP418Error extends BaseError {
   constructor(message: string) {
-    super('TOKEN_EXPIRED', HTTP_STATUS_CODE.TOKEN_EXPIRED, true, message);
+    super(
+      'REFRESH_TOKEN_EXPIRED',
+      HTTP_STATUS_CODE.REFRESH_TOKEN_EXPIRED,
+      true,
+      message
+    );
   }
 }
 
-export { BaseError, HTTP400Error, HTTP401Error, HTTP404Error, HTTP419Error };
+class HTTP419Error extends BaseError {
+  constructor(message: string) {
+    super(
+      'ACCESS_TOKEN_EXPIRED',
+      HTTP_STATUS_CODE.ACCESS_TOKEN_EXPIRED,
+      true,
+      message
+    );
+  }
+}
+
+export {
+  BaseError,
+  HTTP400Error,
+  HTTP401Error,
+  HTTP404Error,
+  HTTP418Error,
+  HTTP419Error,
+};

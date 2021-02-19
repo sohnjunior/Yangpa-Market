@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
 import * as AuthService from '../services/auth.service';
-import { HTTP401Error, HTTP419Error } from '../utils/errors';
+import { HTTP401Error, HTTP418Error } from '../utils/errors';
 
 async function getPermission(req: Request, res: Response, next: NextFunction) {
   try {
@@ -21,7 +21,9 @@ function getRefreshToken(req: Request, res: Response, next: NextFunction) {
     'refresh-token',
     { session: false },
     (err, userID, info) => {
-      if (userID !== -1) {
+      if (err) return next(err);
+
+      if (userID) {
         const accessToken = jwt.sign(
           { id: userID },
           process.env.ACCESS_TOKEN_SECRET as string,
@@ -36,7 +38,7 @@ function getRefreshToken(req: Request, res: Response, next: NextFunction) {
       }
 
       if (info.name === 'TokenExpiredError') {
-        return next(new HTTP419Error('토큰이 만료되었습니다'));
+        return next(new HTTP418Error('refresh 토큰이 만료되었습니다'));
       }
 
       next(new HTTP401Error('유효하지 않은 토큰입니다'));
