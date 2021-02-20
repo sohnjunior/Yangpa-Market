@@ -3,7 +3,7 @@
     <RelatedProductCard
       v-for="{ product } in relatedProductsWithScore"
       :title="product.name"
-      :image="product.photos[0]"
+      :image="product.photos[0].path"
       :body="product.description"
       :hit="product.views"
       :productID="product.id"
