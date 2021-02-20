@@ -7,13 +7,13 @@
 
     <div class="control-wrapper">
       <router-link v-if="isMobileBrowser" to="/search">
-        <Icon class="search-icon" filename="search" width="25" height="25" />
+        <Icon class="search-icon" filename="search" width="30" height="30" />
       </router-link>
       <SearchInput v-else />
 
       <HistorySideNavigationMenu class="user-menu" v-if="isLoggedIn">
         <template v-slot:trigger>
-          <Icon filename="user" width="25" height="25" />
+          <Avatar :src="userAvatar ? userAvatar : undefined" width="30" height="30" />
         </template>
       </HistorySideNavigationMenu>
       <div v-else>
@@ -38,6 +38,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import Icon from '@components/Common/Icon.vue';
+import Avatar from '@components/Common/Avatar.vue';
 import LoginModal from '@components/Modals/LoginModal.vue';
 import HistorySideNavigationMenu from '@components/Menus/HistorySideNavigationMenu.vue';
 import AuthSideNavigationMenu from '@components/Menus/AuthSideNavigationMenu.vue';
@@ -51,6 +52,7 @@ const SettingModule = namespace('SettingModule');
 @Component({
   components: {
     Icon,
+    Avatar,
     LoginModal,
     HistorySideNavigationMenu,
     AuthSideNavigationMenu,
@@ -60,6 +62,9 @@ const SettingModule = namespace('SettingModule');
 })
 export default class AppBar extends Vue {
   private showModal = false;
+
+  @UserModule.Getter
+  public userAvatar!: string;
 
   @UserModule.Getter
   public isLoggedIn!: boolean;

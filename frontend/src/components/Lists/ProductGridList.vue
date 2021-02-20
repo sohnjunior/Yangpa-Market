@@ -8,6 +8,7 @@
       :body="product.description"
       :views="product.views"
       :seller="product.seller.nickname"
+      :avatar="product.seller.avatar"
       :likes="product.likes"
       :productID="product.id"
       :price="product.price"
