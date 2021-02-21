@@ -8,14 +8,21 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Ref } from 'vue-property-decorator';
+import { Component, Vue, Prop, Ref } from 'vue-property-decorator';
 import Icon from '@components/Common/Icon.vue';
 
 @Component({
   components: { Icon },
 })
 export default class AvatarInput extends Vue {
+  @Prop({ default: undefined }) src!: string;
+
   @Ref() avatarPreview!: HTMLLabelElement;
+
+  public mounted() {
+    const url = this.src ?? 'http://localhost:3000/images/profile/default.png';
+    this.avatarPreview.style.backgroundImage = `url(${url})`;
+  }
 
   public onChangeAvatar(e: InputEvent) {
     const files = (e.target as HTMLInputElement).files;
@@ -38,7 +45,6 @@ export default class AvatarInput extends Vue {
     height: 80px;
     border: none;
     border-radius: 50%;
-    background-image: url('http://localhost:3000/images/profile/default.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;

@@ -25,6 +25,12 @@ function updateUserProfile(payload: { email: string; nickname: string; contact: 
   return instance.put('/users/self/profile', payload);
 }
 
+function updateUserAvatar(payload: FormData) {
+  return instance.put('/users/self/profile/avatar', payload, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+}
+
 function updateUserPassword(payload: { oldPassword: string; newPassword: string }) {
   return instance.put('/users/self/password', payload);
 }
@@ -39,6 +45,7 @@ export default {
   registerUser,
   signinUser,
   updateUserProfile,
+  updateUserAvatar,
   updateUserPassword,
   deleteUser,
 };
