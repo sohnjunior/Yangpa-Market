@@ -3,7 +3,7 @@
     <li class="item" v-for="item in popularItems" :key="item.id">
       <PopularProductCard
         :title="item.name"
-        :image="item.photos[0]"
+        :image="item.photos[0].path"
         :hit="item.views"
         :category="item.category.type"
         :productID="item.id"

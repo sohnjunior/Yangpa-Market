@@ -22,7 +22,7 @@ export default (passport: PassportStatic) => {
         try {
           const userRepository = getRepository(User);
           const user = await userRepository.findOne({
-            select: ['id', 'email', 'password'],
+            select: ['id', 'email', 'nickname', 'avatar', 'password'],
             where: { email },
           });
 
@@ -55,7 +55,13 @@ export default (passport: PassportStatic) => {
 
           redisClient.setValue(user.id.toString(), refreshToken);
 
-          return done(null, { email, accessToken, refreshToken });
+          return done(null, {
+            email: user.email,
+            nickname: user.nickname,
+            avatar: user.avatar ?? '',
+            accessToken,
+            refreshToken,
+          });
         } catch (err) {
           done(err);
         }

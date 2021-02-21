@@ -81,6 +81,19 @@ const updateUserProfile = async (
   }
 };
 
+const updateUserAvatar = async (userId: number, avatar?: string) => {
+  try {
+    const userRepository = getCustomRepository(UserRepository);
+    const updatedUser = await userRepository.updateAndReload(userId, {
+      avatar,
+    });
+
+    return updatedUser.avatar;
+  } catch (err) {
+    throw err;
+  }
+};
+
 const updateUserPassword = async (
   userId: number,
   oldPassword: string,
@@ -116,6 +129,7 @@ export {
   getAllUserExceptAdmin,
   getUserInfo,
   updateUserProfile,
+  updateUserAvatar,
   updateUserPassword,
   deleteUser,
 };

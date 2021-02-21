@@ -9,18 +9,19 @@ import { UserAPI } from '../../api';
 @Module({ namespaced: true })
 export default class UserModule extends VuexModule {
   public email: string = readFromLocalStorage('email') || '';
+  public avatar: string = readFromLocalStorage('avatar') || '';
   public accessToken: string = readFromLocalStorage('accessToken') || '';
   public refreshToken: string = readFromLocalStorage('refreshToken') || '';
 
-  get currentEmail(): string {
+  get userEmail() {
     return this.email;
   }
 
-  get currentToken(): string {
-    return this.accessToken;
+  get userAvatar() {
+    return this.avatar;
   }
 
-  get isLoggedIn(): boolean {
+  get isLoggedIn() {
     return this.accessToken !== '';
   }
 
@@ -32,6 +33,17 @@ export default class UserModule extends VuexModule {
     } else {
       this.email = email;
       saveToLocalStorage('email', email);
+    }
+  }
+
+  @Mutation
+  public setAvatar(avatar?: string) {
+    if (avatar === undefined) {
+      this.avatar = '';
+      removeLocalStorageItem('avatar');
+    } else {
+      this.avatar = avatar;
+      saveToLocalStorage('avatar', avatar);
     }
   }
 
@@ -61,10 +73,11 @@ export default class UserModule extends VuexModule {
   public async login(userData: { email: string; password: string }) {
     try {
       const {
-        data: { email, accessToken, refreshToken },
+        data: { email, avatar, accessToken, refreshToken },
       } = await UserAPI.signinUser(userData);
 
       this.context.commit('setEmail', email);
+      this.context.commit('setAvatar', avatar);
       this.context.commit('setAccessToken', accessToken);
       this.context.commit('setRefreshToken', refreshToken);
       return true;
@@ -77,6 +90,7 @@ export default class UserModule extends VuexModule {
   public logout() {
     return new Promise((resolve) => {
       this.context.commit('setEmail');
+      this.context.commit('setAvatar');
       this.context.commit('setAccessToken');
       this.context.commit('setRefreshToken');
       resolve(true);

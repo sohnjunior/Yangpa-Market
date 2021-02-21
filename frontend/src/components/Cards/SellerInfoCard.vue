@@ -2,7 +2,7 @@
   <BaseCard>
     <template v-slot:card-body>
       <h1 class="card-title">판매자 정보</h1>
-      <Icon filename="user" width="35" height="35" />
+      <Avatar :src="seller.avatar ? seller.avatar : undefined" />
       <span class="contact">닉네임 : {{ seller.nickname }}</span>
       <span class="contact">이메일 : {{ seller.email }}</span>
     </template>
@@ -12,11 +12,12 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import Icon from '@components/Common/Icon.vue';
+import Avatar from '@components/Common/Avatar.vue';
 import BaseCard from '@components/Cards/BaseCard.vue';
 import { ISeller } from '../../types';
 
 @Component({
-  components: { Icon, BaseCard },
+  components: { Icon, Avatar, BaseCard },
 })
 export default class SellerInfoCard extends Vue {
   @Prop({ required: true }) readonly seller!: ISeller;

@@ -5,6 +5,13 @@
     <fieldset>
       <legend>나의 프로필</legend>
 
+      <AvatarInput
+        v-if="!isLoading"
+        class="avatar"
+        :src="avatar ? avatar : undefined"
+        @change="onChangeAvatar"
+      />
+
       <label>
         <span class="label">이메일</span>
         <input type="email" v-model="email" placeholder="이메일 계정" />
@@ -60,8 +67,10 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
 import { UserAPI } from '../../api';
 import { validateEmail, validatePassword, validateContact } from '../../utils/validators';
+import AvatarInput from '@components/Inputs/AvatarInput.vue';
 // import DatePicker from '@components/Inputs/DatePicker.vue';
 
 interface IValidation {
@@ -82,8 +91,13 @@ function parseBirthday(date: string) {
   return date.substr(0, 10);
 }
 
-@Component({})
+const UserModule = namespace('UserModule');
+
+@Component({
+  components: { AvatarInput },
+})
 export default class UserProfileForm extends Vue {
+  private isLoading = false;
   private email = '';
   private oldPassword = '';
   private newPassword = '';
@@ -91,6 +105,7 @@ export default class UserProfileForm extends Vue {
   private nickname = '';
   private contact = '';
   private birthday = '';
+  private avatar = '';
 
   private validation: IProfileValidation = {
     email: { isValid: false, message: '' },
@@ -101,15 +116,25 @@ export default class UserProfileForm extends Vue {
     contact: { isValid: false, message: '' },
   };
 
-  public async created() {
-    const {
-      data: { user: userInfo },
-    } = await UserAPI.fetchUser();
+  @UserModule.Mutation
+  public setAvatar!: (avatar?: string) => void;
 
-    this.email = userInfo.email;
-    this.nickname = userInfo.nickname;
-    this.contact = userInfo.contact;
-    this.birthday = parseBirthday(userInfo.birthday);
+  public async created() {
+    try {
+      this.isLoading = true;
+      const {
+        data: { user: userInfo },
+      } = await UserAPI.fetchUser();
+
+      this.email = userInfo.email;
+      this.nickname = userInfo.nickname;
+      this.contact = userInfo.contact;
+      this.birthday = parseBirthday(userInfo.birthday);
+      this.avatar = userInfo.avatar;
+      this.isLoading = false;
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   public async onEditProfile() {
@@ -126,6 +151,23 @@ export default class UserProfileForm extends Vue {
       this.email = updatedInfo.email;
       this.nickname = updatedInfo.nickname;
       this.contact = updatedInfo.contact;
+
+      // TODO: 변경되었다고 팝업 띄우기
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  public async onChangeAvatar(file: File) {
+    try {
+      const formData = new FormData();
+      formData.set('avatar', file);
+      const {
+        data: { updatedAvatar },
+      } = await UserAPI.updateUserAvatar(formData);
+
+      this.avatar = updatedAvatar;
+      this.setAvatar(updatedAvatar);
 
       // TODO: 변경되었다고 팝업 띄우기
     } catch (err) {
@@ -232,6 +274,12 @@ export default class UserProfileForm extends Vue {
     legend {
       font-size: 1.1rem;
       font-weight: 600;
+    }
+
+    .avatar {
+      display: flex;
+      justify-content: center;
+      margin: 25px 0px;
     }
 
     .label {

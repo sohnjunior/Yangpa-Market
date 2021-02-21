@@ -56,7 +56,7 @@ export default class CommentList extends Vue {
   private editCommentID = -1; // -1일 경우 어떤 댓글도 수정 중이지 않은 상태입니다.
 
   @UserModule.Getter
-  public currentEmail!: string;
+  public userEmail!: string;
 
   @UserModule.Getter
   public isLoggedIn!: boolean;
@@ -82,7 +82,7 @@ export default class CommentList extends Vue {
   }
 
   public isEditable(authorEmail: string) {
-    return this.currentEmail === authorEmail;
+    return this.userEmail === authorEmail;
   }
 
   public isSeller(author: IAuthor) {
@@ -91,7 +91,7 @@ export default class CommentList extends Vue {
 
   public isAllowedForRead(isSecret: boolean, authorEmail: string) {
     if (!isSecret) return true;
-    return this.isAdmin || this.currentEmail === authorEmail;
+    return this.isAdmin || this.userEmail === authorEmail;
   }
 
   public onEditMode(commentID: number, index: number) {
