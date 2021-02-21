@@ -11,7 +11,12 @@ export class UserRepository extends Repository<User> {
 
   public async updateAndReload(
     userId: number,
-    options: { email: string; nickname: string; contact: string }
+    options: {
+      email?: string;
+      nickname?: string;
+      contact?: string;
+      avatar?: string;
+    }
   ) {
     await this.update(userId, options);
     const user = await this.findOneOrFail({ id: userId });

@@ -81,6 +81,29 @@ async function updateUserProfile(
   }
 }
 
+async function updateUserAvatar(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { id: userId } = req.decoded;
+    const avatar = req.file
+      ? PhotoService.createAvatarImagePath(req.file.filename)
+      : undefined;
+
+    const updatedAvatar = await UserService.updateUserAvatar(userId, avatar);
+
+    res.status(200).json({
+      status: 'ok',
+      message: '프로필 사진이 변경되었습니다.',
+      updatedAvatar,
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
 async function updateUserPassword(
   req: Request,
   res: Response,
@@ -133,6 +156,7 @@ export {
   getUser,
   createUser,
   updateUserProfile,
+  updateUserAvatar,
   updateUserPassword,
   deleteUser,
   signin,

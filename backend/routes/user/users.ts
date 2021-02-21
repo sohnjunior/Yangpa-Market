@@ -20,6 +20,12 @@ router.put(
   UserController.updateUserProfile
 );
 router.put(
+  '/self/profile/avatar',
+  verifyToken,
+  uploadImage('profile').single('avatar'),
+  UserController.updateUserAvatar
+);
+router.put(
   '/self/password',
   verifyToken,
   checkBodyNull,
