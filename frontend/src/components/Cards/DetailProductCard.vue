@@ -1,9 +1,9 @@
 <template>
   <div class="info-container">
-    <img class="product-image" alt="상품 이미지" :src="productInfo.image" />
+    <ImageSwipper class="image-swipper" :images="productInfo.photos" />
     <div class="info-wrapper">
       <div class="meta-wrapper">
-        <h2 class="product-title">{{ productInfo.title }}</h2>
+        <h2 class="product-title">{{ productInfo.name }}</h2>
 
         <Chip
           :text="productInfo.sold ? '판매 완료' : '판매 중'"
@@ -14,7 +14,7 @@
         <p class="product-description">{{ productInfo.description }}</p>
       </div>
 
-      <div class="button-wrapper" v-if="!productInfo.sold">
+      <div class="button-wrapper" v-if="!productInfo.isSold">
         <button class="cart-button" @click="onClickAddCart">
           <Icon filename="cart" width="17" height="17" />
           <span class="button-description">장바구니 담기</span>
@@ -32,10 +32,11 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import Icon from '@components/Common/Icon.vue';
 import Chip from '@components/Common/Chip.vue';
+import ImageSwipper from '@components/Carousels/ImageSwipper.vue';
 import { IProduct } from '../../types';
 
 @Component({
-  components: { Icon, Chip },
+  components: { Icon, Chip, ImageSwipper },
 })
 export default class DetailProductCard extends Vue {
   @Prop({ required: true }) readonly productID!: string;
@@ -58,22 +59,30 @@ export default class DetailProductCard extends Vue {
 .info-container {
   @include card-border();
   display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 80%;
   padding: 50px;
   background-color: #ffffff;
 
   .product-image {
-    width: 250px;
-    height: 250px;
+    width: 80%;
+    height: 400px;
     object-fit: cover;
     border-radius: 15px;
+  }
+
+  .image-swipper {
+    width: 80%;
+    height: 50%;
+    margin-bottom: 40px;
   }
 
   .info-wrapper {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    margin-left: 30px;
+    width: 80%;
 
     .meta-wrapper {
       display: flex;
@@ -129,7 +138,6 @@ export default class DetailProductCard extends Vue {
 
 @media screen and (max-width: $mobile-width) {
   .info-container {
-    flex-direction: column;
     width: 100%;
     padding: 25px;
 
@@ -138,8 +146,6 @@ export default class DetailProductCard extends Vue {
     }
 
     .info-wrapper {
-      margin-left: 0px;
-
       .meta-wrapper {
         margin-top: 20px;
       }

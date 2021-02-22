@@ -6,9 +6,9 @@
       :key="product.id"
       @click="onRedirect(product.id)"
     >
-      <img class="thumbnail" alt="상품 이미지" :src="product.photos[0]" />
+      <img class="thumbnail" alt="상품 이미지" :src="product.photos[0].path" />
       <div class="detail">
-        <h1 class="name">{{ product.title }}</h1>
+        <h1 class="name">{{ product.name }}</h1>
         <h2 class="price">{{ product.price }} 원</h2>
         <p class="description">{{ product.description }}</p>
         <!-- TODO: 지난 일수 계산 후 출력하기 <span>{{ product.updatedAt }}</span> -->

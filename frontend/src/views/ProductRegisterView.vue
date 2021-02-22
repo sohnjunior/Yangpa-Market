@@ -15,14 +15,20 @@ import { ProductAPI } from '../api';
 import ProductForm from '@components/Forms/ProductForm.vue';
 
 interface IFormDataPayload {
-  [index: string]: string | Blob;
+  [index: string]: string | File[];
 }
 
 function createFormDataWithObject(payload: IFormDataPayload) {
   const formData = new FormData();
 
   for (const [key, value] of Object.entries(payload)) {
-    formData.set(key, value);
+    if (Array.isArray(value)) {
+      for (const file of value) {
+        formData.append('images', file);
+      }
+    } else {
+      formData.set(key, value);
+    }
   }
 
   return formData;
@@ -46,6 +52,8 @@ export default class ProductRegisterView extends Vue {
 </script>
 
 <style lang="scss">
+@import '../assets/scss/variables';
+
 .product-register-view {
   display: flex;
   flex-direction: column;
@@ -60,7 +68,14 @@ export default class ProductRegisterView extends Vue {
   }
 
   .register-form-wrapper {
+    width: 500px;
     margin-top: 30px;
+  }
+
+  @media screen and (max-width: $mobile-width) {
+    .register-form-wrapper {
+      width: 300px;
+    }
   }
 }
 </style>

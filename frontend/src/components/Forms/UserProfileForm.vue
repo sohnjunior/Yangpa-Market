@@ -5,6 +5,13 @@
     <fieldset>
       <legend>나의 프로필</legend>
 
+      <AvatarInput
+        v-if="!isLoading"
+        class="avatar"
+        :src="avatar ? avatar : undefined"
+        @change="onChangeAvatar"
+      />
+
       <label>
         <span class="label">이메일</span>
         <input type="email" v-model="email" placeholder="이메일 계정" />
@@ -52,17 +59,15 @@
 
       <button class="submit-btn" type="submit" @click="onEditPassword">변경하기</button>
     </fieldset>
-
-    <!-- TODO: DatePicker 컴포넌트 구현 후 적용 -->
-    <!-- <DatePicker @pick-date="onPickDate" /> -->
   </form>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
 import { UserAPI } from '../../api';
 import { validateEmail, validatePassword, validateContact } from '../../utils/validators';
-// import DatePicker from '@components/Inputs/DatePicker.vue';
+import AvatarInput from '@components/Inputs/AvatarInput.vue';
 
 interface IValidation {
   isValid: boolean;
@@ -78,19 +83,20 @@ interface IProfileValidation {
   contact: IValidation;
 }
 
-function parseBirthday(date: string) {
-  return date.substr(0, 10);
-}
+const UserModule = namespace('UserModule');
 
-@Component({})
+@Component({
+  components: { AvatarInput },
+})
 export default class UserProfileForm extends Vue {
+  private isLoading = false;
   private email = '';
   private oldPassword = '';
   private newPassword = '';
   private confirmPassword = '';
   private nickname = '';
   private contact = '';
-  private birthday = '';
+  private avatar = '';
 
   private validation: IProfileValidation = {
     email: { isValid: false, message: '' },
@@ -101,27 +107,78 @@ export default class UserProfileForm extends Vue {
     contact: { isValid: false, message: '' },
   };
 
+  @UserModule.Mutation
+  public setAvatar!: (avatar?: string) => void;
+
   public async created() {
-    const {
-      data: { user: userInfo },
-    } = await UserAPI.fetchUser();
+    try {
+      this.isLoading = true;
+      const {
+        data: { user: userInfo },
+      } = await UserAPI.fetchUser();
 
-    this.email = userInfo.email;
-    this.nickname = userInfo.nickname;
-    this.contact = userInfo.contact;
-    this.birthday = parseBirthday(userInfo.birthday);
+      this.email = userInfo.email;
+      this.nickname = userInfo.nickname;
+      this.contact = userInfo.contact;
+      this.avatar = userInfo.avatar;
+      this.isLoading = false;
+    } catch (err) {
+      console.error(err);
+    }
   }
 
-  public onEditProfile() {
-    // TODO: 프로필 수정 api 구현
+  public async onEditProfile() {
+    try {
+      const {
+        data: { updatedInfo },
+      } = await UserAPI.updateUserProfile({
+        email: this.email,
+        nickname: this.nickname,
+        contact: this.contact,
+      });
+
+      this.email = updatedInfo.email;
+      this.nickname = updatedInfo.nickname;
+      this.contact = updatedInfo.contact;
+
+      // TODO: 변경되었다고 팝업 띄우기
+    } catch (err) {
+      console.error(err);
+    }
   }
 
-  public onEditPassword() {
-    // TODO: 비밀번호 수정 api 구현
+  public async onChangeAvatar(file: File) {
+    try {
+      const formData = new FormData();
+      formData.set('avatar', file);
+      const {
+        data: { updatedAvatar },
+      } = await UserAPI.updateUserAvatar(formData);
+
+      this.avatar = updatedAvatar;
+      this.setAvatar(updatedAvatar);
+
+      // TODO: 변경되었다고 팝업 띄우기
+    } catch (err) {
+      console.error(err);
+    }
   }
 
-  public onPickDate(date) {
-    this.birthday = date;
+  public async onEditPassword() {
+    try {
+      await UserAPI.updateUserPassword({
+        oldPassword: this.oldPassword,
+        newPassword: this.newPassword,
+      });
+
+      this.oldPassword = '';
+      this.newPassword = '';
+      this.confirmPassword = '';
+
+      // TODO: 변경되었다고 팝업 띄우기
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   @Watch('email')
@@ -162,8 +219,8 @@ export default class UserProfileForm extends Vue {
   public onWatchNewPassword(value: string) {
     const isValid = validatePassword(value);
 
-    this.validation.oldPassword.isValid = isValid;
-    this.validation.oldPassword.message = isValid
+    this.validation.newPassword.isValid = isValid;
+    this.validation.newPassword.message = isValid
       ? ''
       : '비밀번호 형식을 확인해주세요(8~15자 적어도 하나의 특수문자 및 숫자 포함)';
   }
@@ -202,6 +259,12 @@ export default class UserProfileForm extends Vue {
     legend {
       font-size: 1.1rem;
       font-weight: 600;
+    }
+
+    .avatar {
+      display: flex;
+      justify-content: center;
+      margin: 25px 0px;
     }
 
     .label {

@@ -3,7 +3,7 @@
 // public/images/product, public/images/review 폴더가 없을 경우 생성
 const fs = require('fs');
 
-['product', 'review'].forEach((dirname) =>
+['product', 'review', 'profile'].forEach((dirname) =>
   fs.readdir(`public/images/${dirname}`, (err: any) => {
     if (err) {
       console.error(`public/images/${dirname} 디렉토리가 없어서 생성합니다.`);

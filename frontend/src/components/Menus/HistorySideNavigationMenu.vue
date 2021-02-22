@@ -13,8 +13,8 @@
           </div>
           <div class="profile-edit-wrapper">
             <div class="profile-wrapper">
-              <Icon class="profile-icon" filename="user" width="25" height="25" />
-              {{ currentEmail }}
+              <Avatar class="profile-icon" :src="userAvatar ? userAvatar : undefined" />
+              {{ userEmail }}
             </div>
             <router-link class="profile-edit-btn" to="/dashboard/profile">
               프로필 설정
@@ -54,25 +54,28 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import Icon from '@components/Common/Icon.vue';
+import Avatar from '@components/Common/Avatar.vue';
 import BaseSideNavigationMenu from '@components/Menus/BaseSideNavigationMenu.vue';
 import ToastBus from '../../bus/ToastBus';
 
 const UserModule = namespace('UserModule');
 
 @Component({
-  components: { Icon, BaseSideNavigationMenu },
+  components: { Icon, Avatar, BaseSideNavigationMenu },
 })
 export default class HistorySideNavigationMenu extends Vue {
   @UserModule.Getter
-  public currentEmail!: string;
+  public userEmail!: string;
+
+  @UserModule.Getter
+  public userAvatar!: string;
 
   @UserModule.Action
   public logout!: () => Promise<boolean>;
 
-  public onLogout() {
-    this.logout();
+  public async onLogout() {
+    await this.logout();
     ToastBus.$emit('pop-up', '로그아웃 되었습니다.');
-    this.$router.go(0);
   }
 }
 </script>

@@ -14,7 +14,6 @@ interface ISeller {
   nickname: string;
   isAdmin: boolean;
   contact: string;
-  birthday: Date;
 }
 
 interface IBuyer extends ISeller {}
@@ -39,33 +38,24 @@ interface IRelatedProduct extends IProduct {
 }
 
 interface IProductForm {
-  [index: string]: string | Blob;
+  [index: string]: string | File[];
   name: string;
-  image: Blob;
+  images: File[];
   category: string;
   price: string;
   description: string;
 }
 
-interface User {
+interface IUserSignupForm {
   email: string;
   nickname: string;
+  password: string;
+  confirmPassword: string;
+  contact: string;
+  avatar: File | null;
 }
 
-interface IPost {
-  id: number;
-  title: string;
-  body: string;
-  hit: number;
-  product: IProduct;
-  user: User;
-  userId: number;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt?: string;
-}
-
-interface DashBoardAsideMenuItem {
+interface IDashBoardAsideMenuItem {
   title: string;
   to: string;
 }
@@ -88,10 +78,10 @@ export {
   IProduct,
   IRelatedProduct,
   IProductForm,
+  IUserSignupForm,
   ISeller,
   IBuyer,
-  User,
-  DashBoardAsideMenuItem,
+  IDashBoardAsideMenuItem,
   ICategoryOption,
   IUserInfo,
   ICategoryMap,

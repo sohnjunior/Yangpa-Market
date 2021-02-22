@@ -28,8 +28,8 @@ export class User {
   @Column()
   contact!: string;
 
-  @Column()
-  birthday!: Date;
+  @Column({ nullable: true })
+  avatar!: string;
 
   @Column({ default: false })
   isAdmin!: boolean;

@@ -4,12 +4,12 @@
       <div class="product-header-wrapper">
         <h1 class="product-name">{{ title }}</h1>
         <h2 class="product-seller">
-          <Icon class="icon" filename="user" width="20" height="20" />
-          {{ writer }}
+          <Avatar class="icon" :src="avatar ? avatar : undefined" />
+          {{ seller }}
         </h2>
         <h2 class="product-meta">
           <Icon class="icon" filename="glasses" width="20" height="20" />
-          {{ hit }}
+          {{ views }}
         </h2>
       </div>
     </template>
@@ -26,7 +26,7 @@
         <em>{{ price }} 원</em>
         <div class="like-wrapper">
           <Icon filename="heart" width="15" height="15" />
-          <span class="like-count">{{ like }}</span>
+          <span class="like-count">{{ likes }}</span>
         </div>
       </div>
     </template>
@@ -36,18 +36,20 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import Icon from '@components/Common/Icon.vue';
+import Avatar from '@components/Common/Avatar.vue';
 import BaseCard from '@components/Cards/BaseCard.vue';
 
 @Component({
-  components: { Icon, BaseCard },
+  components: { Icon, Avatar, BaseCard },
 })
 export default class ProductCard extends Vue {
   @Prop({ required: true }) title!: string;
   @Prop({ required: true }) image!: string;
   @Prop({ required: true }) body!: string;
-  @Prop({ required: true }) hit!: number;
-  @Prop({ required: true }) writer!: string;
-  @Prop({ required: true }) like!: number;
+  @Prop({ required: true }) views!: number;
+  @Prop({ required: true }) seller!: string;
+  @Prop({ required: true }) avatar!: string;
+  @Prop({ required: true }) likes!: number;
   @Prop({ required: true }) price!: string;
   @Prop({ required: true }) productID!: string;
 
@@ -65,6 +67,7 @@ export default class ProductCard extends Vue {
 
   .product-name {
     @include text-shorthand();
+    padding: 5px 0px;
     font-size: 1.3rem;
     font-weight: 600;
   }
@@ -105,7 +108,7 @@ export default class ProductCard extends Vue {
 
     .product-image {
       width: 100%;
-      height: 170px;
+      height: 160px;
       margin: 20px 0px;
       border-radius: 10px;
       object-fit: cover;
@@ -114,6 +117,9 @@ export default class ProductCard extends Vue {
 
   .product-detail {
     @include text-shorthand();
+    padding: 5px 0px;
+    font-size: 1rem;
+    font-weight: 500;
   }
 }
 

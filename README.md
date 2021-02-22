@@ -2,7 +2,7 @@
 
 2020학년도 1학기 `Software Engineering` 프로젝트
 
-## 개발 목적
+## 프로젝트 소개
 
 저희 팀은 이번 소프트웨어 공학 프로젝트로 본교 대학생을 위한 중고 거래 사이트를 기획했습니다.
 
@@ -18,20 +18,19 @@
 
 사용성이 좋고 활성화된 중고 거래 플랫폼을 만들어보고자 합니다.
 
-## 사용 기술
+## 기술 스택
 
-- Vue 2.x & Typescript
-- Scss
+- Typescript
+- Vue.js 2.x & scss
 - Express.js
 - Redis
-- Sequelize ORM(MySQL)
+- TypeORM(MySQL)
 
-## 팀원 소개
+## 데모 스크린 샷 (⚠️ 리팩토링 이전 ver.)
 
-Frontend: [손정현](https://github.com/sohnjunior) <br>
-Backend: [박민춘](https://github.com/sprical408) & [손정현](https://github.com/sohnjunior)
-
-## 데모 스크린 샷 (리팩토링 이전 ver.)
+> ⚠️ 다음 데모 스크린 샷은 2020학년도 1학기 최종 데모 버전입니다.
+>
+> 현재 코드 리팩토링 및 기능 개선중이며 마무리 후 업데이트 예정입니다. 😄
 
 ### 로그인 및 회원가입
 
@@ -65,6 +64,7 @@ Backend: [박민춘](https://github.com/sprical408) & [손정현](https://github
 - 2020-09-28 : 코드 리팩토링 및 구매 관련 기능 추가
 - 2020-10-11 : express.js 프로젝트 구조 개선
 - 2020-11-09 : Vue + Typescript 적용
-- 2021-01-02 : Vuetify 의존성 제거 진행
+- 2021-01-02 : vuetify 의존성 제거 진행
 - 2021-01-31 : JWT 토큰 인증 방식 변경 (refresh 토큰 추가)
-- 2021-02-04 : Vuetify -> Scss 마이그레이션 & 모바일 반응형 웹 적용
+- 2021-02-04 : vuetify -> scss 마이그레이션 & 모바일 반응형 웹 적용
+- 2021-02-15 : Sequelize ORM -> TypeORM 마이그레이션 & express.js 앱에 Typescript 적용

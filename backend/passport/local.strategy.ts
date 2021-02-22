@@ -22,7 +22,7 @@ export default (passport: PassportStatic) => {
         try {
           const userRepository = getRepository(User);
           const user = await userRepository.findOne({
-            select: ['id', 'email', 'password'],
+            select: ['id', 'email', 'nickname', 'avatar', 'password'],
             where: { email },
           });
 
@@ -49,14 +49,19 @@ export default (passport: PassportStatic) => {
             { id: user.id },
             process.env.REFRESH_TOKEN_SECRET as string,
             {
-              // FIXME: 로그인 페이지 구현 후 1 day로 변경
               expiresIn: '60m',
             }
           );
 
           redisClient.setValue(user.id.toString(), refreshToken);
 
-          return done(null, { email, accessToken, refreshToken });
+          return done(null, {
+            email: user.email,
+            nickname: user.nickname,
+            avatar: user.avatar ?? '',
+            accessToken,
+            refreshToken,
+          });
         } catch (err) {
           done(err);
         }

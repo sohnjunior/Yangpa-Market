@@ -7,13 +7,13 @@
 
     <div class="control-wrapper">
       <router-link v-if="isMobileBrowser" to="/search">
-        <Icon class="search-icon" filename="search" width="25" height="25" />
+        <Icon class="search-icon" filename="search" width="30" height="30" />
       </router-link>
       <SearchInput v-else />
 
       <HistorySideNavigationMenu class="user-menu" v-if="isLoggedIn">
         <template v-slot:trigger>
-          <Icon filename="user" width="25" height="25" />
+          <Avatar :src="userAvatar ? userAvatar : undefined" width="30" height="30" />
         </template>
       </HistorySideNavigationMenu>
       <div v-else>
@@ -38,12 +38,13 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import Icon from '@components/Common/Icon.vue';
+import Avatar from '@components/Common/Avatar.vue';
 import LoginModal from '@components/Modals/LoginModal.vue';
 import HistorySideNavigationMenu from '@components/Menus/HistorySideNavigationMenu.vue';
 import AuthSideNavigationMenu from '@components/Menus/AuthSideNavigationMenu.vue';
 import DropdownMenu from '@components/Menus/DropdownMenu.vue';
 import SearchInput from '@components/Inputs/SearchInput.vue';
-import ToastBus from '../../bus/ToastBus';
+import AlertBus from '../../bus/AlertBus';
 
 const UserModule = namespace('UserModule');
 const SettingModule = namespace('SettingModule');
@@ -51,6 +52,7 @@ const SettingModule = namespace('SettingModule');
 @Component({
   components: {
     Icon,
+    Avatar,
     LoginModal,
     HistorySideNavigationMenu,
     AuthSideNavigationMenu,
@@ -60,10 +62,9 @@ const SettingModule = namespace('SettingModule');
 })
 export default class AppBar extends Vue {
   private showModal = false;
-  private dropdownItemMap = [
-    { text: '대시보드', action: this.onRedirectDashboard },
-    { text: '로그아웃', action: this.onLogout },
-  ];
+
+  @UserModule.Getter
+  public userAvatar!: string;
 
   @UserModule.Getter
   public isLoggedIn!: boolean;
@@ -74,22 +75,16 @@ export default class AppBar extends Vue {
   @UserModule.Action
   public logout!: () => Promise<boolean>;
 
+  public created() {
+    AlertBus.$on('login-request', this.onOpenSignInModal);
+  }
+
   public onOpenSignInModal() {
     this.showModal = true;
   }
 
   public onCloseSignInModal() {
     this.showModal = false;
-  }
-
-  public onLogout() {
-    this.logout();
-    ToastBus.$emit('pop-up', '로그아웃 되었습니다.');
-    this.$router.go(0);
-  }
-
-  public onRedirectDashboard() {
-    this.$router.push('/dashboard/cart');
   }
 }
 </script>
@@ -159,6 +154,7 @@ export default class AppBar extends Vue {
         font-size: 0.9rem;
         font-weight: 700;
         color: #ffab91;
+        cursor: pointer;
       }
 
       .signup-btn {

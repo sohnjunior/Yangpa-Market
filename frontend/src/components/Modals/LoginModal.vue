@@ -21,7 +21,6 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import { User } from '../../types';
 import ToastBus from '../../bus/ToastBus';
 import LoginForm from '@components/Forms/LoginForm.vue';
 import BaseModal from '@components/Modals/BaseModal.vue';
@@ -36,7 +35,7 @@ export default class LoginModal extends Vue {
   @Prop({ required: true, default: false }) readonly show!: boolean;
 
   @UserModule.Action
-  public login!: (userData: User) => Promise<boolean>;
+  public login!: (userData: { email: string; password: string }) => Promise<boolean>;
 
   public closeModal() {
     this.$emit('close-modal');
@@ -47,7 +46,7 @@ export default class LoginModal extends Vue {
     this.$router.push('/signup');
   }
 
-  public async onSubmit(userData: User) {
+  public async onSubmit(userData: { email: string; password: string }) {
     const success = await this.login(userData);
     if (success) {
       ToastBus.$emit('pop-up', '로그인 되었습니다.');

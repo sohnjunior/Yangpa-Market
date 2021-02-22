@@ -3,38 +3,35 @@
     <h2 class="form-title">✍️ 회원 가입</h2>
 
     <fieldset class="form-fieldset">
-      <input type="email" v-model="email" placeholder="이메일 주소" />
+      <AvatarInput class="profile-input" @change="onChangeAvatar" />
+
+      <input type="email" v-model="formData.email" placeholder="이메일 주소" />
       <span class="error" v-show="!validation.email.isValid">
         {{ validation.email.message }}
       </span>
 
-      <input type="password" v-model="password" placeholder="비밀번호" />
+      <input type="password" v-model="formData.password" placeholder="비밀번호" />
       <span class="error" v-show="!validation.password.isValid">
         {{ validation.password.message }}
       </span>
 
-      <input type="password" v-model="confirmPassword" placeholder="비밀번호 확인" />
+      <input type="password" v-model="formData.confirmPassword" placeholder="비밀번호 확인" />
       <span class="error" v-show="!validation.confirmPassword.isValid">
         {{ validation.confirmPassword.message }}
       </span>
 
-      <input type="text" v-model="nickname" placeholder="별명" />
+      <input type="text" v-model="formData.nickname" placeholder="별명" />
       <span class="error" v-show="!validation.nickname.isValid">
         {{ validation.nickname.message }}
       </span>
 
-      <input type="tel" v-model="contact" placeholder="연락처" />
+      <input type="tel" v-model="formData.contact" placeholder="연락처" />
       <span class="error" v-show="!validation.contact.isValid">
         {{ validation.contact.message }}
       </span>
-
-      <select v-model="sex">
-        <option value="male">남성</option>
-        <option value="female">여성</option>
-      </select>
     </fieldset>
 
-    <!-- <DatePicker @pick-date="onPickDate" /> -->
+    <DateInput />
 
     <SubmitButton :isValid="isFormValid">가입하기</SubmitButton>
   </form>
@@ -42,10 +39,10 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import { UserAPI } from '../../api';
 import { validateEmail, validatePassword, validateContact } from '../../utils/validators';
+import AvatarInput from '@components/Inputs/AvatarInput.vue';
 import SubmitButton from '@components/Buttons/SubmitButton.vue';
-// import DatePicker from '@components/Inputs/DatePicker.vue';
+import { IUserSignupForm } from '../../types';
 
 interface IValidation {
   isValid: boolean;
@@ -61,17 +58,17 @@ interface ISigninValidation {
 }
 
 @Component({
-  components: { SubmitButton },
+  components: { AvatarInput, SubmitButton },
 })
 export default class SignupForm extends Vue {
-  private email = '';
-  private password = '';
-  private confirmPassword = '';
-  private nickname = '';
-  private contact = '';
-  private sex = 'male';
-  private birthday = '2020-10-10'; // TODO: DatePicker 컴포넌트 구현 후 적용
-  private isAdmin = false; // TODO: 회원가입 api 에서 isAdmin 제거
+  private formData: IUserSignupForm = {
+    email: '',
+    password: '',
+    confirmPassword: '',
+    nickname: '',
+    contact: '',
+    avatar: null,
+  };
 
   private validation: ISigninValidation = {
     email: { isValid: false, message: '' },
@@ -86,27 +83,18 @@ export default class SignupForm extends Vue {
   }
 
   public async onSubmit() {
-    const userData = {
-      email: this.email,
-      nickname: this.nickname,
-      password: this.password,
-      contact: this.contact,
-      birthday: this.birthday,
-    };
-
     try {
-      await UserAPI.registerUser(userData);
-      this.$router.push('/');
+      this.$emit('submit', this.formData);
     } catch (error) {
       console.log(error);
     }
   }
 
-  public onPickDate(date) {
-    this.birthday = date;
+  public onChangeAvatar(file: File) {
+    this.formData.avatar = file;
   }
 
-  @Watch('email')
+  @Watch('formData.email')
   public onWatchEmail(value: string) {
     const isValid = validateEmail(value);
 
@@ -114,7 +102,7 @@ export default class SignupForm extends Vue {
     this.validation.email.message = isValid ? '' : '이메일 형식을 확인해주세요';
   }
 
-  @Watch('password')
+  @Watch('formData.password')
   public onWatchPassword(value: string) {
     const isValid = validatePassword(value);
 
@@ -124,15 +112,15 @@ export default class SignupForm extends Vue {
       : '비밀번호 형식을 확인해주세요(8~15자 적어도 하나의 특수문자 및 숫자 포함)';
   }
 
-  @Watch('confirmPassword')
+  @Watch('formData.confirmPassword')
   public onWatchConfirmPassword(value: string) {
-    const isValid = this.password === value;
+    const isValid = this.formData.password === value;
 
     this.validation.confirmPassword.isValid = isValid;
     this.validation.confirmPassword.message = isValid ? '' : '비밀번호가 일치하지 않아요';
   }
 
-  @Watch('nickname')
+  @Watch('formData.nickname')
   public onWatchNickname(value: string) {
     const isValid = value !== '';
 
@@ -140,7 +128,7 @@ export default class SignupForm extends Vue {
     this.validation.nickname.message = isValid ? '' : '별명을 확인해주세요';
   }
 
-  @Watch('contact')
+  @Watch('formData.contact')
   public onWatchContact(value: string) {
     const isValid = validateContact(value);
 
@@ -167,15 +155,23 @@ export default class SignupForm extends Vue {
   }
 
   .form-fieldset {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
     margin-bottom: 30px;
 
     .error {
       @include error-message();
     }
 
+    .profile-input {
+      margin: 15px 0px;
+    }
+
     input,
     select {
-      width: 100%;
+      width: inherit;
       margin: 10px 0px;
       padding: 15px 20px;
       border: 1px solid #efefef;

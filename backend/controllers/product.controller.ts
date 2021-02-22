@@ -5,16 +5,20 @@ import { HTTP400Error, HTTP404Error } from '../utils/errors';
 async function createProduct(req: Request, res: Response, next: NextFunction) {
   try {
     const { id: userID } = req.decoded;
-    const { category, title, description, price } = req.body;
-    const { filename } = req.file;
+    const { category, name, description, price } = req.body;
+    let filenames: string[] = [];
+
+    if (Array.isArray(req.files)) {
+      filenames = req.files.map((file) => file.filename);
+    }
 
     await ProductService.createProduct(
       userID,
       category,
-      title,
+      name,
       description,
       price,
-      [filename]
+      filenames
     );
 
     res.status(201).json({ status: 'ok', message: '상품이 추가되었습니다' });
