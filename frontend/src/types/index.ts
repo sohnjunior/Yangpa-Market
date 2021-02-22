@@ -14,7 +14,6 @@ interface ISeller {
   nickname: string;
   isAdmin: boolean;
   contact: string;
-  birthday: Date;
 }
 
 interface IBuyer extends ISeller {}
@@ -54,7 +53,6 @@ interface IUserSignupForm {
   confirmPassword: string;
   contact: string;
   avatar: File | null;
-  birthday: string;
 }
 
 interface IDashBoardAsideMenuItem {

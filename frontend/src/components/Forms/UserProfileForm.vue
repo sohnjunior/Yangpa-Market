@@ -59,9 +59,6 @@
 
       <button class="submit-btn" type="submit" @click="onEditPassword">변경하기</button>
     </fieldset>
-
-    <!-- TODO: DatePicker 컴포넌트 구현 후 적용 -->
-    <!-- <DatePicker @pick-date="onPickDate" /> -->
   </form>
 </template>
 
@@ -71,7 +68,6 @@ import { namespace } from 'vuex-class';
 import { UserAPI } from '../../api';
 import { validateEmail, validatePassword, validateContact } from '../../utils/validators';
 import AvatarInput from '@components/Inputs/AvatarInput.vue';
-// import DatePicker from '@components/Inputs/DatePicker.vue';
 
 interface IValidation {
   isValid: boolean;
@@ -87,10 +83,6 @@ interface IProfileValidation {
   contact: IValidation;
 }
 
-function parseBirthday(date: string) {
-  return date.substr(0, 10);
-}
-
 const UserModule = namespace('UserModule');
 
 @Component({
@@ -104,7 +96,6 @@ export default class UserProfileForm extends Vue {
   private confirmPassword = '';
   private nickname = '';
   private contact = '';
-  private birthday = '';
   private avatar = '';
 
   private validation: IProfileValidation = {
@@ -129,7 +120,6 @@ export default class UserProfileForm extends Vue {
       this.email = userInfo.email;
       this.nickname = userInfo.nickname;
       this.contact = userInfo.contact;
-      this.birthday = parseBirthday(userInfo.birthday);
       this.avatar = userInfo.avatar;
       this.isLoading = false;
     } catch (err) {
@@ -138,7 +128,6 @@ export default class UserProfileForm extends Vue {
   }
 
   public async onEditProfile() {
-    // TODO: 달력 컴포넌트 구현 후 생일도 변경 가능하도록 수정
     try {
       const {
         data: { updatedInfo },
@@ -190,10 +179,6 @@ export default class UserProfileForm extends Vue {
     } catch (err) {
       console.error(err);
     }
-  }
-
-  public onPickDate(date) {
-    this.birthday = date;
   }
 
   @Watch('email')

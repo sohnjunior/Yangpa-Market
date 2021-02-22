@@ -9,7 +9,6 @@ const createUser = async (
   nickname: string,
   password: string,
   contact: string,
-  birthday: string,
   avatar: string | undefined
 ) => {
   try {
@@ -24,7 +23,6 @@ const createUser = async (
       password,
       nickname,
       contact,
-      birthday,
       avatar,
     });
     const cart = await cartRepository.create({

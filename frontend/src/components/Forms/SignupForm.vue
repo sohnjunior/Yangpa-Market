@@ -31,7 +31,7 @@
       </span>
     </fieldset>
 
-    <!-- <DatePicker @pick-date="onPickDate" /> -->
+    <DateInput />
 
     <SubmitButton :isValid="isFormValid">가입하기</SubmitButton>
   </form>
@@ -42,7 +42,6 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import { validateEmail, validatePassword, validateContact } from '../../utils/validators';
 import AvatarInput from '@components/Inputs/AvatarInput.vue';
 import SubmitButton from '@components/Buttons/SubmitButton.vue';
-// import DatePicker from '@components/Inputs/DatePicker.vue';
 import { IUserSignupForm } from '../../types';
 
 interface IValidation {
@@ -69,7 +68,6 @@ export default class SignupForm extends Vue {
     nickname: '',
     contact: '',
     avatar: null,
-    birthday: '2020-10-10', // TODO: DatePicker 컴포넌트 구현 후 적용
   };
 
   private validation: ISigninValidation = {
@@ -90,10 +88,6 @@ export default class SignupForm extends Vue {
     } catch (error) {
       console.log(error);
     }
-  }
-
-  public onPickDate(date) {
-    this.formData.birthday = date;
   }
 
   public onChangeAvatar(file: File) {

@@ -6,7 +6,7 @@ import { HTTP400Error, HTTP401Error } from '../utils/errors';
 
 async function createUser(req: Request, res: Response, next: NextFunction) {
   try {
-    const { email, password, nickname, contact, birthday } = req.body;
+    const { email, password, nickname, contact } = req.body;
     const avatar = req.file
       ? PhotoService.createAvatarImagePath(req.file.filename)
       : undefined;
@@ -16,7 +16,6 @@ async function createUser(req: Request, res: Response, next: NextFunction) {
       nickname,
       password,
       contact,
-      birthday,
       avatar
     );
 
