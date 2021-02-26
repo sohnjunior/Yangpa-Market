@@ -37,17 +37,25 @@ const createProduct = async (
   }
 };
 
-const getAllProducts = async () => {
+const getAllProducts = async (category: string, skip: number, take: number) => {
   try {
+    const categoryRepository = getRepository(Category);
     const productRepository = getRepository(Product);
-    const products = await productRepository.find({
+
+    const targetCategory = await categoryRepository.findOneOrFail({
+      type: category,
+    });
+    const [products, count] = await productRepository.findAndCount({
+      where: { categoryId: targetCategory.id },
       relations: ['seller', 'photos', 'category'],
       order: {
         createdAt: 'DESC',
       },
+      skip,
+      take,
     });
 
-    return products;
+    return [products, count];
   } catch (err) {
     throw err;
   }
