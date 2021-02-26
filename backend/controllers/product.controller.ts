@@ -57,11 +57,30 @@ async function deleteProduct(req: Request, res: Response, next: NextFunction) {
 
 async function getAllProducts(req: Request, res: Response, next: NextFunction) {
   try {
-    const products = await ProductService.getAllProducts();
+    const { category, page, take } = req.query;
+    if (
+      typeof category !== 'string' ||
+      typeof page !== 'string' ||
+      typeof take !== 'string'
+    ) {
+      return next(new HTTP400Error('잘못된 인자입니다.'));
+    }
+
+    const findQueryOffset = (+page - 1) * +take;
+    if (findQueryOffset < 0) {
+      return next(new HTTP400Error('잘못된 인자입니다.'));
+    }
+
+    const [products, totalCount] = await ProductService.getAllProducts(
+      category,
+      findQueryOffset,
+      +take
+    );
 
     res.status(200).json({
       status: 'ok',
       message: '모든 상품 정보 조회에 성공했습니다.',
+      totalCount,
       products,
     });
   } catch (err) {

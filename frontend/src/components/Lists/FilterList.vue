@@ -10,10 +10,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Component, Vue, Model, Watch } from 'vue-property-decorator';
 
 @Component({})
 export default class FilterList extends Vue {
+  @Model('change', { type: String }) value!: string;
+
   private items = ['등록일', '조회수', '가격'];
   private checked = '등록일';
 

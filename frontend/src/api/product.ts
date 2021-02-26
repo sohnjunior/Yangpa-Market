@@ -10,8 +10,8 @@ function registerProduct(payload: FormData) {
   });
 }
 
-function fetchAllProducts() {
-  return instance.get('/products');
+function fetchProductsWithCategory(category: string, page: number, take: number) {
+  return instance.get(`/products?category=${category}&page=${page}&take=${take}`);
 }
 
 function fetchProduct(productID) {
@@ -36,7 +36,7 @@ function deletePost(productID: string) {
 
 export default {
   registerProduct,
-  fetchAllProducts,
+  fetchProductsWithCategory,
   fetchProduct,
   searchProduct,
   editProduct,

@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Model } from 'vue-property-decorator';
 import CategoryButton from '@components/Buttons/CategoryButton.vue';
 import { ICategoryMap } from '../../types';
 
@@ -20,6 +20,8 @@ import { ICategoryMap } from '../../types';
   components: { CategoryButton },
 })
 export default class CategoryList extends Vue {
+  @Model('select', { type: String }) value!: string;
+
   private categoryMap: ICategoryMap = {
     전공서적: 'books',
     원룸: 'rooms',
