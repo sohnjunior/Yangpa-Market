@@ -7,7 +7,7 @@
     </section>
 
     <section class="category-section">
-      <CategoryList @select="onSelectCategory" />
+      <CategoryList v-model="selectedCategory" />
     </section>
 
     <section class="list-section">
@@ -20,16 +20,17 @@
         />
         <h1>{{ selectedCategory }}</h1>
       </div>
-      <FilterList @change="onChangeFilter" />
+      <FilterList v-model="selectedFilter" />
       <ProductGridList v-if="isProductsExist" :products="sortedProducts" />
       <div v-else>상품이 없어요</div>
+      <Pagination :maxPage="maxPageCount" @paginate="onFetchItems" />
     </section>
     <FloatingButton />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import { ProductAPI } from '../api';
 import ProductCarousel from '@components/Carousels/ProductCarousel.vue';
@@ -37,11 +38,13 @@ import CategoryList from '@components/Lists/CategoryList.vue';
 import FilterList from '@components/Lists/FilterList.vue';
 import ProductGridList from '@components/Lists/ProductGridList.vue';
 import ProductSlideList from '@components/Lists/ProductSlideList.vue';
+import Pagination from '@components/Common/Pagination.vue';
 import FloatingButton from '@components/Buttons/FloatingButton.vue';
 import Icon from '@components/Common/Icon.vue';
 import { IProduct, ICategoryMap } from '../types';
 
 const SettingModule = namespace('SettingModule');
+const DISPLAY_COUNT = 10;
 
 @Component({
   components: {
@@ -50,6 +53,7 @@ const SettingModule = namespace('SettingModule');
     ProductCarousel,
     ProductGridList,
     ProductSlideList,
+    Pagination,
     FloatingButton,
     Icon,
   },
@@ -58,6 +62,7 @@ export default class MainView extends Vue {
   private fetchedProducts: IProduct[] = [];
   private selectedCategory = '전공서적';
   private selectedFilter = '등록일';
+  private totalFetchedProductsCount = 0;
   private categoryMap: ICategoryMap = {
     전공서적: 'books',
     원룸: 'rooms',
@@ -70,16 +75,15 @@ export default class MainView extends Vue {
   public isMobileBrowser!: boolean;
 
   get sortedProducts() {
-    const categorized = this.fetchedProducts.filter(
-      (product) => product.category.type === this.categoryMap[this.selectedCategory]
-    );
-    const sorted = [...categorized].sort(this.compareFunction);
-
-    return sorted;
+    return [...this.fetchedProducts].sort(this.compareFunction);
   }
 
   get isProductsExist() {
     return this.sortedProducts.length !== 0;
+  }
+
+  get maxPageCount() {
+    return ~~(this.totalFetchedProductsCount / DISPLAY_COUNT) + 1;
   }
 
   private compareFunction(a: IProduct, b: IProduct) {
@@ -92,25 +96,26 @@ export default class MainView extends Vue {
     }
   }
 
-  public async created() {
-    /** 전체 상품 조회 (등록일순) */
+  public async onFetchItems(pageNumber: number) {
     try {
       const {
-        data: { products },
-      } = await ProductAPI.fetchAllProducts();
+        data: { products, totalCount },
+      } = await ProductAPI.fetchProductsWithCategory(
+        this.categoryMap[this.selectedCategory],
+        pageNumber,
+        10
+      );
 
       this.fetchedProducts = products;
+      this.totalFetchedProductsCount = totalCount;
     } catch (err) {
       console.error(err);
     }
   }
 
-  public onSelectCategory(category: string) {
-    this.selectedCategory = category;
-  }
-
-  public onChangeFilter(filter: string) {
-    this.selectedFilter = filter;
+  @Watch('selectedCategory', { immediate: true })
+  public onWatchSelectedCategory() {
+    this.onFetchItems(1);
   }
 }
 </script>
