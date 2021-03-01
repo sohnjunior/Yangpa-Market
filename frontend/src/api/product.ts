@@ -22,8 +22,10 @@ function searchProduct(keyword: string) {
   return instance.get(`/products/search?keyword=${keyword}`);
 }
 
-function editProduct(productID: string, payload) {
-  return instance.put(`/products/${productID}`, payload);
+function editProduct(productID: string, payload: FormData) {
+  return instance.put(`/products/${productID}`, payload, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
 }
 
 function likeProduct(productID: string) {

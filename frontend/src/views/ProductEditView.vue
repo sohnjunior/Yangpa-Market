@@ -14,9 +14,16 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import axios from 'axios';
 import { IProductForm } from '../types';
 import { ProductAPI } from '../api';
 import ProductForm from '@components/Forms/ProductForm.vue';
+import { createFormDataWithObject } from '../utils/formatters';
+
+async function urlToFileObject(url: string) {
+  const { data } = await axios.get(url, { responseType: 'blob' });
+  return new File([data], 'image.png', { type: data.type });
+}
 
 @Component({
   components: { ProductForm },
@@ -49,8 +56,12 @@ export default class ProductEditView extends Vue {
         data: { product },
       } = await ProductAPI.fetchProduct(this.productID);
 
+      for (const photo of product.photos) {
+        const file = await urlToFileObject(photo.path);
+        this.initalFormData.images.push(file);
+      }
+
       this.initalFormData.name = product.name;
-      this.initalFormData.images = product.photos;
       this.initalFormData.category = product.category.type;
       this.initalFormData.price = product.price;
       this.initalFormData.description = product.description;
@@ -61,7 +72,9 @@ export default class ProductEditView extends Vue {
 
   public async onSubmit(payload: IProductForm) {
     try {
-      await ProductAPI.editProduct(this.productID, payload);
+      const formData = createFormDataWithObject(payload);
+
+      await ProductAPI.editProduct(this.productID, formData);
     } catch (err) {
       console.log(err);
     }
