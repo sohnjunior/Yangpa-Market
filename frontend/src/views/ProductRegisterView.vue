@@ -13,26 +13,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { IProductForm } from '../types';
 import { ProductAPI } from '../api';
 import ProductForm from '@components/Forms/ProductForm.vue';
-
-interface IFormDataPayload {
-  [index: string]: string | File[];
-}
-
-function createFormDataWithObject(payload: IFormDataPayload) {
-  const formData = new FormData();
-
-  for (const [key, value] of Object.entries(payload)) {
-    if (Array.isArray(value)) {
-      for (const file of value) {
-        formData.append('images', file);
-      }
-    } else {
-      formData.set(key, value);
-    }
-  }
-
-  return formData;
-}
+import { createFormDataWithObject } from '../utils/formatters';
 
 @Component({
   components: { ProductForm },

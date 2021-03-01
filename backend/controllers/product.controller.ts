@@ -6,8 +6,8 @@ async function createProduct(req: Request, res: Response, next: NextFunction) {
   try {
     const { id: userID } = req.decoded;
     const { category, name, description, price } = req.body;
-    let filenames: string[] = [];
 
+    let filenames: string[] = [];
     if (Array.isArray(req.files)) {
       filenames = req.files.map((file) => file.filename);
     }
@@ -30,10 +30,20 @@ async function createProduct(req: Request, res: Response, next: NextFunction) {
 async function updateProduct(req: Request, res: Response, next: NextFunction) {
   try {
     const { id: productId } = req.params;
-    const { name, price, description } = req.body;
-    const updateOptions = { name, price, description };
+    const { name, price, description, category } = req.body;
 
-    await ProductService.updateProduct(+productId, updateOptions);
+    let filenames: string[] = [];
+    if (Array.isArray(req.files)) {
+      filenames = req.files.map((file) => file.filename);
+    }
+
+    await ProductService.updateProduct(+productId, {
+      name,
+      price,
+      description,
+      category,
+      photoNames: filenames,
+    });
 
     res
       .status(200)

@@ -2,7 +2,7 @@
   <form class="form-container" @submit.prevent="onSubmit">
     <fieldset class="form-fieldset">
       <section>
-        <ImageInput @change="onChangeFile" />
+        <ImageInput :init-values="formData.images" @change="onChangeFile" />
         <span class="error" v-show="!validation.images.isValid">
           {{ validation.images.message }}
         </span>
@@ -72,8 +72,6 @@ interface IProductValidation {
   price: IValidation;
   description: IValidation;
 }
-
-// TODO: 상품 이미지 미리보기 기능 추가
 
 @Component({
   components: { ImageInput, SubmitButton },
