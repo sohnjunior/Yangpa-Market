@@ -22,8 +22,29 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Ref } from 'vue-property-decorator';
+import { Component, Vue, Ref, Prop } from 'vue-property-decorator';
+import axios from 'axios';
 import Icon from '@components/Common/Icon.vue';
+
+function generateRandomString(length = 10, acc = '') {
+  acc += Math.random().toString(36).substr(2, length);
+
+  if (acc.length > length) {
+    return acc.slice(0, length);
+  }
+
+  return generateRandomString(length, acc);
+}
+
+async function urlToFileObject(url: string) {
+  const { data } = await axios.get(url, { responseType: 'blob' });
+  return new File([data], 'image.png', { type: data.type });
+}
+
+interface IInitValue {
+  id: number;
+  path: string;
+}
 
 @Component({
   components: { Icon },
@@ -31,7 +52,22 @@ import Icon from '@components/Common/Icon.vue';
 export default class ImageInput extends Vue {
   @Ref() fileInput!: HTMLInputElement;
 
+  @Prop() initValues!: IInitValue[];
+
   private imageURLMap = new Map<string, File>();
+
+  public async created() {
+    for (let i = 0, len = this.initValues.length; i < len; i += 1) {
+      const hashcode = generateRandomString(10);
+      const file = await urlToFileObject(this.initValues[i].path);
+
+      if (!this.imageURLMap.has(hashcode)) {
+        this.imageURLMap.set(hashcode, file);
+      }
+    }
+
+    this.$forceUpdate();
+  }
 
   public convertToURL(file: File) {
     return URL.createObjectURL(file);
@@ -40,11 +76,11 @@ export default class ImageInput extends Vue {
   public onUploadFile(e: Event) {
     const files = (e.target as HTMLInputElement).files || [];
 
-    for (let i = 0, len = files.length; i < len; i++) {
-      const filename = files[i].name;
+    for (let i = 0, len = files.length; i < len; i += 1) {
+      const hashcode = generateRandomString(10);
 
-      if (!this.imageURLMap.has(filename)) {
-        this.imageURLMap.set(filename, files[i]);
+      if (!this.imageURLMap.has(hashcode)) {
+        this.imageURLMap.set(hashcode, files[i]);
       }
     }
 

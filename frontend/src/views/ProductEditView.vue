@@ -2,7 +2,12 @@
   <div class="product-edit-view">
     <h1 class="view-title">상품 정보수정</h1>
     <div class="edit-form-wrapper">
-      <ProductForm :isEditMode="true" :initalFormData="initalFormData" @submit="onSubmit" />
+      <ProductForm
+        v-if="isFetchFinished"
+        :is-edit-mode="true"
+        :inital-form-data="initalFormData"
+        @submit="onSubmit"
+      />
     </div>
   </div>
 </template>
@@ -18,6 +23,7 @@ import ProductForm from '@components/Forms/ProductForm.vue';
 })
 export default class ProductEditView extends Vue {
   private productID!: string;
+  private isFetchFinished = false;
   private initalFormData: IProductForm = {
     name: '',
     images: [],
@@ -27,8 +33,14 @@ export default class ProductEditView extends Vue {
   };
 
   public async created() {
-    this.productID = this.$route.params.id;
-    await this.fetchInitalFormData();
+    try {
+      this.isFetchFinished = false;
+      this.productID = this.$route.params.id;
+      await this.fetchInitalFormData();
+      this.isFetchFinished = true;
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   private async fetchInitalFormData() {
