@@ -79,12 +79,35 @@ const getProduct = async (productId: number) => {
 
 const updateProduct = async (
   productId: number,
-  options: { name: string; price: number; description: string }
+  options: {
+    name: string;
+    price: number;
+    description: string;
+    category: string;
+    photoNames: string[];
+  }
 ) => {
   try {
     const productRepository = getRepository(Product);
+    const categoryRepository = getRepository(Category);
 
-    await productRepository.update(productId, options);
+    const productExists = await productRepository.findOneOrFail({
+      id: productId,
+    });
+    const category = await categoryRepository.findOneOrFail({
+      type: options.category,
+    });
+
+    await PhotoService.deletePhotos(productId);
+    const productPhotos = PhotoService.createPhotos(options.photoNames);
+    await productRepository.save({
+      ...productExists,
+      name: options.name,
+      price: options.price,
+      description: options.description,
+      category,
+      photos: productPhotos,
+    });
   } catch (err) {
     throw err;
   }

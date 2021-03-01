@@ -27,4 +27,10 @@ const createAvatarImagePath = (photoname: string) => {
   return `${BASE_URL}/images/profile/${photoname}`;
 };
 
-export { createPhotos, createAvatarImagePath };
+const deletePhotos = async (productId: number) => {
+  const photoRepository = getRepository(Photo);
+
+  await photoRepository.delete({ productId });
+};
+
+export { createPhotos, createAvatarImagePath, deletePhotos };
