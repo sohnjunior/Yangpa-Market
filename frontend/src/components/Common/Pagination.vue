@@ -33,7 +33,7 @@ export default class Pagination extends Vue {
       ~~((this.currentPage - 1) / this.boundaryCount) * this.boundaryCount + 1;
     const endPageNumber = Math.min(this.maxPage, startPageNumber + this.boundaryCount - 1);
 
-    const pages = [];
+    const pages: number[] = [];
     for (let i = startPageNumber; i <= endPageNumber; i++) {
       pages.push(i);
     }
