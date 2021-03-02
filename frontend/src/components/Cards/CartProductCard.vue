@@ -1,5 +1,5 @@
 <template>
-  <BaseCard>
+  <BaseCard @click="onClick">
     <template v-slot:card-body>
       <div class="body-container">
         <img class="product-image" alt="상품 이미지" :src="image" />
@@ -42,6 +42,10 @@ export default class CartProductCard extends Vue {
   public onRemoveProduct() {
     this.$emit('delete-product', this.id);
     this.$router.go(0);
+  }
+
+  public onClick() {
+    this.$emit('click');
   }
 }
 </script>

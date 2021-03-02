@@ -6,8 +6,8 @@
         <h2 class="product-title">{{ productInfo.name }}</h2>
 
         <Chip
-          :text="productInfo.sold ? '판매 완료' : '판매 중'"
-          :color="productInfo.sold ? '#ff6b6b' : '#40c057'"
+          :text="productInfo.isSold ? '판매 완료' : '판매 중'"
+          :color="productInfo.isSold ? '#ff6b6b' : '#40c057'"
         />
 
         <em class="product-price">₩ {{ productInfo.price }}</em>
