@@ -22,7 +22,7 @@
       </div>
       <FilterList v-model="selectedFilter" />
       <ProductGridList v-if="isProductsExist" :products="sortedProducts" />
-      <div v-else>상품이 없어요</div>
+      <Fallback v-else>등록된 상품이 없어요</Fallback>
       <Pagination :maxPage="maxPageCount" @paginate="onFetchItems" />
     </section>
     <FloatingButton />
@@ -41,6 +41,7 @@ import ProductSlideList from '@components/Lists/ProductSlideList.vue';
 import Pagination from '@components/Common/Pagination.vue';
 import FloatingButton from '@components/Buttons/FloatingButton.vue';
 import Icon from '@components/Common/Icon.vue';
+import Fallback from '@components/Common/Fallback.vue';
 import { IProduct, ICategoryMap } from '../types';
 
 const SettingModule = namespace('SettingModule');
@@ -56,6 +57,7 @@ const DISPLAY_COUNT = 10;
     Pagination,
     FloatingButton,
     Icon,
+    Fallback,
   },
 })
 export default class MainView extends Vue {

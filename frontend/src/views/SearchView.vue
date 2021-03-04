@@ -5,7 +5,7 @@
     <div v-if="isLoading">로딩중</div>
     <div v-else>
       <ProductList v-if="isProductsExist" :products="products" />
-      <div v-else>해당하는 상품이 없어요</div>
+      <Fallback v-else>해당하는 상품이 없어요</Fallback>
     </div>
   </div>
 </template>
@@ -16,12 +16,13 @@ import { namespace } from 'vuex-class';
 import { ProductAPI } from '../api';
 import SearchInput from '@components/Inputs/SearchInput.vue';
 import ProductList from '@components/Lists/ProductList.vue';
+import Fallback from '@components/Common/Fallback.vue';
 // import { IProductSearchResult } from '../types';
 
 const SettingModule = namespace('SettingModule');
 
 @Component({
-  components: { SearchInput, ProductList },
+  components: { SearchInput, ProductList, Fallback },
 })
 export default class SearchView extends Vue {
   private keyword!: string;
