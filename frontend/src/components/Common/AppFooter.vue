@@ -6,7 +6,6 @@
 
     <div class="footer-description">
       <strong>🧅 양파 마켓</strong>
-      <span>2020학년도 1학기 소프트웨어공학 프로젝트</span>
     </div>
   </footer>
 </template>
