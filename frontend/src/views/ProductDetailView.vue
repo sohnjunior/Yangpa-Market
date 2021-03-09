@@ -5,13 +5,10 @@
         v-if="isFetchFinished"
         :productID="productID"
         :productInfo="productInfo"
+        :sellerInfo="productSeller"
         @add-cart="onAddCart"
         @increase-like="onIncreaseLike"
       />
-    </section>
-
-    <section>
-      <SellerInfoCard v-if="isFetchFinished" :seller="productSeller" />
     </section>
 
     <section>
@@ -32,7 +29,6 @@ import { Component, Vue } from 'vue-property-decorator';
 import { ProductAPI, CartAPI } from '../api';
 import { namespace } from 'vuex-class';
 import DetailProductCard from '@components/Cards/DetailProductCard.vue';
-import SellerInfoCard from '@components/Cards/SellerInfoCard.vue';
 import RelatedProductList from '@components/Lists/RelatedProductList.vue';
 import CommentInput from '@components/Inputs/CommentInput.vue';
 import CommentList from '@components/Lists/CommentList.vue';
@@ -44,7 +40,6 @@ const UserModule = namespace('UserModule');
 @Component({
   components: {
     DetailProductCard,
-    SellerInfoCard,
     RelatedProductList,
     CommentInput,
     CommentList,

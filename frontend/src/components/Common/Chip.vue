@@ -24,7 +24,7 @@ export default class Chip extends Vue {
 <style lang="scss" scoped>
 .chip {
   margin: 5px 0px;
-  padding: 2px 5px;
+  padding: 4px;
   border-radius: 10px;
   text-align: center;
   font-size: 0.7rem;
