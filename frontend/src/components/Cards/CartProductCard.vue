@@ -4,9 +4,9 @@
       <div class="body-container">
         <img class="product-image" alt="상품 이미지" :src="image" />
         <div class="product-description">
-          <em :style="[status ? soldOutStyle : onSaleStyle]">{{ statusMessage }}</em>
-          <output>₩ {{ price }} </output>
           <h2 class="product-name">{{ name }}</h2>
+          <output class="product-price">₩ {{ price }} </output>
+          <em :style="[status ? soldOutStyle : onSaleStyle]">{{ statusMessage }}</em>
         </div>
         <div class="button-wrapper">
           <button class="desktop" @click="onRemoveProduct">삭제</button>
@@ -72,7 +72,15 @@ export default class CartProductCard extends Vue {
     margin-left: 20px;
 
     .product-name {
+      margin-top: 10px;
       font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .product-price {
+      margin: 10px 0px;
+      font-size: 1rem;
+      font-weight: 500;
     }
   }
 
@@ -84,7 +92,7 @@ export default class CartProductCard extends Vue {
     }
 
     & {
-      width: 250px;
+      width: 260px;
     }
   }
 
