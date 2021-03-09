@@ -5,8 +5,8 @@
       <div class="seller-wrapper">
         <Avatar :src="sellerInfo.avatar ? seller.avatar : undefined" />
         <div class="seller-description">
-          <span class="contact">{{ sellerInfo.nickname }}</span>
-          <span class="contact">{{ sellerInfo.email }}</span>
+          <span>{{ sellerInfo.nickname }}</span>
+          <span>{{ sellerInfo.email }}</span>
         </div>
       </div>
 
@@ -97,6 +97,8 @@ export default class DetailProductCard extends Vue {
 
     .seller-wrapper {
       display: flex;
+      align-items: center;
+      height: 70px;
       padding: 5px;
       margin-bottom: 20px;
 
@@ -104,6 +106,12 @@ export default class DetailProductCard extends Vue {
         display: flex;
         flex-direction: column;
         margin-left: 10px;
+        font-size: 1rem;
+        font-weight: 500;
+
+        span + span {
+          margin-top: 5px;
+        }
       }
     }
 
