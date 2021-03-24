@@ -21,7 +21,7 @@
         <h1>{{ selectedCategory }}</h1>
       </div>
       <FilterList v-model="selectedFilter" />
-      <ProductGridList v-if="isProductsExist" :products="sortedProducts" />
+      <ProductGrid v-if="isProductsExist" :products="sortedProducts" />
       <Fallback v-else>등록된 상품이 없어요</Fallback>
       <Pagination :maxPage="maxPageCount" @paginate="onFetchItems" />
     </section>
@@ -36,7 +36,7 @@ import { ProductAPI } from '../api';
 import ProductCarousel from '@components/Carousels/ProductCarousel.vue';
 import CategoryList from '@components/Lists/CategoryList.vue';
 import FilterList from '@components/Lists/FilterList.vue';
-import ProductGridList from '@components/Lists/ProductGridList.vue';
+import ProductGrid from '@components/Lists/ProductGrid.vue';
 import ProductSlideList from '@components/Lists/ProductSlideList.vue';
 import Pagination from '@components/Common/Pagination.vue';
 import FloatingButton from '@components/Buttons/FloatingButton.vue';
@@ -52,7 +52,7 @@ const DISPLAY_COUNT = 10;
     CategoryList,
     FilterList,
     ProductCarousel,
-    ProductGridList,
+    ProductGrid,
     ProductSlideList,
     Pagination,
     FloatingButton,
