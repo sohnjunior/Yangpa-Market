@@ -115,18 +115,31 @@ async function getProduct(req: Request, res: Response, next: NextFunction) {
 
 async function searchProducts(req: Request, res: Response, next: NextFunction) {
   try {
-    let { keyword } = req.query;
+    let { keyword, page, take } = req.query;
 
-    if (!keyword) return next(new HTTP400Error('잘못된 입력입니다'));
+    if (!keyword || !page || !take) {
+      return next(new HTTP400Error('잘못된 입력입니다'));
+    }
 
     keyword = (keyword as string).trim().replace(/\s\s+/gi, ' '); // 앞뒤 공백문자 제거
+    const findQueryOffset = (+page - 1) * +take;
+    if (findQueryOffset < 0) {
+      return next(new HTTP400Error('잘못된 인자입니다.'));
+    }
 
-    const keywords = keyword.split(' '); // 띄어쓰기 기준으로 한 단어라도 들어있으면 결과 찾아서 반환
-    const products = await ProductService.searchProductsWithKeyword(keywords);
+    const [
+      products,
+      totalCount,
+    ] = await ProductService.searchProductsWithKeyword(
+      keyword,
+      findQueryOffset,
+      +take
+    );
 
     res.status(200).json({
       status: 'ok',
       message: '조회가 성공적으로 이루어졌습니다',
+      totalCount,
       products,
     });
   } catch (err) {
