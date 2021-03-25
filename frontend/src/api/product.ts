@@ -18,8 +18,8 @@ function fetchProduct(productID) {
   return instance.get(`/products/${productID}`);
 }
 
-function searchProduct(keyword: string) {
-  return instance.get(`/products/search?keyword=${keyword}`);
+function searchProduct(keyword: string, page: number, take: number) {
+  return instance.get(`/products/search?keyword=${keyword}&page=${page}&take=${take}`);
 }
 
 function editProduct(productID: string, payload: FormData) {

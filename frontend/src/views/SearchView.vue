@@ -4,8 +4,9 @@
 
     <div v-if="isLoading">로딩중</div>
     <div v-else>
-      <ProductList v-if="isProductsExist" :products="products" />
+      <ProductList v-if="isProductsExist" :products="fetchedProducts" />
       <Fallback v-else>해당하는 상품이 없어요</Fallback>
+      <Pagination :maxPage="maxPageCount" @paginate="onFetchItems" />
     </div>
   </div>
 </template>
@@ -17,34 +18,47 @@ import { ProductAPI } from '../api';
 import SearchInput from '@components/Inputs/SearchInput.vue';
 import ProductList from '@components/Lists/ProductList.vue';
 import Fallback from '@components/Common/Fallback.vue';
-// import { IProductSearchResult } from '../types';
+import Pagination from '@components/Common/Pagination.vue';
+import { IProduct } from '../types';
 
 const SettingModule = namespace('SettingModule');
+const DISPLAY_COUNT = 2;
 
 @Component({
-  components: { SearchInput, ProductList, Fallback },
+  components: { SearchInput, ProductList, Fallback, Pagination },
 })
 export default class SearchView extends Vue {
   private keyword!: string;
-  private products: any[] = [];
-  private isLoading = true;
+  private fetchedProducts: IProduct[] = [];
+  private isLoading!: boolean;
+  private totalFetchedProductsCount = 0;
 
   @SettingModule.Getter
   public isMobileBrowser!: boolean;
 
   get isProductsExist() {
-    return this.products.length !== 0;
+    return this.fetchedProducts.length !== 0;
+  }
+
+  get maxPageCount() {
+    return ~~(this.totalFetchedProductsCount / DISPLAY_COUNT) + 1;
   }
 
   public async created() {
-    try {
-      this.keyword = this.$route.params?.keyword;
-      const {
-        data: { products },
-      } = await ProductAPI.searchProduct(this.keyword);
+    this.keyword = this.$route.params?.keyword;
+    this.isLoading = true;
+    this.onFetchItems(1);
+    this.isLoading = false;
+  }
 
-      this.products = products;
-      this.isLoading = false;
+  public async onFetchItems(pageNumber: number) {
+    try {
+      const {
+        data: { products, totalCount },
+      } = await ProductAPI.searchProduct(this.keyword, pageNumber, DISPLAY_COUNT);
+
+      this.fetchedProducts = products;
+      this.totalFetchedProductsCount = totalCount;
     } catch (err) {
       console.error(err);
     }

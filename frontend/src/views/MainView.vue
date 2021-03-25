@@ -105,7 +105,7 @@ export default class MainView extends Vue {
       } = await ProductAPI.fetchProductsWithCategory(
         this.categoryMap[this.selectedCategory],
         pageNumber,
-        10
+        DISPLAY_COUNT
       );
 
       this.fetchedProducts = products;
