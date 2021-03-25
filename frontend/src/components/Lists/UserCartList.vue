@@ -2,13 +2,13 @@
   <div>
     <h2 class="list-title">장바구니</h2>
 
-    <label>
-      <input type="checkbox" v-model="checkAllFlag" />
+    <div class="check-all-wrapper">
+      <CheckboxInput v-model="checkAllFlag" />
       <span>모두선택</span>
-    </label>
+    </div>
     <ul class="list-content-wrapper">
-      <li v-for="(product, idx) in onSaleItems" :key="product.id">
-        <input type="checkbox" v-model="checkFlags[idx]" />
+      <li class="list-content" v-for="(product, idx) in onSaleItems" :key="product.id">
+        <CheckboxInput class="checkbox" v-model="checkFlags[idx]" />
         <CartProductCard
           :id="product.id"
           :name="product.name"
@@ -32,6 +32,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import CartProductCard from '@components/Cards/CartProductCard.vue';
+import CheckboxInput from '@components/Inputs/CheckboxInput.vue';
 import { CartAPI, OrderAPI } from '../../api';
 import { IProduct } from '../../types';
 import ToastBus from '../../bus/ToastBus';
@@ -39,7 +40,7 @@ import ToastBus from '../../bus/ToastBus';
 const UserModule = namespace('UserModule');
 
 @Component({
-  components: { CartProductCard },
+  components: { CartProductCard, CheckboxInput },
 })
 export default class UserCart extends Vue {
   /** 내가 장바구니에 담은 상품 */
@@ -113,7 +114,6 @@ export default class UserCart extends Vue {
   }
 
   public onRedirect(productId: number) {
-    console.log(productId);
     this.$router.push(`/product/${productId}`);
   }
 }
@@ -121,17 +121,46 @@ export default class UserCart extends Vue {
 
 <style lang="scss" scoped>
 @import '../../assets/scss/mixins';
+@import '../../assets/scss/variables';
 
 .list-title {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   font-size: 2rem;
   font-weight: 700;
+}
+
+.check-all-wrapper {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+
+  span {
+    margin-left: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
 }
 
 .list-content-wrapper {
   list-style: none;
 
-  li + li {
+  .list-content {
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    .checkbox {
+      margin-right: 20px;
+    }
+
+    @media screen and (max-width: $mobile-width) {
+      .checkbox {
+        margin-right: 10px;
+      }
+    }
+  }
+
+  .list-content + .list-content {
     margin-top: 20px;
   }
 }
@@ -139,7 +168,7 @@ export default class UserCart extends Vue {
 .cart-footer-wrapper {
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
+  margin-top: 50px;
 
   .price {
     font-size: 1.4rem;

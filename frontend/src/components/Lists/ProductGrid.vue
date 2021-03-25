@@ -25,7 +25,7 @@ import { IProduct } from '../../types';
 @Component({
   components: { ProductCard },
 })
-export default class ProductGridList extends Vue {
+export default class ProductGrid extends Vue {
   @Prop({ required: true }) readonly products!: IProduct[];
 }
 </script>
