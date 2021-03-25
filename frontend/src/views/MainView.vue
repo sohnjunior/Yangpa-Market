@@ -20,8 +20,10 @@
         />
         <h1>{{ selectedCategory }}</h1>
       </div>
-      <FilterList v-model="selectedFilter" />
-      <ProductGrid v-if="isProductsExist" :products="sortedProducts" />
+      <div v-if="isProductsExist">
+        <ProductList v-if="isMobileBrowser" :products="fetchedProducts" />
+        <ProductGrid v-else :products="fetchedProducts" />
+      </div>
       <Fallback v-else>등록된 상품이 없어요</Fallback>
       <Pagination :maxPage="maxPageCount" @paginate="onFetchItems" />
     </section>
@@ -37,6 +39,7 @@ import ProductCarousel from '@components/Carousels/ProductCarousel.vue';
 import CategoryList from '@components/Lists/CategoryList.vue';
 import FilterList from '@components/Lists/FilterList.vue';
 import ProductGrid from '@components/Lists/ProductGrid.vue';
+import ProductList from '@components/Lists/ProductList.vue';
 import ProductSlideList from '@components/Lists/ProductSlideList.vue';
 import Pagination from '@components/Common/Pagination.vue';
 import FloatingButton from '@components/Buttons/FloatingButton.vue';
@@ -53,6 +56,7 @@ const DISPLAY_COUNT = 10;
     FilterList,
     ProductCarousel,
     ProductGrid,
+    ProductList,
     ProductSlideList,
     Pagination,
     FloatingButton,
@@ -61,6 +65,7 @@ const DISPLAY_COUNT = 10;
   },
 })
 export default class MainView extends Vue {
+  private isLoading!: boolean;
   private fetchedProducts: IProduct[] = [];
   private selectedCategory = '전공서적';
   private selectedFilter = '등록일';
