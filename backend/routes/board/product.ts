@@ -18,7 +18,13 @@ router.post(
 );
 
 router.put('/:id/like', verifyToken, ProductController.updateLikeOfProduct);
-router.put('/:id', verifyToken, checkBodyNull, ProductController.updateProduct);
+router.put(
+  '/:id',
+  verifyToken,
+  checkBodyNull,
+  uploadImage('product').array('images'),
+  ProductController.updateProduct
+);
 router.delete('/:id', verifyToken, ProductController.deleteProduct);
 
 export default router;

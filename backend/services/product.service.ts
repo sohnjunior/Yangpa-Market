@@ -37,17 +37,25 @@ const createProduct = async (
   }
 };
 
-const getAllProducts = async () => {
+const getAllProducts = async (category: string, skip: number, take: number) => {
   try {
+    const categoryRepository = getRepository(Category);
     const productRepository = getRepository(Product);
-    const products = await productRepository.find({
+
+    const targetCategory = await categoryRepository.findOneOrFail({
+      type: category,
+    });
+    const [products, count] = await productRepository.findAndCount({
+      where: { categoryId: targetCategory.id },
       relations: ['seller', 'photos', 'category'],
       order: {
         createdAt: 'DESC',
       },
+      skip,
+      take,
     });
 
-    return products;
+    return [products, count];
   } catch (err) {
     throw err;
   }
@@ -71,12 +79,35 @@ const getProduct = async (productId: number) => {
 
 const updateProduct = async (
   productId: number,
-  options: { name: string; price: number; description: string }
+  options: {
+    name: string;
+    price: number;
+    description: string;
+    category: string;
+    photoNames: string[];
+  }
 ) => {
   try {
     const productRepository = getRepository(Product);
+    const categoryRepository = getRepository(Category);
 
-    await productRepository.update(productId, options);
+    const productExists = await productRepository.findOneOrFail({
+      id: productId,
+    });
+    const category = await categoryRepository.findOneOrFail({
+      type: options.category,
+    });
+
+    await PhotoService.deletePhotos(productId);
+    const productPhotos = PhotoService.createPhotos(options.photoNames);
+    await productRepository.save({
+      ...productExists,
+      name: options.name,
+      price: options.price,
+      description: options.description,
+      category,
+      photos: productPhotos,
+    });
   } catch (err) {
     throw err;
   }
@@ -92,25 +123,22 @@ const deleteProduct = async (productId: number) => {
   }
 };
 
-const searchProductsWithKeyword = async (keywords: string[]) => {
+const searchProductsWithKeyword = async (
+  keyword: string,
+  skip: number,
+  take: number
+) => {
   try {
-    const productSet = new Map<number, Product>();
     const productRepository = getRepository(Product);
 
-    for (const keyword of keywords) {
-      const products = await productRepository.find({
-        where: { name: Like(keyword) },
-        relations: ['category', 'photos'],
-      });
+    const [products, totalCount] = await productRepository.findAndCount({
+      where: { name: Like(`%${keyword}%`) },
+      relations: ['seller', 'category', 'photos'],
+      skip,
+      take,
+    });
 
-      for (const product of products) {
-        if (!productSet.has(product.id)) productSet.set(product.id, product);
-      }
-    }
-
-    const serialized: Product[] = [...productSet.values()];
-
-    return serialized;
+    return [products, totalCount];
   } catch (err) {
     throw err;
   }

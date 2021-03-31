@@ -1,7 +1,21 @@
-// TODO: 숫자 백 단위마다 , 추가
-function addCommaToNumber(num: number) {}
+interface IFormDataPayload {
+  [index: string]: string | File[];
+}
 
-// TODO: 현재 날짜 기준 지난 일수 계산
-function calculatePastDays(date: Date) {}
+function createFormDataWithObject(payload: IFormDataPayload) {
+  const formData = new FormData();
 
-export { addCommaToNumber, calculatePastDays };
+  for (const [key, value] of Object.entries(payload)) {
+    if (Array.isArray(value)) {
+      for (const file of value) {
+        formData.append('images', file);
+      }
+    } else {
+      formData.set(key, value);
+    }
+  }
+
+  return formData;
+}
+
+export { createFormDataWithObject };

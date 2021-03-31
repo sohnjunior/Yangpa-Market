@@ -2,15 +2,21 @@
   <div>
     <h2 class="list-title">장바구니</h2>
 
+    <div class="check-all-wrapper">
+      <CheckboxInput v-model="checkAllFlag" />
+      <span>모두선택</span>
+    </div>
     <ul class="list-content-wrapper">
-      <li v-for="product in onSaleItems" :key="product.id">
+      <li class="list-content" v-for="(product, idx) in onSaleItems" :key="product.id">
+        <CheckboxInput class="checkbox" v-model="checkFlags[idx]" />
         <CartProductCard
           :id="product.id"
-          :name="product.title"
+          :name="product.name"
           :price="product.price"
-          :image="product.image"
-          :status="product.sold"
+          :image="product.photos[0].path"
+          :status="product.isSold"
           @delete-product="removeFromCart"
+          @click="onRedirect(product.id)"
         />
       </li>
     </ul>
@@ -26,28 +32,41 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import CartProductCard from '@components/Cards/CartProductCard.vue';
+import CheckboxInput from '@components/Inputs/CheckboxInput.vue';
 import { CartAPI, OrderAPI } from '../../api';
 import { IProduct } from '../../types';
-
-// TODO: 핸드폰 번호 입력창 UX/UI 보완하기 (정해진 형식에 맞게 입력하기 쉽도록)
-// TODO: 장바구니 비어있을 시 예외처리 Toast 팝업으로 변경
-// TODO: 장바구니 상품 클릭 시 해당 상품 디테일 화면으로 이동
+import ToastBus from '../../bus/ToastBus';
 
 const UserModule = namespace('UserModule');
 
 @Component({
-  components: { CartProductCard },
+  components: { CartProductCard, CheckboxInput },
 })
 export default class UserCart extends Vue {
+  /** 내가 장바구니에 담은 상품 */
   private wishItems: IProduct[] = [];
-  private onSaleItems: IProduct[] = []; // 내가 찜한 상품중 현재 판매중인것들
-  private orderTargetItemIds: number[] = []; // TODO: 내가 선택한 주문할 상품 목록을 토글 형식으로 (computed 속성으로 변경 예정)
+  /** 내가 장바구니에 담은 상품들 중에서 현재 판매중인 상품들 */
+  private onSaleItems: IProduct[] = [];
+  /** 각 상품 별 체크박스 선택 유무 */
+  private checkFlags: boolean[] = [];
 
   @UserModule.Getter
-  public currentEmail!: string;
+  public userEmail!: string;
 
   get totalPrice() {
-    return this.onSaleItems.reduce((acc, item) => acc + item.price, 0);
+    return this.orderTargetItem.reduce((acc: number, item: IProduct) => acc + item.price, 0);
+  }
+
+  get checkAllFlag() {
+    return this.checkFlags.every((flag: boolean) => flag);
+  }
+
+  set checkAllFlag(value: boolean) {
+    this.checkFlags = this.checkFlags.map((_) => value);
+  }
+
+  get orderTargetItem() {
+    return this.onSaleItems.filter((item: IProduct, idx: number) => this.checkFlags[idx]);
   }
 
   public async created() {
@@ -57,8 +76,8 @@ export default class UserCart extends Vue {
       } = await CartAPI.fetchAllCartProducts();
 
       this.wishItems = products;
+      this.checkFlags = Array.from(Array(products.length).fill(false));
       this.onSaleItems = this.wishItems.filter((item) => !item.isSold);
-      this.orderTargetItemIds = this.onSaleItems.map((item) => item.id);
     } catch (err) {
       console.error(err);
     }
@@ -68,6 +87,7 @@ export default class UserCart extends Vue {
     try {
       const payload = { productID: id };
       await CartAPI.removeCartProduct(payload);
+      ToastBus.$emit('pop-up', '장바구니에서 삭제되었습니다.');
     } catch (err) {
       console.error(err);
     }
@@ -77,49 +97,70 @@ export default class UserCart extends Vue {
     const isPickExist = this.onSaleItems.length === 0;
 
     if (isPickExist) {
-      alert('현재 구매가능한 물폼이 없습니다!');
+      ToastBus.$emit('pop-up', '현재 구매가능한 상품이 없습니다!');
       return;
     }
 
-    // TODO: 상품 구매 API 연동
-
-    // if (phone) {
-    //   /** 장바구니 모든 상품들에 대해 구매 요청 전송 */
-    //   const promises = this.onSaleItems.map((product) => {
-    //     CartAPI.purchaseCartProduct({
-    //       postID: product.postId,
-    //       productID: product.id,
-    //       phone: phone,
-    //     });
-    //   });
-
-    //   await Promise.all(promises);
-    // }
     try {
+      const orderTargetItemIds = this.orderTargetItem.map((item: IProduct) => item.id);
+
       await OrderAPI.createOrder({
-        requestIds: this.orderTargetItemIds,
-        buyerEmail: this.currentEmail,
+        requestIds: orderTargetItemIds,
+        buyerEmail: this.userEmail,
       });
     } catch (err) {
       console.error(err);
     }
+  }
+
+  public onRedirect(productId: number) {
+    this.$router.push(`/product/${productId}`);
   }
 }
 </script>
 
 <style lang="scss" scoped>
 @import '../../assets/scss/mixins';
+@import '../../assets/scss/variables';
 
 .list-title {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   font-size: 2rem;
   font-weight: 700;
+}
+
+.check-all-wrapper {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+
+  span {
+    margin-left: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
 }
 
 .list-content-wrapper {
   list-style: none;
 
-  li + li {
+  .list-content {
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    .checkbox {
+      margin-right: 20px;
+    }
+
+    @media screen and (max-width: $mobile-width) {
+      .checkbox {
+        margin-right: 10px;
+      }
+    }
+  }
+
+  .list-content + .list-content {
     margin-top: 20px;
   }
 }
@@ -127,7 +168,7 @@ export default class UserCart extends Vue {
 .cart-footer-wrapper {
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
+  margin-top: 50px;
 
   .price {
     font-size: 1.4rem;

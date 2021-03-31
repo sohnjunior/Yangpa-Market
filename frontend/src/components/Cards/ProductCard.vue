@@ -23,7 +23,7 @@
     </template>
     <template v-slot:card-footer>
       <div class="footer-wrapper">
-        <em>{{ price }} 원</em>
+        <em>{{ price | commaSeparated }} 원</em>
         <div class="like-wrapper">
           <Icon filename="heart" width="15" height="15" />
           <span class="like-count">{{ likes }}</span>

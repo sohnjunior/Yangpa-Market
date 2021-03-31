@@ -2,15 +2,23 @@
   <div class="info-container">
     <ImageSwipper class="image-swipper" :images="productInfo.photos" />
     <div class="info-wrapper">
+      <div class="seller-wrapper">
+        <Avatar :src="sellerInfo.avatar ? seller.avatar : undefined" />
+        <div class="seller-description">
+          <span>{{ sellerInfo.nickname }}</span>
+          <span>{{ sellerInfo.email }}</span>
+        </div>
+      </div>
+
       <div class="meta-wrapper">
         <h2 class="product-title">{{ productInfo.name }}</h2>
 
         <Chip
-          :text="productInfo.sold ? '판매 완료' : '판매 중'"
-          :color="productInfo.sold ? '#ff6b6b' : '#40c057'"
+          :text="productInfo.isSold ? '판매 완료' : '판매 중'"
+          :color="productInfo.isSold ? '#ff6b6b' : '#40c057'"
         />
 
-        <em class="product-price">₩ {{ productInfo.price }}</em>
+        <em class="product-price">₩ {{ productInfo.price | commaSeparated }}</em>
         <p class="product-description">{{ productInfo.description }}</p>
       </div>
 
@@ -32,15 +40,17 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import Icon from '@components/Common/Icon.vue';
 import Chip from '@components/Common/Chip.vue';
+import Avatar from '@components/Common/Avatar.vue';
 import ImageSwipper from '@components/Carousels/ImageSwipper.vue';
-import { IProduct } from '../../types';
+import { IProduct, ISeller } from '../../types';
 
 @Component({
-  components: { Icon, Chip, ImageSwipper },
+  components: { Icon, Chip, Avatar, ImageSwipper },
 })
-export default class DetailProductCard extends Vue {
+export default class ProductDetailCard extends Vue {
   @Prop({ required: true }) readonly productID!: string;
   @Prop({ required: true }) readonly productInfo!: Partial<IProduct>;
+  @Prop({ required: true }) readonly sellerInfo!: ISeller;
 
   public onClickAddCart() {
     this.$emit('add-cart');
@@ -62,6 +72,7 @@ export default class DetailProductCard extends Vue {
   flex-direction: column;
   align-items: center;
   width: 80%;
+  height: fit-content;
   padding: 50px;
   background-color: #ffffff;
 
@@ -75,7 +86,7 @@ export default class DetailProductCard extends Vue {
   .image-swipper {
     width: 80%;
     height: 50%;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
   }
 
   .info-wrapper {
@@ -84,6 +95,26 @@ export default class DetailProductCard extends Vue {
     justify-content: space-between;
     width: 80%;
 
+    .seller-wrapper {
+      display: flex;
+      align-items: center;
+      height: 70px;
+      padding: 5px;
+      margin-bottom: 20px;
+
+      .seller-description {
+        display: flex;
+        flex-direction: column;
+        margin-left: 10px;
+        font-size: 1rem;
+        font-weight: 500;
+
+        span + span {
+          margin-top: 5px;
+        }
+      }
+    }
+
     .meta-wrapper {
       display: flex;
       flex-direction: column;
@@ -91,6 +122,7 @@ export default class DetailProductCard extends Vue {
       .product-title {
         font-size: 1.4rem;
         font-weight: 600;
+        margin-bottom: 10px;
       }
 
       .product-price {
@@ -146,6 +178,10 @@ export default class DetailProductCard extends Vue {
     }
 
     .info-wrapper {
+      .seller-wrapper {
+        margin-bottom: 5px;
+      }
+
       .meta-wrapper {
         margin-top: 20px;
       }

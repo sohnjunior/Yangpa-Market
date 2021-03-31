@@ -11,4 +11,7 @@ export class Photo {
 
   @ManyToOne(() => Product, (product) => product.id, { onDelete: 'CASCADE' })
   product!: Product;
+
+  @Column({ select: false })
+  productId!: number;
 }

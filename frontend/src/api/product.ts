@@ -10,20 +10,22 @@ function registerProduct(payload: FormData) {
   });
 }
 
-function fetchAllProducts() {
-  return instance.get('/products');
+function fetchProductsWithCategory(category: string, page: number, take: number) {
+  return instance.get(`/products?category=${category}&page=${page}&take=${take}`);
 }
 
 function fetchProduct(productID) {
   return instance.get(`/products/${productID}`);
 }
 
-function searchProduct(keyword: string) {
-  return instance.get(`/products/search?keyword=${keyword}`);
+function searchProduct(keyword: string, page: number, take: number) {
+  return instance.get(`/products/search?keyword=${keyword}&page=${page}&take=${take}`);
 }
 
-function editProduct(productID: string, payload) {
-  return instance.put(`/products/${productID}`, payload);
+function editProduct(productID: string, payload: FormData) {
+  return instance.put(`/products/${productID}`, payload, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
 }
 
 function likeProduct(productID: string) {
@@ -36,7 +38,7 @@ function deletePost(productID: string) {
 
 export default {
   registerProduct,
-  fetchAllProducts,
+  fetchProductsWithCategory,
   fetchProduct,
   searchProduct,
   editProduct,

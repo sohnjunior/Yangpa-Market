@@ -46,13 +46,14 @@ export default class RelatedProductList extends Vue {
 
 .related-container {
   display: flex;
-  width: 100%;
+  width: 80%;
   padding: 0;
 }
 
 @media screen and (max-width: $mobile-width) {
   .related-container {
     overflow-x: scroll;
+    width: 100%;
 
     &::-webkit-scrollbar {
       display: none;

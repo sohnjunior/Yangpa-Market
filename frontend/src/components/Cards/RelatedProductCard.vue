@@ -6,7 +6,7 @@
     <template v-slot:card-footer>
       <div>
         <h2 class="product-title">{{ title }}</h2>
-        <em class="product-price">₩{{ price }}</em>
+        <em class="product-price">₩{{ price | commaSeparated }}</em>
         <p class="product-description">{{ body }}</p>
       </div>
     </template>
@@ -42,7 +42,6 @@ export default class RelatedProductCard extends Vue {
 .related-product-container {
   flex: 0 0 auto;
   width: 230px;
-  margin-right: 50px;
 
   .product-image {
     width: 100%;
@@ -56,6 +55,7 @@ export default class RelatedProductCard extends Vue {
     @include text-shorthand();
     font-size: 1.1rem;
     font-weight: 500;
+    margin-bottom: 10px;
   }
 
   .product-price {
@@ -67,12 +67,19 @@ export default class RelatedProductCard extends Vue {
     margin-top: 5px;
     font-size: 0.9rem;
   }
+
+  & + & {
+    margin-left: 15px;
+  }
 }
 
 @media screen and (max-width: $mobile-width) {
   .related-product-container {
     width: 180px;
-    margin-right: 20px;
+
+    & + & {
+      margin-left: 15px;
+    }
   }
 }
 </style>

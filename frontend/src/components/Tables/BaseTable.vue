@@ -15,6 +15,7 @@
       </tbody>
       <tbody v-else>
         <tr class="fallback-row">
+          <component :is="$options.components.Fallback" />
           <span>목록이 없습니다</span>
         </tr>
       </tbody>
@@ -24,8 +25,11 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import Fallback from '@components/Common/Fallback.vue';
 
-@Component({})
+@Component({
+  components: { Fallback },
+})
 export default class BaseTable extends Vue {
   @Prop({ required: true }) readonly headers!: string[];
   @Prop({ required: true }) readonly items!: any[];
@@ -67,7 +71,13 @@ export default class BaseTable extends Vue {
     }
 
     .fallback-row {
-      font-size: 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      font-size: 1.2rem;
+      font-weight: 500;
     }
   }
 }
