@@ -5,7 +5,7 @@
         <img class="product-image" alt="상품 이미지" :src="image" />
         <div class="product-description">
           <h2 class="product-name">{{ name }}</h2>
-          <output class="product-price">₩ {{ price }} </output>
+          <output class="product-price">₩ {{ price | commaSeparated }} </output>
           <em :style="[status ? soldOutStyle : onSaleStyle]">{{ statusMessage }}</em>
         </div>
         <div class="button-wrapper">

@@ -6,7 +6,7 @@
     <template v-slot:card-footer>
       <div>
         <h2 class="product-title">{{ title }}</h2>
-        <em class="product-price">₩{{ price }}</em>
+        <em class="product-price">₩{{ price | commaSeparated }}</em>
         <p class="product-description">{{ body }}</p>
       </div>
     </template>
@@ -55,6 +55,7 @@ export default class RelatedProductCard extends Vue {
     @include text-shorthand();
     font-size: 1.1rem;
     font-weight: 500;
+    margin-bottom: 10px;
   }
 
   .product-price {

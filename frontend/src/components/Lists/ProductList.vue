@@ -9,7 +9,7 @@
       <img class="thumbnail" alt="상품 이미지" :src="product.photos[0].path" />
       <div class="detail">
         <h1 class="name">{{ product.name }}</h1>
-        <h2 class="price">{{ product.price }} 원</h2>
+        <h2 class="price">{{ product.price | commaSeparated }} 원</h2>
         <p class="description">{{ product.description }}</p>
         <!-- TODO: 지난 일수 계산 후 출력하기 <span>{{ product.updatedAt }}</span> -->
         <div class="meta">
@@ -65,6 +65,7 @@ export default class ProductList extends Vue {
       width: 100%;
 
       .name {
+        margin-bottom: 10px;
         font-size: 1rem;
         font-weight: 600;
       }
@@ -81,12 +82,13 @@ export default class ProductList extends Vue {
       }
 
       .meta {
+        margin-top: 10px;
         font-size: 0.8rem;
         font-weight: 400;
 
         .like {
           margin-right: 10px;
-          margin-left: 65%;
+          margin-left: 50%;
         }
       }
     }
