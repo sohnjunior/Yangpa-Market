@@ -18,7 +18,7 @@
           :color="productInfo.isSold ? '#ff6b6b' : '#40c057'"
         />
 
-        <em class="product-price">₩ {{ productInfo.price }}</em>
+        <em class="product-price">₩ {{ productInfo.price | commaSeparated }}</em>
         <p class="product-description">{{ productInfo.description }}</p>
       </div>
 
@@ -47,7 +47,7 @@ import { IProduct, ISeller } from '../../types';
 @Component({
   components: { Icon, Chip, Avatar, ImageSwipper },
 })
-export default class DetailProductCard extends Vue {
+export default class ProductDetailCard extends Vue {
   @Prop({ required: true }) readonly productID!: string;
   @Prop({ required: true }) readonly productInfo!: Partial<IProduct>;
   @Prop({ required: true }) readonly sellerInfo!: ISeller;

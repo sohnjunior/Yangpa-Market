@@ -1,7 +1,7 @@
 <template>
   <div>
     <section class="info-section">
-      <DetailProductCard
+      <ProductDetailCard
         v-if="isFetchFinished"
         :productID="productID"
         :productInfo="productInfo"
@@ -26,7 +26,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { ProductAPI, CartAPI } from '../api';
 import { namespace } from 'vuex-class';
-import DetailProductCard from '@components/Cards/DetailProductCard.vue';
+import ProductDetailCard from '@components/Cards/ProductDetailCard.vue';
 import RelatedProductList from '@components/Lists/RelatedProductList.vue';
 import CommentInput from '@components/Inputs/CommentInput.vue';
 import CommentList from '@components/Lists/CommentList.vue';
@@ -37,7 +37,7 @@ const UserModule = namespace('UserModule');
 
 @Component({
   components: {
-    DetailProductCard,
+    ProductDetailCard,
     RelatedProductList,
     CommentInput,
     CommentList,
