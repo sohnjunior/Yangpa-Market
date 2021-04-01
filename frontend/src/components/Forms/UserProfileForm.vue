@@ -1,7 +1,5 @@
 <template>
   <form class="form-container">
-    <h1 class="form-title">⚙️ 프로필 설정</h1>
-
     <fieldset>
       <legend>나의 프로필</legend>
 
@@ -241,12 +239,6 @@ export default class UserProfileForm extends Vue {
 .form-container {
   display: flex;
   flex-direction: column;
-
-  .form-title {
-    margin-bottom: 20px;
-    font-size: 1.7rem;
-    font-weight: 600;
-  }
 
   fieldset {
     display: flex;
