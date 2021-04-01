@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 
 // import store for navigation gurad
 import store from '../store';
-import { AuthAPI } from '../api';
+// import { AuthAPI } from '../api';
 
 Vue.use(VueRouter);
 
@@ -26,24 +26,24 @@ export const router = new VueRouter({
       path: '/',
       component: loadView('MainView'),
     },
-    {
-      path: '/admin',
-      component: loadView('AdminView'),
-      beforeEnter: async (to, from, next) => {
-        const {
-          data: { role },
-        } = await AuthAPI.fetchPermission();
+    // {
+    //   path: '/admin',
+    //   component: loadView('AdminView'),
+    //   beforeEnter: async (to, from, next) => {
+    //     const {
+    //       data: { role },
+    //     } = await AuthAPI.fetchPermission();
 
-        if (role === 'admin') {
-          return next();
-        }
+    //     if (role === 'admin') {
+    //       return next();
+    //     }
 
-        next('/no-permission');
-      },
-    },
+    //     next('/no-permission');
+    //   },
+    // },
     {
       path: '/dashboard',
-      component: loadView('DashBoardView'),
+      component: loadView('Dashboard/Index'),
       children: [
         {
           path: 'cart',
@@ -73,7 +73,7 @@ export const router = new VueRouter({
     },
     {
       path: '/product/new',
-      component: loadView('ProductRegisterView'),
+      component: loadView('Product/ProductRegisterView'),
       beforeEnter: (to, from, next) => {
         // 만약 로그인 상태라면
         if (store.state.email !== '' && store.state.token !== '') {
@@ -85,11 +85,11 @@ export const router = new VueRouter({
     },
     {
       path: '/product/:id',
-      component: loadView('ProductDetailView'),
+      component: loadView('Product/ProductDetailView'),
     },
     {
       path: '/product/edit/:id',
-      component: loadView('ProductEditView'),
+      component: loadView('Product/ProductEditView'),
     },
     {
       path: '/search/:keyword?',
@@ -97,11 +97,11 @@ export const router = new VueRouter({
     },
     {
       path: '/no-permission',
-      component: loadView('PageNotAllowedView'),
+      component: loadView('Fallback/PageNotAllowedView'),
     },
     {
       path: '*',
-      component: loadView('PageNotFoundView'),
+      component: loadView('Fallback/PageNotFoundView'),
     },
   ],
 });
