@@ -37,7 +37,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import Icon from '@components/Common/Icon.vue';
 import Avatar from '@components/Common/Avatar.vue';
-import BaseCard from '@components/Cards/BaseCard.vue';
+import BaseCard from '@components/Cards/common/BaseCard.vue';
 
 @Component({
   components: { Icon, Avatar, BaseCard },
