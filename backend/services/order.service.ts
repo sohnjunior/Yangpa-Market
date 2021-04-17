@@ -8,7 +8,10 @@ const getSaleHistory = async (userId: number) => {
   try {
     const productRepository = getRepository(Product);
 
-    const productsOnSale = await productRepository.find({ sellerId: userId });
+    const productsOnSale = await productRepository.find({
+      where: { sellerId: userId },
+      relations: ['photos', 'category'],
+    });
 
     return productsOnSale;
   } catch (err) {
@@ -22,11 +25,21 @@ const getPurchaseHistory = async (userId: number) => {
 
     const approvedOrders = await orderRepository.find({
       where: { buyerId: userId, isApproved: true },
-      relations: ['product'],
+      relations: [
+        'product',
+        'product.seller',
+        'product.photos',
+        'product.category',
+      ],
     });
     const pendingOrders = await orderRepository.find({
       where: { buyerId: userId, isApproved: false },
-      relations: ['product', 'product.seller'],
+      relations: [
+        'product',
+        'product.seller',
+        'product.photos',
+        'product.category',
+      ],
     });
 
     return { pendingOrders, approvedOrders };
