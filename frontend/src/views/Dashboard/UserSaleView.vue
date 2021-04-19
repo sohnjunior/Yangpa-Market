@@ -15,6 +15,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { OrderAPI, ProductAPI } from '../../api';
 import { IProduct } from '../../types';
 import UserTradingList from '@components/Lists/UserTradingList.vue';
+import AlertBus from '../../bus/AlertBus';
 
 @Component({
   components: { UserTradingList },
@@ -42,18 +43,13 @@ export default class UserSaleView extends Vue {
   }
 
   public async onDeleteProduct(productId: number) {
-    /**
-     * TODO: 토스트 모달로 변경
-     */
-    const allow = confirm('판매글을 정말로 삭제하시겠습니까?');
-
-    if (!allow || !productId) return;
-
-    try {
-      await ProductAPI.deletePost(productId.toString());
-    } catch (err) {
-      console.error(err);
-    }
+    const message = '판매글을 정말로 삭제하시겠습니까?';
+    AlertBus.$emit(
+      'alert-on',
+      message,
+      () => ProductAPI.deletePost(productId.toString()),
+      () => {}
+    );
   }
 }
 </script>
