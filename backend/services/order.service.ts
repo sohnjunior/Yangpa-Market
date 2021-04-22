@@ -61,7 +61,7 @@ const getOrderRequestHistory = async (userId: number) => {
     const pendingOrders: Order[] = [];
     for (const product of productsSaleByUser) {
       const orders = await orderRepository.find({
-        where: { productId: product.id },
+        where: { productId: product.id, isApproved: false },
         relations: ['buyer', 'product'],
       });
       pendingOrders.push(...orders);
@@ -123,7 +123,7 @@ const rejectOrder = async (orderId: number) => {
   try {
     const orderRepository = getRepository(Order);
 
-    await orderRepository.update(orderId, { isApproved: false });
+    await orderRepository.softDelete(orderId);
   } catch (err) {
     throw err;
   }
