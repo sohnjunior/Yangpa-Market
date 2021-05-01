@@ -55,7 +55,7 @@ function createAlarmMessage(issue: IPurchaseRequest): IAlarmMessage {
         type: issue.type,
         content: `
           <span class="message-body">
-            ${issue.buyer} 님이 ${issue.productName} 상품 구매 요청을 보냈습니다 👋
+            ${issue.buyer} 님이 '${issue.productName}' 상품 구매 요청을 보냈습니다 👋
           </span>
           <span class="message-footer">
             구매자 연락처: ${issue.contactNumber}
@@ -99,5 +99,6 @@ export default class UserAlarmView extends Vue {
 .view-title {
   font-size: 2rem;
   font-weight: 700;
+  margin-bottom: 20px;
 }
 </style>
