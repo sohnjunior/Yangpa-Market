@@ -7,14 +7,7 @@
         <span>{{ product.description }}</span>
       </div>
       <div class="control-wrapper">
-        <Icon class="icon" filename="edit" width="20" height="20" @click="onEditItem(product.id)" />
-        <Icon
-          class="icon"
-          filename="delete"
-          width="20"
-          height="20"
-          @click="onDeleteItem(product.id)"
-        />
+        <slot name="control" :productId="product.id" />
       </div>
     </li>
   </ul>
@@ -22,22 +15,11 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import Icon from '@components/Common/Icon.vue';
 import { IProduct } from '../../types';
 
-@Component({
-  components: { Icon },
-})
+@Component({})
 export default class UserTradingList extends Vue {
   @Prop({ required: true }) readonly products!: IProduct[];
-
-  public onEditItem(productId: number) {
-    this.$emit('edit', productId);
-  }
-
-  public onDeleteItem(productId: number) {
-    this.$emit('delete', productId);
-  }
 }
 </script>
 

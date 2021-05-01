@@ -6,7 +6,24 @@
       <div>판매완료</div>
     </div>
 
-    <UserTradingList :products="tradingProducts" @edit="onEditProduct" @delete="onDeleteProduct" />
+    <UserTradingList :products="tradingProducts">
+      <template v-slot:control="slotProps">
+        <Icon
+          class="icon"
+          filename="edit"
+          width="20"
+          height="20"
+          @click="onEditProduct(slotProps.productId)"
+        />
+        <Icon
+          class="icon"
+          filename="delete"
+          width="20"
+          height="20"
+          @click="onDeleteProduct(slotProps.productId)"
+        />
+      </template>
+    </UserTradingList>
   </div>
 </template>
 
@@ -15,10 +32,11 @@ import { Component, Vue } from 'vue-property-decorator';
 import { OrderAPI, ProductAPI } from '../../api';
 import { IProduct } from '../../types';
 import UserTradingList from '@components/Lists/UserTradingList.vue';
+import Icon from '@components/Common/Icon.vue';
 import AlertBus from '../../bus/AlertBus';
 
 @Component({
-  components: { UserTradingList },
+  components: { UserTradingList, Icon },
 })
 export default class UserSaleView extends Vue {
   private soldProducts: IProduct[] = [];
