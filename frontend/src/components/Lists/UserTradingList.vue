@@ -57,6 +57,7 @@ export default class UserTradingList extends Vue {
     height: 100px;
     margin-right: 20px;
     border-radius: 5px;
+    object-fit: cover;
   }
 
   .detail {
