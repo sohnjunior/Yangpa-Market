@@ -1,8 +1,14 @@
 <template>
   <div>
-    <div>구매요청 구매완료</div>
+    <SelectBox
+      :options="['구매요청', '구매완료']"
+      :mode="'single'"
+      :initSelectedOptionIdx="0"
+      @select="onSelectMetric"
+    />
+
     <UserTradingList :products="tradingProducts">
-      <template v-slot:control="slotProps">
+      <template v-if="metric === 'done'" v-slot:control="slotProps">
         <button class="review-button" @click="onRegisterReview(slotProps.productId)">
           거래후기 등록
         </button>
@@ -16,6 +22,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { OrderAPI, ProductAPI } from '../../api';
 import { IProduct } from '../../types';
 import UserTradingList from '@components/Lists/UserTradingList.vue';
+import SelectBox from '@components/Selects/SelectBox.vue';
 
 interface IOrder {
   id: number;
@@ -27,7 +34,7 @@ interface IOrder {
 
 // TODO: 주문 취소하기 기능 추가
 @Component({
-  components: { UserTradingList },
+  components: { UserTradingList, SelectBox },
 })
 export default class UserPurchaseView extends Vue {
   private pendingItems: IProduct[] = [];
@@ -45,8 +52,12 @@ export default class UserPurchaseView extends Vue {
 
     this.pendingItems = infos.pendingOrders.map((order: IOrder) => order.product);
     this.purchasedItems = infos.approvedOrders.map((order: IOrder) => order.product);
+  }
 
-    console.log(infos);
+  public onSelectMetric(metrics: string[]) {
+    const targetMetric = metrics[0];
+
+    this.metric = targetMetric === '구매요청' ? 'progress' : 'done';
   }
 
   public onRegisterReview(productId: number) {

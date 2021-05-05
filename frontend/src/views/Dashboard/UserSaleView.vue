@@ -1,10 +1,11 @@
 <template>
   <div>
-    <!-- Tabbar 컴포넌트로 분리 -->
-    <div>
-      <div>판매중</div>
-      <div>판매완료</div>
-    </div>
+    <SelectBox
+      :options="['판매중', '판매완료']"
+      :mode="'single'"
+      :initSelectedOptionIdx="0"
+      @select="onSelectMetric"
+    />
 
     <UserTradingList :products="tradingProducts">
       <template v-slot:control="slotProps">
@@ -32,11 +33,12 @@ import { Component, Vue } from 'vue-property-decorator';
 import { OrderAPI, ProductAPI } from '../../api';
 import { IProduct } from '../../types';
 import UserTradingList from '@components/Lists/UserTradingList.vue';
+import SelectBox from '@components/Selects/SelectBox.vue';
 import Icon from '@components/Common/Icon.vue';
 import AlertBus from '../../bus/AlertBus';
 
 @Component({
-  components: { UserTradingList, Icon },
+  components: { UserTradingList, SelectBox, Icon },
 })
 export default class UserSaleView extends Vue {
   private soldProducts: IProduct[] = [];
@@ -54,6 +56,12 @@ export default class UserSaleView extends Vue {
 
     this.soldProducts = infos.filter((product: IProduct) => product.isSold);
     this.saleProducts = infos.filter((product: IProduct) => !product.isSold);
+  }
+
+  public onSelectMetric(metrics: string[]) {
+    const targetMetric = metrics[0];
+
+    this.metric = targetMetric === '판매중' ? 'progress' : 'done';
   }
 
   public onEditProduct(productId: number) {
