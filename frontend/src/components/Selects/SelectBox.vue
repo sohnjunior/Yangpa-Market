@@ -1,6 +1,11 @@
 <template>
-  <div>
-    <button v-for="(option, idx) in options" :key="idx" @click="onSelect(idx)">
+  <div class="selectbox-container">
+    <button
+      :class="[selectedOptions[idx].isSelected ? 'selected' : '', 'select-option']"
+      v-for="(option, idx) in options"
+      :key="idx"
+      @click="onSelect(idx)"
+    >
       {{ option }}
     </button>
   </div>
@@ -17,7 +22,7 @@ interface ISelectedOption {
 @Component({})
 export default class SelectBox extends Vue {
   private selectedOptions: ISelectedOption[] = [];
-  private lastSelectedOptionIdx: number;
+  private lastSelectedOptionIdx = -1;
 
   @Prop({ default: 'multi' }) readonly mode!: 'single' | 'multi';
   @Prop({ required: true }) readonly options!: string[];
@@ -70,4 +75,28 @@ export default class SelectBox extends Vue {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.selectbox-container {
+  margin-bottom: 20px;
+
+  .select-option {
+    padding: 15px;
+    border: 2px solid #eeeeee;
+    border-radius: 10px;
+    background-color: white;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #eeeeee;
+    cursor: pointer;
+  }
+
+  .select-option + .select-option {
+    margin-left: 20px;
+  }
+
+  .selected {
+    border: 2px solid #ffab91;
+    color: #ffab91;
+  }
+}
+</style>
