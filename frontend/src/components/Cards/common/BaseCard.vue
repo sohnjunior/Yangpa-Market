@@ -18,7 +18,7 @@ export default class BaseCard extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '../../assets/scss/mixins';
+@import '../../../assets/scss/mixins';
 
 .card-container {
   @include card-border();

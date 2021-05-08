@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import BaseCard from '@components/Cards/BaseCard.vue';
+import BaseCard from '@components/Cards/common/BaseCard.vue';
 import Chip from '@components/Common/Chip.vue';
 import Icon from '@components/Common/Icon.vue';
 

@@ -15,7 +15,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import BaseModal from '@components/Modals/BaseModal.vue';
+import BaseModal from '@components/Modals/common/BaseModal.vue';
 import AlertBus from '../../bus/AlertBus';
 
 @Component({
