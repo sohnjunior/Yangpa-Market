@@ -1,24 +1,18 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-// import store for navigation gurad
+/**
+ * import store for navigation gurad
+ */
 import store from '../store';
-import { AuthAPI } from '../api';
 
 Vue.use(VueRouter);
 
-const loadView = (viewName: string) => () =>
-  import(/* webpackChunkName: "view-[request]" */ `@views/${viewName}.vue`);
-const UserCartList = () =>
-  import(/* webpackChunkName: "UserCartList" */ '@components/Lists/UserCartList.vue');
-const UserSellingTable = () =>
-  import(/* webpackChunkName: "UserSellingTable" */ '@components/Tables/UserSellingTable.vue');
-const UserBuyingTable = () =>
-  import(/* webpackChunkName: "UserBuyingTable" */ '@components/Tables/UserBuyingTable.vue');
-const UserAlarmTable = () =>
-  import(/* webpackChunkName: "UserAlarmTable" */ '@components/Tables/UserAlarmTable.vue');
-const UserProfileForm = () =>
-  import(/* webpackChunkName: "UserProfileForm" */ '@components/Forms/UserProfileForm.vue');
+function loadView(viewName: string) {
+  return function () {
+    return import(/* webpackChunkName: "view-[request]" */ `@views/${viewName}.vue`);
+  };
+}
 
 export const router = new VueRouter({
   routes: [
@@ -27,43 +21,28 @@ export const router = new VueRouter({
       component: loadView('MainView'),
     },
     {
-      path: '/admin',
-      component: loadView('AdminView'),
-      beforeEnter: async (to, from, next) => {
-        const {
-          data: { role },
-        } = await AuthAPI.fetchPermission();
-
-        if (role === 'admin') {
-          return next();
-        }
-
-        next('/no-permission');
-      },
-    },
-    {
       path: '/dashboard',
-      component: loadView('DashBoardView'),
+      component: loadView('Dashboard/Index'),
       children: [
         {
           path: 'cart',
-          component: UserCartList,
+          component: loadView('Dashboard/UserCartView'),
         },
         {
           path: 'selling',
-          component: UserSellingTable,
+          component: loadView('Dashboard/UserSaleView'),
         },
         {
           path: 'buying',
-          component: UserBuyingTable,
+          component: loadView('Dashboard/UserPurchaseView'),
         },
         {
           path: 'alarm',
-          component: UserAlarmTable,
+          component: loadView('Dashboard/UserAlarmView'),
         },
         {
           path: 'profile',
-          component: UserProfileForm,
+          component: loadView('Dashboard/UserProfileView'),
         },
       ],
     },
@@ -73,9 +52,11 @@ export const router = new VueRouter({
     },
     {
       path: '/product/new',
-      component: loadView('ProductRegisterView'),
+      component: loadView('Product/ProductRegisterView'),
       beforeEnter: (to, from, next) => {
-        // 만약 로그인 상태라면
+        /**
+         * TODO: 비로그인시 접근 못하도록 변경하기
+         */
         if (store.state.email !== '' && store.state.token !== '') {
           return next();
         }
@@ -85,11 +66,11 @@ export const router = new VueRouter({
     },
     {
       path: '/product/:id',
-      component: loadView('ProductDetailView'),
+      component: loadView('Product/ProductDetailView'),
     },
     {
       path: '/product/edit/:id',
-      component: loadView('ProductEditView'),
+      component: loadView('Product/ProductEditView'),
     },
     {
       path: '/search/:keyword?',
@@ -97,11 +78,11 @@ export const router = new VueRouter({
     },
     {
       path: '/no-permission',
-      component: loadView('PageNotAllowedView'),
+      component: loadView('Fallback/PageNotAllowedView'),
     },
     {
       path: '*',
-      component: loadView('PageNotFoundView'),
+      component: loadView('Fallback/PageNotFoundView'),
     },
   ],
 });

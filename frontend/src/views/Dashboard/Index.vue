@@ -22,7 +22,7 @@ export default class DashBoardView extends Vue {
 </script>
 
 <style lang="scss">
-@import '../assets/scss/variables';
+@import '../../assets/scss/variables';
 
 .dashboard-view {
   display: flex;

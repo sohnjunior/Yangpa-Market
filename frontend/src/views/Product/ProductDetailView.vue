@@ -24,14 +24,14 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { ProductAPI, CartAPI } from '../api';
+import { ProductAPI, CartAPI } from '../../api';
 import { namespace } from 'vuex-class';
 import ProductDetailCard from '@components/Cards/ProductDetailCard.vue';
 import RelatedProductList from '@components/Lists/RelatedProductList.vue';
 import CommentInput from '@components/Inputs/CommentInput.vue';
 import CommentList from '@components/Lists/CommentList.vue';
-import ToastBus from '../bus/ToastBus';
-import { IProduct, IUserInfo } from '../types';
+import ToastBus from '../../bus/ToastBus';
+import { IProduct, IUserInfo } from '../../types';
 
 const UserModule = namespace('UserModule');
 

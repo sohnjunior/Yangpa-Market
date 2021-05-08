@@ -10,10 +10,10 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { IProductForm } from '../types';
-import { ProductAPI } from '../api';
+import { IProductForm } from '../../types';
+import { ProductAPI } from '../../api';
 import ProductForm from '@components/Forms/ProductForm.vue';
-import { createFormDataWithObject } from '../utils/formatters';
+import { createFormDataWithObject } from '../../utils/formatters';
 
 @Component({
   components: { ProductForm },
@@ -33,7 +33,7 @@ export default class ProductRegisterView extends Vue {
 </script>
 
 <style lang="scss">
-@import '../assets/scss/variables';
+@import '../../assets/scss/variables';
 
 .product-register-view {
   display: flex;

@@ -23,7 +23,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import ToastBus from '../../bus/ToastBus';
 import LoginForm from '@components/Forms/LoginForm.vue';
-import BaseModal from '@components/Modals/BaseModal.vue';
+import BaseModal from '@components/Modals/common/BaseModal.vue';
 import Icon from '@components/Common/Icon.vue';
 
 const UserModule = namespace('UserModule');

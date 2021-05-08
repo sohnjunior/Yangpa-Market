@@ -15,10 +15,10 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import axios from 'axios';
-import { IProductForm } from '../types';
-import { ProductAPI } from '../api';
+import { IProductForm } from '../../types';
+import { ProductAPI } from '../../api';
 import ProductForm from '@components/Forms/ProductForm.vue';
-import { createFormDataWithObject } from '../utils/formatters';
+import { createFormDataWithObject } from '../../utils/formatters';
 
 async function urlToFileObject(url: string) {
   const { data } = await axios.get(url, { responseType: 'blob' });

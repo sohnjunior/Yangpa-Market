@@ -1,7 +1,5 @@
 <template>
   <div>
-    <h2 class="list-title">장바구니</h2>
-
     <div class="check-all-wrapper">
       <CheckboxInput v-model="checkAllFlag" />
       <span>모두선택</span>
@@ -22,7 +20,7 @@
     </ul>
 
     <div class="cart-footer-wrapper">
-      <em class="price">합계 : {{ totalPrice }} 원</em>
+      <em class="price">합계 : {{ totalPrice | commaSeparated }} 원</em>
       <button class="payment-button" @click="buyProducts">결제하기</button>
     </div>
   </div>
@@ -122,12 +120,6 @@ export default class UserCart extends Vue {
 <style lang="scss" scoped>
 @import '../../assets/scss/mixins';
 @import '../../assets/scss/variables';
-
-.list-title {
-  margin-bottom: 30px;
-  font-size: 2rem;
-  font-weight: 700;
-}
 
 .check-all-wrapper {
   display: flex;
